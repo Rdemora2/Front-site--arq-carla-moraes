@@ -59,9 +59,10 @@ export default () => {
             </SocialLink>
           </SocialLinksContainer>
           <CopyrightText>
-            &copy; Copyright 2023, Carla Moraes Arquitetura Paisagística. Todos
+            &copy; Copyright 2025, Carla Moraes Arquitetura Paisagística. Todos
             os Direitos Reservados.
           </CopyrightText>
+          <CopyrightText>Desenvolvido por Tixix Technologies</CopyrightText>
         </Row>
       </Content>
     </Container>
