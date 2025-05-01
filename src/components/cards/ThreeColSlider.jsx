@@ -11,6 +11,7 @@ import {
   ChevronLeft as ChevronLeftIcon,
   ChevronRight as ChevronRightIcon,
 } from "react-feather";
+import { useInView } from "react-intersection-observer";
 
 const Container = tw.div`relative`;
 const Content = tw.div`max-w-screen-xl mx-auto py-16 lg:py-20`;
@@ -69,6 +70,25 @@ const Text = tw.div`ml-2 text-sm font-semibold text-gray-800`;
 const PrimaryButton = tw(
   PrimaryButtonBase
 )`mt-auto sm:text-lg rounded-none w-full rounded sm:rounded-none sm:rounded-br-4xl py-3 sm:py-6`;
+
+const SliderCard = memo(({ heading, description, imageSrc }) => {
+  const { ref, inView } = useInView({
+    triggerOnce: true,
+    rootMargin: "200px 0px",
+  });
+
+  return (
+    <div ref={ref} className="slider-card">
+      {inView && (
+        <>
+          <img src={imageSrc} alt={heading} loading="lazy" />
+          <h3>{heading}</h3>
+          <p>{description}</p>
+        </>
+      )}
+    </div>
+  );
+});
 
 const ThreeColSlider = ({
   heading = <span>Projetos em Destaque</span>,

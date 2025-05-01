@@ -6,7 +6,7 @@ import FacebookIcon from "../../images/facebook-icon.svg";
 import TwitterIcon from "../../images/twitter-icon.svg";
 import YoutubeIcon from "../../images/youtube-icon.svg";
 
-const logo = "/logo/logo_reduced.png";
+const logo = "/logo/logo_reduced.webp";
 
 const Container = tw(ContainerBase)`bg-gray-900 text-gray-100 -mx-8 -mb-8`;
 const Content = tw.div`max-w-screen-xl mx-auto py-20 lg:py-24`;

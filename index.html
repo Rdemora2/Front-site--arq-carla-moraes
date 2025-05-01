@@ -5,7 +5,6 @@
     <link rel="icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Meta tags para SEO -->
     <title>Carla Moraes - Arquitetura paisagística</title>
     <meta
       name="description"
@@ -16,9 +15,8 @@
       content="arquitetura paisagística, paisagismo, jardins, projetos paisagísticos, Carla Moraes"
     />
 
-    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://carlamoraes.com.br/" />
+    <meta property="og:url" content="https://arqcarlamoraes.com.br/" />
     <meta
       property="og:title"
       content="Carla Moraes - Arquitetura paisagística"
@@ -29,9 +27,8 @@
     />
     <meta property="og:image" content="/og-image.jpg" />
 
-    <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://carlamoraes.com.br/" />
+    <meta property="twitter:url" content="https://arqcarlamoraes.com.br/" />
     <meta
       property="twitter:title"
       content="Carla Moraes - Arquitetura paisagística"
@@ -42,12 +39,22 @@
     />
     <meta property="twitter:image" content="/og-image.jpg" />
 
-    <!-- Preconectar a domínios de recursos externos para melhorar performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-    <!-- Preload para recursos críticos -->
-    <link rel="preload" href="/logo/logo_reduced.png" as="image" />
+    <link rel="preload" href="/logo/logo_reduced.webp" as="image" />
+    <link
+      rel="preload"
+      href="/images/main_image.webp"
+      as="image"
+      fetchpriority="high"
+    />
+    <link
+      rel="preload"
+      href="/logo/logo_full.webp"
+      as="image"
+      fetchpriority="high"
+    />
   </head>
   <body>
     <div id="root"></div>

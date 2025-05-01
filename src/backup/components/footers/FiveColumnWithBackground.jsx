@@ -7,7 +7,7 @@ import TwitterIcon from "images/twitter-icon.svg";
 import YoutubeIcon from "images/youtube-icon.svg";
 import SvgDecoratorBlob1 from "images/svg-decorator-blob-9.svg";
 
-const LogoImage = "/logo/logo_reduced.png";
+const LogoImage = "/logo/logo_reduced.webp";
 
 const Container = tw.div`relative bg-primary-500 text-gray-100 -mb-8 -mx-8 px-8 py-20 lg:py-24`;
 const Content = tw.div`max-w-screen-xl mx-auto relative z-10`;
