@@ -1,15 +1,10 @@
 import React from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
-//eslint-disable-line
 import { SectionHeading } from "components/misc/Headings.jsx";
 import { PrimaryLink as PrimaryLinkBase } from "components/misc/Links.jsx";
 import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons.jsx";
-import {
-  MapPin as LocationIcon,
-  Clock as TimeIcon,
-  TrendingUp as TrendingIcon,
-} from "react-feather";
+import { TrendingUp as TrendingIcon } from "react-feather";
 import ArrowRightIcon from "images/arrow-right-icon.svg";
 
 const Container = tw.div`relative`;

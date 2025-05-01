@@ -1,7 +1,6 @@
 import React from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
-//eslint-disable-line
 
 import Header, {
   LogoLink,
@@ -21,10 +20,10 @@ const NavLink = tw(NavLinkBase)`
 `;
 
 const Container = tw.div`relative -mx-8 -mt-8`;
-const TwoColumn = tw.div`flex flex-col lg:flex-row bg-gray-100`;
+const TwoColumn = tw.div`flex flex-col lg:flex-row`;
 const LeftColumn = tw.div`ml-8 mr-8 xl:pl-10 py-8`;
 const RightColumn = styled.div`
-  background-image: url("https://images.unsplash.com/photo-1551918120-9739cb430c6d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&width=1440&height=1024&q=75");
+  background-image: url("/images/main_image.webp");
   ${tw`bg-green-500 bg-cover bg-center xl:ml-24 h-96 lg:h-auto lg:w-1/2 lg:flex-1`}
 `;
 
@@ -48,10 +47,10 @@ const Actions = styled.div`
 export default ({
   navLinks = [
     <NavLinks key={1}>
-      <NavLink href="#">Sobre</NavLink>
+      <NavLink href="/sobre-nos">Sobre</NavLink>
       <NavLink href="#">Projetos</NavLink>
       <NavLink href="#">Serviços</NavLink>
-      <NavLink href="#">Blog</NavLink>
+      <NavLink href="/contato">Contato</NavLink>
     </NavLinks>,
   ],
   heading = (
@@ -63,10 +62,10 @@ export default ({
     </>
   ),
   description = "Há mais de 25 anos criando projetos paisagísticos exclusivos que harmonizam arquitetura e natureza. Do conceito à execução, trazemos beleza e propósito para cada ambiente.",
-  primaryActionUrl = "#",
+  primaryActionUrl = "/contato",
   primaryActionText = "Solicite um Orçamento",
   secondaryActionUrl = "#",
-  secondaryActionText = "Conheça Nossos Projetos",
+  secondaryActionText = "Nossos Projetos",
 }) => {
   return (
     <Container>

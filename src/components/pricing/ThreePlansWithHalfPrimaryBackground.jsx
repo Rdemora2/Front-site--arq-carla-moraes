@@ -1,7 +1,8 @@
+// AUDIT: [BAIXA] Comentários para desabilitar ESLint em múltiplos arquivos
 import React from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
-//eslint-disable-line
+
 import {
   SectionHeading,
   Subheading as SubheadingBase,

@@ -1,29 +1,84 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import GlobalStyles from "./styles/GlobalStyles";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { StyledComponentsProvider } from "./styles/StyledComponentsConfig";
 
-import Home from "./pages/Home";
-import ComponentRenderer from "./ComponentRenderer";
-import ThankYouPage from "./ThankYouPage";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+const Home = lazy(() => import("./pages/Home"));
+const AboutUs = lazy(() => import("./pages/AboutUs"));
+const ContactUs = lazy(() => import("./pages/ContactUs"));
+const ThankYouPage = lazy(() => import("./ThankYouPage"));
+
+const LoadingFallback = () => <div></div>;
+const AppWithProviders = ({ children }) => (
+  <StyledComponentsProvider>
+    <GlobalStyles />
+    {children}
+  </StyledComponentsProvider>
+);
+
+const router = createBrowserRouter(
+  [
+    {
+      path: "/",
+      element: (
+        <Suspense fallback={<LoadingFallback />}>
+          <AppWithProviders>
+            <Home />
+          </AppWithProviders>
+        </Suspense>
+      ),
+    },
+    {
+      path: "/sobre-nos",
+      element: (
+        <Suspense fallback={<LoadingFallback />}>
+          <AppWithProviders>
+            <AboutUs />
+          </AppWithProviders>
+        </Suspense>
+      ),
+    },
+    {
+      path: "/contato",
+      element: (
+        <Suspense fallback={<LoadingFallback />}>
+          <AppWithProviders>
+            <ContactUs />
+          </AppWithProviders>
+        </Suspense>
+      ),
+    },
+    {
+      path: "/thank-you",
+      element: (
+        <Suspense fallback={<LoadingFallback />}>
+          <AppWithProviders>
+            <ThankYouPage />
+          </AppWithProviders>
+        </Suspense>
+      ),
+    },
+  ],
+  {
+    future: {
+      v7_startTransition: true,
+      v7_relativeSplatPath: true,
+      v7_fetcherPersist: true,
+      v7_normalizeFormMethod: true,
+      v7_partialHydration: true,
+      v7_skipActionErrorRevalidation: true,
+    },
+  }
+);
 
 export default function App() {
   return (
-    <>
-      <GlobalStyles />
-      <Router>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route
-            path="/components/:type/:subtype/:name"
-            element={<ComponentRenderer />}
-          />
-          <Route
-            path="/components/:type/:name"
-            element={<ComponentRenderer />}
-          />
-          <Route path="/thank-you" element={<ThankYouPage />} />
-        </Routes>
-      </Router>
-    </>
+    <RouterProvider
+      router={router}
+      future={{
+        v7_startTransition: true,
+        v7_relativeSplatPath: true,
+      }}
+    />
   );
 }

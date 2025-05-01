@@ -1,6 +1,5 @@
 import React from "react";
 import tw from "twin.macro";
-//eslint-disable-line
 import SvgDecoratorBlob1 from "images/svg-decorator-blob-9.svg";
 import { ContentWithPaddingXl, Container } from "components/misc/Layouts";
 

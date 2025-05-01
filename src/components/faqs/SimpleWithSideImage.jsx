@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import tw from "twin.macro";
 import styled from "styled-components";
-//eslint-disable-line
 import {
   SectionHeading,
   Subheading as SubheadingBase,
@@ -15,10 +14,10 @@ const Content = tw.div`max-w-screen-xl mx-auto py-16 lg:py-20`;
 const TwoColumn = tw.div`flex`;
 const Column = tw.div``;
 
-const Image = styled.div((props) => [
-  `background-image: url("${props.imageSrc}");`,
-  props.imageContain ? tw`bg-contain bg-no-repeat` : tw`bg-cover`,
-  props.imageShadow ? tw`shadow` : tw`shadow-none`,
+const Image = styled.div(({ $imageSrc, $imageContain, $imageShadow }) => [
+  `background-image: url("${$imageSrc}");`,
+  $imageContain ? tw`bg-contain bg-no-repeat` : tw`bg-cover`,
+  $imageShadow ? tw`shadow` : tw`shadow-none`,
   tw`hidden lg:block rounded h-144 bg-center`,
 ]);
 
@@ -94,57 +93,66 @@ export default ({
     <Container>
       <Content>
         <TwoColumn>
-          <Column tw="hidden lg:block w-5/12 flex-shrink-0">
-            <Image
-              imageContain={imageContain}
-              imageShadow={imageShadow}
-              imageSrc={imageSrc}
-            />
-          </Column>
           <Column>
             <FAQContent>
               {subheading ? <Subheading>{subheading}</Subheading> : null}
               <Heading>{heading}</Heading>
               <Description>{description}</Description>
               <FAQSContainer>
-                {faqs.map((faq, index) => (
-                  <FAQ
-                    key={index}
-                    onClick={() => {
-                      toggleQuestion(index);
-                    }}
-                    className="group"
-                  >
-                    <Question>
-                      <QuestionText>{faq.question}</QuestionText>
-                      <QuestionToggleIcon>
-                        {activeQuestionIndex === index ? (
-                          <MinusIcon />
-                        ) : (
-                          <PlusIcon />
-                        )}
-                      </QuestionToggleIcon>
-                    </Question>
-                    <Answer
-                      variants={{
-                        open: { opacity: 1, height: "auto", marginTop: "16px" },
-                        collapsed: { opacity: 0, height: 0, marginTop: "0px" },
+                {faqs &&
+                  faqs.map((faq, index) => (
+                    <FAQ
+                      key={index}
+                      onClick={() => {
+                        toggleQuestion(index);
                       }}
-                      initial="collapsed"
-                      animate={
-                        activeQuestionIndex === index ? "open" : "collapsed"
-                      }
-                      transition={{
-                        duration: 0.3,
-                        ease: [0.04, 0.62, 0.23, 0.98],
-                      }}
+                      className="group"
                     >
-                      {faq.answer}
-                    </Answer>
-                  </FAQ>
-                ))}
+                      <Question>
+                        <QuestionText>{faq.question}</QuestionText>
+                        <QuestionToggleIcon>
+                          {activeQuestionIndex === index ? (
+                            <MinusIcon />
+                          ) : (
+                            <PlusIcon />
+                          )}
+                        </QuestionToggleIcon>
+                      </Question>
+                      <Answer
+                        variants={{
+                          open: {
+                            opacity: 1,
+                            height: "auto",
+                            marginTop: "16px",
+                          },
+                          collapsed: {
+                            opacity: 0,
+                            height: 0,
+                            marginTop: "0px",
+                          },
+                        }}
+                        initial="collapsed"
+                        animate={
+                          activeQuestionIndex === index ? "open" : "collapsed"
+                        }
+                        transition={{
+                          duration: 0.3,
+                          ease: [0.04, 0.62, 0.23, 0.98],
+                        }}
+                      >
+                        {faq.answer}
+                      </Answer>
+                    </FAQ>
+                  ))}
               </FAQSContainer>
             </FAQContent>
+          </Column>
+          <Column>
+            <Image
+              $imageSrc={imageSrc}
+              $imageContain={imageContain}
+              $imageShadow={imageShadow}
+            />
           </Column>
         </TwoColumn>
       </Content>

@@ -2,7 +2,7 @@ import React from "react";
 import Slider from "react-slick";
 import styled from "styled-components";
 import tw from "twin.macro";
-//eslint-disable-line
+
 import { SectionHeading as HeadingTitle } from "../misc/Headings.jsx";
 import QuotesLeftIcon from "../../images/quotes-l.svg";
 import QuotesRightIcon from "../../images/quotes-r.svg";

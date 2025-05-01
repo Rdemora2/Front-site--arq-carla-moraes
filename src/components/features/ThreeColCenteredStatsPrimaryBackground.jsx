@@ -1,6 +1,5 @@
 import React from "react";
 import tw from "twin.macro";
-//eslint-disable-line
 import {
   SectionHeading,
   Subheading as SubheadingBase,

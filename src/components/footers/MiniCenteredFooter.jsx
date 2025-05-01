@@ -62,7 +62,18 @@ export default () => {
             &copy; Copyright 2025, Carla Moraes Arquitetura Paisagística. Todos
             os Direitos Reservados.
           </CopyrightText>
-          <CopyrightText>Desenvolvido por Tixix Technologies</CopyrightText>
+          <CopyrightText>
+            Desenvolvido por{" "}
+            <a
+              href="https://www.tivix.com.br/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Visite o site da Tivix Technologies"
+              className="font-bold text-primary-500 hover:text-primary-700 transition-colors"
+            >
+              Tivix Technologies
+            </a>
+          </CopyrightText>
         </Row>
       </Content>
     </Container>

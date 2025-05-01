@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import tw from "twin.macro";
 import styled from "styled-components";
-//eslint-disable-line
 import { Container, ContentWithPaddingXl } from "components/misc/Layouts.jsx";
 import { SectionHeading } from "components/misc/Headings.jsx";
 import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons.jsx";

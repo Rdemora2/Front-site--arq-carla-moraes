@@ -1,6 +1,6 @@
 import React from "react";
 import tw from "twin.macro";
-//eslint-disable-line
+
 import HeaderBase, {
   LogoLink as LogoLinkBase,
   NavLinks,

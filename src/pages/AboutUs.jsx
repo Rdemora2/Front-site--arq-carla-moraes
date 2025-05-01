@@ -1,70 +1,94 @@
 import React from "react";
 import AnimationRevealPage from "helpers/AnimationRevealPage.jsx";
 import tw from "twin.macro";
-import styled from "styled-components"; //eslint-disable-line
-//eslint-disable-line
+import styled from "styled-components";
+
 import Header from "components/headers/light.jsx";
 import Footer from "components/footers/FiveColumnWithInputForm.jsx";
 import MainFeature1 from "components/features/TwoColWithButton.jsx";
-// import MainFeature2 from "components/features/TwoColSingleFeatureWithStats.jsx";
-// import MainFeature3 from "components/features/TwoColSingleFeatureWithStats2.jsx";
 import Features from "components/features/ThreeColSimple.jsx";
-// import Features from "components/features/ThreeColWithSideImage.jsx";
 import TeamCardGrid from "components/cards/ProfileThreeColGrid.jsx";
 
 import SupportIconImage from "images/support-icon.svg";
 import ShieldIconImage from "images/shield-icon.svg";
 import CustomerLoveIconImage from "images/simple-icon.svg";
 
-const Subheading = tw.span`uppercase tracking-wider text-sm`;
+const Subheading = styled.span`
+  ${tw`uppercase tracking-wider text-sm`}
+  color: #3e4d2c;
+`;
+
+const StyledMainFeature = styled(MainFeature1)`
+  background-color: ${(props) => props.bgColor || "#f9f5ef"};
+  h2 {
+    color: #3e4d2c;
+  }
+  p {
+    color: #3e4d2c;
+  }
+`;
+
+const StyledFeatures = styled(Features)`
+  background-color: #f9f5ef;
+  h2,
+  h5 {
+    color: #3e4d2c;
+  }
+  p {
+    color: #3e4d2c;
+  }
+`;
+
 export default () => {
   return (
     <AnimationRevealPage>
       <Header />
-      <MainFeature1
+      <StyledMainFeature
         subheading={
-          <Subheading>About Carla Moraes Arquitetura paisagística</Subheading>
+          <Subheading>Sobre Carla Moraes Arquitetura Paisagística</Subheading>
         }
-        heading="We are a modern design agency."
+        heading="Criamos ambientes que transformam espaços e vidas."
         buttonRounded={false}
-        primaryButtonText="See Portfolio"
+        primaryButtonText="Ver Portfólio"
+        primaryButtonUrl="/portfolio"
         imageSrc="https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=768&q=80"
       />
-      <MainFeature1
-        subheading={<Subheading>Our Vision</Subheading>}
-        heading="We aim to disrupt the design space."
+      <StyledMainFeature
+        subheading={<Subheading>Nossa Visão</Subheading>}
+        heading="Buscamos harmonizar a natureza com o design contemporâneo."
         buttonRounded={false}
-        primaryButtonText="Contact Us"
+        primaryButtonText="Fale Conosco"
+        primaryButtonUrl="/contato"
         imageSrc="https://images.unsplash.com/3/doctype-hi-res.jpg?ixlib=rb-1.2.1&auto=format&fit=crop&w=768&q=80"
         textOnLeft={false}
       />
-      <Features
-        subheading={<Subheading>Our Values</Subheading>}
-        heading="We follow these."
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+      <StyledFeatures
+        subheading={<Subheading>Nossos Valores</Subheading>}
+        heading="Princípios que norteiam nosso trabalho"
+        description="Compromisso com a sustentabilidade, qualidade e satisfação do cliente são os pilares que sustentam cada projeto que desenvolvemos."
         cards={[
           {
             imageSrc: SupportIconImage,
-            title: "24/7 Support",
+            title: "Atendimento Personalizado",
             description:
-              "Lorem ipsum donor amet siti ceali placeholder text alipiscing elit sed do eiusmod temport",
+              "Cada cliente recebe atenção individualizada. Construímos projetos únicos que refletem personalidade e estilo de vida.",
           },
           {
             imageSrc: ShieldIconImage,
-            title: "Strong Teams",
+            title: "Equipe Especializada",
             description:
-              "Lorem ipsum donor amet siti ceali placeholder text alipiscing elit sed do eiusmod temport",
+              "Nossa equipe multidisciplinar combina conhecimento técnico e visão estética para criar projetos paisagísticos excepcionais.",
           },
           {
             imageSrc: CustomerLoveIconImage,
-            title: "Customer Satisfaction",
+            title: "Compromisso Ambiental",
             description:
-              "Lorem ipsum donor amet siti ceali placeholder text alipiscing elit sed do eiusmod temport",
+              "Priorizamos práticas sustentáveis e soluções ecológicas que respeitam a flora local e otimizam recursos naturais.",
           },
         ]}
         linkText=""
       />
-      <TeamCardGrid subheading={<Subheading>Our Team</Subheading>} />
+      <TeamCardGrid subheading={<Subheading>Nossa Equipe</Subheading>} />
       <Footer />
     </AnimationRevealPage>
   );

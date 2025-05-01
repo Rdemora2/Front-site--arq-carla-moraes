@@ -1,7 +1,6 @@
 import React from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
-//eslint-disable-line
 
 import FacebookIcon from "../../images/facebook-icon.svg";
 import TwitterIcon from "../../images/twitter-icon.svg";

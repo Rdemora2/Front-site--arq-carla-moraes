@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import tw from "twin.macro";
-//eslint-disable-line
 import mockupImageSrc from "images/app-mockup.png";
 import SvgDecoratorBlob1 from "images/svg-decorator-blob-9.svg";
 import {

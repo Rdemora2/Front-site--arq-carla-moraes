@@ -56,6 +56,25 @@ const StyledModal = styled(ReactModalAdapter)`
 `;
 const CloseModalButton = tw.button`absolute top-0 right-0 mt-8 mr-8 hocus:text-primary-500`;
 
+/**
+ * Função utilitária para garantir segurança em URLs externas
+ */
+const getSafeUrl = (url) => {
+  // Verifica se a URL é externa e adiciona rel="noopener noreferrer" para segurança
+  if (url && typeof url === "string") {
+    if (url.startsWith("http") && !url.includes(window.location.hostname)) {
+      return {
+        isExternal: true,
+        url,
+      };
+    }
+  }
+  return {
+    isExternal: false,
+    url,
+  };
+};
+
 export default ({
   heading = "Modern React Templates, Just For You",
   description = "Our templates are easy to setup, understand and customize. Fully modular components with a variety of pages and components.",
@@ -68,8 +87,11 @@ export default ({
   imageDecoratorBlob = false,
 }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
-
   const toggleModal = () => setModalIsOpen(!modalIsOpen);
+
+  // Adiciona verificação de segurança para URLs externas
+  const primaryUrlData = getSafeUrl(primaryButtonUrl);
+  const videoUrlData = getSafeUrl(watchVideoYoutubeUrl);
 
   return (
     <>
@@ -80,9 +102,20 @@ export default ({
             <Heading>{heading}</Heading>
             <Paragraph>{description}</Paragraph>
             <Actions>
-              <PrimaryButton as="a" href={primaryButtonUrl}>
-                {primaryButtonText}
-              </PrimaryButton>
+              {primaryUrlData.isExternal ? (
+                <PrimaryButton
+                  as="a"
+                  href={primaryUrlData.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {primaryButtonText}
+                </PrimaryButton>
+              ) : (
+                <PrimaryButton as="a" href={primaryUrlData.url}>
+                  {primaryButtonText}
+                </PrimaryButton>
+              )}
               <WatchVideoButton onClick={toggleModal}>
                 <span className="playIconContainer">
                   <PlayIcon className="playIcon" />
@@ -93,7 +126,14 @@ export default ({
           </LeftColumn>
           <RightColumn>
             <IllustrationContainer>
-              <img css={imageCss} src={imageSrc} alt="Hero" />
+              <img
+                css={imageCss}
+                src={imageSrc}
+                alt="Hero"
+                loading="eager" // Imagem hero é crítica e deve carregar rapidamente
+                width="500"
+                height="500"
+              />
               {imageDecoratorBlob && <DecoratorBlob2 />}
             </IllustrationContainer>
           </RightColumn>
@@ -110,7 +150,17 @@ export default ({
             <CloseIcon tw="w-6 h-6" />
           </CloseModalButton>
           <div className="content">
-            <ResponsiveVideoEmbed url={watchVideoYoutubeUrl} tw="w-full" />
+            <ResponsiveVideoEmbed
+              url={videoUrlData.url}
+              title="Video Apresentação"
+              allowFullScreen
+              loading="lazy"
+              sandbox={
+                videoUrlData.isExternal
+                  ? "allow-same-origin allow-scripts"
+                  : undefined
+              }
+            />
           </div>
         </StyledModal>
       </Container>

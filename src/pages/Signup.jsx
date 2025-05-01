@@ -3,7 +3,7 @@ import AnimationRevealPage from "helpers/AnimationRevealPage.jsx";
 import { Container as ContainerBase } from "components/misc/Layouts";
 import tw from "twin.macro";
 import styled from "styled-components";
-//eslint-disable-line
+
 import illustration from "images/signup-illustration.svg";
 import googleIconImageSrc from "images/google-icon.png";
 import twitterIconImageSrc from "images/twitter-icon.png";
