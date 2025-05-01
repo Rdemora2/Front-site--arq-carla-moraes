@@ -7,7 +7,7 @@ import Header from "components/navbar/navbar.jsx";
 import Footer from "components/footers/FiveColumnWithInputForm.jsx";
 import MainFeature1 from "components/features/TwoColWithButton.jsx";
 import Features from "components/features/ThreeColSimple.jsx";
-import TeamCardGrid from "components/cards/ProfileThreeColGrid.jsx";
+import TeamCardGrid from "backup/components/cards/ProfileThreeColGrid.jsx";
 
 import SupportIconImage from "images/support-icon.svg";
 import ShieldIconImage from "images/shield-icon.svg";
