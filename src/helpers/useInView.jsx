@@ -1,4 +1,4 @@
-import { useRef, useMemo } from "react";
+import { useRef, useMemo, useEffect } from "react";
 import { useInView as useInViewFromFramer } from "framer-motion";
 
 /**
@@ -15,21 +15,15 @@ export default function useInView({
   amount = 0.1,
 } = {}) {
   const ref = useRef(null);
+  const isInView = useInViewFromFramer(ref, {
+    once,
+    margin,
+    amount,
+  });
 
-  // Configurações otimizadas para o IntersectionObserver
-  const options = useMemo(
-    () => ({
-      once,
-      margin,
-      amount,
-      // Root: null (o viewport padrão)
-      // rootMargin: margin, calculado internamente pelo framer-motion
-      // threshold: amount, calculado internamente pelo framer-motion
-    }),
-    [once, margin, amount]
-  );
-
-  const isInView = useInViewFromFramer(ref, options);
+  useEffect(() => {
+    return () => {};
+  }, []);
 
   return [ref, isInView];
 }
