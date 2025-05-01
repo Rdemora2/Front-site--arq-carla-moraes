@@ -1,12 +1,6 @@
 import React from "react";
 import { useInView } from "framer-motion";
 
-/**
- * Componente para otimizar carregamento de imagens
- * - Implementa lazy loading com IntersectionObserver (via useInView)
- * - Suporta diferentes tamanhos de imagem (srcSet)
- * - Inclui fallback para navegadores que não suportam
- */
 export const OptimizedImage = ({
   src,
   alt,
@@ -15,38 +9,37 @@ export const OptimizedImage = ({
   width,
   height,
   onLoad,
-  imgRef,
+  priority = false,
   ...props
 }) => {
   const internalRef = React.useRef(null);
   const isInView = useInView(internalRef, { once: true, margin: "200px 0px" });
 
-  // Determinar referência final para a imagem
-  const ref = imgRef || internalRef;
+  const isExternal = src.startsWith("http");
 
-  // Extrair nome do arquivo e extensão para gerar srcSet
-  const generateSrcSet = (src) => {
-    if (!src || typeof src !== "string") return null;
-    if (src.startsWith("http") || !src.match(/\.(jpe?g|png|webp)$/i))
-      return null;
-
-    const [path, ext] = src.split(/\.(?=[^\.]+$)/);
-    return {
-      srcSet: `${path}-400.${ext} 400w, ${path}-800.${ext} 800w, ${path}.${ext} 1200w`,
-      src: isInView ? src : "",
-    };
-  };
-
-  const srcSetData = generateSrcSet(src);
+  // Gerar srcset apenas para imagens internas
+  const srcSet =
+    !isExternal && src.match(/\.(jpe?g|png)$/i)
+      ? `${src.replace(/\.(jpe?g|png)$/i, ".webp")} 1x, ${src.replace(
+          /\.(jpe?g|png)$/i,
+          "@2x.webp"
+        )} 2x`
+      : undefined;
 
   return (
     <img
-      ref={ref}
-      src={isInView ? src : ""}
-      {...(srcSetData && { srcSet: isInView ? srcSetData.srcSet : "" })}
+      ref={internalRef}
+      src={
+        isInView || priority
+          ? src
+          : "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3C/svg%3E"
+      }
+      srcSet={isInView || priority ? srcSet : undefined}
       alt={alt || ""}
       className={className || ""}
-      loading="lazy"
+      loading={priority ? "eager" : "lazy"}
+      fetchpriority={priority ? "high" : "auto"}
+      decoding={priority ? "sync" : "async"}
       sizes={sizes}
       width={width}
       height={height}

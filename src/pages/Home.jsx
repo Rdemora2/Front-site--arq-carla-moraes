@@ -1,54 +1,88 @@
 import React, { lazy, Suspense } from "react";
 import AnimationRevealPage from "helpers/AnimationRevealPage.jsx";
 
-// Carregamento imediato apenas dos componentes críticos
 import Hero from "components/hero/FullWidthWithImage.jsx";
 import Footer from "components/footers/MiniCenteredFooter.jsx";
 
-// Lazy loading para componentes abaixo da dobra
-const MainFeature = lazy(() =>
-  import("components/features/TwoColSingleFeatureWithStats.jsx")
-);
-const Features = lazy(() => import("components/features/ThreeColSimple.jsx"));
-const SliderCard = lazy(() => import("components/cards/ThreeColSlider.jsx"));
-const TrendingCard = lazy(() =>
-  import("components/cards/TwoTrendingPreviewCardsWithImage.jsx")
-);
-const Testimonial = lazy(() =>
-  import(
-    "components/testimonials/TwoColumnWithImageAndProfilePictureReview.jsx"
-  )
-);
-const FAQ = lazy(() => import("components/faqs/SimpleWithSideImage.jsx"));
+const PriorityComponents = lazy(() => {
+  const MainFeaturePromise = import(
+    "components/features/TwoColSingleFeatureWithStats.jsx"
+  );
+  const FeaturesPromise = import("components/features/ThreeColSimple.jsx");
 
-// Componente de carregamento
+  return Promise.all([MainFeaturePromise, FeaturesPromise]).then(
+    ([MainFeatureModule, FeaturesModule]) => ({
+      default: () => (
+        <>
+          <MainFeatureModule.default />
+          <FeaturesModule.default />
+        </>
+      ),
+    })
+  );
+});
+
+const SecondaryComponents = lazy(() => {
+  const SliderCardPromise = import("components/cards/ThreeColSlider.jsx");
+  const TrendingCardPromise = import(
+    "components/cards/TwoTrendingPreviewCardsWithImage.jsx"
+  );
+  const TestimonialPromise = import(
+    "components/testimonials/TwoColumnWithImageAndProfilePictureReview.jsx"
+  );
+  const FAQPromise = import("components/faqs/SimpleWithSideImage.jsx");
+
+  if (window.requestIdleCallback) {
+    window.requestIdleCallback(() => {
+      import("components/forms/TwoColContactUsWithIllustrationFullForm.jsx");
+    });
+  }
+
+  return Promise.all([
+    SliderCardPromise,
+    TrendingCardPromise,
+    TestimonialPromise,
+    FAQPromise,
+  ]).then(([SliderModule, TrendingModule, TestimonialModule, FAQModule]) => ({
+    default: () => (
+      <>
+        <SliderModule.default />
+        <TrendingModule.default />
+        <TestimonialModule.default textOnLeft={true} />
+        <FAQModule.default />
+      </>
+    ),
+  }));
+});
+
 const LoadingFallback = () => (
   <div
-    className="loading-container"
+    className="loading-skeleton"
     style={{
-      minHeight: "300px",
+      minHeight: "200px",
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
+      background:
+        "linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%)",
+      backgroundSize: "200% 100%",
+      animation: "pulse 1.5s ease-in-out infinite",
     }}
-  >
-    <div className="loading-spinner">Carregando...</div>
-  </div>
+    aria-busy="true"
+  />
 );
 
-const Home = () => (
+const Home = React.memo(() => (
   <AnimationRevealPage>
     <Hero />
     <Suspense fallback={<LoadingFallback />}>
-      <MainFeature />
-      <Features />
-      <SliderCard />
-      <TrendingCard />
-      <Testimonial textOnLeft={true} />
-      <FAQ />
+      <PriorityComponents />
+    </Suspense>
+    <Suspense fallback={<LoadingFallback />}>
+      <SecondaryComponents />
     </Suspense>
     <Footer />
   </AnimationRevealPage>
-);
+));
 
 export default Home;

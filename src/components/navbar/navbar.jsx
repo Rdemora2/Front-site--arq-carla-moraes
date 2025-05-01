@@ -5,8 +5,6 @@ import styled from "styled-components";
 import useAnimatedNavToggler from "../../helpers/useAnimatedNavToggler.jsx";
 import { Menu as MenuIcon, X as CloseIcon } from "react-feather";
 
-const logo = "/logo/logo_full.webp";
-
 const HeaderContainer = tw.header`
   flex justify-between items-center
   max-w-screen-xl mx-auto
@@ -82,15 +80,6 @@ export const PrimaryLink = styled(NavLink)`
 
 export const LogoLink = styled(NavLink)`
   ${tw`flex items-center font-black border-b-0 text-2xl! ml-0!`}
-
-  &:hover {
-    border-bottom-color: transparent;
-    transform: none;
-
-    img {
-      transform: scale(1.05);
-    }
-  }
 
   img {
     ${tw`w-32 mr-3`}
@@ -175,7 +164,16 @@ const Header = ({
 
   const defaultLogoLink = (
     <LogoLink href="/">
-      <img src={logo} alt="logo" />
+      <picture>
+        <source srcSet="/logo/logo_full.webp" type="image/webp" />
+        <img
+          src="/logo/logo_full.png"
+          alt="logo"
+          width="128"
+          height="48"
+          fetchpriority="high"
+        />
+      </picture>
     </LogoLink>
   );
 

@@ -3,6 +3,7 @@ import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
 import macrosPlugin from "vite-plugin-babel-macros";
 import path from "path";
+import { visualizer } from "rollup-plugin-visualizer";
 
 export default defineConfig({
   plugins: [
@@ -34,6 +35,11 @@ export default defineConfig({
       },
       include: "**/*.svg",
     }),
+
+    visualizer({
+      filename: "stats.html",
+      open: true,
+    }),
   ],
 
   resolve: {
@@ -63,6 +69,13 @@ export default defineConfig({
     },
     cssCodeSplit: true,
     assetsInlineLimit: 4096,
+    minify: "terser",
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+    },
   },
 
   server: {
