@@ -19,10 +19,8 @@ const shouldForwardProp = (prop) => {
   );
 };
 
-export const StyledComponentsProvider = ({ children }) => {
-  return (
-    <StyleSheetManager shouldForwardProp={shouldForwardProp}>
-      {children}
-    </StyleSheetManager>
-  );
-};
+export const StyledComponentsProvider = ({ children }) => (
+  <StyleSheetManager shouldForwardProp={shouldForwardProp}>
+    {children}
+  </StyleSheetManager>
+);

@@ -10,15 +10,15 @@ const Column = tw.div`w-full max-w-md mx-auto md:max-w-none md:mx-0`;
 const ImageColumn = tw(
   Column
 )`md:w-6/12 lg:w-5/12 flex-shrink-0 h-80 md:h-auto`;
-const TextColumn = styled(Column)((props) => [
+const TextColumn = styled(Column)(({ $textOnLeft }) => [
   tw`md:w-6/12 mt-8 md:mt-0`,
-  props.textOnLeft
+  $textOnLeft
     ? tw`md:mr-8 lg:mr-16 md:order-first`
     : tw`md:ml-8 lg:ml-16 md:order-last`,
 ]);
 
-const Image = styled.div((props) => [
-  `background-image: url("${props.imageSrc}");`,
+const Image = styled.div(({ $imageSrc }) => [
+  `background-image: url("${$imageSrc}");`,
   tw`rounded bg-cover bg-center h-full`,
 ]);
 const TextContent = tw.div`lg:py-8`;
@@ -33,10 +33,28 @@ const Statistic = tw.div`text-lg sm:text-2xl lg:text-3xl w-1/2 mt-4 lg:mt-10 tex
 const Value = tw.div`font-bold text-primary-500`;
 const Key = tw.div`font-medium text-gray-700`;
 
-export default ({ textOnLeft = false }) => {
-  // The textOnLeft boolean prop can be used to display either the text on left or right side of the image.
-  //Change the statistics variable as you like, add or delete objects
-  const statistics = [
+export default ({
+  heading = (
+    <>
+      <span tw="text-primary-500">Features</span>
+    </>
+  ),
+  description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  primaryButtonText = "Learn More",
+  primaryButtonUrl = "https://timerse.com",
+  imageSrc = null,
+  buttonRounded = true,
+  imageRounded = true,
+  imageBorder = false,
+  imageShadow = false,
+  showDecoratorBlob = false,
+  textOnLeft = true,
+  statistics = null,
+  testimonial = null,
+  imageContain = false,
+}) => {
+  // Transforme props normais em props transitórias ($) ao passá-las para os componentes
+  const defaultStatistics = [
     {
       key: "Anos de Experiência",
       value: "25+",
@@ -59,22 +77,24 @@ export default ({ textOnLeft = false }) => {
     <Container>
       <TwoColumn>
         <ImageColumn>
-          <Image imageSrc="https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&q=80" />
+          <Image
+            $imageSrc={
+              imageSrc ||
+              "https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&q=80"
+            }
+          />
         </ImageColumn>
-        <TextColumn textOnLeft={textOnLeft}>
+        <TextColumn $textOnLeft={textOnLeft}>
           <TextContent>
-            <Heading>Tradição e Inovação em Cada Projeto</Heading>
+            <Heading>
+              {heading || "Tradição e Inovação em Cada Projeto"}
+            </Heading>
             <Description>
-              Desde 1996, a Carla Moraes Arquitetura Paisagística tem
-              transformado espaços em experiências sensoriais únicas. Nossa
-              equipe de especialistas combina técnica apurada e sensibilidade
-              estética para criar paisagens que dialogam harmoniosamente com a
-              arquitetura e as necessidades dos usuários. Priorizamos soluções
-              que resistam ao tempo, com espécies adequadas e materiais de alta
-              qualidade.
+              {description ||
+                "Desde 1996, a Carla Moraes Arquitetura Paisagística tem transformado espaços em experiências sensoriais únicas. Nossa equipe de especialistas combina técnica apurada e sensibilidade estética para criar paisagens que dialogam harmoniosamente com a arquitetura e as necessidades dos usuários. Priorizamos soluções que resistam ao tempo, com espécies adequadas e materiais de alta qualidade."}
             </Description>
             <Statistics>
-              {statistics.map((statistic, index) => (
+              {(statistics || defaultStatistics).map((statistic, index) => (
                 <Statistic key={index}>
                   <Value>{statistic.value}</Value>
                   <Key>{statistic.key}</Key>
