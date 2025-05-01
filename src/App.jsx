@@ -1,6 +1,7 @@
 import React, { Suspense, lazy } from "react";
 import GlobalStyles from "./styles/GlobalStyles";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { StyledComponentsProvider } from "./styles/StyledComponentsConfig";
 
 const Home = lazy(() => import("./pages/Home"));
 const ThankYouPage = lazy(() => import("./ThankYouPage"));
@@ -17,19 +18,58 @@ const LoadingFallback = () => (
     Carregando...
   </div>
 );
+const AppWithProviders = ({ children }) => (
+  <StyledComponentsProvider>
+    <GlobalStyles />
+    {children}
+  </StyledComponentsProvider>
+);
+
+// Configuração de rotas com futuras flags habilitadas
+const router = createBrowserRouter(
+  [
+    {
+      path: "/",
+      element: (
+        <Suspense fallback={<LoadingFallback />}>
+          <AppWithProviders>
+            <Home />
+          </AppWithProviders>
+        </Suspense>
+      ),
+    },
+    {
+      path: "/thank-you",
+      element: (
+        <Suspense fallback={<LoadingFallback />}>
+          <AppWithProviders>
+            <ThankYouPage />
+          </AppWithProviders>
+        </Suspense>
+      ),
+    },
+  ],
+  {
+    future: {
+      v7_startTransition: true,
+      v7_relativeSplatPath: true,
+      v7_fetcherPersist: true,
+      v7_normalizeFormMethod: true,
+      v7_partialHydration: true,
+      v7_skipActionErrorRevalidation: true,
+    },
+  }
+);
 
 export default function App() {
+  // Adicione os mesmos flags futuros ao RouterProvider
   return (
-    <>
-      <GlobalStyles />
-      <Router>
-        <Suspense fallback={<LoadingFallback />}>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/thank-you" element={<ThankYouPage />} />
-          </Routes>
-        </Suspense>
-      </Router>
-    </>
+    <RouterProvider
+      router={router}
+      future={{
+        v7_startTransition: true,
+        v7_relativeSplatPath: true,
+      }}
+    />
   );
 }
