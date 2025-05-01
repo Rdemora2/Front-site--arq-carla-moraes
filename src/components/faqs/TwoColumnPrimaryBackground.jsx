@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import tw from "twin.macro";
-import styled, { css } from "styled-components/macro"; //eslint-disable-line
+import styled from "styled-components"; //eslint-disable-line
 import { Container, ContentWithPaddingXl } from "components/misc/Layouts.jsx";
 import {
   SectionHeading,
