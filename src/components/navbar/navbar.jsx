@@ -5,7 +5,7 @@ import styled from "styled-components";
 import useAnimatedNavToggler from "../../helpers/useAnimatedNavToggler.jsx";
 import { Menu as MenuIcon, X as CloseIcon } from "react-feather";
 
-const logo = "/logo/logo_full.png";
+const logo = "/logo/logo_full.webp";
 
 const HeaderContainer = tw.header`
   flex justify-between items-center

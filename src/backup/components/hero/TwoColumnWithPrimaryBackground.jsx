@@ -17,7 +17,7 @@ import { SectionDescription } from "components/misc/Typography.jsx";
 import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons.jsx";
 import serverIllustrationImageSrc from "images/server-illustration-2.svg";
 
-const logoImageSrc = "/logo/logo_full.png";
+const logoImageSrc = "/logo/logo_full.webp";
 
 const PrimaryBackgroundContainer = tw.div`-mx-8 px-8 bg-primary-900 text-gray-100`;
 const Header = tw(HeaderBase)`max-w-none -mt-8 py-8 -mx-8 px-8`;

@@ -9,7 +9,7 @@ import googleIconImageSrc from "images/google-icon.png";
 import twitterIconImageSrc from "images/twitter-icon.png";
 import { UserPlus as SignUpIcon } from "react-feather";
 
-const logo = "/logo/logo_full.png";
+const logo = "/logo/logo_full.webp";
 
 const Container = tw(
   ContainerBase
