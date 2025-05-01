@@ -4,6 +4,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { StyledComponentsProvider } from "./styles/StyledComponentsConfig";
 
 const Home = lazy(() => import("./pages/Home"));
+const AboutUs = lazy(() => import("./pages/AboutUs"));
+const ContactUs = lazy(() => import("./pages/ContactUs"));
 const ThankYouPage = lazy(() => import("./ThankYouPage"));
 
 const LoadingFallback = () => (
@@ -33,6 +35,26 @@ const router = createBrowserRouter(
         <Suspense fallback={<LoadingFallback />}>
           <AppWithProviders>
             <Home />
+          </AppWithProviders>
+        </Suspense>
+      ),
+    },
+    {
+      path: "/sobre-nos",
+      element: (
+        <Suspense fallback={<LoadingFallback />}>
+          <AppWithProviders>
+            <AboutUs />
+          </AppWithProviders>
+        </Suspense>
+      ),
+    },
+    {
+      path: "/contato",
+      element: (
+        <Suspense fallback={<LoadingFallback />}>
+          <AppWithProviders>
+            <ContactUs />
           </AppWithProviders>
         </Suspense>
       ),
