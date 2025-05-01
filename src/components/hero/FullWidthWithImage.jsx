@@ -6,7 +6,7 @@ import Header, {
   LogoLink,
   NavLinks,
   NavLink as NavLinkBase,
-} from "../headers/light.jsx";
+} from "../navbar/navbar.jsx";
 
 const StyledHeader = styled(Header)`
   ${tw`justify-between`}

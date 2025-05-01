@@ -7,7 +7,7 @@ import { Menu as MenuIcon, X as CloseIcon } from "react-feather";
 
 const logo = "/logo/logo_full.png";
 
-const Header = tw.header`
+const HeaderContainer = tw.header`
   flex justify-between items-center
   max-w-screen-xl mx-auto
 `;
@@ -148,7 +148,7 @@ export const DesktopNavLinks = tw.nav`
   hidden lg:flex flex-1 justify-between items-center
 `;
 
-export default ({
+const Header = ({
   roundedHeaderButton = false,
   logoLink,
   links,
@@ -183,7 +183,7 @@ export default ({
   links = links || defaultLinks;
 
   return (
-    <Header className={className || "header-light"}>
+    <HeaderContainer className={className || "header-light"}>
       <DesktopNavLinks css={collapseBreakpointCss.desktopNavLinks}>
         {logoLink}
         {links}
@@ -213,9 +213,11 @@ export default ({
           )}
         </NavToggle>
       </MobileNavLinksContainer>
-    </Header>
+    </HeaderContainer>
   );
 };
+
+export default Header;
 
 const collapseBreakPointCssMap = {
   sm: {

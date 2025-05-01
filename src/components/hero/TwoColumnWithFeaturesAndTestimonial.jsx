@@ -2,11 +2,11 @@ import React from "react";
 import styled from "styled-components";
 import tw from "twin.macro";
 
-import HeaderBase, {
+import Header, {
   NavLinks,
   NavLink,
   PrimaryLink,
-} from "components/headers/light.jsx";
+} from "components/navbar/navbar.jsx";
 import { SectionHeading } from "components/misc/Headings.jsx";
 import { SectionDescription } from "components/misc/Typography.jsx";
 import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons.jsx";

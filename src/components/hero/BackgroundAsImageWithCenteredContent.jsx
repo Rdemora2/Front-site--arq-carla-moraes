@@ -9,7 +9,7 @@ import Header, {
   LogoLink,
   NavToggle,
   DesktopNavLinks,
-} from "../headers/light.jsx";
+} from "../navbar/navbar.jsx";
 
 const StyledHeader = styled(Header)`
   ${tw`pt-8 max-w-none w-full`}

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import tw from "twin.macro";
 //eslint-disable-next-line
 
-import Header from "../headers/light.jsx";
+import Header from "../navbar/navbar.jsx";
 
 import ReactModalAdapter from "../../helpers/ReactModalAdapter.jsx";
 import ResponsiveVideoEmbed from "../../helpers/ResponsiveVideoEmbed.jsx";
