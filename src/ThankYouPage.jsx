@@ -3,7 +3,7 @@ import AnimationRevealPage from "helpers/AnimationRevealPage.jsx";
 import { Container, Content2Xl } from "components/misc/Layouts";
 import tw from "twin.macro";
 
-import { LogoLink } from "components/headers/light.jsx";
+import { LogoLink } from "components/navbar/navbar.jsx";
 import { SectionHeading as HeadingBase } from "components/misc/Headings";
 import { SectionDescription as DescriptionBase } from "components/misc/Typography";
 

@@ -6,46 +6,141 @@ import useAnimatedNavToggler from "../../helpers/useAnimatedNavToggler.jsx";
 import { Menu as MenuIcon, X as CloseIcon } from "react-feather";
 
 const logo = "/logo/logo_full.png";
-const Header = tw.header`
+
+const HeaderContainer = tw.header`
   flex justify-between items-center
   max-w-screen-xl mx-auto
 `;
 
 export const NavLinks = tw.div`inline-block`;
 
-export const NavLink = tw.a`
-  text-lg my-2 lg:text-sm lg:mx-6 lg:my-0
-  font-semibold tracking-wide transition duration-300
-  pb-1 border-b-2 border-transparent hover:border-primary-500 hocus:text-primary-500
+export const NavLink = styled.a`
+  ${tw`
+    text-lg my-2 lg:text-sm lg:mx-6 lg:my-0
+    font-semibold tracking-wide transition duration-300
+    pb-1 border-b-2 border-transparent
+  `}
+
+  &:hover {
+    color: var(--color-primary);
+    border-bottom-color: var(--color-primary);
+    text-shadow: 0 0 1px rgba(107, 121, 89, 0.3);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
 `;
 
 export const PrimaryLink = styled(NavLink)`
-  ${tw`lg:mx-0
-  px-8 py-3 rounded bg-primary-500 text-gray-100
-  hocus:bg-primary-700 hocus:text-gray-200 focus:shadow-outline
-  border-b-0`}
-  background-color: #8c9b7a;
+  ${tw`
+    lg:mx-0 px-8 py-3 rounded 
+    text-gray-100 border-b-0
+    transition-all duration-300
+  `}
+  background-color: var(--color-primary);
+  position: relative;
+  overflow: hidden;
+
   &:hover {
-    background-color: #3e4d2c;
+    background-color: var(--color-primary-text);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(62, 77, 44, 0.2);
+    text-shadow: none;
+    border-bottom-color: transparent;
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 4px rgba(62, 77, 44, 0.2);
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+    pointer-events: none;
+    transition: transform 0.6s ease;
+    z-index: 2;
+    transform: translateX(-100%);
+  }
+
+  &:hover::after {
+    transform: translateX(100%);
   }
 `;
 
 export const LogoLink = styled(NavLink)`
-  ${tw`flex items-center font-black border-b-0 text-2xl! ml-0!`};
+  ${tw`flex items-center font-black border-b-0 text-2xl! ml-0!`}
+
+  &:hover {
+    border-bottom-color: transparent;
+    transform: none;
+
+    img {
+      transform: scale(1.05);
+    }
+  }
 
   img {
     ${tw`w-32 mr-3`}
+    transition: transform 0.3s ease;
   }
 `;
 
-export const MobileNavLinksContainer = tw.nav`flex flex-1 items-center justify-between`;
-export const NavToggle = tw.button`
-  lg:hidden z-20 focus:outline-none hocus:text-primary-500 transition duration-300
+export const MobileNavLinksContainer = tw.nav`
+  flex flex-1 items-center justify-between
 `;
+
+export const NavToggle = styled.button`
+  ${tw`
+    lg:hidden z-20 focus:outline-none transition duration-300
+  `}
+
+  &:hover {
+    color: var(--color-primary);
+    transform: rotate(5deg) scale(1.1);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 2px var(--color-secondary);
+    outline: none;
+  }
+`;
+
 export const MobileNavLinks = motion(styled.div`
-  ${tw`lg:hidden z-10 fixed top-0 inset-x-0 mx-4 my-6 p-8 border text-center rounded-lg text-gray-900 bg-white`}
+  ${tw`
+    lg:hidden z-10 fixed top-0 inset-x-0 
+    mx-4 my-6 p-8 border text-center 
+    rounded-lg text-gray-900 bg-white
+  `}
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(10px);
+
   ${NavLinks} {
     ${tw`flex flex-col items-center`}
+  }
+
+  ${NavLink} {
+    transition: transform 0.3s ease, color 0.3s ease;
+
+    &:hover {
+      transform: scale(1.05) translateY(-2px);
+    }
   }
 `);
 
@@ -53,7 +148,7 @@ export const DesktopNavLinks = tw.nav`
   hidden lg:flex flex-1 justify-between items-center
 `;
 
-export default ({
+const Header = ({
   roundedHeaderButton = false,
   logoLink,
   links,
@@ -88,7 +183,7 @@ export default ({
   links = links || defaultLinks;
 
   return (
-    <Header className={className || "header-light"}>
+    <HeaderContainer className={className || "header-light"}>
       <DesktopNavLinks css={collapseBreakpointCss.desktopNavLinks}>
         {logoLink}
         {links}
@@ -108,6 +203,8 @@ export default ({
         <NavToggle
           onClick={toggleNavbar}
           className={showNavLinks ? "open" : "closed"}
+          aria-label={showNavLinks ? "Fechar menu" : "Abrir menu"}
+          aria-expanded={showNavLinks}
         >
           {showNavLinks ? (
             <CloseIcon tw="w-6 h-6" />
@@ -116,15 +213,11 @@ export default ({
           )}
         </NavToggle>
       </MobileNavLinksContainer>
-    </Header>
+    </HeaderContainer>
   );
 };
 
-/* The below code is for generating dynamic break points for navbar.
- * Using this you can specify if you want to switch
- * to the toggleable mobile navbar at "sm", "md" or "lg" or "xl" above using the collapseBreakpointClass prop
- * Its written like this because we are using macros and we can not insert dynamic variables in macros
- */
+export default Header;
 
 const collapseBreakPointCssMap = {
   sm: {

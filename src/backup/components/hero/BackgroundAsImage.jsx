@@ -9,7 +9,7 @@ import Header, {
   LogoLink,
   NavToggle,
   DesktopNavLinks,
-} from "../headers/light.jsx";
+} from "../navbar/navbar.jsx";
 import ResponsiveVideoEmbed from "../../helpers/ResponsiveVideoEmbed.jsx";
 
 const StyledHeader = styled(Header)`

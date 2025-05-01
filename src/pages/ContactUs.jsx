@@ -3,7 +3,7 @@ import AnimationRevealPage from "helpers/AnimationRevealPage.jsx";
 import tw from "twin.macro";
 import styled from "styled-components";
 
-import Header from "components/headers/light.jsx";
+import Header from "components/navbar/navbar.jsx";
 import Footer from "components/footers/FiveColumnWithInputForm.jsx";
 import ContactUsForm from "components/forms/TwoColContactUsWithIllustrationFullForm.jsx";
 
