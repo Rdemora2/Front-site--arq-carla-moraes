@@ -36,10 +36,14 @@ export default defineConfig({
       include: "**/*.svg",
     }),
 
-    visualizer({
-      filename: "stats.html",
-      open: true,
-    }),
+    ...(process.env.NODE_ENV === "development"
+      ? [
+          visualizer({
+            filename: "stats.html",
+            open: true,
+          }),
+        ]
+      : []),
   ],
 
   resolve: {
