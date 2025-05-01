@@ -41,13 +41,46 @@ const Answer = motion(
 );
 
 export default ({
-  subheading = "",
+  subheading = "Tire suas dúvidas",
   heading = "Perguntas Frequentes",
-  description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-  imageSrc = "https://images.unsplash.com/photo-1579427421635-a0015b804b2e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1024&q=80",
+  description = "Entenda melhor sobre nosso processo de trabalho e como podemos ajudar a transformar seu espaço com um projeto paisagístico exclusivo.",
+  imageSrc = "https://images.unsplash.com/photo-1493246507139-91e8fad9978e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&q=80",
   imageContain = false,
   imageShadow = true,
-  faqs = null,
+  faqs = [
+    {
+      question:
+        "Como funciona o processo de desenvolvimento de um projeto paisagístico?",
+      answer:
+        "Nosso processo começa com uma visita técnica ao local e reunião com o cliente para entender suas necessidades e desejos. A partir daí, desenvolvemos um estudo preliminar, seguido pelo anteprojeto e projeto executivo, que inclui especificações detalhadas de materiais e espécies vegetais. Após aprovação, podemos acompanhar a execução para garantir a fidelidade ao projeto.",
+    },
+    {
+      question: "Quanto tempo leva para desenvolver um projeto completo?",
+      answer:
+        "O tempo varia de acordo com a complexidade e tamanho da área. Um projeto residencial típico pode levar de 30 a 60 dias entre as fases de estudo, desenvolvimento e detalhamento. Projetos maiores ou corporativos podem exigir mais tempo para planejamento adequado.",
+    },
+    {
+      question:
+        "Vocês trabalham apenas com projetos ou também realizam a execução?",
+      answer:
+        "Somos especializados no desenvolvimento de projetos paisagísticos, mas oferecemos o serviço de acompanhamento de obra para garantir que a execução seja fiel ao projeto. Trabalhamos com parceiros de confiança para a implementação, formando uma equipe integrada para o sucesso do projeto.",
+    },
+    {
+      question: "Como são escolhidas as espécies vegetais para cada projeto?",
+      answer:
+        "A seleção de plantas considera diversos fatores: condições climáticas, exposição solar, tipo de solo, disponibilidade de água, estilo do projeto, necessidades de manutenção e, é claro, as preferências dos clientes. Priorizamos espécies adaptadas ao local para garantir longevidade e reduzir manutenção.",
+    },
+    {
+      question: "Vocês desenvolvem projetos para pequenos espaços?",
+      answer:
+        "Sim, trabalhamos com espaços de todos os tamanhos. Pequenos jardins, varandas e terraços podem se transformar em ambientes extraordinários com planejamento adequado. Cada centímetro é valorizado para criar um espaço funcional e esteticamente harmônico.",
+    },
+    {
+      question: "O projeto inclui sistema de irrigação e iluminação?",
+      answer:
+        "Sim, nossos projetos executivos podem incluir os detalhamentos técnicos de sistemas de irrigação e iluminação paisagística. Trabalhamos em parceria com especialistas dessas áreas para garantir soluções eficientes e adequadas às necessidades de cada ambiente.",
+    },
+  ],
 }) => {
   const [activeQuestionIndex, setActiveQuestionIndex] = useState(null);
 
