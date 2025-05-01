@@ -170,7 +170,7 @@ const Header = ({
           src="/logo/logo_full.png"
           alt="logo"
           width="128"
-          height="48"
+          height="75"
           fetchpriority="high"
         />
       </picture>
