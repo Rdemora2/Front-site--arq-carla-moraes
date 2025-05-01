@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Slider from "react-slick";
 import tw from "twin.macro";
 import styled from "styled-components";
-//eslint-disable-line
+
 import {
   SectionHeading,
   Subheading as SubheadingBase,

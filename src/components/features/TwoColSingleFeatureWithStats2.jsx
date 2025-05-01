@@ -1,7 +1,6 @@
 import React from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
-//eslint-disable-line
 import {
   SectionHeading,
   Subheading as SubheadingBase,
@@ -66,8 +65,6 @@ export default ({
   statistics = null,
   textOnLeft = false,
 }) => {
-  // The textOnLeft boolean prop can be used to display either the text on left or right side of the image.
-  //Change the statistics variable as you like, add or delete objects
   const defaultStatistics = [
     {
       key: "Clients",

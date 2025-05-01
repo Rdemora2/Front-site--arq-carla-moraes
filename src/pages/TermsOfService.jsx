@@ -3,7 +3,7 @@ import AnimationRevealPage from "helpers/AnimationRevealPage.jsx";
 import { Container, ContentWithPaddingXl } from "components/misc/Layouts";
 import tw from "twin.macro";
 import styled from "styled-components";
-//eslint-disable-line
+
 import Header from "components/headers/light.jsx";
 import Footer from "components/footers/FiveColumnWithInputForm.jsx";
 import { SectionHeading } from "components/misc/Headings";

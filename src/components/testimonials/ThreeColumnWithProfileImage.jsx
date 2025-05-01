@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import tw from "twin.macro";
-//eslint-disable-line
+
 import { ContentWithPaddingXl, Container } from "components/misc/Layouts.jsx";
 import {
   SectionHeading as Heading,

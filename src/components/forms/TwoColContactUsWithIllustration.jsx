@@ -1,7 +1,7 @@
 import React from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
-//eslint-disable-line
+
 import {
   SectionHeading,
   Subheading as SubheadingBase,
@@ -51,8 +51,6 @@ export default ({
   formMethod = "get",
   textOnLeft = true,
 }) => {
-  // The textOnLeft boolean prop can be used to display either the text on left or right side of the image.
-
   return (
     <Container>
       <TwoColumn>

@@ -1,7 +1,7 @@
 import React from "react";
 import AnimationRevealPage from "helpers/AnimationRevealPage.jsx";
 import tw from "twin.macro";
-//eslint-disable-line
+
 import Header from "components/headers/light.jsx";
 import Footer from "components/footers/FiveColumnWithInputForm.jsx";
 import ContactUsForm from "components/forms/TwoColContactUsWithIllustrationFullForm.jsx";

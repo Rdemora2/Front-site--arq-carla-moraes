@@ -2,7 +2,6 @@ import React from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
 import { motion } from "framer-motion";
-//eslint-disable-line
 import { SectionHeading } from "components/misc/Headings.jsx";
 import { Container, ContentWithPaddingXl } from "components/misc/Layouts.jsx";
 
@@ -47,7 +46,6 @@ const RecentPostsContainer = styled.div`
 const PostTextContainer = tw.div``;
 
 export default () => {
-  // This setting is for animating the post background image on hover
   const postBackgroundSizeAnimation = {
     rest: {
       backgroundSize: "100%",
@@ -57,7 +55,6 @@ export default () => {
     },
   };
 
-  //Recommended: Only 2 Items
   const popularPosts = [
     {
       postImageSrc:

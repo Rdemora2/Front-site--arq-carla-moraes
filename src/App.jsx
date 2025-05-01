@@ -25,7 +25,6 @@ const AppWithProviders = ({ children }) => (
   </StyledComponentsProvider>
 );
 
-// Configuração de rotas com futuras flags habilitadas
 const router = createBrowserRouter(
   [
     {
@@ -62,7 +61,6 @@ const router = createBrowserRouter(
 );
 
 export default function App() {
-  // Adicione os mesmos flags futuros ao RouterProvider
   return (
     <RouterProvider
       router={router}

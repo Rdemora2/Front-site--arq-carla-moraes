@@ -1,7 +1,6 @@
 import React from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
-//eslint-disable-line
 import { SectionHeading } from "components/misc/Headings.jsx";
 
 const Container = tw.div`relative`;
@@ -53,7 +52,6 @@ export default ({
   testimonial = null,
   imageContain = false,
 }) => {
-  // Transforme props normais em props transitórias ($) ao passá-las para os componentes
   const defaultStatistics = [
     {
       key: "Anos de Experiência",

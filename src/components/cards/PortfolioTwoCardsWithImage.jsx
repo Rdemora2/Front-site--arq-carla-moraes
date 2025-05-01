@@ -1,7 +1,6 @@
 import React from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
-//eslint-disable-line
 import { SectionHeading, Subheading } from "components/misc/Headings.jsx";
 import { PrimaryLink as PrimaryLinkBase } from "components/misc/Links.jsx";
 import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons.jsx";

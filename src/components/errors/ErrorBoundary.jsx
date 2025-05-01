@@ -18,10 +18,6 @@ const RetryButton = styled.button`
   ${tw`bg-primary-500 hover:bg-primary-700 text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline transition duration-300`}
 `;
 
-/**
- * Componente de Error Boundary para capturar erros em componentes filhos
- * e exibir uma UI de fallback amigável
- */
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
@@ -29,27 +25,19 @@ class ErrorBoundary extends React.Component {
   }
 
   static getDerivedStateFromError(error) {
-    // Atualiza o state para que a próxima renderização mostre a UI de fallback
     return { hasError: true };
   }
 
   componentDidCatch(error, errorInfo) {
-    // Você pode registrar o erro em um serviço de relatórios de erro
     console.error("Error boundary capturou um erro:", error, errorInfo);
     this.setState({
       error,
       errorInfo,
     });
-
-    // Aqui você poderia enviar o erro para um serviço como Sentry
-    // if (typeof window.Sentry !== 'undefined') {
-    //   window.Sentry.captureException(error);
-    // }
   }
 
   render() {
     if (this.state.hasError) {
-      // Você pode renderizar qualquer UI de fallback personalizada
       return (
         <ErrorContainer>
           <ErrorHeading>Algo deu errado</ErrorHeading>

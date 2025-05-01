@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import tw from "twin.macro";
-//eslint-disable-line
+
 import SvgDotPatternIcon from "../../images/dot-pattern.svg";
 
 const Container = tw.div`relative`;

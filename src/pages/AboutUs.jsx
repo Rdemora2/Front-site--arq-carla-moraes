@@ -1,8 +1,8 @@
 import React from "react";
 import AnimationRevealPage from "helpers/AnimationRevealPage.jsx";
 import tw from "twin.macro";
-import styled from "styled-components"; //eslint-disable-line
-//eslint-disable-line
+import styled from "styled-components";
+
 import Header from "components/headers/light.jsx";
 import Footer from "components/footers/FiveColumnWithInputForm.jsx";
 import MainFeature1 from "components/features/TwoColWithButton.jsx";
