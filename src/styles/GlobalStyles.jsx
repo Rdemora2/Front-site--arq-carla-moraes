@@ -4,11 +4,11 @@ import tw, { GlobalStyles as BaseStyles } from "twin.macro";
 
 const CustomStyles = createGlobalStyle`
   :root {
-    --color-primary: #8c9b7a;
+    --color-primary: #6b7959; /* Tom mais escuro para maior contraste */
     --color-primary-text: #3e4d2c;
     --color-background: #fcfaf7;
-    --color-gold: #c2b280;
-    --color-secondary: #b1c0a8;
+    --color-gold: #a99960; /* Tom mais escuro para maior contraste */
+    --color-secondary: #91a082; /* Tom mais escuro para maior contraste */
   }
 
   body {
@@ -34,6 +34,20 @@ const CustomStyles = createGlobalStyle`
   
   .secondary-bg {
     background-color: var(--color-secondary);
+  }
+
+  /* Adicionar estilos específicos para botões primários para garantir contraste */
+  .primaryAction {
+    background-color: #4d593c; /* Versão mais escura da cor primária */
+    color: #ffffff;
+    &:hover {
+      background-color: #3b452e;
+    }
+  }
+  
+  /* Garantir que textos tenham contraste suficiente */
+  p, .Description-BbZVu {
+    color: #333333; /* Texto mais escuro para melhor contraste */
   }
 `;
 

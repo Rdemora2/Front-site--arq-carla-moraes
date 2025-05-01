@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Slider from "react-slick";
 import tw from "twin.macro";
 import styled from "styled-components";
@@ -147,41 +147,90 @@ export default ({
     ],
   };
 
+  useEffect(() => {
+    const updateTabIndex = () => {
+      const hiddenSlides = document.querySelectorAll(
+        '.slick-slide[aria-hidden="true"]'
+      );
+      hiddenSlides.forEach((slide) => {
+        const focusableElements = slide.querySelectorAll(
+          "a, button, [tabindex]"
+        );
+        focusableElements.forEach((el) => {
+          el.setAttribute("tabindex", "-1");
+        });
+      });
+    };
+
+    if (document.readyState === "complete") {
+      updateTabIndex();
+    } else {
+      window.addEventListener("load", updateTabIndex);
+      return () => window.removeEventListener("load", updateTabIndex);
+    }
+  }, []);
+
   return (
     <Container>
       <Content>
         <HeadingWithControl>
           <Heading>{heading}</Heading>
           <Controls>
-            <PrevButton onClick={sliderRef?.slickPrev}>
+            <PrevButton
+              onClick={sliderRef?.slickPrev}
+              aria-label="Navegar para projeto anterior"
+            >
               <ChevronLeftIcon />
             </PrevButton>
-            <NextButton onClick={sliderRef?.slickNext}>
+            <NextButton
+              onClick={sliderRef?.slickNext}
+              aria-label="Navegar para próximo projeto"
+            >
               <ChevronRightIcon />
             </NextButton>
           </Controls>
         </HeadingWithControl>
-        <CardSlider ref={setSliderRef} {...sliderSettings}>
+        <CardSlider
+          ref={setSliderRef}
+          {...sliderSettings}
+          afterChange={() => {
+            const hiddenSlides = document.querySelectorAll(
+              '.slick-slide[aria-hidden="true"]'
+            );
+            hiddenSlides.forEach((slide) => {
+              const focusableElements = slide.querySelectorAll(
+                "a, button, [tabindex]"
+              );
+              focusableElements.forEach((el) => {
+                el.setAttribute("tabindex", "-1");
+              });
+            });
+          }}
+        >
           {cards.map((card, index) => (
             <Card key={index}>
-              <CardImage imageSrc={card.imageSrc} />
+              <CardImage
+                imageSrc={card.imageSrc}
+                role="img"
+                aria-label={`Imagem do projeto ${card.title}`}
+              />
               <TextInfo>
                 <TitleReviewContainer>
                   <Title>{card.title}</Title>
                   <RatingsInfo>
-                    <StarIcon />
+                    <StarIcon aria-hidden="true" />
                     <Rating>{card.rating}</Rating>
                   </RatingsInfo>
                 </TitleReviewContainer>
                 <SecondaryInfoContainer>
                   <IconWithText>
-                    <IconContainer>
+                    <IconContainer aria-hidden="true">
                       <LocationIcon />
                     </IconContainer>
                     <Text>{card.locationText}</Text>
                   </IconWithText>
                   <IconWithText>
-                    <IconContainer>
+                    <IconContainer aria-hidden="true">
                       <PriceIcon />
                     </IconContainer>
                     <Text>{card.pricingText}</Text>
@@ -189,7 +238,11 @@ export default ({
                 </SecondaryInfoContainer>
                 <Description>{card.description}</Description>
               </TextInfo>
-              <PrimaryButton as="a" href={card.url}>
+              <PrimaryButton
+                as="a"
+                href={card.url}
+                aria-label={`Ver mais detalhes sobre o projeto ${card.title}`}
+              >
                 Ver Mais
               </PrimaryButton>
             </Card>

@@ -47,15 +47,31 @@ export default () => {
           </LinksContainer>
           <SocialLinksContainer>
             <SocialLink href="https://facebook.com/carlamoraespaisagismo">
-              <FacebookIcon />
+              <a
+                href="https://facebook.com/carlamoraespaisagismo"
+                className="SocialLink-byuJtI"
+                aria-label="Visite nossa página no Facebook"
+              >
+                <FacebookIcon />
+              </a>
             </SocialLink>
             <SocialLink href="https://instagram.com/carlamoraespaisagismo">
-              <TwitterIcon />{" "}
-              {/* Nota: é recomendado trocar esse ícone para um Instagram */}
+              <a
+                href="https://instagram.com/carlamoraespaisagismo"
+                className="SocialLink-byuJtI"
+                aria-label="Siga-nos no Instagram"
+              >
+                <TwitterIcon />
+              </a>{" "}
             </SocialLink>
             <SocialLink href="https://linkedin.com/in/carlamoraespaisagismo">
-              <YoutubeIcon />{" "}
-              {/* Nota: é recomendado trocar esse ícone para um LinkedIn */}
+              <a
+                href="https://linkedin.com/in/carlamoraespaisagismo"
+                className="SocialLink-byuJtI"
+                aria-label="Conecte-se conosco no LinkedIn"
+              >
+                <YoutubeIcon />
+              </a>{" "}
             </SocialLink>
           </SocialLinksContainer>
           <CopyrightText>

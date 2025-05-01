@@ -150,13 +150,31 @@ export default () => {
           </CopywrightNotice>
           <SocialLinksContainer>
             <SocialLink href="https://facebook.com">
-              <FacebookIcon />
+              <a
+                href="https://facebook.com/carlamoraespaisagismo"
+                className="SocialLink-byuJtI"
+                aria-label="Visite nossa página no Facebook"
+              >
+                <FacebookIcon />
+              </a>
             </SocialLink>
             <SocialLink href="https://twitter.com">
-              <TwitterIcon />
+              <a
+                href="https://instagram.com/carlamoraespaisagismo"
+                className="SocialLink-byuJtI"
+                aria-label="Siga-nos no Instagram"
+              >
+                <TwitterIcon />
+              </a>
             </SocialLink>
             <SocialLink href="https://youtube.com">
-              <YoutubeIcon />
+              <a
+                href="https://linkedin.com/in/carlamoraespaisagismo"
+                className="SocialLink-byuJtI"
+                aria-label="Conecte-se conosco no LinkedIn"
+              >
+                <YoutubeIcon />
+              </a>
             </SocialLink>
           </SocialLinksContainer>
         </ThreeColRow>

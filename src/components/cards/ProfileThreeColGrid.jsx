@@ -59,7 +59,15 @@ export default ({
       links: [
         {
           url: "https://twitter.com",
-          icon: TwitterIcon,
+          icon: (
+            <a
+              href="https://instagram.com/carlamoraespaisagismo"
+              className="SocialLink-byuJtI"
+              aria-label="Siga-nos no Instagram"
+            >
+              <TwitterIcon />
+            </a>
+          ),
         },
         {
           url: "https://linkedin.com",
@@ -79,7 +87,15 @@ export default ({
       links: [
         {
           url: "https://twitter.com",
-          icon: TwitterIcon,
+          icon: (
+            <a
+              href="https://instagram.com/carlamoraespaisagismo"
+              className="SocialLink-byuJtI"
+              aria-label="Siga-nos no Instagram"
+            >
+              <TwitterIcon />
+            </a>
+          ),
         },
         {
           url: "https://linkedin.com",
@@ -99,7 +115,15 @@ export default ({
       links: [
         {
           url: "https://twitter.com",
-          icon: TwitterIcon,
+          icon: (
+            <a
+              href="https://instagram.com/carlamoraespaisagismo"
+              className="SocialLink-byuJtI"
+              aria-label="Siga-nos no Instagram"
+            >
+              <TwitterIcon />
+            </a>
+          ),
         },
         {
           url: "https://linkedin.com",
@@ -119,7 +143,15 @@ export default ({
       links: [
         {
           url: "https://twitter.com",
-          icon: TwitterIcon,
+          icon: (
+            <a
+              href="https://instagram.com/carlamoraespaisagismo"
+              className="SocialLink-byuJtI"
+              aria-label="Siga-nos no Instagram"
+            >
+              <TwitterIcon />
+            </a>
+          ),
         },
         {
           url: "https://linkedin.com",
@@ -139,7 +171,15 @@ export default ({
       links: [
         {
           url: "https://twitter.com",
-          icon: TwitterIcon,
+          icon: (
+            <a
+              href="https://instagram.com/carlamoraespaisagismo"
+              className="SocialLink-byuJtI"
+              aria-label="Siga-nos no Instagram"
+            >
+              <TwitterIcon />
+            </a>
+          ),
         },
         {
           url: "https://linkedin.com",
@@ -159,7 +199,15 @@ export default ({
       links: [
         {
           url: "https://twitter.com",
-          icon: TwitterIcon,
+          icon: (
+            <a
+              href="https://instagram.com/carlamoraespaisagismo"
+              className="SocialLink-byuJtI"
+              aria-label="Siga-nos no Instagram"
+            >
+              <TwitterIcon />
+            </a>
+          ),
         },
         {
           url: "https://linkedin.com",
