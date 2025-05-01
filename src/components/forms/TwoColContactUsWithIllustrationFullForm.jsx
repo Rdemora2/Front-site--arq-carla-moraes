@@ -1,84 +1,192 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import tw from "twin.macro";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
-import {
-  SectionHeading,
-  Subheading as SubheadingBase,
-} from "components/misc/Headings.jsx";
-import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons.jsx";
-import EmailIllustrationSrc from "images/email-illustration.svg";
-
-const Container = tw.div`relative`;
-const TwoColumn = tw.div`flex flex-col md:flex-row justify-between max-w-screen-xl mx-auto py-20 md:py-24`;
+// Ajustei os espaçamentos verticais para reduzir ainda mais a margem superior
+const Container = tw.div`relative -mt-2 mb-4`; // Adicionando margem negativa para reduzir mais o espaço
+const Content = tw.div`max-w-screen-xl mx-auto py-4 lg:py-8`; // Reduzindo ainda mais o padding
+const TwoColumn = tw.div`flex flex-col md:flex-row justify-between max-w-screen-xl mx-auto`; // Removi padding extra
 const Column = tw.div`w-full max-w-md mx-auto md:max-w-none md:mx-0`;
-const ImageColumn = tw(Column)`md:w-5/12 flex-shrink-0 h-80 md:h-auto`;
-const TextColumn = styled(Column)((props) => [
-  tw`md:w-7/12 mt-16 md:mt-0`,
-  props.textOnLeft
-    ? tw`md:mr-12 lg:mr-16 md:order-first`
-    : tw`md:ml-12 lg:ml-16 md:order-last`,
+
+const LeftColumn = styled(Column)((props) => [
+  tw`md:w-6/12 lg:pr-12 md:pr-6 flex flex-col justify-center`,
 ]);
 
-const Image = styled.div((props) => [
-  `background-image: url("${props.imageSrc}");`,
-  tw`rounded bg-contain bg-no-repeat bg-center h-full`,
-]);
-const TextContent = tw.div`lg:py-8 text-center md:text-left`;
+const RightColumn = styled(Column)((props) => [tw`md:w-5/12 mt-6 md:mt-0`]); // Redução da margem
 
-const Subheading = tw(SubheadingBase)`text-center md:text-left`;
-const Heading = tw(
-  SectionHeading
-)`mt-4 font-black text-left text-3xl sm:text-4xl lg:text-5xl text-center md:text-left leading-tight`;
-const Description = tw.p`mt-4 text-center md:text-left text-sm md:text-base lg:text-lg font-medium leading-relaxed text-secondary-100`;
+// Adaptação para usar a cor primária definida
+const Heading = tw.h2`text-3xl sm:text-4xl font-bold`;
+const Description = tw.p`mt-3 text-base text-gray-600 max-w-md`; // Reduzindo margem top
 
-const Form = tw.form`mt-8 md:mt-10 text-sm flex flex-col max-w-sm mx-auto md:mx-0`;
-const Input = tw.input`mt-6 first:mt-0 border-b-2 py-3 focus:outline-none font-medium transition duration-300 hocus:border-primary-500`;
-const Textarea = styled(Input).attrs({ as: "textarea" })`
-  ${tw`h-24`}
+const InfoBlock = tw.div`flex items-center mt-5`; // Redução da margem
+
+// Usar as cores da paleta global
+const IconContainer = styled.div`
+  ${tw`flex items-center justify-center p-3 rounded-full`}
+  background-color: var(--color-secondary);
+  color: var(--color-primary-text);
+  svg {
+    ${tw`w-6 h-6`}
+  }
 `;
 
-const SubmitButton = tw(PrimaryButtonBase)`inline-block mt-8`;
+const InfoText = tw.div`ml-4`;
+const InfoTitle = tw.h6`text-lg font-semibold`;
+const InfoValue = tw.p`text-gray-600`;
 
-export default ({
-  subheading = "Contact Us",
-  heading = (
-    <>
-      Feel free to <span tw="text-primary-500">get in touch</span>
-      <wbr /> with us.
-    </>
-  ),
-  description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-  submitButtonText = "Send",
+const Form = tw.form`mt-4 md:mt-6 text-sm flex flex-col`; // Redução da margem
+
+// Ajuste para usar a cor primária para foco
+const Input = styled.input`
+  ${tw`border-2 px-5 py-3 rounded focus:outline-none font-medium transition duration-300 border-gray-300 mb-5`}
+  &:focus {
+    border-color: var(--color-primary);
+  }
+  &:hover {
+    border-color: var(--color-secondary);
+  }
+`;
+
+// Mesmo ajuste para o textarea
+const TextArea = styled.textarea`
+  ${tw`border-2 px-5 py-3 rounded focus:outline-none font-medium h-32 transition duration-300 border-gray-300 mb-5`}
+  &:focus {
+    border-color: var(--color-primary);
+  }
+  &:hover {
+    border-color: var(--color-secondary);
+  }
+`;
+
+const CheckboxContainer = tw.div`flex items-center mb-5`; // Redução da margem
+const Checkbox = styled.input.attrs({ type: "checkbox" })`
+  ${tw`mr-2`}
+  &:checked {
+    accent-color: var(--color-primary);
+  }
+`;
+const CheckboxLabel = tw.label`text-gray-600 cursor-pointer select-none`;
+const PrivacyPolicy = styled.a`
+  color: var(--color-primary);
+  ${tw`font-bold`}
+  &:hover {
+    color: var(--color-gold);
+  }
+`;
+
+// Uso das cores do sistema global para botões
+const SubmitButton = styled.button`
+  ${tw`inline-block px-10 py-3 font-bold rounded transition duration-300`}
+  ${(props) =>
+    props.disabled
+      ? tw`bg-gray-300 text-gray-500 cursor-not-allowed`
+      : css`
+          background-color: var(--color-primary);
+          color: white;
+          &:hover {
+            background-color: var(--color-primary-text);
+          }
+          &:focus {
+            box-shadow: 0 0 0 2px var(--color-secondary);
+          }
+        `}
+`;
+
+const ContactForm = ({
+  heading = "Entre em contato conosco",
+  description = "Estamos disponíveis para responder suas dúvidas e transformar seu projeto em realidade.",
+  submitButtonText = "Enviar mensagem",
   formAction = "#",
-  formMethod = "get",
-  textOnLeft = true,
+  formMethod = "POST",
+  phoneNumber = "(11) 99985-4345", // Telefone atualizado
+  emailAddress = "arq.carlamoraes@gmail.com", // Email atualizado
 }) => {
+  const [agreed, setAgreed] = useState(false);
+
   return (
     <Container>
-      <TwoColumn>
-        <ImageColumn>
-          <Image imageSrc={EmailIllustrationSrc} />
-        </ImageColumn>
-        <TextColumn textOnLeft={textOnLeft}>
-          <TextContent>
-            {subheading && <Subheading>{subheading}</Subheading>}
+      <Content>
+        <TwoColumn>
+          <LeftColumn>
             <Heading>{heading}</Heading>
-            {description && <Description>{description}</Description>}
+            <Description>{description}</Description>
+
+            {/* Bloco de endereço */}
+            <InfoBlock>
+              <IconContainer>
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12,3L2,12h3v8h14v-8h3L12,3z M12,16c-1.1,0-2-0.9-2-2c0-1.1,0.9-2,2-2s2,0.9,2,2C14,15.1,13.1,16,12,16z" />
+                </svg>
+              </IconContainer>
+              <InfoText>
+                <InfoTitle>Nosso Endereço</InfoTitle>
+                <InfoValue>São Paulo, SP - Brasil</InfoValue>
+              </InfoText>
+            </InfoBlock>
+
+            {/* Bloco de telefone */}
+            <InfoBlock>
+              <IconContainer>
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56-.35-.12-.74-.03-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z" />
+                </svg>
+              </IconContainer>
+              <InfoText>
+                <InfoTitle>Telefone</InfoTitle>
+                <InfoValue>{phoneNumber}</InfoValue>
+              </InfoText>
+            </InfoBlock>
+
+            {/* Bloco de email */}
+            <InfoBlock>
+              <IconContainer>
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+                </svg>
+              </IconContainer>
+              <InfoText>
+                <InfoTitle>Email</InfoTitle>
+                <InfoValue>{emailAddress}</InfoValue>
+              </InfoText>
+            </InfoBlock>
+          </LeftColumn>
+
+          <RightColumn>
             <Form action={formAction} method={formMethod}>
-              <Input
-                type="email"
-                name="email"
-                placeholder="Your Email Address"
+              <Input type="text" name="nome" placeholder="Seu Nome" />
+              <Input type="email" name="email" placeholder="Seu Email" />
+              <Input type="text" name="telefone" placeholder="Seu Telefone" />
+              <TextArea
+                name="mensagem"
+                placeholder="Sua Mensagem"
+                defaultValue=""
+                rows={6}
               />
-              <Input type="text" name="name" placeholder="Full Name" />
-              <Input type="text" name="subject" placeholder="Subject" />
-              <Textarea name="message" placeholder="Your Message Here" />
-              <SubmitButton type="submit">{submitButtonText}</SubmitButton>
+              <CheckboxContainer>
+                <Checkbox
+                  id="privacy"
+                  checked={agreed}
+                  onChange={(e) => setAgreed(e.target.checked)}
+                />
+                <CheckboxLabel htmlFor="privacy">
+                  Ao enviar, você concorda com nossa{" "}
+                  <PrivacyPolicy href="#">
+                    política de privacidade
+                  </PrivacyPolicy>
+                  .
+                </CheckboxLabel>
+              </CheckboxContainer>
+              <SubmitButton type="submit" disabled={!agreed}>
+                {submitButtonText}
+              </SubmitButton>
             </Form>
-          </TextContent>
-        </TextColumn>
-      </TwoColumn>
+          </RightColumn>
+        </TwoColumn>
+      </Content>
     </Container>
   );
 };
+
+export default ContactForm;
