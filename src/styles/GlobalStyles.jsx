@@ -6,7 +6,7 @@ const CustomStyles = createGlobalStyle`
   :root {
     --color-primary: #8c9b7a;
     --color-primary-text: #3e4d2c;
-    --color-background: #f9f5ef;
+    --color-background: #fcfaf7;
     --color-gold: #c2b280;
     --color-secondary: #b1c0a8;
   }

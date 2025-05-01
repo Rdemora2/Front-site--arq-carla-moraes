@@ -8,18 +8,7 @@ const AboutUs = lazy(() => import("./pages/AboutUs"));
 const ContactUs = lazy(() => import("./pages/ContactUs"));
 const ThankYouPage = lazy(() => import("./ThankYouPage"));
 
-const LoadingFallback = () => (
-  <div
-    style={{
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      height: "100vh",
-    }}
-  >
-    Carregando...
-  </div>
-);
+const LoadingFallback = () => <div></div>;
 const AppWithProviders = ({ children }) => (
   <StyledComponentsProvider>
     <GlobalStyles />

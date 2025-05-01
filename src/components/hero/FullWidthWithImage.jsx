@@ -20,7 +20,7 @@ const NavLink = tw(NavLinkBase)`
 `;
 
 const Container = tw.div`relative -mx-8 -mt-8`;
-const TwoColumn = tw.div`flex flex-col lg:flex-row bg-gray-100`;
+const TwoColumn = tw.div`flex flex-col lg:flex-row`;
 const LeftColumn = tw.div`ml-8 mr-8 xl:pl-10 py-8`;
 const RightColumn = styled.div`
   background-image: url("/images/main_image.webp");
