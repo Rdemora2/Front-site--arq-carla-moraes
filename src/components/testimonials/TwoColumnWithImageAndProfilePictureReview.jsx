@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, memo, useCallback } from "react";
 import Slider from "react-slick";
 import styled from "styled-components";
 import tw from "twin.macro";
@@ -74,7 +74,7 @@ const DecoratorBlob2 = tw(
   SvgDecoratorBlob2
 )`absolute w-32 bottom-0 right-0 -z-10 text-pink-500 opacity-15 transform translate-x-2/3 translate-y-8`;
 
-export default ({
+const TwoColumnWithImageAndProfilePictureReview = ({
   imageSrc = "https://images.unsplash.com/photo-1588557132645-ff567110cafd?ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&q=80",
   imageRounded = true,
   imageBorder = false,
@@ -96,9 +96,16 @@ export default ({
     },
   ],
 }) => {
-  // useState is used instead of useRef below because we want to re-render when sliderRef becomes available (not null)
   const [imageSliderRef, setImageSliderRef] = useState(null);
   const [textSliderRef, setTextSliderRef] = useState(null);
+
+  const handlePrevClick = useCallback(() => {
+    if (imageSliderRef) imageSliderRef.slickPrev();
+  }, [imageSliderRef]);
+
+  const handleNextClick = useCallback(() => {
+    if (imageSliderRef) imageSliderRef.slickNext();
+  }, [imageSliderRef]);
 
   return (
     <Container>
@@ -120,12 +127,22 @@ export default ({
               >
                 {testimonials.map((testimonial, index) => (
                   <ImageAndControlContainer key={index}>
-                    <Image imageSrc={testimonial.imageSrc} />
+                    <Image
+                      imageSrc={testimonial.imageSrc || imageSrc}
+                      role="img"
+                      aria-label="Imagem ilustrativa do depoimento"
+                    />
                     <ControlContainer>
-                      <ControlButton onClick={imageSliderRef?.slickPrev}>
+                      <ControlButton
+                        onClick={handlePrevClick}
+                        aria-label="Ver depoimento anterior"
+                      >
                         <ChevronLeftIcon />
                       </ControlButton>
-                      <ControlButton onClick={imageSliderRef?.slickNext}>
+                      <ControlButton
+                        onClick={handleNextClick}
+                        aria-label="Ver próximo depoimento"
+                      >
                         <ChevronRightIcon />
                       </ControlButton>
                     </ControlContainer>
@@ -149,15 +166,15 @@ export default ({
                     <TestimonialText key={index}>
                       <QuoteContainer>
                         <Quote>
-                          <QuotesLeft />
+                          <QuotesLeft aria-hidden="true" />
                           {testimonial.quote}
-                          <QuotesRight />
+                          <QuotesRight aria-hidden="true" />
                         </Quote>
                       </QuoteContainer>
                       <CustomerInfo>
                         <CustomerProfilePicture
                           src={testimonial.profileImageSrc}
-                          alt={testimonial.customerName}
+                          alt={`Foto de ${testimonial.customerName}`}
                         />
                         <CustomerTextInfo>
                           <CustomerName>
@@ -176,16 +193,18 @@ export default ({
           </Testimonials>
         </TestimonialsContainer>
       </Content>
-      <DecoratorBlob1 />
-      <DecoratorBlob2 />
+      <DecoratorBlob1 aria-hidden="true" />
+      <DecoratorBlob2 aria-hidden="true" />
     </Container>
   );
 };
 
-const HeadingInfo = ({ subheading, heading, description, ...props }) => (
+const HeadingInfo = memo(({ subheading, heading, description, ...props }) => (
   <div {...props}>
     {subheading ? <Subheading>{subheading}</Subheading> : null}
     <HeadingTitle>{heading}</HeadingTitle>
     <Description>{description}</Description>
   </div>
-);
+));
+
+export default memo(TwoColumnWithImageAndProfilePictureReview);

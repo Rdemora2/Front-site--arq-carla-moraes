@@ -1,27 +1,54 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import AnimationRevealPage from "helpers/AnimationRevealPage.jsx";
-import Hero from "components/hero/FullWidthWithImage.jsx";
-import Features from "components/features/ThreeColSimple.jsx";
-import MainFeature from "components/features/TwoColSingleFeatureWithStats.jsx";
-import SliderCard from "components/cards/ThreeColSlider.jsx";
-import TrendingCard from "components/cards/TwoTrendingPreviewCardsWithImage.jsx";
-import Testimonial from "components/testimonials/TwoColumnWithImageAndProfilePictureReview.jsx";
-import FAQ from "components/faqs/SimpleWithSideImage.jsx";
-import Footer from "components/footers/MiniCenteredFooter.jsx";
-// import SubscribeNewsLetterForm from "components/forms/SimpleSubscribeNewsletter.jsx";
-// import Blog from "components/blogs/PopularAndRecentBlogPosts.jsx";
 
-export default () => (
+// Carregamento imediato apenas dos componentes críticos
+import Hero from "components/hero/FullWidthWithImage.jsx";
+import Footer from "components/footers/MiniCenteredFooter.jsx";
+
+// Lazy loading para componentes abaixo da dobra
+const MainFeature = lazy(() =>
+  import("components/features/TwoColSingleFeatureWithStats.jsx")
+);
+const Features = lazy(() => import("components/features/ThreeColSimple.jsx"));
+const SliderCard = lazy(() => import("components/cards/ThreeColSlider.jsx"));
+const TrendingCard = lazy(() =>
+  import("components/cards/TwoTrendingPreviewCardsWithImage.jsx")
+);
+const Testimonial = lazy(() =>
+  import(
+    "components/testimonials/TwoColumnWithImageAndProfilePictureReview.jsx"
+  )
+);
+const FAQ = lazy(() => import("components/faqs/SimpleWithSideImage.jsx"));
+
+// Componente de carregamento
+const LoadingFallback = () => (
+  <div
+    className="loading-container"
+    style={{
+      minHeight: "300px",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+    }}
+  >
+    <div className="loading-spinner">Carregando...</div>
+  </div>
+);
+
+const Home = () => (
   <AnimationRevealPage>
     <Hero />
-    <MainFeature />
-    <Features />
-    <SliderCard />
-    <TrendingCard />
-    {/* <Blog /> */}
-    <Testimonial textOnLeft={true} />
-    <FAQ />
-    {/* <SubscribeNewsLetterForm /> */}
+    <Suspense fallback={<LoadingFallback />}>
+      <MainFeature />
+      <Features />
+      <SliderCard />
+      <TrendingCard />
+      <Testimonial textOnLeft={true} />
+      <FAQ />
+    </Suspense>
     <Footer />
   </AnimationRevealPage>
 );
+
+export default Home;

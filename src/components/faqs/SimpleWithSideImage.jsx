@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, memo } from "react";
 import { motion } from "framer-motion";
 import tw from "twin.macro";
 import styled from "styled-components";
@@ -40,7 +40,7 @@ const Answer = motion(
   tw.dd`pointer-events-none text-sm sm:text-base leading-relaxed`
 );
 
-export default ({
+const SimpleWithSideImage = ({
   subheading = "Tire suas dúvidas",
   heading = "Perguntas Frequentes",
   description = "Entenda melhor sobre nosso processo de trabalho e como podemos ajudar a transformar seu espaço com um projeto paisagístico exclusivo.",
@@ -84,10 +84,11 @@ export default ({
 }) => {
   const [activeQuestionIndex, setActiveQuestionIndex] = useState(null);
 
-  const toggleQuestion = (questionIndex) => {
-    if (activeQuestionIndex === questionIndex) setActiveQuestionIndex(null);
-    else setActiveQuestionIndex(questionIndex);
-  };
+  const toggleQuestion = useCallback((questionIndex) => {
+    setActiveQuestionIndex((prevIndex) =>
+      prevIndex === questionIndex ? null : questionIndex
+    );
+  }, []);
 
   return (
     <Container>
@@ -103,14 +104,15 @@ export default ({
                   faqs.map((faq, index) => (
                     <FAQ
                       key={index}
-                      onClick={() => {
-                        toggleQuestion(index);
-                      }}
+                      onClick={() => toggleQuestion(index)}
                       className="group"
+                      role="button"
+                      aria-expanded={activeQuestionIndex === index}
+                      aria-controls={`faq-answer-${index}`}
                     >
                       <Question>
                         <QuestionText>{faq.question}</QuestionText>
-                        <QuestionToggleIcon>
+                        <QuestionToggleIcon aria-hidden="true">
                           {activeQuestionIndex === index ? (
                             <MinusIcon />
                           ) : (
@@ -119,6 +121,7 @@ export default ({
                         </QuestionToggleIcon>
                       </Question>
                       <Answer
+                        id={`faq-answer-${index}`}
                         variants={{
                           open: {
                             opacity: 1,
@@ -152,6 +155,8 @@ export default ({
               $imageSrc={imageSrc}
               $imageContain={imageContain}
               $imageShadow={imageShadow}
+              role="img"
+              aria-label="Ilustração para seção de perguntas frequentes"
             />
           </Column>
         </TwoColumn>
@@ -159,3 +164,5 @@ export default ({
     </Container>
   );
 };
+
+export default memo(SimpleWithSideImage);
