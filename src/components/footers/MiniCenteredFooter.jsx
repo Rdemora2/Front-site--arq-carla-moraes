@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
 import { Container as ContainerBase } from "components/misc/Layouts.jsx";
@@ -29,33 +29,51 @@ const SocialLink = styled.a`
 `;
 
 const CopyrightText = tw.p`text-center mt-10 font-medium tracking-wide text-sm text-gray-600`;
-export default () => {
+
+const MiniCenteredFooter = () => {
   return (
     <Container>
       <Content>
         <Row>
           <LogoContainer>
-            <LogoImg src={logo} />
+            <LogoImg src={logo} alt="Logo Carla Moraes Arquitetura" />
             <LogoText>Carla Moraes Arquitetura Paisagística</LogoText>
           </LogoContainer>
           <LinksContainer>
-            <Link href="#">Home</Link>
-            <Link href="#">Sobre</Link>
-            <Link href="#">Projetos</Link>
-            <Link href="#">Blog</Link>
-            <Link href="#">Contato</Link>
+            <Link href="#" aria-label="Ir para página inicial">
+              Home
+            </Link>
+            <Link href="#" aria-label="Ir para página sobre nós">
+              Sobre
+            </Link>
+            <Link href="#" aria-label="Ver nossos projetos">
+              Projetos
+            </Link>
+            <Link href="#" aria-label="Ler nosso blog">
+              Blog
+            </Link>
+            <Link href="#" aria-label="Entre em contato">
+              Contato
+            </Link>
           </LinksContainer>
           <SocialLinksContainer>
-            <SocialLink href="https://facebook.com/carlamoraespaisagismo">
+            <SocialLink
+              href="https://facebook.com/carlamoraespaisagismo"
+              aria-label="Visite nossa página no Facebook"
+            >
               <FacebookIcon />
             </SocialLink>
-            <SocialLink href="https://instagram.com/carlamoraespaisagismo">
-              <TwitterIcon />{" "}
-              {/* Nota: é recomendado trocar esse ícone para um Instagram */}
+            <SocialLink
+              href="https://instagram.com/carlamoraespaisagismo"
+              aria-label="Siga-nos no Instagram"
+            >
+              <TwitterIcon />
             </SocialLink>
-            <SocialLink href="https://linkedin.com/in/carlamoraespaisagismo">
-              <YoutubeIcon />{" "}
-              {/* Nota: é recomendado trocar esse ícone para um LinkedIn */}
+            <SocialLink
+              href="https://linkedin.com/in/carlamoraespaisagismo"
+              aria-label="Conecte-se conosco no LinkedIn"
+            >
+              <YoutubeIcon />
             </SocialLink>
           </SocialLinksContainer>
           <CopyrightText>
@@ -79,3 +97,5 @@ export default () => {
     </Container>
   );
 };
+
+export default memo(MiniCenteredFooter);

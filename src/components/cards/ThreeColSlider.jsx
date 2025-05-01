@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback, memo, useMemo } from "react";
 import Slider from "react-slick";
 import tw from "twin.macro";
 import styled from "styled-components";
@@ -69,7 +69,8 @@ const Text = tw.div`ml-2 text-sm font-semibold text-gray-800`;
 const PrimaryButton = tw(
   PrimaryButtonBase
 )`mt-auto sm:text-lg rounded-none w-full rounded sm:rounded-none sm:rounded-br-4xl py-3 sm:py-6`;
-export default ({
+
+const ThreeColSlider = ({
   heading = <span>Projetos em Destaque</span>,
   subheading = "Nosso Portfólio",
   description = "Conheça alguns dos projetos executados pela Carla Moraes Arquitetura Paisagística em diferentes contextos e necessidades.",
@@ -127,25 +128,57 @@ export default ({
   ],
 }) => {
   const [sliderRef, setSliderRef] = useState(null);
-  const sliderSettings = {
-    arrows: false,
-    slidesToShow: 3,
-    responsive: [
-      {
-        breakpoint: 1280,
-        settings: {
-          slidesToShow: 2,
-        },
-      },
 
-      {
-        breakpoint: 900,
-        settings: {
-          slidesToShow: 1,
+  const sliderSettings = useMemo(
+    () => ({
+      arrows: false,
+      slidesToShow: 3,
+      responsive: [
+        {
+          breakpoint: 1280,
+          settings: {
+            slidesToShow: 2,
+          },
         },
-      },
-    ],
-  };
+        {
+          breakpoint: 900,
+          settings: {
+            slidesToShow: 1,
+          },
+        },
+      ],
+    }),
+    []
+  );
+
+  const handlePrevClick = useCallback(() => {
+    if (sliderRef) sliderRef.slickPrev();
+  }, [sliderRef]);
+
+  const handleNextClick = useCallback(() => {
+    if (sliderRef) sliderRef.slickNext();
+  }, [sliderRef]);
+
+  const updateTabIndex = useCallback(() => {
+    const hiddenSlides = document.querySelectorAll(
+      '.slick-slide[aria-hidden="true"]'
+    );
+    hiddenSlides.forEach((slide) => {
+      const focusableElements = slide.querySelectorAll("a, button, [tabindex]");
+      focusableElements.forEach((el) => {
+        el.setAttribute("tabindex", "-1");
+      });
+    });
+  }, []);
+
+  useEffect(() => {
+    if (document.readyState === "complete") {
+      updateTabIndex();
+    } else {
+      window.addEventListener("load", updateTabIndex);
+      return () => window.removeEventListener("load", updateTabIndex);
+    }
+  }, [updateTabIndex]);
 
   return (
     <Container>
@@ -153,35 +186,50 @@ export default ({
         <HeadingWithControl>
           <Heading>{heading}</Heading>
           <Controls>
-            <PrevButton onClick={sliderRef?.slickPrev}>
+            <PrevButton
+              onClick={handlePrevClick}
+              aria-label="Navegar para projeto anterior"
+            >
               <ChevronLeftIcon />
             </PrevButton>
-            <NextButton onClick={sliderRef?.slickNext}>
+            <NextButton
+              onClick={handleNextClick}
+              aria-label="Navegar para próximo projeto"
+            >
               <ChevronRightIcon />
             </NextButton>
           </Controls>
         </HeadingWithControl>
-        <CardSlider ref={setSliderRef} {...sliderSettings}>
+        <CardSlider
+          ref={setSliderRef}
+          {...sliderSettings}
+          afterChange={updateTabIndex}
+        >
           {cards.map((card, index) => (
             <Card key={index}>
-              <CardImage imageSrc={card.imageSrc} />
+              <CardImage
+                imageSrc={card.imageSrc}
+                role="img"
+                aria-label={`Imagem do projeto ${card.title}`}
+                loading={index > 2 ? "lazy" : "eager"}
+              />
               <TextInfo>
                 <TitleReviewContainer>
                   <Title>{card.title}</Title>
                   <RatingsInfo>
-                    <StarIcon />
+                    <StarIcon aria-hidden="true" />
                     <Rating>{card.rating}</Rating>
                   </RatingsInfo>
                 </TitleReviewContainer>
                 <SecondaryInfoContainer>
                   <IconWithText>
-                    <IconContainer>
+                    <IconContainer aria-hidden="true">
                       <LocationIcon />
                     </IconContainer>
                     <Text>{card.locationText}</Text>
                   </IconWithText>
                   <IconWithText>
-                    <IconContainer>
+                    <IconContainer aria-hidden="true">
                       <PriceIcon />
                     </IconContainer>
                     <Text>{card.pricingText}</Text>
@@ -189,7 +237,11 @@ export default ({
                 </SecondaryInfoContainer>
                 <Description>{card.description}</Description>
               </TextInfo>
-              <PrimaryButton as="a" href={card.url}>
+              <PrimaryButton
+                as="a"
+                href={card.url}
+                aria-label={`Ver mais detalhes sobre o projeto ${card.title}`}
+              >
                 Ver Mais
               </PrimaryButton>
             </Card>
@@ -199,3 +251,5 @@ export default ({
     </Container>
   );
 };
+
+export default memo(ThreeColSlider);
