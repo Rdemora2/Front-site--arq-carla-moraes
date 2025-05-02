@@ -4,11 +4,11 @@ import tw, { GlobalStyles as BaseStyles } from "twin.macro";
 
 const CustomStyles = createGlobalStyle`
   :root {
-    --color-primary: #6b7959; /* Tom mais escuro para maior contraste */
+    --color-primary: #6b7959;
     --color-primary-text: #3e4d2c;
     --color-background: #fcfaf7;
-    --color-gold: #a99960; /* Tom mais escuro para maior contraste */
-    --color-secondary: #91a082; /* Tom mais escuro para maior contraste */
+    --color-gold: #a99960;
+    --color-secondary: #91a082;
   }
 
   body {

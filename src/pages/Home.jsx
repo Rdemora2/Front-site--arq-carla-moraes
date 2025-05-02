@@ -2,7 +2,7 @@ import React, { lazy, Suspense } from "react";
 import AnimationRevealPage from "helpers/AnimationRevealPage.jsx";
 
 import Hero from "components/hero/FullWidthWithImage.jsx";
-import Footer from "components/footers/MiniCenteredFooter.jsx";
+import Footer from "components/footers/FiveColumnWithInputForm.jsx";
 
 const PriorityComponents = lazy(() => {
   const MainFeaturePromise = import(
