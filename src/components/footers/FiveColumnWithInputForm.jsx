@@ -194,7 +194,10 @@ const Footer = () => {
         <Divider />
         <ThreeColRow>
           <LogoContainer>
-            <LogoImg src={LogoImage} />
+            <LogoImg
+              src={LogoImage}
+              alt="Logo Carla Moraes Arquitetura Paisagística"
+            />
             <LogoText>Carla Moraes Arquitetura Paisagística</LogoText>
           </LogoContainer>
           <CopyrightContainer>
