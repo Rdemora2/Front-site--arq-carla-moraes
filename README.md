@@ -194,21 +194,6 @@ src/
 └── backup/             # Componentes de backup
 ```
 
-### 🌍 Configuração de Ambientes
-
-O projeto utiliza variáveis de ambiente para diferentes configurações:
-
-```env
-# Desenvolvimento
-NODE_ENV=development
-VITE_ENABLE_ANALYZER=true
-
-# URLs
-VITE_PROD_URL=https://arqcarlamoraes.com.br/
-VITE_STAGING_URL=https://front-site-arq-carla-moraes.vercel.app/
-VITE_DEV_URL=https://front-site-arq-carla-moraes-git-dev-roberto-moraes-projects.vercel.app/
-```
-
 ## 🎨 Features do Site
 
 ### 📱 Design Responsivo

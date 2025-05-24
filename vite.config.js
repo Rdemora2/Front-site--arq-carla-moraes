@@ -34,13 +34,13 @@ export default defineConfig({
         titleProp: true,
       },
       include: "**/*.svg",
-    }),
-
-    ...(process.env.NODE_ENV === "development"
+    }),    ...(process.env.NODE_ENV === "development" && process.env.VITE_ENABLE_ANALYZER === "true"
       ? [
           visualizer({
             filename: "stats.html",
             open: true,
+            gzipSize: true,
+            brotliSize: true,
           }),
         ]
       : []),
@@ -58,9 +58,8 @@ export default defineConfig({
     },
     extensions: [".jsx", ".js", ".tsx", ".ts", ".json"],
   },
-
   build: {
-    sourcemap: process.env.NODE_ENV !== "production",
+    sourcemap: process.env.VITE_ENABLE_SOURCEMAP === "true",
     chunkSizeWarningLimit: 1000,
     rollupOptions: {
       output: {

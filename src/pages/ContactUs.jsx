@@ -1,5 +1,6 @@
 import React from "react";
 import AnimationRevealPage from "helpers/AnimationRevealPage.jsx";
+import MetaTags from "components/misc/MetaTags.jsx";
 import tw from "twin.macro";
 import styled from "styled-components";
 
@@ -27,6 +28,11 @@ const StyledContactUsForm = styled(ContactUsForm)`
 export default () => {
   return (
     <AnimationRevealPage>
+      <MetaTags 
+        title="Contato - Carla Moraes Arquitetura Paisagística"
+        description="Entre em contato conosco para criar seu projeto paisagístico único. Desenvolvemos jardins que transformam espaços e vidas."
+        url="/contato"
+      />
       <Header />
       <StyledContactUsForm formAction="#" formMethod="get" />
       <Footer />

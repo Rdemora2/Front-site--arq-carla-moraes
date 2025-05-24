@@ -1,5 +1,7 @@
 import React from "react";
 import AnimationRevealPage from "helpers/AnimationRevealPage.jsx";
+import MetaTags from "components/misc/MetaTags.jsx";
+
 import tw from "twin.macro";
 import styled from "styled-components";
 
@@ -41,6 +43,11 @@ const StyledFeatures = styled(Features)`
 export default () => {
   return (
     <AnimationRevealPage>
+      <MetaTags
+        title="Sobre Nós - Carla Moraes Arquitetura Paisagística"
+        description="Conheça a história e valores da Carla Moraes Arquitetura Paisagística. Há mais de 25 anos transformando espaços com projetos únicos e sustentáveis."
+        url="/sobre"
+      />
       <Header />
       <StyledMainFeature
         subheading={
