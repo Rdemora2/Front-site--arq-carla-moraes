@@ -23,10 +23,10 @@ const Container = tw.div`relative -mx-8 -mt-8 min-h-screen`;
 const TwoColumn = tw.div`flex flex-col lg:flex-row min-h-screen`;
 const LeftColumn = tw.div`ml-8 mr-8 xl:pl-10 py-8 flex flex-col justify-center`;
 const RightColumn = styled.div`
-  ${tw`bg-cover bg-center xl:ml-24 lg:w-1/2 lg:flex-1 min-h-screen lg:min-h-full`}
+  ${tw`bg-cover bg-center xl:ml-20 lg:w-1/2 lg:flex-1 min-h-screen lg:min-h-full`}
 
   .hero-image {
-    ${tw`w-full h-full object-cover min-h-screen lg:min-h-full`}
+    ${tw`w-full h-full min-h-screen lg:min-h-full`}
   }
 `;
 
