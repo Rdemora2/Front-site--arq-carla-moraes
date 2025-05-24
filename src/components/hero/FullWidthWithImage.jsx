@@ -23,7 +23,11 @@ const Container = tw.div`relative -mx-8 -mt-8`;
 const TwoColumn = tw.div`flex flex-col lg:flex-row`;
 const LeftColumn = tw.div`ml-8 mr-8 xl:pl-10 py-8`;
 const RightColumn = styled.div`
-  ${tw`bg-green-500 bg-cover bg-center xl:ml-24 h-96 lg:h-auto lg:w-1/2 lg:flex-1`}
+  ${tw`bg-cover bg-center xl:ml-24 h-96 lg:h-auto lg:w-1/2 lg:flex-1`}
+  
+  .hero-image {
+    ${tw`w-full h-full object-cover`}
+  }
 `;
 
 const Content = tw.div`mt-24 lg:mt-24 lg:mb-24 flex flex-col sm:items-center lg:items-stretch`;
@@ -86,8 +90,8 @@ export default ({
         </LeftColumn>
         <RightColumn>
           <img
-            src="/images/projects/Jardim-frances/Frances-1.webp"
-            alt="Projeto arquitetônico paisagístico"
+            src="/images/components/hero/Frances-hero.webp"
+            alt="Projeto arquitetônico paisagístico de um jardim francês"
             fetchpriority="high"
             width="1200"
             height="800"
