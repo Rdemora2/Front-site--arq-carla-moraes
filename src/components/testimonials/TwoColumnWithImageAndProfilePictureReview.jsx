@@ -8,14 +8,14 @@ import {
   Subheading as SubheadingBase,
 } from "../misc/Headings.jsx";
 import { PrimaryButton } from "../misc/Buttons.jsx";
-import QuotesLeftIcon from "../../images/quotes-l.svg";
-import QuotesRightIcon from "../../images/quotes-r.svg";
+import QuotesLeftIcon from "../../assets/icons/svg/quotes-l.svg";
+import QuotesRightIcon from "../../assets/icons/svg/quotes-r.svg";
 import {
   ChevronLeft as ChevronLeftIcon,
   ChevronRight as ChevronRightIcon,
 } from "react-feather";
-import SvgDecoratorBlob1 from "../../images/svg-decorator-blob-4.svg";
-import SvgDecoratorBlob2 from "../../images/svg-decorator-blob-5.svg";
+import SvgDecoratorBlob1 from "../../assets/icons/svg/svg-decorator-blob-4.svg";
+import SvgDecoratorBlob2 from "../../assets/icons/svg/svg-decorator-blob-5.svg";
 
 import "slick-carousel/slick/slick.css";
 

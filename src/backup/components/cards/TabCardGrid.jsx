@@ -5,9 +5,9 @@ import styled from "styled-components";
 import { Container, ContentWithPaddingXl } from "components/misc/Layouts.jsx";
 import { SectionHeading } from "components/misc/Headings.jsx";
 import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons.jsx";
-import StarIcon from "images/star-icon.svg";
-import SvgDecoratorBlob1 from "images/svg-decorator-blob-5.svg";
-import SvgDecoratorBlob2 from "images/svg-decorator-blob-7.svg";
+import StarIcon from "../assets/icons/svg/star-icon.svg";
+import SvgDecoratorBlob1 from "../assets/icons/svg/svg-decorator-blob-5.svg";
+import SvgDecoratorBlob2 from "../assets/icons/svg/svg-decorator-blob-7.svg";
 
 const HeaderRow = tw.div`flex justify-between items-center flex-col xl:flex-row`;
 const Header = tw(SectionHeading)``;

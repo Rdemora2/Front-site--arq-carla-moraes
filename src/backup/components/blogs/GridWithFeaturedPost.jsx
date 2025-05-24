@@ -8,7 +8,7 @@ import {
   Subheading as SubheadingBase,
 } from "components/misc/Headings";
 import { SectionDescription } from "components/misc/Typography";
-import SvgDotPatternIcon from "images/dot-pattern.svg";
+import SvgDotPatternIcon from "../assets/icons/svg/dot-pattern.svg";
 
 const HeadingContainer = tw.div`text-center`;
 const Subheading = tw(SubheadingBase)`mb-4`;

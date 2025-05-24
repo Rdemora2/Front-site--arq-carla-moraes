@@ -9,9 +9,9 @@ import ReactModalAdapter from "../../helpers/ReactModalAdapter.jsx";
 import ResponsiveVideoEmbed from "../../helpers/ResponsiveVideoEmbed.jsx";
 
 import { PlayCircle as PlayIcon, X as CloseIcon } from "react-feather";
-import SvgDecoratorBlob1 from "../../images/svg-decorator-blob-1.svg";
-import SvgDecoratorBlob2 from "../../images/dot-pattern.svg";
-import DesignIllustration from "../../images/design-illustration.svg";
+import SvgDecoratorBlob1 from "../assets/icons/svg/svg-decorator-blob-1.svg";
+import SvgDecoratorBlob2 from "../assets/icons/svg/dot-pattern.svg";
+import DesignIllustration from "../assets/icons/svg/design-illustration.svg";
 
 const Container = tw.div`relative`;
 const TwoColumn = tw.div`flex flex-col lg:flex-row md:items-center max-w-screen-xl mx-auto py-20 md:py-24`;

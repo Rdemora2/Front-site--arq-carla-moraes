@@ -10,7 +10,7 @@ import {
   Briefcase as BriefcaseIcon,
   DollarSign as MoneyIcon,
 } from "react-feather";
-import TeamIllustrationSrc from "images/team-illustration-2.svg";
+import TeamIllustrationSrc from "../assets/icons/svg/team-illustration-2.svg";
 
 const Container = tw.div`relative`;
 const TwoColumn = tw.div`flex flex-col md:flex-row justify-between max-w-screen-xl mx-auto py-20 md:py-24`;

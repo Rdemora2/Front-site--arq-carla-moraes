@@ -4,12 +4,12 @@ import { Container as ContainerBase } from "components/misc/Layouts";
 import tw from "twin.macro";
 import styled from "styled-components";
 
-import illustration from "images/signup-illustration.svg";
-import googleIconImageSrc from "images/google-icon.png";
-import twitterIconImageSrc from "images/twitter-icon.png";
+import illustration from "../assets/icons/svg/signup-illustration.svg";
+import googleIconImageSrc from "../assets/icons/webp/google-icon.webp";
+import twitterIconImageSrc from "../assets/icons/webp/twitter-icon.webp";
 import { UserPlus as SignUpIcon } from "react-feather";
 
-const logo = "/logo/logo_full.webp";
+const logo = "/images/logo/logo_full.webp";
 
 const Container = tw(
   ContainerBase

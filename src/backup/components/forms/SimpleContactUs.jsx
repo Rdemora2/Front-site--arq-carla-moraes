@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import tw from "twin.macro";
 
-import SvgDotPatternIcon from "../../images/dot-pattern.svg";
+import SvgDotPatternIcon from "../assets/icons/svg/dot-pattern.svg";
 
 const Container = tw.div`relative`;
 const Content = tw.div`max-w-screen-xl mx-auto py-20 lg:py-24`;

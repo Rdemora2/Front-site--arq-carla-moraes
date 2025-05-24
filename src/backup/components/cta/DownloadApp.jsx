@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import tw from "twin.macro";
 import mockupImageSrc from "images/app-mockup.png";
-import SvgDecoratorBlob1 from "images/svg-decorator-blob-9.svg";
+import SvgDecoratorBlob1 from "../assets/icons/svg/svg-decorator-blob-9.svg";
 import {
   ContentWithPaddingXl,
   Container as ContainerBase,
@@ -11,8 +11,8 @@ import {
   SectionHeading,
   Subheading as SubheadingBase,
 } from "components/misc/Headings.jsx";
-import appleIconImageSrc from "images/apple-icon.png";
-import googlePlayIconImageSrc from "images/google-play-icon.png";
+import appleIconImageSrc from "../assets/icons/webp/apple-icon.webp";
+import googlePlayIconImageSrc from "../assets/icons/webp/google-play-icon.webp";
 
 const Container = tw(ContainerBase)`bg-gray-900 -mx-8`;
 const Content = tw(ContentWithPaddingXl)``;

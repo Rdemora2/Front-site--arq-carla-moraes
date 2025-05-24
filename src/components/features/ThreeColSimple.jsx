@@ -7,11 +7,11 @@ import {
 } from "components/misc/Headings.jsx";
 import { SectionDescription } from "components/misc/Typography.jsx";
 import { Container, ContentWithPaddingXl } from "components/misc/Layouts.jsx";
-import ArrowRightIcon from "images/arrow-right-icon.svg";
-import SupportIconImage from "images/support-icon.svg";
-import ShieldIconImage from "images/shield-icon.svg";
-import CustomizeIconImage from "images/customize-icon.svg";
-import SvgDecoratorBlob3 from "images/svg-decorator-blob-3.svg";
+import ArrowRightIcon from "../../assets/icons/svg/arrow-right-icon.svg";
+import SupportIconImage from "../../assets/icons/svg/support-icon.svg";
+import ShieldIconImage from "../../assets/icons/svg/shield-icon.svg";
+import CustomizeIconImage from "../../assets/icons/svg/customize-icon.svg";
+import SvgDecoratorBlob3 from "../../assets/icons/svg/svg-decorator-blob-3.svg";
 
 const Heading = tw(SectionHeading)``;
 const Subheading = tw(SubheadingBase)`text-center mb-3`;

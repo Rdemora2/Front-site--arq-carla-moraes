@@ -59,7 +59,7 @@ export default () => {
     {
       postImageSrc:
         "https://images.unsplash.com/photo-1567948260357-4e6368dda6cc?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=768&q=60",
-      authorImageSrc: "/logo/logo_reduced.webp",
+      authorImageSrc: "/images/logo/logo_reduced.webp",
       title: "Espécies Nativas: Valorizando Nossa Biodiversidade",
       description:
         "Descubra como a utilização de plantas nativas em projetos paisagísticos não apenas valoriza nossa rica biodiversidade, mas também reduz a manutenção e promove maior sustentabilidade nos jardins.",
@@ -70,7 +70,7 @@ export default () => {
     {
       postImageSrc:
         "https://images.unsplash.com/photo-1546500840-ae38253aba9b?ixlib=rb-1.2.1&auto=format&fit=crop&w=640&q=80",
-      authorImageSrc: "/logo/logo_reduced.webp",
+      authorImageSrc: "/images/logo/logo_reduced.webp",
       title: "Jardins Verticais: Soluções para Espaços Urbanos",
       description:
         "Transforme ambientes compactos com jardins verticais que trazem vida e frescor para residências e escritórios. Conheça as técnicas, espécies adequadas e sistemas de manutenção para estas soluções verdes.",

@@ -9,8 +9,8 @@ import {
 import { SectionDescription } from "components/misc/Typography.jsx";
 import { Container, ContentWithPaddingXl } from "components/misc/Layouts.jsx";
 import { ChevronDown as ChevronDownIcon } from "react-feather";
-import SvgDecoratorBlob1 from "images/svg-decorator-blob-7.svg";
-import SvgDecoratorBlob2 from "images/svg-decorator-blob-8.svg";
+import SvgDecoratorBlob1 from "../assets/icons/svg/svg-decorator-blob-7.svg";
+import SvgDecoratorBlob2 from "../assets/icons/svg/svg-decorator-blob-8.svg";
 
 const Subheading = tw(SubheadingBase)`mb-4 text-center`;
 const Heading = tw(SectionHeading)`w-full`;

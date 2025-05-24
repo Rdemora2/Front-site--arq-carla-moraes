@@ -8,9 +8,9 @@ import Footer from "components/footers/FiveColumnWithInputForm.jsx";
 import MainFeature1 from "components/features/TwoColWithButton.jsx";
 import Features from "components/features/ThreeColSimple.jsx";
 
-import SupportIconImage from "images/support-icon.svg";
-import ShieldIconImage from "images/shield-icon.svg";
-import CustomerLoveIconImage from "images/simple-icon.svg";
+import SupportIconImage from "../assets/icons/svg/support-icon.svg";
+import ShieldIconImage from "../assets/icons/svg/shield-icon.svg";
+import CustomerLoveIconImage from "../assets/icons/svg/simple-icon.svg";
 
 const Subheading = styled.span`
   ${tw`uppercase tracking-wider text-sm`}

@@ -8,9 +8,9 @@ import {
   Subheading as SubheadingBase,
 } from "components/misc/Headings.jsx";
 import { SectionDescription } from "components/misc/Typography.jsx";
-import QuoteIconBase from "images/quotes-l.svg";
-import ArrowLeftIcon from "images/arrow-left-3-icon.svg";
-import ArrowRightIcon from "images/arrow-right-3-icon.svg";
+import QuoteIconBase from "../assets/icons/svg/quotes-l.svg";
+import ArrowLeftIcon from "../assets/icons/svg/arrow-left-3-icon.svg";
+import ArrowRightIcon from "../assets/icons/svg/arrow-right-3-icon.svg";
 
 import "slick-carousel/slick/slick.css";
 

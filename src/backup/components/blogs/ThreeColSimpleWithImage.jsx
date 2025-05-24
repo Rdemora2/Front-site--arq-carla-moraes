@@ -2,8 +2,8 @@ import React from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
 import { SectionHeading as HeadingTitle } from "../misc/Headings.jsx";
-import SvgDecoratorBlob1 from "../../images/svg-decorator-blob-1.svg";
-import SvgDecoratorBlob2 from "../../images/svg-decorator-blob-3.svg";
+import SvgDecoratorBlob1 from "../assets/icons/svg/svg-decorator-blob-1.svg";
+import SvgDecoratorBlob2 from "../assets/icons/svg/svg-decorator-blob-3.svg";
 
 const Container = tw.div`relative`;
 const Content = tw.div`max-w-screen-xl mx-auto py-20 lg:py-24`;

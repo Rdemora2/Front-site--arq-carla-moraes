@@ -6,8 +6,8 @@ import {
   Subheading as SubheadingBase,
 } from "components/misc/Headings.jsx";
 import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons.jsx";
-import TeamIllustrationSrc from "images/team-illustration-2.svg";
-import SvgDotPattern from "images/dot-pattern.svg";
+import TeamIllustrationSrc from "../assets/icons/svg/team-illustration-2.svg";
+import SvgDotPattern from "../assets/icons/svg/dot-pattern.svg";
 import {
   Briefcase as BriefcaseIcon,
   DollarSign as MoneyIcon,

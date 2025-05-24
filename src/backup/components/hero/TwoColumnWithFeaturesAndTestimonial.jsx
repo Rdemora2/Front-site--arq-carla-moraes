@@ -15,8 +15,8 @@ import {
   ContentWithVerticalPadding,
 } from "components/misc/Layouts.jsx";
 import { CheckCircle as CheckboxIcon } from "react-feather";
-import QuotesLeftIconBase from "images/quotes-l.svg";
-import SvgDecoratorBlob1 from "images/dot-pattern.svg";
+import QuotesLeftIconBase from "../assets/icons/svg/quotes-l.svg";
+import SvgDecoratorBlob1 from "../assets/icons/svg/dot-pattern.svg";
 
 const Header = tw(HeaderBase)`max-w-none`;
 const Row = tw.div`flex flex-col lg:flex-row justify-between items-center lg:pt-16 max-w-screen-2xl mx-auto sm:px-8`;

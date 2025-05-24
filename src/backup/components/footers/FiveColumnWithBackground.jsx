@@ -2,12 +2,12 @@ import React from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
 
-import FacebookIcon from "images/facebook-icon.svg";
-import TwitterIcon from "images/twitter-icon.svg";
-import YoutubeIcon from "images/youtube-icon.svg";
-import SvgDecoratorBlob1 from "images/svg-decorator-blob-9.svg";
+import FacebookIcon from "../assets/icons/svg/facebook-icon.svg";
+import TwitterIcon from "../assets/icons/svg/twitter-icon.svg";
+import YoutubeIcon from "../assets/icons/svg/youtube-icon.svg";
+import SvgDecoratorBlob1 from "../assets/icons/svg/svg-decorator-blob-9.svg";
 
-const LogoImage = "/logo/logo_reduced.webp";
+const LogoImage = "/images/logo/logo_reduced.webp";
 
 const Container = tw.div`relative bg-primary-500 text-gray-100 -mb-8 -mx-8 px-8 py-20 lg:py-24`;
 const Content = tw.div`max-w-screen-xl mx-auto relative z-10`;

@@ -9,8 +9,8 @@ import {
 import { SectionDescription } from "components/misc/Typography.jsx";
 import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons.jsx";
 import { Container, ContentWithPaddingXl } from "components/misc/Layouts.jsx";
-import SvgDecoratorBlob1 from "images/svg-decorator-blob-6.svg";
-import SvgDecoratorBlob2 from "images/svg-decorator-blob-7.svg";
+import SvgDecoratorBlob1 from "../assets/icons/svg/svg-decorator-blob-6.svg";
+import SvgDecoratorBlob2 from "../assets/icons/svg/svg-decorator-blob-7.svg";
 
 const HeaderContainer = tw.div`w-full flex flex-col items-center`;
 const Subheading = tw(SubheadingBase)`mb-4`;

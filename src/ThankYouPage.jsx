@@ -7,7 +7,7 @@ import { LogoLink } from "components/navbar/navbar.jsx";
 import { SectionHeading as HeadingBase } from "components/misc/Headings";
 import { SectionDescription as DescriptionBase } from "components/misc/Typography";
 
-const logo = "/logo/logo_full.webp";
+const logo = "/images/logo/logo_full.webp";
 
 /* Hero */
 const Row = tw.div`flex`;

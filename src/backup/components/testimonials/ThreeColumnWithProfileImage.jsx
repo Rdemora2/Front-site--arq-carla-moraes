@@ -7,8 +7,8 @@ import {
   SectionHeading as Heading,
   Subheading as SubheadingBase,
 } from "components/misc/Headings.jsx";
-import SvgDecoratorBlob1 from "images/svg-decorator-blob-7.svg";
-import SvgDecoratorBlob2 from "images/svg-decorator-blob-8.svg";
+import SvgDecoratorBlob1 from "../assets/icons/svg/svg-decorator-blob-7.svg";
+import SvgDecoratorBlob2 from "../assets/icons/svg/svg-decorator-blob-8.svg";
 
 const Subheading = tw(SubheadingBase)`text-center`;
 const Testimonials = tw.div`flex flex-col lg:flex-row items-center lg:items-stretch`;

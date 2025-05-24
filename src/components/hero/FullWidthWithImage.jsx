@@ -86,7 +86,7 @@ export default ({
         </LeftColumn>
         <RightColumn>
           <img
-            src="/images/main_image.webp"
+            src="/images/projects/Jardim-frances/Frances-1.webp"
             alt="Projeto arquitetônico paisagístico"
             fetchpriority="high"
             width="1200"
