@@ -45,7 +45,6 @@ export default defineConfig({
         ]
       : []),
   ],
-
   resolve: {
     alias: {
       backup: path.resolve(__dirname, "./src/backup"),
@@ -54,6 +53,7 @@ export default defineConfig({
       pages: path.resolve(__dirname, "./src/pages"),
       styles: path.resolve(__dirname, "./src/styles"),
       helpers: path.resolve(__dirname, "./src/helpers"),
+      hooks: path.resolve(__dirname, "./src/hooks"),
       constants: path.resolve(__dirname, "./src/constants"),
     },
     extensions: [".jsx", ".js", ".tsx", ".ts", ".json"],
