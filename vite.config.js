@@ -34,7 +34,9 @@ export default defineConfig({
         titleProp: true,
       },
       include: "**/*.svg",
-    }),    ...(process.env.NODE_ENV === "development" && process.env.VITE_ENABLE_ANALYZER === "true"
+    }),
+    ...(process.env.NODE_ENV === "development" &&
+    process.env.VITE_ENABLE_ANALYZER === "true"
       ? [
           visualizer({
             filename: "stats.html",

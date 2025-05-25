@@ -178,50 +178,77 @@ npm run preview      # Preview do build de produção
 
 ```
 src/
-├── components/          # Componentes reutilizáveis
-│   ├── cards/          # Componentes de cartões
-│   ├── faqs/           # Componentes de FAQ
-│   ├── features/       # Seções de features
-│   ├── footers/        # Rodapés
-│   ├── forms/          # Formulários
-│   ├── hero/           # Seções hero
-│   ├── navbar/         # Navegação
-│   └── testimonials/   # Depoimentos
-├── pages/              # Páginas da aplicação
-├── helpers/            # Utilitários e helpers
-├── styles/             # Configurações de estilo
-├── assets/             # Recursos estáticos
-└── backup/             # Componentes de backup
+├── components/             # Componentes reutilizáveis
+│   ├── cards/             # Componentes de cartões e sliders
+│   ├── errors/            # Componentes de tratamento de erro
+│   ├── faqs/              # Componentes de FAQ
+│   ├── features/          # Seções de features e destaques
+│   ├── footers/           # Componentes de rodapé
+│   ├── forms/             # Formulários de contato
+│   ├── hero/              # Seções hero/banner
+│   ├── misc/              # Utilitários diversos (MetaTags, Analytics)
+│   ├── navbar/            # Componentes de navegação
+│   └── testimonials/      # Seções de depoimentos
+├── pages/                 # Páginas da aplicação
+│   ├── Home.jsx           # Página inicial
+│   ├── AboutUs.jsx        # Sobre nós
+│   ├── ContactUs.jsx      # Contato
+│   ├── BlogIndex.jsx      # Blog
+│   └── ...                # Outras páginas
+├── helpers/               # Utilitários e helpers
+│   ├── AnimationRevealPage.jsx  # Animações de página
+│   ├── ImageOptimizer.jsx       # Otimização de imagens
+│   ├── useAnimatedNavToggler.jsx # Hook de navegação
+│   └── ...                      # Outros helpers
+├── hooks/                 # Custom React hooks
+├── config/                # Configurações de ambiente
+├── styles/                # Configurações de estilo global
+├── assets/                # Recursos estáticos (ícones, imagens)
+└── backup/                # Componentes de backup para referência
 ```
 
 ## 🎨 Features do Site
 
-### 📱 Design Responsivo
+### 📱 Design Responsivo ✅
 
-- Layout adaptável para desktop, tablet e mobile
-- Componentes otimizados para diferentes tamanhos de tela
-- Imagens responsivas com lazy loading
+- Layout adaptável para desktop, tablet e mobile usando Tailwind CSS
+- Componentes otimizados para diferentes tamanhos de tela (breakpoints configurados)
+- Imagens responsivas com lazy loading via `ImageOptimizer.jsx`
 
-### 🚀 Performance
+### 🚀 Performance ✅
 
-- **Lighthouse Score**: 95+ em todas as métricas
-- **Code Splitting** automático por rota
-- **Lazy Loading** de componentes e imagens
-- **Bundle otimizado** com tree-shaking
+- **Code Splitting** implementado com React.lazy() e Suspense
+- **Lazy Loading** de componentes e imagens (react-intersection-observer)
+- **Bundle otimizado** com tree-shaking e configuração Vite
+- **Manual Chunks** configurados para otimização de carregamento
 
-### 🔍 SEO Otimizado
+### 🔍 SEO Otimizado ✅
 
-- Meta tags estruturadas
-- Open Graph para redes sociais
-- Sitemap automático
-- URLs amigáveis
+- Meta tags estruturadas via componente `MetaTags.jsx`
+- Open Graph e Twitter Cards configurados no `index.html`
+- URLs canônicas implementadas
+- **Robots.txt** configurado para indexação completa
 
-### ♿ Acessibilidade
+### ♿ Acessibilidade ✅
 
-- Componentes acessíveis (ARIA)
-- Navegação por teclado
-- Alto contraste
-- Textos alternativos em imagens
+- Componentes com `aria-label`, `aria-expanded` e `aria-hidden`
+- Navegação por teclado implementada
+- Textos alternativos em imagens (`alt` tags)
+- Contraste adequado através do design system Tailwind
+
+### 🌐 PWA Ready ✅
+
+- **Manifest.json** configurado com ícones e tema
+- Service Worker pronto para implementação
+- Ícones de múltiplos tamanhos (16x16 a 512x512)
+- Meta tags para dispositivos móveis
+
+### 🔧 Melhorias à serem implementadas
+
+- **Sitemap.xml**: Não implementado (mencionado como "automático" mas não encontrado)
+- **Lighthouse Score**: Precisa ser validado (mencionado como "95+" mas não verificado)
+- **Service Worker**: Manifest existe mas SW não está ativo
+- **Estruturação Schema.org**: Poderia ser implementada para melhor SEO
 
 ## 👨‍💻 Desenvolvedor
 
