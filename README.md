@@ -25,36 +25,36 @@ Este é o site institucional da **Carla Moraes Arquitetura Paisagística**, uma 
 
 ### Core Technologies
 
-- **React 18.2.0** - Biblioteca JavaScript para interfaces de usuário
-- **Vite** - Ferramenta de build rápida e moderna
-- **JavaScript (JSX)** - Linguagem de programação principal
+- **React 18.2.0**
+- **Vite**
+- **JavaScript (JSX)**
 
 ### Styling & UI
 
-- **Styled Components 6.1.8** - CSS-in-JS para estilização componetizada
-- **Tailwind CSS 3.4.1** - Framework CSS utilitário
-- **Twin.macro 3.4.1** - Integração entre Styled Components e Tailwind
-- **Framer Motion 10.16.4** - Biblioteca de animações
+- **Styled Components 6.1.8**
+- **Tailwind CSS 3.4.1**
+- **Twin.macro 3.4.1**
+- **Framer Motion 10.16.4**
 
 ### Navigation & UX
 
-- **React Router DOM 6.22.1** - Roteamento SPA
-- **React Anchor Link Smooth Scroll** - Navegação suave entre seções
-- **React Modal 3.16.1** - Modais acessíveis
-- **React Slick 0.29.0** - Carrossel de imagens
+- **React Router DOM 6.22.1**
+- **React Anchor Link Smooth Scroll**
+- **React Modal 3.16.1**
+- **React Slick 0.29.0**
 
 ### Developer Experience
 
-- **Rollup Plugin Visualizer** - Análise de bundle
-- **SVGR** - Conversão de SVG em componentes React
-- **Babel Macros** - Transformações de código em build time
+- **Rollup Plugin Visualizer**
+- **SVGR**
+- **Babel Macros**
 
 ### Performance & SEO
 
-- **Lazy Loading** - Carregamento otimizado de componentes
-- **Code Splitting** - Divisão automática do código
-- **Image Optimization** - Otimização de imagens em WebP
-- **PWA Ready** - Preparado para Progressive Web App
+- **Lazy Loading**
+- **Code Splitting**
+- **Image Optimization**
+- **PWA Ready**
 
 ## 🏗️ Hospedagem
 
@@ -223,14 +223,6 @@ src/
 - Alto contraste
 - Textos alternativos em imagens
 
-## 🤝 Contribuição
-
-1. **Fork** o projeto
-2. Crie uma **branch** para sua feature (`git checkout -b feature/AmazingFeature`)
-3. **Commit** suas mudanças (`git commit -m 'Add some AmazingFeature'`)
-4. **Push** para a branch (`git push origin feature/AmazingFeature`)
-5. Abra um **Pull Request**
-
 ## 👨‍💻 Desenvolvedor
 
 **Roberto Moraes**
@@ -238,17 +230,6 @@ src/
 - 🌐 **GitHub**: [@Rdemora2](https://github.com/Rdemora2)
 - 💼 **LinkedIn**: [Roberto Moraes Zarzur](https://www.linkedin.com/in/robertomoraeszarzur/)
 
-**Desenvolvido por:**
-
-- 🏢 **Tivix Technologies**: [www.tivix.com.br](https://www.tivix.com.br/)
-
 ## 📄 Licença
 
 Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-
----
-
-<div align="center">
-  <p>Feito com ❤️ por <a href="https://www.tivix.com.br/">Tivix Technologies</a></p>
-  <p><em>Transformando ideias em experiências digitais excepcionais</em></p>
-</div>
