@@ -9,10 +9,10 @@ import {
   Subheading as SubheadingBase,
 } from "components/misc/Headings.jsx";
 import { Container, ContentWithPaddingXl } from "components/misc/Layouts.jsx";
-import loveIllustrationImageSrc from "images/love-illustration.svg";
-import StarIconBase from "images/star-icon.svg";
-import ArrowLeftIcon from "images/arrow-left-3-icon.svg";
-import ArrowRightIcon from "images/arrow-right-3-icon.svg";
+import loveIllustrationImageSrc from "../assets/icons/svg/love-illustration.svg";
+import StarIconBase from "../assets/icons/svg/star-icon.svg";
+import ArrowLeftIcon from "../assets/icons/svg/arrow-left-3-icon.svg";
+import ArrowRightIcon from "../assets/icons/svg/arrow-right-3-icon.svg";
 
 const Row = tw.div`flex flex-col md:flex-row justify-between items-center`;
 const Column = tw.div`w-full max-w-md mx-auto md:max-w-none md:mx-0`;

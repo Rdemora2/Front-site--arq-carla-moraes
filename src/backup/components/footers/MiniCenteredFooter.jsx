@@ -2,11 +2,11 @@ import React, { memo } from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
 import { Container as ContainerBase } from "components/misc/Layouts.jsx";
-import FacebookIcon from "../../images/facebook-icon.svg";
-import TwitterIcon from "../../images/twitter-icon.svg";
-import YoutubeIcon from "../../images/youtube-icon.svg";
+import FacebookIcon from "../assets/icons/svg/facebook-icon.svg";
+import TwitterIcon from "../assets/icons/svg/twitter-icon.svg";
+import YoutubeIcon from "../assets/icons/svg/youtube-icon.svg";
 
-const logo = "/logo/logo_reduced.webp";
+const logo = "/images/logo/logo_reduced.webp";
 
 const Container = tw(ContainerBase)`bg-gray-900 text-gray-100 -mx-8 -mb-8`;
 const Content = tw.div`max-w-screen-xl mx-auto py-20 lg:py-24`;

@@ -6,9 +6,8 @@ module.exports = {
   ],
   plugins: ["react", "react-hooks"],
   rules: {
-    // Regras personalizadas para o projeto
-    "react/prop-types": "off", // Se não estiver usando PropTypes
-    "react/react-in-jsx-scope": "off", // Para React 17+
+    "react/prop-types": "off",
+    "react/react-in-jsx-scope": "off",
   },
   settings: {
     react: {

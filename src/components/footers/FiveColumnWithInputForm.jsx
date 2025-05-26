@@ -3,7 +3,7 @@ import tw from "twin.macro";
 import styled from "styled-components";
 import { Instagram, Linkedin } from "react-feather";
 
-const LogoImage = "/logo/logo_reduced.webp";
+const LogoImage = "/images/logo/logo_reduced.webp";
 
 const Container = styled.div`
   ${tw`relative -mb-8 -mx-8 px-8 py-20 lg:py-24`}

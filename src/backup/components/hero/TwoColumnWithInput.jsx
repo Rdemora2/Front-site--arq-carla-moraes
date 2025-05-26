@@ -5,8 +5,8 @@ import tw from "twin.macro";
 
 import Header from "../navbar/navbar.jsx";
 
-import SvgDecoratorBlob1 from "../../images/svg-decorator-blob-1.svg";
-import DesignIllustration from "../../images/design-illustration-2.svg";
+import SvgDecoratorBlob1 from "../assets/icons/svg/svg-decorator-blob-1.svg";
+import DesignIllustration from "../assets/icons/svg/design-illustration-2.svg";
 import CustomersLogoStripImage from "../../images/customers-logo-strip.png";
 
 const Container = tw.div`relative`;

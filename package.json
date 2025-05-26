@@ -2,6 +2,25 @@
   "name": "carla-moraes-paisagismo",
   "version": "1.0.0",
   "private": true,
+  "description": "Site institucional da Carla Moraes Arquitetura Paisagística - Projetos paisagísticos exclusivos há mais de 25 anos",
+  "author": {
+    "name": "Roberto Moraes - Tivix Technologies",
+    "email": "robertomoraeszar@gmail.com.br",
+    "url": "https://www.tivix.com.br/"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Rdemora2/Front-site--arq-carla-moraes.git"
+  },
+  "homepage": "https://arqcarlamoraes.com.br/",
+  "keywords": [
+    "react",
+    "vite",
+    "paisagismo",
+    "arquitetura",
+    "website"
+  ],
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",

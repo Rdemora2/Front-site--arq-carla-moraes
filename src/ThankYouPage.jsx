@@ -2,14 +2,15 @@ import React from "react";
 import AnimationRevealPage from "helpers/AnimationRevealPage.jsx";
 import { Container, Content2Xl } from "components/misc/Layouts";
 import tw from "twin.macro";
+import { useEnvironment } from "hooks/useEnvironment";
+import MetaTags from "components/misc/MetaTags.jsx";
 
 import { LogoLink } from "components/navbar/navbar.jsx";
 import { SectionHeading as HeadingBase } from "components/misc/Headings";
 import { SectionDescription as DescriptionBase } from "components/misc/Typography";
 
-const logo = "/logo/logo_full.webp";
+const logo = "/images/logo/logo_full.webp";
 
-/* Hero */
 const Row = tw.div`flex`;
 const NavRow = tw(Row)`flex flex-col lg:flex-row items-center justify-between`;
 const HeroRow = tw(
@@ -22,8 +23,14 @@ const Description = tw(
 )`mt-4 text-center lg:text-base text-gray-700 max-w-lg mx-auto lg:mx-0`;
 
 export default () => {
+  const { siteName } = useEnvironment();
+
   return (
     <AnimationRevealPage disabled>
+      <MetaTags
+        title={`Obrigado | ${siteName}`}
+        description="Sua mensagem foi enviada com sucesso. Entraremos em contato em breve."
+      />
       <Container tw="-mx-8 -mt-8 pt-8 px-8">
         <Content2Xl>
           <NavRow>

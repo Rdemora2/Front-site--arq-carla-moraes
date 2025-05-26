@@ -1,5 +1,6 @@
 import React, { lazy, Suspense } from "react";
 import AnimationRevealPage from "helpers/AnimationRevealPage.jsx";
+import MetaTags from "components/misc/MetaTags.jsx";
 
 import Hero from "components/hero/FullWidthWithImage.jsx";
 import Footer from "components/footers/FiveColumnWithInputForm.jsx";
@@ -74,6 +75,7 @@ const LoadingFallback = () => (
 
 const Home = React.memo(() => (
   <AnimationRevealPage>
+    <MetaTags />
     <Hero />
     <Suspense fallback={<LoadingFallback />}>
       <PriorityComponents />

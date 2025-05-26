@@ -2,6 +2,7 @@ import React, { Suspense, lazy } from "react";
 import GlobalStyles from "./styles/GlobalStyles";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { StyledComponentsProvider } from "./styles/StyledComponentsConfig";
+import Analytics from "./components/misc/Analytics";
 
 const Home = lazy(() => import("./pages/Home"));
 const AboutUs = lazy(() => import("./pages/AboutUs"));
@@ -12,6 +13,7 @@ const LoadingFallback = () => <div></div>;
 const AppWithProviders = ({ children }) => (
   <StyledComponentsProvider>
     <GlobalStyles />
+    <Analytics />
     {children}
   </StyledComponentsProvider>
 );

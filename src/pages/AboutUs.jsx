@@ -1,5 +1,7 @@
 import React from "react";
 import AnimationRevealPage from "helpers/AnimationRevealPage.jsx";
+import MetaTags from "components/misc/MetaTags.jsx";
+
 import tw from "twin.macro";
 import styled from "styled-components";
 
@@ -8,9 +10,9 @@ import Footer from "components/footers/FiveColumnWithInputForm.jsx";
 import MainFeature1 from "components/features/TwoColWithButton.jsx";
 import Features from "components/features/ThreeColSimple.jsx";
 
-import SupportIconImage from "images/support-icon.svg";
-import ShieldIconImage from "images/shield-icon.svg";
-import CustomerLoveIconImage from "images/simple-icon.svg";
+import SupportIconImage from "../assets/icons/svg/support-icon.svg";
+import ShieldIconImage from "../assets/icons/svg/shield-icon.svg";
+import CustomerLoveIconImage from "../assets/icons/svg/simple-icon.svg";
 
 const Subheading = styled.span`
   ${tw`uppercase tracking-wider text-sm`}
@@ -41,6 +43,11 @@ const StyledFeatures = styled(Features)`
 export default () => {
   return (
     <AnimationRevealPage>
+      <MetaTags
+        title="Sobre Nós - Carla Moraes Arquitetura Paisagística"
+        description="Conheça a história e valores da Carla Moraes Arquitetura Paisagística. Há mais de 25 anos transformando espaços com projetos únicos e sustentáveis."
+        url="/sobre"
+      />
       <Header />
       <StyledMainFeature
         subheading={

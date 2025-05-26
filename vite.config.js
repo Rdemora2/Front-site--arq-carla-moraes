@@ -35,17 +35,18 @@ export default defineConfig({
       },
       include: "**/*.svg",
     }),
-
-    ...(process.env.NODE_ENV === "development"
+    ...(process.env.NODE_ENV === "development" &&
+    process.env.VITE_ENABLE_ANALYZER === "true"
       ? [
           visualizer({
             filename: "stats.html",
             open: true,
+            gzipSize: true,
+            brotliSize: true,
           }),
         ]
       : []),
   ],
-
   resolve: {
     alias: {
       backup: path.resolve(__dirname, "./src/backup"),
@@ -54,13 +55,13 @@ export default defineConfig({
       pages: path.resolve(__dirname, "./src/pages"),
       styles: path.resolve(__dirname, "./src/styles"),
       helpers: path.resolve(__dirname, "./src/helpers"),
+      hooks: path.resolve(__dirname, "./src/hooks"),
       constants: path.resolve(__dirname, "./src/constants"),
     },
     extensions: [".jsx", ".js", ".tsx", ".ts", ".json"],
   },
-
   build: {
-    sourcemap: process.env.NODE_ENV !== "production",
+    sourcemap: process.env.VITE_ENABLE_SOURCEMAP === "true",
     chunkSizeWarningLimit: 1000,
     rollupOptions: {
       output: {

@@ -4,12 +4,12 @@ import styled from "styled-components";
 import tw from "twin.macro";
 
 import { SectionHeading as HeadingTitle } from "../misc/Headings.jsx";
-import QuotesLeftIcon from "../../images/quotes-l.svg";
-import QuotesRightIcon from "../../images/quotes-r.svg";
-import ArrowLeftIcon from "../../images/arrow-left-2-icon.svg";
-import ArrowRightIcon from "../../images/arrow-right-2-icon.svg";
-import SvgDecoratorBlob1 from "../../images/svg-decorator-blob-4.svg";
-import SvgDecoratorBlob2 from "../../images/svg-decorator-blob-5.svg";
+import QuotesLeftIcon from "../assets/icons/svg/quotes-l.svg";
+import QuotesRightIcon from "../assets/icons/svg/quotes-r.svg";
+import ArrowLeftIcon from "../assets/icons/svg/arrow-left-2-icon.svg";
+import ArrowRightIcon from "../assets/icons/svg/arrow-right-2-icon.svg";
+import SvgDecoratorBlob1 from "../assets/icons/svg/svg-decorator-blob-4.svg";
+import SvgDecoratorBlob2 from "../assets/icons/svg/svg-decorator-blob-5.svg";
 
 import "slick-carousel/slick/slick.css";
 

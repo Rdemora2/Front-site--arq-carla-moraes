@@ -1,68 +1,262 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# 🌿 Carla Moraes - Arquitetura Paisagística
 
-## Available Script
+<div align="center">
+  <img src="./public/images/logo/logo_full.webp" alt="Carla Moraes Logo" width="300">
+  
+  <p><strong>Há mais de 25 anos criando projetos paisagísticos exclusivos que harmonizam arquitetura e natureza</strong></p>
+  
+  [![Deploy Status](https://img.shields.io/github/deployments/Rdemora2/Front-site--arq-carla-moraes/production?label=vercel&logo=vercel)](https://arqcarlamoraes.com.br/)
+  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+  [![React](https://img.shields.io/badge/React-18.2.0-blue.svg)](https://reactjs.org/)
+  [![Vite](https://img.shields.io/badge/Vite-latest-646CFF.svg)](https://vitejs.dev/)
+</div>
 
-In the project directory, you can run:
+## 🌟 Sobre o Projeto
 
-### `yarn start`
+Este é o site institucional da **Carla Moraes Arquitetura Paisagística**, uma empresa especializada em projetos paisagísticos exclusivos que combinam beleza natural com design contemporâneo. O site apresenta o portfólio da empresa, serviços oferecidos e facilita o contato com clientes potenciais.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### 🚀 Links de Acesso
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+- **🌐 Produção**: [arqcarlamoraes.com.br](https://arqcarlamoraes.com.br/)
+- **📱 Staging**: [front-site-arq-carla-moraes.vercel.app](https://front-site-arq-carla-moraes.vercel.app/)
+- **🔧 Desenvolvimento**: [front-site-arq-carla-moraes-git-dev](https://front-site-arq-carla-moraes-git-dev-roberto-moraes-projects.vercel.app/)
 
-### `yarn test`
+## 🛠️ Tecnologias Utilizadas
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Core Technologies
 
-### `yarn build`
+- **React 18.2.0**
+- **Vite**
+- **JavaScript (JSX)**
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Styling & UI
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+- **Styled Components 6.1.8**
+- **Tailwind CSS 3.4.1**
+- **Twin.macro 3.4.1**
+- **Framer Motion 10.16.4**
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Navigation & UX
 
-### `yarn eject`
+- **React Router DOM 6.22.1**
+- **React Anchor Link Smooth Scroll**
+- **React Modal 3.16.1**
+- **React Slick 0.29.0**
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Developer Experience
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- **Rollup Plugin Visualizer**
+- **SVGR**
+- **Babel Macros**
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Performance & SEO
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- **Lazy Loading**
+- **Code Splitting**
+- **Image Optimization**
+- **PWA Ready**
 
-## Learn More
+## 🏗️ Hospedagem
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+O projeto está hospedado na **Vercel**, oferecendo:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- ⚡ **Deploy automático** via Git
+- 🌍 **CDN global** para performance otimizada
+- 🔧 **Preview deployments** para cada PR
+- 📊 **Analytics integrado**
+- 🛡️ **HTTPS por padrão**
 
-### Code Splitting
+### Configuração de Branches
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+- `main` → Produção (arqcarlamoraes.com.br)
+- `dev` → Ambiente de desenvolvimento
 
-### Analyzing the Bundle Size
+## 📊 Rollup Plugin Visualizer
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+O **Rollup Plugin Visualizer** é uma ferramenta essencial para análise e otimização de bundles JavaScript. Ele gera um relatório visual interativo que mostra:
 
-### Making a Progressive Web App
+### 🔍 O que analisa:
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+- **Tamanho dos módulos**: Visualiza o peso de cada dependência
+- **Estrutura de dependências**: Mostra como os módulos se relacionam
+- **Code splitting**: Exibe como o código foi dividido em chunks
+- **Imports desnecessários**: Identifica bibliotecas subutilizadas
 
-### Advanced Configuration
+### 🎯 Como funciona:
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+1. **Executa durante o build** em modo desenvolvimento
+2. **Gera arquivo `stats.html`** na raiz do projeto
+3. **Abre automaticamente** no navegador após o build
+4. **Análise interativa** com zoom e filtros
 
-### Deployment
+### 📈 Como analisar os resultados:
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+#### Interpretação do Gráfico:
 
-### `yarn build` fails to minify
+- **Blocos grandes** = Dependências pesadas que podem precisar de otimização
+- **Muitos blocos pequenos** = Possível fragmentação excessiva
+- **Cores diferentes** = Diferentes tipos de módulos (node_modules, src, etc.)
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+#### Principais métricas:
+
+- **Parsed Size**: Tamanho real dos arquivos
+- **Stat Size**: Tamanho antes da minificação
+- **Gzip Size**: Tamanho comprimido (mais próximo do real)
+
+#### Dicas de otimização:
+
+- 🔍 **Identifique bibliotecas grandes** desnecessárias
+- 📦 **Verifique imports não utilizados**
+- 🎯 **Analise se tree-shaking** está funcionando
+- 📊 **Compare tamanhos** antes e depois de mudanças
+
+### 🚀 Como usar:
+
+```bash
+npm run dev  # Gera stats.html automaticamente
+```
+
+O arquivo `stats.html` será criado na raiz e abrirá automaticamente mostrando a análise completa do bundle.
+
+## 🔧 Configuração de Desenvolvimento Local
+
+### Pré-requisitos
+
+- **Node.js** (versão 16 ou superior)
+- **npm** ou **yarn**
+- **Git**
+
+### 📥 Instalação
+
+1. **Clone o repositório**:
+
+```bash
+git clone https://github.com/Rdemora2/Front-site--arq-carla-moraes.git
+cd Front-site--arq-carla-moraes
+```
+
+2. **Instale as dependências**:
+
+```bash
+npm install
+# ou
+yarn install
+```
+
+3. **Configure as variáveis de ambiente**:
+
+```bash
+cp .env.example .env
+```
+
+4. **Execute o projeto**:
+
+```bash
+npm run dev
+# ou
+yarn dev
+```
+
+5. **Acesse no navegador**:
+
+```
+http://localhost:3000
+```
+
+### 📜 Scripts Disponíveis
+
+```bash
+# Desenvolvimento
+npm run dev          # Inicia servidor de desenvolvimento
+
+# Build
+npm run build        # Gera build de produção
+npm run preview      # Preview do build de produção
+```
+
+### 🔧 Estrutura de Pastas
+
+```
+src/
+├── components/             # Componentes reutilizáveis
+│   ├── cards/             # Componentes de cartões e sliders
+│   ├── errors/            # Componentes de tratamento de erro
+│   ├── faqs/              # Componentes de FAQ
+│   ├── features/          # Seções de features e destaques
+│   ├── footers/           # Componentes de rodapé
+│   ├── forms/             # Formulários de contato
+│   ├── hero/              # Seções hero/banner
+│   ├── misc/              # Utilitários diversos (MetaTags, Analytics)
+│   ├── navbar/            # Componentes de navegação
+│   └── testimonials/      # Seções de depoimentos
+├── pages/                 # Páginas da aplicação
+│   ├── Home.jsx           # Página inicial
+│   ├── AboutUs.jsx        # Sobre nós
+│   ├── ContactUs.jsx      # Contato
+│   ├── BlogIndex.jsx      # Blog
+│   └── ...                # Outras páginas
+├── helpers/               # Utilitários e helpers
+│   ├── AnimationRevealPage.jsx  # Animações de página
+│   ├── ImageOptimizer.jsx       # Otimização de imagens
+│   ├── useAnimatedNavToggler.jsx # Hook de navegação
+│   └── ...                      # Outros helpers
+├── hooks/                 # Custom React hooks
+├── config/                # Configurações de ambiente
+├── styles/                # Configurações de estilo global
+├── assets/                # Recursos estáticos (ícones, imagens)
+└── backup/                # Componentes de backup para referência
+```
+
+## 🎨 Features do Site
+
+### 📱 Design Responsivo ✅
+
+- Layout adaptável para desktop, tablet e mobile usando Tailwind CSS
+- Componentes otimizados para diferentes tamanhos de tela (breakpoints configurados)
+- Imagens responsivas com lazy loading via `ImageOptimizer.jsx`
+
+### 🚀 Performance ✅
+
+- **Code Splitting** implementado com React.lazy() e Suspense
+- **Lazy Loading** de componentes e imagens (react-intersection-observer)
+- **Bundle otimizado** com tree-shaking e configuração Vite
+- **Manual Chunks** configurados para otimização de carregamento
+
+### 🔍 SEO Otimizado ✅
+
+- Meta tags estruturadas via componente `MetaTags.jsx`
+- Open Graph e Twitter Cards configurados no `index.html`
+- URLs canônicas implementadas
+- **Robots.txt** configurado para indexação completa
+
+### ♿ Acessibilidade ✅
+
+- Componentes com `aria-label`, `aria-expanded` e `aria-hidden`
+- Navegação por teclado implementada
+- Textos alternativos em imagens (`alt` tags)
+- Contraste adequado através do design system Tailwind
+
+### 🌐 PWA Ready ✅
+
+- **Manifest.json** configurado com ícones e tema
+- Service Worker pronto para implementação
+- Ícones de múltiplos tamanhos (16x16 a 512x512)
+- Meta tags para dispositivos móveis
+
+### 🔧 Melhorias à serem implementadas
+
+- **Sitemap.xml**: Não implementado (mencionado como "automático" mas não encontrado)
+- **Lighthouse Score**: Precisa ser validado (mencionado como "95+" mas não verificado)
+- **Service Worker**: Manifest existe mas SW não está ativo
+- **Estruturação Schema.org**: Poderia ser implementada para melhor SEO
+
+## 👨‍💻 Desenvolvedor
+
+**Roberto Moraes**
+
+- 🌐 **GitHub**: [@Rdemora2](https://github.com/Rdemora2)
+- 💼 **LinkedIn**: [Roberto Moraes Zarzur](https://www.linkedin.com/in/robertomoraeszarzur/)
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.

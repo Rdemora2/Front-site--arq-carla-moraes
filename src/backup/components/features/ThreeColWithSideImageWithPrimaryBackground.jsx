@@ -8,14 +8,14 @@ import {
 } from "components/misc/Headings.jsx";
 import { SectionDescription } from "components/misc/Typography.jsx";
 
-import defaultCardImage from "images/shield-icon.svg";
+import defaultCardImage from "../assets/icons/svg/shield-icon.svg";
 
-import SupportIconImage from "images/support-icon.svg";
-import ShieldIconImage from "images/shield-icon.svg";
-import CustomizeIconImage from "images/customize-icon.svg";
-import FastIconImage from "images/fast-icon.svg";
-import ReliableIconImage from "images/reliable-icon.svg";
-import SimpleIconImage from "images/simple-icon.svg";
+import SupportIconImage from "../assets/icons/svg/support-icon.svg";
+import ShieldIconImage from "../assets/icons/svg/shield-icon.svg";
+import CustomizeIconImage from "../assets/icons/svg/customize-icon.svg";
+import FastIconImage from "../assets/icons/svg/fast-icon.svg";
+import ReliableIconImage from "../assets/icons/svg/reliable-icon.svg";
+import SimpleIconImage from "../assets/icons/svg/simple-icon.svg";
 
 const Container = tw.div`relative bg-primary-900 -mx-8 px-8 text-gray-100`;
 

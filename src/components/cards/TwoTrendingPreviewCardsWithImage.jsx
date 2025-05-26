@@ -5,7 +5,7 @@ import { SectionHeading } from "components/misc/Headings.jsx";
 import { PrimaryLink as PrimaryLinkBase } from "components/misc/Links.jsx";
 import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons.jsx";
 import { TrendingUp as TrendingIcon } from "react-feather";
-import ArrowRightIcon from "images/arrow-right-icon.svg";
+import ArrowRightIcon from "../../assets/icons/svg/arrow-right-icon.svg";
 
 const Container = tw.div`relative`;
 const Content = tw.div`max-w-screen-xl mx-auto py-20 lg:py-24`;

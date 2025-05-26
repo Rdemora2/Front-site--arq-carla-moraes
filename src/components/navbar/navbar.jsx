@@ -162,18 +162,17 @@ const Header = ({
   const collapseBreakpointCss =
     collapseBreakPointCssMap[collapseBreakpointClass];
 
-  const defaultLogoLink = (
-    <LogoLink href="/">
-      <picture>
-        <source srcSet="/logo/logo_full.webp" type="image/webp" />
-        <img
-          src="/logo/logo_full.png"
-          alt="logo"
-          width="128"
-          height="75"
-          fetchpriority="high"
-        />
-      </picture>
+  const defaultLogoLink = (      <LogoLink href="/">
+        <picture>
+          <source srcSet="/images/logo/logo_full.webp" type="image/webp" />
+          <img
+            src="/images/logo/logo_full.webp"
+            alt="logo"
+            width="128"
+            height="75"
+            fetchpriority="high"
+          />
+        </picture>
     </LogoLink>
   );
 
