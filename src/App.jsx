@@ -5,6 +5,7 @@ import { StyledComponentsProvider } from "./styles/StyledComponentsConfig";
 import Analytics from "./components/misc/Analytics";
 import ErrorBoundary from "./components/errors/ErrorBoundary";
 import PerformanceMonitor from "./components/misc/PerformanceMonitor";
+import LighthouseMetrics from "./components/misc/LighthouseMetrics";
 import { LazyComponentWrapper } from "./components/lazy/LazyLoadingSystem.jsx";
 
 // Lazy loading dos componentes de página usando sistema avançado
@@ -47,6 +48,7 @@ const AppWithProviders = ({ children }) => (
       <GlobalStyles />
       <Analytics />
       <PerformanceMonitor />
+      <LighthouseMetrics />
       {children}
     </StyledComponentsProvider>
   </ErrorBoundary>

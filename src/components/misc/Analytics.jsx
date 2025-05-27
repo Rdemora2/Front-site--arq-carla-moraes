@@ -1,11 +1,13 @@
 import { useEffect, useCallback } from "react";
 import { useEnvironment } from "../../hooks/useEnvironment";
+import usePerformanceMonitoring from "@/hooks/usePerformanceMonitoring";
 
 /**
  * Componente Analytics melhorado com:
  * - Carregamento otimizado
  * - Tratamento de erros
  * - Suporte a múltiplos provedores
+ * - Integração com métricas do Lighthouse
  * - Configuração condicional
  */
 const Analytics = () => {
@@ -102,6 +104,91 @@ const Analytics = () => {
     }
   }, [facebookPixelId, log]);
 
+  // Hook para monitoramento de performance - usando as funções corretas
+  const {
+    metrics,
+    performanceScore,
+    getTTI,
+    getFCP,
+    getLCP,
+    getCLS,
+    getFID,
+    getTTFB,
+  } = usePerformanceMonitoring();
+
+  // Função para enviar métricas de performance para analytics
+  const trackPerformanceMetrics = useCallback(() => {
+    if (!window.gtag || !isProduction) return;
+
+    try {
+      // Enviar pontuação geral para Google Analytics
+      if (performanceScore > 0) {
+        window.gtag("event", "lighthouse_score", {
+          event_category: "Performance",
+          event_label: "Performance Score",
+          value: performanceScore,
+        });
+      }
+
+      // Enviar métricas Core Web Vitals usando as funções do hook
+      const coreWebVitals = {
+        LCP: getLCP(),
+        FID: getFID(),
+        CLS: getCLS(),
+        FCP: getFCP(),
+        TTI: getTTI(),
+        TTFB: getTTFB(),
+      };
+
+      Object.entries(coreWebVitals).forEach(([metricName, value]) => {
+        if (value !== null && value !== undefined) {
+          window.gtag("event", "web_vital", {
+            event_category: "Web Vitals",
+            event_label: metricName,
+            value:
+              metricName === "CLS"
+                ? Math.round(value * 1000)
+                : Math.round(value),
+            metric_rating: getRating(metricName, value),
+          });
+        }
+      });
+
+      log("Métricas de performance enviadas para Analytics");
+    } catch (error) {
+      console.error("Erro ao enviar métricas de performance:", error);
+    }
+  }, [
+    performanceScore,
+    getTTI,
+    getFCP,
+    getLCP,
+    getCLS,
+    getFID,
+    getTTFB,
+    isProduction,
+    log,
+  ]);
+
+  // Função auxiliar para classificar métricas
+  const getRating = (metricName, value) => {
+    const thresholds = {
+      LCP: { good: 2500, poor: 4000 },
+      FID: { good: 100, poor: 300 },
+      CLS: { good: 0.1, poor: 0.25 },
+      FCP: { good: 1800, poor: 3000 },
+      TTI: { good: 3800, poor: 7300 },
+      TTFB: { good: 800, poor: 1800 },
+    };
+
+    const threshold = thresholds[metricName];
+    if (!threshold) return "unknown";
+
+    if (value <= threshold.good) return "good";
+    if (value <= threshold.poor) return "needs-improvement";
+    return "poor";
+  };
+
   // Carregar analytics apenas em produção
   useEffect(() => {
     if (!isProduction) {
@@ -117,6 +204,27 @@ const Analytics = () => {
 
     return () => clearTimeout(timeoutId);
   }, [isProduction, loadGoogleAnalytics, loadFacebookPixel, log]);
+
+  // Enviar métricas de performance quando a página estiver totalmente carregada
+  useEffect(() => {
+    if (!isProduction) return;
+
+    // Aguardar o carregamento completo da página e mais 10 segundos
+    // para que todas as métricas sejam coletadas adequadamente
+    const handleLoad = () => {
+      setTimeout(trackPerformanceMetrics, 10000);
+    };
+
+    if (document.readyState === "complete") {
+      setTimeout(trackPerformanceMetrics, 10000);
+    } else {
+      window.addEventListener("load", handleLoad);
+    }
+
+    return () => {
+      window.removeEventListener("load", handleLoad);
+    };
+  }, [isProduction, trackPerformanceMetrics]);
 
   // Monitorar mudanças de rota para SPA
   useEffect(() => {
@@ -231,5 +339,46 @@ export const trackConversion = (conversionData = {}) => {
     console.error("Erro ao rastrear conversão:", error);
   }
 };
+
+/**
+ * Exporta métricas do Lighthouse no formato JSON
+ * Útil para armazenar resultados ou enviar para sistemas de monitoramento
+ * Função modificada para usar o hook de performance diretamente
+ */
+export function exportLighthouseReport() {
+  try {
+    // Criar uma instância temporária do hook para obter as métricas
+    const perf = usePerformanceMonitoring();
+
+    // Obter dados do relatório
+    const data = perf.exportLighthouseData();
+    
+    // Criar um Blob com os dados JSON
+    const blob = new Blob([JSON.stringify(data, null, 2)], {
+      type: "application/json",
+    });
+
+    // Criar URL para o blob
+    const url = URL.createObjectURL(blob);
+
+    // Criar link para download
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `lighthouse-report-${new Date().toISOString().slice(0, 10)}.json`;
+
+    // Adicionar o link ao documento e clicar automaticamente
+    document.body.appendChild(link);
+    link.click();
+
+    // Limpar
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    return data;
+  } catch (error) {
+    console.error("Erro ao exportar relatório do Lighthouse:", error);
+    return null;
+  }
+}
 
 export default Analytics;

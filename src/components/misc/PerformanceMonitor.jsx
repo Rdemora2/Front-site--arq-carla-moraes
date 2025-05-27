@@ -4,6 +4,7 @@ import styled from "styled-components";
 import tw from "twin.macro";
 import { useWebVitals } from "../../hooks/useWebVitals";
 import { usePerformanceOptimizations } from "../../hooks/usePerformanceOptimizations";
+import usePerformanceMonitoring from "../../hooks/usePerformanceMonitoring";
 
 const MonitorContainer = styled.div`
   ${tw`fixed bg-white shadow-lg rounded-lg p-4 border-2 z-50`}
@@ -87,6 +88,9 @@ const Tooltip = styled.div`
   transform: translateX(-50%);
   margin-bottom: 4px;
   white-space: nowrap;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
   &::after {
     content: "";
@@ -97,6 +101,37 @@ const Tooltip = styled.div`
     border: 4px solid transparent;
     border-top-color: #1a202c;
   }
+`;
+
+const Tabs = styled.div`
+  ${tw`flex border-b border-gray-200 mb-3`}
+`;
+
+const Tab = styled.button`
+  ${tw`px-3 py-1 text-xs transition-colors`}
+  ${props => props.active ? tw`bg-blue-500 text-white font-medium` : tw`bg-gray-100 text-gray-600 hover:bg-gray-200`}
+  border-radius: 4px 4px 0 0;
+`;
+
+const LighthouseScoresGrid = styled.div`
+  ${tw`grid grid-cols-2 gap-2 mb-3`}
+`;
+
+const LighthouseScoreItem = styled.div`
+  ${tw`p-2 rounded bg-gray-100 text-center`}
+`;
+
+const ScoreCircle = styled.div`
+  ${tw`w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-1 text-white font-bold text-xs`}
+  background-color: ${props => {
+    if (props.score >= 90) return '#10b981'; // green
+    if (props.score >= 50) return '#f59e0b'; // yellow
+    return '#ef4444'; // red
+  }}
+`;
+
+const ScoreName = styled.div`
+  ${tw`text-xs text-gray-600`}
 `;
 
 const ActionButtons = styled.div`
@@ -123,35 +158,36 @@ const PerformanceMonitor = ({
   const [isMinimized, setIsMinimized] = useState(false);
   const [hoveredMetric, setHoveredMetric] = useState(null);
   const [autoHideTimer, setAutoHideTimer] = useState(null);
+  const [selectedTab, setSelectedTab] = useState('metrics'); // 'metrics' ou 'lighthouse'
 
   const shouldShow =
     isEnabled || (import.meta.env.MODE === "production" && showInProduction);
 
-  const webVitals = useWebVitals({
-    enableAnalytics: true,
-    enableConsoleLog: import.meta.env.MODE === "development",
-    onMetric: () => {
-      // Mostra o monitor quando uma métrica é coletada
-      if (!isVisible && shouldShow) {
-        setIsVisible(true);
-
-        // Auto-hide após delay se habilitado
-        if (enableAutoHide) {
-          if (autoHideTimer) clearTimeout(autoHideTimer);
-          const timer = setTimeout(() => {
-            setIsMinimized(true);
-          }, autoHideDelay);
-          setAutoHideTimer(timer);
-        }
-      }
-    },
-  });
-
+  // Agora usamos o hook usePerformanceMonitoring que já integra métricas do Lighthouse
+  const performanceMonitoring = usePerformanceMonitoring();
   const { useMemoryCache } = usePerformanceOptimizations();
   const cache = useMemoryCache();
 
-  const metrics = webVitals.getMetrics();
-  const overallScore = webVitals.getOverallScore();
+  // Obter métricas do nosso hook melhorado
+  const metrics = performanceMonitoring.getMetrics();
+  const overallScore = performanceMonitoring.performanceScore;
+  const lighthouseScores = performanceMonitoring.getLighthouseScores();
+  
+  // Efeito para mostrar o monitor quando métricas forem coletadas
+  useEffect(() => {
+    if (metrics.length > 0 && !isVisible && shouldShow) {
+      setIsVisible(true);
+      
+      // Auto-hide após delay se habilitado
+      if (enableAutoHide) {
+        if (autoHideTimer) clearTimeout(autoHideTimer);
+        const timer = setTimeout(() => {
+          setIsMinimized(true);
+        }, autoHideDelay);
+        setAutoHideTimer(timer);
+      }
+    }
+  }, [metrics, isVisible, shouldShow, enableAutoHide, autoHideDelay]);
 
   // Formata valores de métricas
   const formatMetricValue = (name, value) => {
@@ -162,34 +198,44 @@ const PerformanceMonitor = ({
       case "FCP":
       case "FID":
       case "TTFB":
+      case "TTI":
+      case "TBT":
+      case "SI":
         return `${Math.round(value)}ms`;
       default:
         return Math.round(value);
     }
   };
 
-  // Tooltips informativos
+  // Tooltips informativos - versões mais concisas
   const getTooltip = (metricName) => {
     const tooltips = {
-      LCP: "Largest Contentful Paint - Tempo para carregar o maior elemento visível",
-      FID: "First Input Delay - Tempo de resposta à primeira interação",
-      CLS: "Cumulative Layout Shift - Estabilidade visual da página",
-      FCP: "First Contentful Paint - Tempo para primeiro conteúdo aparecer",
-      TTFB: "Time to First Byte - Tempo de resposta do servidor",
+      LCP: "Tempo de carregamento do maior elemento visível",
+      FID: "Tempo de resposta à primeira interação",
+      CLS: "Estabilidade visual da página",
+      FCP: "Tempo para o primeiro conteúdo aparecer",
+      TTFB: "Tempo de resposta do servidor",
+      TTI: "Tempo até a interatividade completa",
+      SI: "Velocidade de exibição visual",
+      TBT: "Tempo de bloqueio do thread principal",
+      performance: "Desempenho geral",
+      accessibility: "Acessibilidade",
+      bestPractices: "Boas práticas de desenvolvimento",
+      seo: "Otimização para buscadores",
     };
     return tooltips[metricName] || "";
   };
 
   // Exporta dados de performance
   const handleExportData = () => {
-    const data = webVitals.exportData();
+    const data = performanceMonitoring.exportLighthouseData();
     const blob = new Blob([JSON.stringify(data, null, 2)], {
       type: "application/json",
     });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `performance-data-${Date.now()}.json`;
+    link.download = `lighthouse-data-${Date.now()}.json`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -218,7 +264,7 @@ const PerformanceMonitor = ({
   }, [autoHideTimer]);
 
   // Não renderiza se não deve mostrar ou não há suporte
-  if (!shouldShow || !webVitals.isSupported || !isVisible) {
+  if (!shouldShow || !isVisible) {
     return null;
   }
 
@@ -234,50 +280,100 @@ const PerformanceMonitor = ({
       }}
     >
       <Header onClick={() => setIsMinimized(!isMinimized)}>
-        <Title>Performance Monitor</Title>
+        <Title>Lighthouse Monitor</Title>
         <ToggleButton>{isMinimized ? "▲" : "▼"}</ToggleButton>
       </Header>
 
       {!isMinimized && (
         <>
-          <ScoreContainer>
-            <div>
-              <OverallScore score={overallScore || 0}>
-                {overallScore || 0}
-              </OverallScore>
-              <ScoreLabel>Score Geral</ScoreLabel>
-            </div>
-            <div style={{ fontSize: "10px", color: "#6b7280" }}>
-              {metrics.length} métricas coletadas
-            </div>
-          </ScoreContainer>
+          <Tabs>
+            <Tab 
+              active={selectedTab === 'metrics'} 
+              onClick={() => setSelectedTab('metrics')}
+            >
+              Web Vitals
+            </Tab>
+            <Tab 
+              active={selectedTab === 'lighthouse'} 
+              onClick={() => setSelectedTab('lighthouse')}
+            >
+              Lighthouse
+            </Tab>
+          </Tabs>
+          
+          {selectedTab === 'metrics' && (
+            <>
+              <ScoreContainer>
+                <div>
+                  <OverallScore score={overallScore || 0}>
+                    {overallScore || 0}
+                  </OverallScore>
+                  <ScoreLabel>Score de Performance</ScoreLabel>
+                </div>
+                <div style={{ fontSize: "10px", color: "#6b7280" }}>
+                  {metrics.length} métricas coletadas
+                </div>
+              </ScoreContainer>
 
-          <MetricsList>
-            {metrics.map((metric) => (
-              <MetricItem
-                key={metric.name}
-                onMouseEnter={() =>
-                  showTooltips && setHoveredMetric(metric.name)
-                }
-                onMouseLeave={() => setHoveredMetric(null)}
-                style={{ position: "relative" }}
-              >
-                <MetricName>{metric.name}</MetricName>
-                <MetricValue rating={metric.rating}>
-                  {formatMetricValue(metric.name, metric.value)}
-                </MetricValue>
+              <MetricsList>
+                {metrics.map((metric) => (
+                  <MetricItem
+                    key={metric.name}
+                    onMouseEnter={() =>
+                      showTooltips && setHoveredMetric(metric.name)
+                    }
+                    onMouseLeave={() => setHoveredMetric(null)}
+                    style={{ position: "relative" }}
+                  >
+                    <MetricName>{metric.name}</MetricName>
+                    <MetricValue rating={metric.rating}>
+                      {formatMetricValue(metric.name, metric.value)}
+                    </MetricValue>
 
-                {showTooltips && hoveredMetric === metric.name && (
-                  <Tooltip>{getTooltip(metric.name)}</Tooltip>
-                )}
-              </MetricItem>
-            ))}
-          </MetricsList>
+                    {showTooltips && hoveredMetric === metric.name && (
+                      <Tooltip>{getTooltip(metric.name)}</Tooltip>
+                    )}
+                  </MetricItem>
+                ))}
+              </MetricsList>
+            </>
+          )}
+          
+          {selectedTab === 'lighthouse' && (
+            <>
+              <LighthouseScoresGrid>
+                {Object.entries(lighthouseScores).map(([key, score]) => (
+                  <LighthouseScoreItem 
+                    key={key}
+                    onMouseEnter={() => showTooltips && setHoveredMetric(key)}
+                    onMouseLeave={() => setHoveredMetric(null)}
+                    style={{ position: "relative" }}
+                  >
+                    <ScoreCircle score={score || 0}>{score || 0}</ScoreCircle>
+                    <ScoreName>
+                      {key === 'performance' ? 'Desempenho' : 
+                       key === 'accessibility' ? 'Acessibilidade' : 
+                       key === 'bestPractices' ? 'Boas Práticas' : 
+                       key === 'seo' ? 'SEO' : key}
+                    </ScoreName>
+                    
+                    {showTooltips && hoveredMetric === key && (
+                      <Tooltip>{getTooltip(key)}</Tooltip>
+                    )}
+                  </LighthouseScoreItem>
+                ))}
+              </LighthouseScoresGrid>
+              
+              <p style={{ fontSize: "12px", color: "#6b7280", marginBottom: "12px", textAlign: "center" }}>
+                Os scores do Lighthouse são estimativas baseadas nas métricas coletadas no navegador.
+              </p>
+            </>
+          )}
 
           <ActionButtons>
             <ActionButton onClick={handleClearCache}>Limpar Cache</ActionButton>
             <ExportButton onClick={handleExportData}>
-              Exportar Dados
+              Exportar Relatório
             </ExportButton>
           </ActionButtons>
         </>
