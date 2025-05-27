@@ -66,9 +66,9 @@ export default defineConfig(({ mode }) => {
               type: 'image/png'
             }
           ]
-        },
-        workbox: {
-          globPatterns: ['**/*.{js,css,html,ico,png,svg,webp}']
+        },        workbox: {
+          globPatterns: ['**/*.{js,css,html,ico,png,svg,webp}'],
+          maximumFileSizeToCacheInBytes: 5 * 1024 * 1024 // 5 MB
         }
       }),
 
