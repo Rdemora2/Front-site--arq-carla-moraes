@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
 
@@ -56,7 +56,14 @@ const NavLink = tw(NavLinkBase)`
   sm:text-sm sm:mx-6
 `;
 
-const Container = tw.div`relative -mx-8 -mt-8 min-h-screen`;
+const Container = styled.div`
+  ${tw`relative -mx-8 -mt-8 min-h-screen`}
+  
+  @media (max-width: 1024px) {
+    min-height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
+  }
+`;
 const TwoColumn = tw.div`flex flex-col lg:flex-row min-h-screen`;
 const LeftColumn = styled.div`
   ${tw`ml-8 mr-8 xl:pl-10 flex flex-col justify-center relative z-10`}  @media (max-width: 1024px) {
@@ -67,7 +74,8 @@ const LeftColumn = styled.div`
     padding-top: 0;
     padding-bottom: 0;
     position: relative;
-    height: calc(100vh - 4.5rem);
+    min-height: calc(100vh - 4.5rem);
+    height: calc(var(--vh, 1vh) * 100 - 4.5rem);
     display: flex;
     flex-direction: column;
     
@@ -84,7 +92,8 @@ const LeftColumn = styled.div`
       background-repeat: no-repeat;
       filter: blur(1px);
       z-index: -10;
-      height: 100vh;
+      min-height: 100vh;
+      height: calc(var(--vh, 1vh) * 100);
     }
   }
 `;
@@ -182,6 +191,22 @@ const FullWidthWithImageComponent = ({
   secondaryActionUrl = "#",
   secondaryActionText = "Nossos Projetos",
 }) => {
+  useEffect(() => {
+    const setVH = () => {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    };
+
+    setVH();
+    window.addEventListener('resize', setVH);
+    window.addEventListener('orientationchange', setVH);
+
+    return () => {
+      window.removeEventListener('resize', setVH);
+      window.removeEventListener('orientationchange', setVH);
+    };
+  }, []);
+
   return (
     <Container>
       <TwoColumn>
