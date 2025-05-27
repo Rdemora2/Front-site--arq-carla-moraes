@@ -1,10 +1,11 @@
 import React from "react";
+import PropTypes from "prop-types";
 import tw from "twin.macro";
 import styled from "styled-components";
 import { RefreshCw, AlertTriangle, Home } from "react-feather";
 
 const ErrorContainer = styled.div`
-  ${tw`flex flex-col items-center justify-center min-h-screen p-5 text-center bg-gray-50`}
+  ${tw`flex flex-col items-center justify-center min-h-screen p-5 text-center bg-gray-500`}
 `;
 
 const ErrorIcon = styled.div`
@@ -26,9 +27,9 @@ const ErrorDetails = styled.details`
   ${tw`mb-8 max-w-md text-left`}
   summary {
     ${tw`cursor-pointer text-sm text-gray-500 hover:text-gray-700 mb-2`}
-  }
-  pre {
-    ${tw`text-xs bg-gray-100 p-3 rounded overflow-auto max-h-32 text-red-600`}
+  }  pre {
+    ${tw`text-xs bg-gray-100 p-3 rounded overflow-auto text-red-600`}
+    max-height: 8rem;
   }
 `;
 
@@ -57,11 +58,11 @@ const HomeButton = styled(Button)`
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { 
-      hasError: false, 
-      error: null, 
+    this.state = {
+      hasError: false,
+      error: null,
       errorInfo: null,
-      errorId: null
+      errorId: null,
     };
   }
 
@@ -71,7 +72,7 @@ class ErrorBoundary extends React.Component {
 
   componentDidCatch(error, errorInfo) {
     const errorId = Date.now().toString();
-    
+
     // Log detalhado do erro
     console.group(`🚨 Error Boundary [${errorId}]`);
     console.error("Error:", error);
@@ -91,34 +92,39 @@ class ErrorBoundary extends React.Component {
 
   reportError = (error, errorInfo, errorId) => {
     // Integração futura com Sentry, LogRocket, etc.
-    if (process.env.NODE_ENV === 'production') {
+    if (process.env.NODE_ENV === "production") {
       // Exemplo: window.Sentry?.captureException(error, { extra: errorInfo });
     }
   };
 
   handleRetry = () => {
-    this.setState({ hasError: false, error: null, errorInfo: null, errorId: null });
+    this.setState({
+      hasError: false,
+      error: null,
+      errorInfo: null,
+      errorId: null,
+    });
   };
 
   handleGoHome = () => {
-    window.location.href = '/';
+    window.location.href = "/";
   };
 
   render() {
     if (this.state.hasError) {
-      const isDevelopment = process.env.NODE_ENV === 'development';
-      
+      const isDevelopment = process.env.NODE_ENV === "development";
+
       return (
         <ErrorContainer role="alert">
           <ErrorIcon>
             <AlertTriangle />
           </ErrorIcon>
-          
+
           <ErrorHeading>Oops! Algo deu errado</ErrorHeading>
-          
+
           <ErrorMessage>
-            Pedimos desculpas pelo inconveniente. Ocorreu um erro inesperado 
-            e nossa equipe foi notificada automaticamente.
+            Pedimos desculpas pelo inconveniente. Ocorreu um erro inesperado e
+            nossa equipe foi notificada automaticamente.
           </ErrorMessage>
 
           {isDevelopment && this.state.error && (
@@ -136,7 +142,7 @@ class ErrorBoundary extends React.Component {
               <RefreshCw />
               Tente Novamente
             </RetryButton>
-            
+
             <HomeButton onClick={this.handleGoHome}>
               <Home />
               Voltar ao Início
@@ -155,5 +161,18 @@ class ErrorBoundary extends React.Component {
     return this.props.children;
   }
 }
+
+ErrorBoundary.propTypes = {
+  children: PropTypes.node,
+  fallback: PropTypes.func,
+  onError: PropTypes.func,
+  showDetails: PropTypes.bool,
+};
+
+ErrorBoundary.defaultProps = {
+  fallback: null,
+  onError: null,
+  showDetails: process.env.NODE_ENV === "development",
+};
 
 export default ErrorBoundary;

@@ -4,23 +4,34 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { StyledComponentsProvider } from "./styles/StyledComponentsConfig";
 import Analytics from "./components/misc/Analytics";
 import ErrorBoundary from "./components/errors/ErrorBoundary";
+import PerformanceMonitor from "./components/misc/PerformanceMonitor";
+import { LazyComponentWrapper } from "./components/lazy/LazyLoadingSystem.jsx";
 
-// Lazy loading dos componentes de página
-const Home = lazy(() => import("./pages/Home"));
-const AboutUs = lazy(() => import("./pages/AboutUs"));
-const ContactUs = lazy(() => import("./pages/ContactUs"));
-const ThankYouPage = lazy(() => import("./ThankYouPage"));
+// Lazy loading dos componentes de página usando sistema avançado
+const Home = () => (
+  <LazyComponentWrapper importFn={() => import("./pages/Home")} />
+);
+const AboutUs = () => (
+  <LazyComponentWrapper importFn={() => import("./pages/AboutUs")} />
+);
+const ContactUs = () => (
+  <LazyComponentWrapper importFn={() => import("./pages/ContactUs")} />
+);
+const ThankYouPage = () => (
+  <LazyComponentWrapper importFn={() => import("./ThankYouPage")} />
+);
 
 // Componente de loading melhorado
 const LoadingFallback = () => (
-  <div 
+  <div
     className="loading-skeleton"
     style={{
       minHeight: "100vh",
       display: "flex",
-      alignItems: "center", 
+      alignItems: "center",
       justifyContent: "center",
-      background: "linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%)",
+      background:
+        "linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%)",
       backgroundSize: "200% 100%",
       animation: "shimmer 1.5s ease-in-out infinite",
     }}
@@ -35,6 +46,7 @@ const AppWithProviders = ({ children }) => (
     <StyledComponentsProvider>
       <GlobalStyles />
       <Analytics />
+      <PerformanceMonitor />
       {children}
     </StyledComponentsProvider>
   </ErrorBoundary>
@@ -42,11 +54,9 @@ const AppWithProviders = ({ children }) => (
 
 // Função helper para criar elementos de rota
 const createRouteElement = (Component) => (
-  <Suspense fallback={<LoadingFallback />}>
-    <AppWithProviders>
-      <Component />
-    </AppWithProviders>
-  </Suspense>
+  <AppWithProviders>
+    <Component />
+  </AppWithProviders>
 );
 
 // Configuração do roteador
@@ -63,7 +73,7 @@ const router = createBrowserRouter(
       errorElement: <ErrorBoundary />,
     },
     {
-      path: "/contato", 
+      path: "/contato",
       element: createRouteElement(ContactUs),
       errorElement: <ErrorBoundary />,
     },
