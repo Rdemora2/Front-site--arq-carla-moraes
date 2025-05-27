@@ -17,7 +17,8 @@ const ModalStyles = `
   }
 `;
 
-const CustomStyles = createGlobalStyle`
+const CustomStyles = createGlobalStyle([
+  `
   :root {
     --color-primary: #6b7959;
     --color-primary-text: #3e4d2c;
@@ -28,7 +29,9 @@ const CustomStyles = createGlobalStyle`
 
   body {
     -webkit-tap-highlight-color: transparent;
-    ${tw`antialiased`}
+    `,
+  tw`antialiased`,
+  `
     background-color: var(--color-background);
   }
   
@@ -65,8 +68,11 @@ const CustomStyles = createGlobalStyle`
     color: #333333; /* Texto mais escuro para melhor contraste */
   }
 
-  ${ModalStyles}
-`;
+  `,
+  ModalStyles,
+  `
+`,
+]);
 
 const GlobalStyles = () => (
   <>

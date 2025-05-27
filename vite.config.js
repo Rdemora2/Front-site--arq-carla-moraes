@@ -14,7 +14,6 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [
       macrosPlugin(),
-
       react({
         jsxImportSource: "react",
         babel: {
@@ -31,6 +30,8 @@ export default defineConfig(({ mode }) => {
               },
             ],
           ],
+          sourceMaps: isDev ? "inline" : "both",
+          inputSourceMap: isDev,
         },
       }),
 
@@ -127,6 +128,8 @@ export default defineConfig(({ mode }) => {
     build: {
       sourcemap: isDev || process.env.VITE_ENABLE_SOURCEMAP === "true",
       chunkSizeWarningLimit: 500,
+      // Melhorar geração de sourcemaps para styled-components
+      cssCodeSplit: true,
 
       rollupOptions: {
         output: {
@@ -174,7 +177,6 @@ export default defineConfig(({ mode }) => {
         },
       },
 
-      cssCodeSplit: true,
       assetsInlineLimit: 4096,
       minify: isProd ? "terser" : false,
 
@@ -254,10 +256,9 @@ export default defineConfig(({ mode }) => {
       ...(isProd && {
         "process.env.NODE_ENV": '"production"',
       }),
-    },
-
-    // CSS otimizations
+    },    // CSS otimizations
     css: {
+      devSourcemap: isDev,
       postcss: {
         plugins: [
           require("autoprefixer"),
