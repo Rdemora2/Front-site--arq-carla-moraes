@@ -4,7 +4,6 @@ import svgr from "vite-plugin-svgr";
 import macrosPlugin from "vite-plugin-babel-macros";
 import path from "path";
 import { visualizer } from "rollup-plugin-visualizer";
-import { splitVendorChunkPlugin } from "vite";
 import { createHtmlPlugin } from "vite-plugin-html";
 import { VitePWA } from "vite-plugin-pwa";
 
@@ -12,12 +11,8 @@ export default defineConfig(({ mode }) => {
   const isDev = mode === "development";
   const isProd = mode === "production";
 
-  return {
-    plugins: [
+  return {    plugins: [
       macrosPlugin(),
-      
-      // Otimização do chunk splitting automático
-      splitVendorChunkPlugin(),
 
       react({
         jsxImportSource: "react",
