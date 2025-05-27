@@ -352,7 +352,7 @@ export function exportLighthouseReport() {
 
     // Obter dados do relatório
     const data = perf.exportLighthouseData();
-    
+
     // Criar um Blob com os dados JSON
     const blob = new Blob([JSON.stringify(data, null, 2)], {
       type: "application/json",

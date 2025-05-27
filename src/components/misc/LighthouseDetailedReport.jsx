@@ -188,7 +188,7 @@ const LighthouseDetailedReport = ({ isOpen, onClose }) => {
   const handleExport = () => {
     // Usar diretamente a função do hook
     const data = exportLighthouseData();
-    
+
     // Criar um Blob com os dados JSON
     const blob = new Blob([JSON.stringify(data, null, 2)], {
       type: "application/json",

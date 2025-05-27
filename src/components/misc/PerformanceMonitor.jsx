@@ -109,7 +109,10 @@ const Tabs = styled.div`
 
 const Tab = styled.button`
   ${tw`px-3 py-1 text-xs transition-colors`}
-  ${props => props.active ? tw`bg-blue-500 text-white font-medium` : tw`bg-gray-100 text-gray-600 hover:bg-gray-200`}
+  ${(props) =>
+    props.active
+      ? tw`bg-blue-500 text-white font-medium`
+      : tw`bg-gray-100 text-gray-600 hover:bg-gray-200`}
   border-radius: 4px 4px 0 0;
 `;
 
@@ -123,10 +126,10 @@ const LighthouseScoreItem = styled.div`
 
 const ScoreCircle = styled.div`
   ${tw`w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-1 text-white font-bold text-xs`}
-  background-color: ${props => {
-    if (props.score >= 90) return '#10b981'; // green
-    if (props.score >= 50) return '#f59e0b'; // yellow
-    return '#ef4444'; // red
+  background-color: ${(props) => {
+    if (props.score >= 90) return "#10b981"; // green
+    if (props.score >= 50) return "#f59e0b"; // yellow
+    return "#ef4444"; // red
   }}
 `;
 
@@ -158,7 +161,7 @@ const PerformanceMonitor = ({
   const [isMinimized, setIsMinimized] = useState(false);
   const [hoveredMetric, setHoveredMetric] = useState(null);
   const [autoHideTimer, setAutoHideTimer] = useState(null);
-  const [selectedTab, setSelectedTab] = useState('metrics'); // 'metrics' ou 'lighthouse'
+  const [selectedTab, setSelectedTab] = useState("metrics"); // 'metrics' ou 'lighthouse'
 
   const shouldShow =
     isEnabled || (import.meta.env.MODE === "production" && showInProduction);
@@ -172,12 +175,12 @@ const PerformanceMonitor = ({
   const metrics = performanceMonitoring.getMetrics();
   const overallScore = performanceMonitoring.performanceScore;
   const lighthouseScores = performanceMonitoring.getLighthouseScores();
-  
+
   // Efeito para mostrar o monitor quando métricas forem coletadas
   useEffect(() => {
     if (metrics.length > 0 && !isVisible && shouldShow) {
       setIsVisible(true);
-      
+
       // Auto-hide após delay se habilitado
       if (enableAutoHide) {
         if (autoHideTimer) clearTimeout(autoHideTimer);
@@ -287,21 +290,21 @@ const PerformanceMonitor = ({
       {!isMinimized && (
         <>
           <Tabs>
-            <Tab 
-              active={selectedTab === 'metrics'} 
-              onClick={() => setSelectedTab('metrics')}
+            <Tab
+              active={selectedTab === "metrics"}
+              onClick={() => setSelectedTab("metrics")}
             >
               Web Vitals
             </Tab>
-            <Tab 
-              active={selectedTab === 'lighthouse'} 
-              onClick={() => setSelectedTab('lighthouse')}
+            <Tab
+              active={selectedTab === "lighthouse"}
+              onClick={() => setSelectedTab("lighthouse")}
             >
               Lighthouse
             </Tab>
           </Tabs>
-          
-          {selectedTab === 'metrics' && (
+
+          {selectedTab === "metrics" && (
             <>
               <ScoreContainer>
                 <div>
@@ -338,12 +341,12 @@ const PerformanceMonitor = ({
               </MetricsList>
             </>
           )}
-          
-          {selectedTab === 'lighthouse' && (
+
+          {selectedTab === "lighthouse" && (
             <>
               <LighthouseScoresGrid>
                 {Object.entries(lighthouseScores).map(([key, score]) => (
-                  <LighthouseScoreItem 
+                  <LighthouseScoreItem
                     key={key}
                     onMouseEnter={() => showTooltips && setHoveredMetric(key)}
                     onMouseLeave={() => setHoveredMetric(null)}
@@ -351,21 +354,34 @@ const PerformanceMonitor = ({
                   >
                     <ScoreCircle score={score || 0}>{score || 0}</ScoreCircle>
                     <ScoreName>
-                      {key === 'performance' ? 'Desempenho' : 
-                       key === 'accessibility' ? 'Acessibilidade' : 
-                       key === 'bestPractices' ? 'Boas Práticas' : 
-                       key === 'seo' ? 'SEO' : key}
+                      {key === "performance"
+                        ? "Desempenho"
+                        : key === "accessibility"
+                          ? "Acessibilidade"
+                          : key === "bestPractices"
+                            ? "Boas Práticas"
+                            : key === "seo"
+                              ? "SEO"
+                              : key}
                     </ScoreName>
-                    
+
                     {showTooltips && hoveredMetric === key && (
                       <Tooltip>{getTooltip(key)}</Tooltip>
                     )}
                   </LighthouseScoreItem>
                 ))}
               </LighthouseScoresGrid>
-              
-              <p style={{ fontSize: "12px", color: "#6b7280", marginBottom: "12px", textAlign: "center" }}>
-                Os scores do Lighthouse são estimativas baseadas nas métricas coletadas no navegador.
+
+              <p
+                style={{
+                  fontSize: "12px",
+                  color: "#6b7280",
+                  marginBottom: "12px",
+                  textAlign: "center",
+                }}
+              >
+                Os scores do Lighthouse são estimativas baseadas nas métricas
+                coletadas no navegador.
               </p>
             </>
           )}
