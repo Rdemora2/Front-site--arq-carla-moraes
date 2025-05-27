@@ -3,62 +3,74 @@ import GlobalStyles from "./styles/GlobalStyles";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { StyledComponentsProvider } from "./styles/StyledComponentsConfig";
 import Analytics from "./components/misc/Analytics";
+import ErrorBoundary from "./components/errors/ErrorBoundary";
 
+// Lazy loading dos componentes de página
 const Home = lazy(() => import("./pages/Home"));
 const AboutUs = lazy(() => import("./pages/AboutUs"));
 const ContactUs = lazy(() => import("./pages/ContactUs"));
 const ThankYouPage = lazy(() => import("./ThankYouPage"));
 
-const LoadingFallback = () => <div></div>;
-const AppWithProviders = ({ children }) => (
-  <StyledComponentsProvider>
-    <GlobalStyles />
-    <Analytics />
-    {children}
-  </StyledComponentsProvider>
+// Componente de loading melhorado
+const LoadingFallback = () => (
+  <div 
+    className="loading-skeleton"
+    style={{
+      minHeight: "100vh",
+      display: "flex",
+      alignItems: "center", 
+      justifyContent: "center",
+      background: "linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%)",
+      backgroundSize: "200% 100%",
+      animation: "shimmer 1.5s ease-in-out infinite",
+    }}
+    aria-busy="true"
+    aria-label="Carregando página..."
+  />
 );
 
+// Provider de contexto para toda a aplicação
+const AppWithProviders = ({ children }) => (
+  <ErrorBoundary>
+    <StyledComponentsProvider>
+      <GlobalStyles />
+      <Analytics />
+      {children}
+    </StyledComponentsProvider>
+  </ErrorBoundary>
+);
+
+// Função helper para criar elementos de rota
+const createRouteElement = (Component) => (
+  <Suspense fallback={<LoadingFallback />}>
+    <AppWithProviders>
+      <Component />
+    </AppWithProviders>
+  </Suspense>
+);
+
+// Configuração do roteador
 const router = createBrowserRouter(
   [
     {
       path: "/",
-      element: (
-        <Suspense fallback={<LoadingFallback />}>
-          <AppWithProviders>
-            <Home />
-          </AppWithProviders>
-        </Suspense>
-      ),
+      element: createRouteElement(Home),
+      errorElement: <ErrorBoundary />,
     },
     {
       path: "/sobre-nos",
-      element: (
-        <Suspense fallback={<LoadingFallback />}>
-          <AppWithProviders>
-            <AboutUs />
-          </AppWithProviders>
-        </Suspense>
-      ),
+      element: createRouteElement(AboutUs),
+      errorElement: <ErrorBoundary />,
     },
     {
-      path: "/contato",
-      element: (
-        <Suspense fallback={<LoadingFallback />}>
-          <AppWithProviders>
-            <ContactUs />
-          </AppWithProviders>
-        </Suspense>
-      ),
+      path: "/contato", 
+      element: createRouteElement(ContactUs),
+      errorElement: <ErrorBoundary />,
     },
     {
       path: "/thank-you",
-      element: (
-        <Suspense fallback={<LoadingFallback />}>
-          <AppWithProviders>
-            <ThankYouPage />
-          </AppWithProviders>
-        </Suspense>
-      ),
+      element: createRouteElement(ThankYouPage),
+      errorElement: <ErrorBoundary />,
     },
   ],
   {
