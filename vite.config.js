@@ -10,26 +10,8 @@ import { VitePWA } from "vite-plugin-pwa";
 export default defineConfig(({ mode }) => {
   const isDev = mode === "development";
   const isProd = mode === "production";
+
   return {
-    optimizeDeps: {
-      include: ["@emotion/react", "@emotion/styled", "styled-components"],
-      esbuildOptions: {
-        define: {
-          global: "globalThis",
-        },
-      },
-    },
-    build: {
-      commonjsOptions: {
-        transformMixedEsModules: true,
-      },
-      rollupOptions: {
-        onwarn(warning, warn) {
-          if (warning.code === "MODULE_LEVEL_DIRECTIVE") return;
-          warn(warning);
-        },
-      },
-    },
     plugins: [
       macrosPlugin(),
 
@@ -47,10 +29,6 @@ export default defineConfig(({ mode }) => {
                 minify: isProd,
                 transpileTemplateLiterals: isProd,
               },
-            ],
-            [
-              "@emotion",
-              { importMap: { "@emotion/react": { default: "emotionReact" } } },
             ],
           ],
         },
