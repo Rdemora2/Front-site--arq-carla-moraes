@@ -10,8 +10,27 @@ import { VitePWA } from "vite-plugin-pwa";
 export default defineConfig(({ mode }) => {
   const isDev = mode === "development";
   const isProd = mode === "production";
-
-  return {    plugins: [
+  return {
+    optimizeDeps: {
+      include: ["@emotion/react", "@emotion/styled", "styled-components"],
+      esbuildOptions: {
+        define: {
+          global: "globalThis",
+        },
+      },
+    },
+    build: {
+      commonjsOptions: {
+        transformMixedEsModules: true,
+      },
+      rollupOptions: {
+        onwarn(warning, warn) {
+          if (warning.code === "MODULE_LEVEL_DIRECTIVE") return;
+          warn(warning);
+        },
+      },
+    },
+    plugins: [
       macrosPlugin(),
 
       react({
@@ -29,6 +48,10 @@ export default defineConfig(({ mode }) => {
                 transpileTemplateLiterals: isProd,
               },
             ],
+            [
+              "@emotion",
+              { importMap: { "@emotion/react": { default: "emotionReact" } } },
+            ],
           ],
         },
       }),
@@ -44,40 +67,42 @@ export default defineConfig(({ mode }) => {
             "#000000": "currentColor",
           },
         },
-        include: "**/*.svg",      }),
-        // Plugin PWA para cache inteligente
+        include: "**/*.svg",
+      }),
+      // Plugin PWA para cache inteligente
       VitePWA({
-        registerType: 'autoUpdate',
-        includeAssets: ['favicon.ico', 'apple-touch-icon.png'],
+        registerType: "autoUpdate",
+        includeAssets: ["favicon.ico", "apple-touch-icon.png"],
         manifest: {
-          name: 'Carla Moraes Arquitetura',
-          short_name: 'CarlaArq',
-          description: 'Projetos arquitetônicos exclusivos e personalizados',
-          theme_color: '#ffffff',
+          name: "Carla Moraes Arquitetura",
+          short_name: "CarlaArq",
+          description: "Projetos arquitetônicos exclusivos e personalizados",
+          theme_color: "#ffffff",
           icons: [
             {
-              src: 'images/favicon/android-chrome-192x192.png',
-              sizes: '192x192',
-              type: 'image/png'
+              src: "images/favicon/android-chrome-192x192.png",
+              sizes: "192x192",
+              type: "image/png",
             },
             {
-              src: 'images/favicon/android-chrome-512x512.png',
-              sizes: '512x512',
-              type: 'image/png'
-            }
-          ]
-        },        workbox: {
-          globPatterns: ['**/*.{js,css,html,ico,png,svg,webp}'],
-          maximumFileSizeToCacheInBytes: 5 * 1024 * 1024 // 5 MB
-        }
+              src: "images/favicon/android-chrome-512x512.png",
+              sizes: "512x512",
+              type: "image/png",
+            },
+          ],
+        },
+        workbox: {
+          globPatterns: ["**/*.{js,css,html,ico,png,svg,webp}"],
+          maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5 MB
+        },
       }),
 
       // Plugin HTML com otimizações
       createHtmlPlugin({
         inject: {
           data: {
-            title: 'Carla Moraes Arquitetura',
-            description: 'Projetos arquitetônicos exclusivos e personalizados',
+            title: "Carla Moraes Arquitetura",
+            description: "Projetos arquitetônicos exclusivos e personalizados",
           },
         },
         minify: isProd && {
@@ -91,7 +116,7 @@ export default defineConfig(({ mode }) => {
           minifyJS: true,
         },
       }),
-      
+
       // Bundle analyzer apenas em desenvolvimento quando solicitado
       ...(isDev && process.env.VITE_ENABLE_ANALYZER === "true"
         ? [
@@ -120,10 +145,11 @@ export default defineConfig(({ mode }) => {
         utils: path.resolve(__dirname, "./src/utils"),
       },
       extensions: [".jsx", ".js", ".tsx", ".ts", ".json"],
-    },    build: {
+    },
+    build: {
       sourcemap: isDev || process.env.VITE_ENABLE_SOURCEMAP === "true",
       chunkSizeWarningLimit: 500,
-      
+
       rollupOptions: {
         output: {
           // Estratégia avançada de chunk splitting
@@ -148,7 +174,7 @@ export default defineConfig(({ mode }) => {
               // Outras bibliotecas pequenas agrupadas
               return "vendor";
             }
-            
+
             // Chunks por funcionalidade
             if (id.includes("/pages/")) {
               return "pages";
@@ -160,18 +186,20 @@ export default defineConfig(({ mode }) => {
               return "hooks";
             }
           },
-          
+
           // Nomes de arquivo otimizados
           chunkFileNames: isProd ? "js/[name]-[hash].js" : "js/[name].js",
           entryFileNames: isProd ? "js/[name]-[hash].js" : "js/[name].js",
-          assetFileNames: isProd ? "assets/[name]-[hash][extname]" : "assets/[name][extname]",
+          assetFileNames: isProd
+            ? "assets/[name]-[hash][extname]"
+            : "assets/[name][extname]",
         },
       },
-      
+
       cssCodeSplit: true,
       assetsInlineLimit: 4096,
       minify: isProd ? "terser" : false,
-      
+
       ...(isProd && {
         terserOptions: {
           compress: {
@@ -189,12 +217,12 @@ export default defineConfig(({ mode }) => {
           },
         },
       }),
-        // Otimizações de build
+      // Otimizações de build
       target: ["es2020", "edge88", "firefox78", "chrome87", "safari14"],
       modulePreload: {
         polyfill: false,
       },
-        // Compressão mais agressiva
+      // Compressão mais agressiva
       reportCompressedSize: isProd,
     },
 
@@ -220,7 +248,8 @@ export default defineConfig(({ mode }) => {
       ...(isProd && {
         drop: ["console", "debugger"],
       }),
-    },    optimizeDeps: {
+    },
+    optimizeDeps: {
       esbuildOptions: {
         loader: {
           ".js": "jsx",
