@@ -1,16 +1,16 @@
-import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
-import { ErrorBoundary } from '../../components/errors/ErrorBoundary';
+import React from "react";
+import { render, screen, fireEvent } from "@testing-library/react";
+import { ErrorBoundary } from "../../components/errors/ErrorBoundary";
 
 // Componente que gera erro para teste
 const ThrowError = ({ shouldThrow = false }) => {
   if (shouldThrow) {
-    throw new Error('Erro de teste');
+    throw new Error("Erro de teste");
   }
   return <div>Componente funcionando</div>;
 };
 
-describe('ErrorBoundary', () => {
+describe("ErrorBoundary", () => {
   // Silencia os erros no console durante os testes
   const originalConsoleError = console.error;
   beforeAll(() => {
@@ -25,48 +25,50 @@ describe('ErrorBoundary', () => {
     jest.clearAllMocks();
   });
 
-  it('deve renderizar children quando não há erro', () => {
+  it("deve renderizar children quando não há erro", () => {
     render(
       <ErrorBoundary>
         <ThrowError shouldThrow={false} />
       </ErrorBoundary>
     );
 
-    expect(screen.getByText('Componente funcionando')).toBeInTheDocument();
+    expect(screen.getByText("Componente funcionando")).toBeInTheDocument();
   });
 
-  it('deve capturar e exibir erro quando child quebra', () => {
+  it("deve capturar e exibir erro quando child quebra", () => {
     render(
       <ErrorBoundary>
         <ThrowError shouldThrow={true} />
       </ErrorBoundary>
     );
 
-    expect(screen.getByText('Oops! Algo deu errado')).toBeInTheDocument();
-    expect(screen.getByText(/Parece que encontramos um pequeno problema/)).toBeInTheDocument();
+    expect(screen.getByText("Oops! Algo deu errado")).toBeInTheDocument();
+    expect(
+      screen.getByText(/Parece que encontramos um pequeno problema/)
+    ).toBeInTheDocument();
   });
 
-  it('deve exibir botão de tentar novamente', () => {
+  it("deve exibir botão de tentar novamente", () => {
     render(
       <ErrorBoundary>
         <ThrowError shouldThrow={true} />
       </ErrorBoundary>
     );
 
-    const retryButton = screen.getByText('Tentar Novamente');
+    const retryButton = screen.getByText("Tentar Novamente");
     expect(retryButton).toBeInTheDocument();
   });
 
-  it('deve resetar erro ao clicar em tentar novamente', () => {
+  it("deve resetar erro ao clicar em tentar novamente", () => {
     const { rerender } = render(
       <ErrorBoundary>
         <ThrowError shouldThrow={true} />
       </ErrorBoundary>
     );
 
-    expect(screen.getByText('Oops! Algo deu errado')).toBeInTheDocument();
+    expect(screen.getByText("Oops! Algo deu errado")).toBeInTheDocument();
 
-    const retryButton = screen.getByText('Tentar Novamente');
+    const retryButton = screen.getByText("Tentar Novamente");
     fireEvent.click(retryButton);
 
     // Re-renderiza com componente funcionando
@@ -76,21 +78,21 @@ describe('ErrorBoundary', () => {
       </ErrorBoundary>
     );
 
-    expect(screen.getByText('Componente funcionando')).toBeInTheDocument();
+    expect(screen.getByText("Componente funcionando")).toBeInTheDocument();
   });
 
-  it('deve exibir botão para voltar ao início', () => {
+  it("deve exibir botão para voltar ao início", () => {
     render(
       <ErrorBoundary>
         <ThrowError shouldThrow={true} />
       </ErrorBoundary>
     );
 
-    const homeButton = screen.getByText('Voltar ao Início');
+    const homeButton = screen.getByText("Voltar ao Início");
     expect(homeButton).toBeInTheDocument();
   });
 
-  it('deve exibir fallback customizado quando fornecido', () => {
+  it("deve exibir fallback customizado quando fornecido", () => {
     const CustomFallback = ({ error, resetError }) => (
       <div>
         <h1>Erro customizado</h1>
@@ -105,11 +107,11 @@ describe('ErrorBoundary', () => {
       </ErrorBoundary>
     );
 
-    expect(screen.getByText('Erro customizado')).toBeInTheDocument();
-    expect(screen.getByText('Erro de teste')).toBeInTheDocument();
+    expect(screen.getByText("Erro customizado")).toBeInTheDocument();
+    expect(screen.getByText("Erro de teste")).toBeInTheDocument();
   });
 
-  it('deve chamar onError quando erro ocorre', () => {
+  it("deve chamar onError quando erro ocorre", () => {
     const onError = jest.fn();
 
     render(
@@ -126,20 +128,20 @@ describe('ErrorBoundary', () => {
     );
   });
 
-  it('deve exibir detalhes do erro quando expandido', () => {
+  it("deve exibir detalhes do erro quando expandido", () => {
     render(
       <ErrorBoundary>
         <ThrowError shouldThrow={true} />
       </ErrorBoundary>
     );
 
-    const detailsElement = screen.getByText('Detalhes técnicos');
+    const detailsElement = screen.getByText("Detalhes técnicos");
     fireEvent.click(detailsElement);
 
     expect(screen.getByText(/Erro de teste/)).toBeInTheDocument();
   });
 
-  it('deve ter IDs únicos para múltiplas instâncias', () => {
+  it("deve ter IDs únicos para múltiplas instâncias", () => {
     const { container: container1 } = render(
       <ErrorBoundary>
         <ThrowError shouldThrow={true} />
@@ -152,13 +154,13 @@ describe('ErrorBoundary', () => {
       </ErrorBoundary>
     );
 
-    const button1 = container1.querySelector('button');
-    const button2 = container2.querySelector('button');
+    const button1 = container1.querySelector("button");
+    const button2 = container2.querySelector("button");
 
     expect(button1.id).not.toBe(button2.id);
   });
 
-  it('deve reportar erro para serviços de monitoramento', () => {
+  it("deve reportar erro para serviços de monitoramento", () => {
     // Mock de serviço de monitoramento
     global.Sentry = {
       captureException: jest.fn(),
@@ -175,7 +177,7 @@ describe('ErrorBoundary', () => {
     expect(onError).toHaveBeenCalled();
   });
 
-  it('deve ser acessível', () => {
+  it("deve ser acessível", () => {
     render(
       <ErrorBoundary>
         <ThrowError shouldThrow={true} />
@@ -183,32 +185,32 @@ describe('ErrorBoundary', () => {
     );
 
     // Verifica se tem estrutura semântica correta
-    expect(screen.getByRole('main')).toBeInTheDocument();
-    expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument();
-    
+    expect(screen.getByRole("main")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 1 })).toBeInTheDocument();
+
     // Verifica se botões são acessíveis
-    const buttons = screen.getAllByRole('button');
+    const buttons = screen.getAllByRole("button");
     expect(buttons).toHaveLength(2);
-    
-    buttons.forEach(button => {
-      expect(button).toHaveAttribute('type', 'button');
+
+    buttons.forEach((button) => {
+      expect(button).toHaveAttribute("type", "button");
     });
   });
 
-  it('deve manter foco gerenciado após erro', () => {
+  it("deve manter foco gerenciado após erro", () => {
     render(
       <ErrorBoundary>
         <ThrowError shouldThrow={true} />
       </ErrorBoundary>
     );
 
-    const retryButton = screen.getByText('Tentar Novamente');
-    
+    const retryButton = screen.getByText("Tentar Novamente");
+
     // O primeiro botão deve estar focado automaticamente
     expect(retryButton).toHaveFocus();
   });
 
-  it('deve limpar estado ao desmontar', () => {
+  it("deve limpar estado ao desmontar", () => {
     const { unmount } = render(
       <ErrorBoundary>
         <ThrowError shouldThrow={true} />
@@ -219,8 +221,8 @@ describe('ErrorBoundary', () => {
     expect(() => unmount()).not.toThrow();
   });
 
-  describe('PropTypes', () => {
-    it('deve aceitar children válidos', () => {
+  describe("PropTypes", () => {
+    it("deve aceitar children válidos", () => {
       expect(() => {
         render(
           <ErrorBoundary>
@@ -230,7 +232,7 @@ describe('ErrorBoundary', () => {
       }).not.toThrow();
     });
 
-    it('deve aceitar fallback como função', () => {
+    it("deve aceitar fallback como função", () => {
       const fallback = ({ error, resetError }) => (
         <div>Fallback: {error.message}</div>
       );
@@ -244,7 +246,7 @@ describe('ErrorBoundary', () => {
       }).not.toThrow();
     });
 
-    it('deve aceitar onError como função', () => {
+    it("deve aceitar onError como função", () => {
       const onError = jest.fn();
 
       expect(() => {

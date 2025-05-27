@@ -274,30 +274,39 @@ const MetaTags = ({
     description: PropTypes.string,
     image: PropTypes.string,
     url: PropTypes.string,
-    type: PropTypes.oneOf(['website', 'article', 'product', 'profile']),
+    type: PropTypes.oneOf(["website", "article", "product", "profile"]),
     keywords: PropTypes.string,
     author: PropTypes.string,
     locale: PropTypes.string,
     siteName: PropTypes.string,
-    twitterCardType: PropTypes.oneOf(['summary', 'summary_large_image', 'app', 'player']),
+    twitterCardType: PropTypes.oneOf([
+      "summary",
+      "summary_large_image",
+      "app",
+      "player",
+    ]),
     structuredData: PropTypes.object,
     robots: PropTypes.string,
     viewport: PropTypes.string,
     themeColor: PropTypes.string,
-    alternates: PropTypes.arrayOf(PropTypes.shape({
-      href: PropTypes.string.isRequired,
-      hreflang: PropTypes.string.isRequired,
-    })),
+    alternates: PropTypes.arrayOf(
+      PropTypes.shape({
+        href: PropTypes.string.isRequired,
+        hreflang: PropTypes.string.isRequired,
+      })
+    ),
     openingHours: PropTypes.string,
     contactPoint: PropTypes.shape({
       telephone: PropTypes.string,
       email: PropTypes.string,
       address: PropTypes.string,
     }),
-    breadcrumbs: PropTypes.arrayOf(PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      url: PropTypes.string.isRequired,
-    })),
+    breadcrumbs: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        url: PropTypes.string.isRequired,
+      })
+    ),
     article: PropTypes.shape({
       publishedTime: PropTypes.string,
       modifiedTime: PropTypes.string,

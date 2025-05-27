@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from "react";
 
 /**
  * Hook para gerenciar Service Worker e funcionalidades PWA
@@ -13,7 +13,7 @@ export const useServiceWorker = () => {
 
   // Verificar suporte a Service Worker
   useEffect(() => {
-    setIsSupported('serviceWorker' in navigator);
+    setIsSupported("serviceWorker" in navigator);
   }, []);
 
   // Registrar Service Worker
@@ -21,28 +21,31 @@ export const useServiceWorker = () => {
     if (!isSupported) return false;
 
     try {
-      const reg = await navigator.serviceWorker.register('/sw.js', {
-        scope: '/',
+      const reg = await navigator.serviceWorker.register("/sw.js", {
+        scope: "/",
       });
 
       setRegistration(reg);
       setIsRegistered(true);
 
       // Verificar por atualizações
-      reg.addEventListener('updatefound', () => {
+      reg.addEventListener("updatefound", () => {
         const newWorker = reg.installing;
-        
-        newWorker.addEventListener('statechange', () => {
-          if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+
+        newWorker.addEventListener("statechange", () => {
+          if (
+            newWorker.state === "installed" &&
+            navigator.serviceWorker.controller
+          ) {
             setHasUpdate(true);
           }
         });
       });
 
-      console.log('Service Worker registrado com sucesso');
+      console.log("Service Worker registrado com sucesso");
       return true;
     } catch (error) {
-      console.error('Falha ao registrar Service Worker:', error);
+      console.error("Falha ao registrar Service Worker:", error);
       return false;
     }
   }, [isSupported]);
@@ -50,7 +53,7 @@ export const useServiceWorker = () => {
   // Atualizar Service Worker
   const updateServiceWorker = useCallback(() => {
     if (registration && registration.waiting) {
-      registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+      registration.waiting.postMessage({ type: "SKIP_WAITING" });
       setHasUpdate(false);
       window.location.reload();
     }
@@ -61,12 +64,12 @@ export const useServiceWorker = () => {
     const handleOnline = () => setIsOnline(true);
     const handleOffline = () => setIsOnline(false);
 
-    window.addEventListener('online', handleOnline);
-    window.addEventListener('offline', handleOffline);
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
 
     return () => {
-      window.removeEventListener('online', handleOnline);
-      window.removeEventListener('offline', handleOffline);
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
     };
   }, []);
 
@@ -82,13 +85,12 @@ export const useServiceWorker = () => {
           resolve(event.data);
         };
 
-        registration.active.postMessage(
-          { type: 'GET_CACHE_STATUS' },
-          [channel.port2]
-        );
+        registration.active.postMessage({ type: "GET_CACHE_STATUS" }, [
+          channel.port2,
+        ]);
       });
     } catch (error) {
-      console.error('Erro ao obter status do cache:', error);
+      console.error("Erro ao obter status do cache:", error);
       return {};
     }
   }, [registration]);
@@ -104,7 +106,7 @@ export const useServiceWorker = () => {
   useEffect(() => {
     if (isRegistered) {
       getCacheStatus();
-      
+
       const interval = setInterval(getCacheStatus, 30000); // A cada 30 segundos
       return () => clearInterval(interval);
     }
@@ -144,17 +146,20 @@ export const usePWA = () => {
       setInstallPrompt(null);
     };
 
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-    window.addEventListener('appinstalled', handleAppInstalled);
+    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+    window.addEventListener("appinstalled", handleAppInstalled);
 
     // Verificar se já está instalada
-    if (window.matchMedia('(display-mode: standalone)').matches) {
+    if (window.matchMedia("(display-mode: standalone)").matches) {
       setIsInstalled(true);
     }
 
     return () => {
-      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-      window.removeEventListener('appinstalled', handleAppInstalled);
+      window.removeEventListener(
+        "beforeinstallprompt",
+        handleBeforeInstallPrompt
+      );
+      window.removeEventListener("appinstalled", handleAppInstalled);
     };
   }, []);
 
@@ -164,16 +169,16 @@ export const usePWA = () => {
 
     try {
       const result = await installPrompt.prompt();
-      
-      if (result.outcome === 'accepted') {
+
+      if (result.outcome === "accepted") {
         setCanInstall(false);
         setInstallPrompt(null);
         return true;
       }
-      
+
       return false;
     } catch (error) {
-      console.error('Erro ao instalar PWA:', error);
+      console.error("Erro ao instalar PWA:", error);
       return false;
     }
   }, [installPrompt]);
@@ -195,7 +200,7 @@ export const usePushNotifications = () => {
 
   // Verificar suporte
   useEffect(() => {
-    setIsSupported('Notification' in window && 'PushManager' in window);
+    setIsSupported("Notification" in window && "PushManager" in window);
   }, []);
 
   // Solicitar permissão para notificações
@@ -205,38 +210,45 @@ export const usePushNotifications = () => {
     try {
       const result = await Notification.requestPermission();
       setPermission(result);
-      return result === 'granted';
+      return result === "granted";
     } catch (error) {
-      console.error('Erro ao solicitar permissão para notificações:', error);
+      console.error("Erro ao solicitar permissão para notificações:", error);
       return false;
     }
   }, [isSupported]);
 
   // Subscribir para push notifications
-  const subscribeToPush = useCallback(async (serviceWorkerRegistration) => {
-    if (!isSupported || permission !== 'granted' || !serviceWorkerRegistration) {
-      return null;
-    }
-
-    try {
-      const vapidPublicKey = process.env.REACT_APP_VAPID_PUBLIC_KEY;
-      if (!vapidPublicKey) {
-        console.warn('VAPID public key não configurada');
+  const subscribeToPush = useCallback(
+    async (serviceWorkerRegistration) => {
+      if (
+        !isSupported ||
+        permission !== "granted" ||
+        !serviceWorkerRegistration
+      ) {
         return null;
       }
 
-      const sub = await serviceWorkerRegistration.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: vapidPublicKey,
-      });
+      try {
+        const vapidPublicKey = process.env.REACT_APP_VAPID_PUBLIC_KEY;
+        if (!vapidPublicKey) {
+          console.warn("VAPID public key não configurada");
+          return null;
+        }
 
-      setSubscription(sub);
-      return sub;
-    } catch (error) {
-      console.error('Erro ao subscribir para push notifications:', error);
-      return null;
-    }
-  }, [isSupported, permission]);
+        const sub = await serviceWorkerRegistration.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: vapidPublicKey,
+        });
+
+        setSubscription(sub);
+        return sub;
+      } catch (error) {
+        console.error("Erro ao subscribir para push notifications:", error);
+        return null;
+      }
+    },
+    [isSupported, permission]
+  );
 
   return {
     isSupported,

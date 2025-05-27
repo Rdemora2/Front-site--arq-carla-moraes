@@ -16,8 +16,8 @@ const shimmer = keyframes`
 // Skeleton loader para componentes
 const SkeletonLoader = styled.div`
   ${tw`rounded-lg`}
-  width: ${props => props.width || "100%"};
-  height: ${props => props.height || "200px"};
+  width: ${(props) => props.width || "100%"};
+  height: ${(props) => props.height || "200px"};
   background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
   background-size: 400% 100%;
   animation: ${shimmer} 1.2s ease-in-out infinite;
@@ -35,7 +35,7 @@ const LoadingFallback = ({ type = "default", className }) => {
             <SkeletonLoader height="40px" width="200px" />
           </div>
         );
-        
+
       case "card":
         return (
           <div className={`space-y-4 p-4 ${className || ""}`}>
@@ -45,7 +45,7 @@ const LoadingFallback = ({ type = "default", className }) => {
             <SkeletonLoader height="16px" width="60%" />
           </div>
         );
-        
+
       case "form":
         return (
           <div className={`space-y-4 p-6 ${className || ""}`}>
@@ -55,7 +55,7 @@ const LoadingFallback = ({ type = "default", className }) => {
             <SkeletonLoader height="48px" width="150px" />
           </div>
         );
-        
+
       case "list":
         return (
           <div className={`space-y-3 ${className || ""}`}>
@@ -70,7 +70,7 @@ const LoadingFallback = ({ type = "default", className }) => {
             ))}
           </div>
         );
-        
+
       default:
         return (
           <div className={`space-y-4 p-6 ${className || ""}`}>
@@ -84,9 +84,9 @@ const LoadingFallback = ({ type = "default", className }) => {
   };
 
   return (
-    <div 
+    <div
       className="animate-pulse"
-      role="status" 
+      role="status"
       aria-label="Carregando conteúdo..."
     >
       {renderSkeleton()}
@@ -102,15 +102,15 @@ LoadingFallback.propTypes = {
 // Higher-order component para lazy loading
 export const withLazyLoading = (importFunc, fallbackType = "default") => {
   const LazyComponent = lazy(importFunc);
-  
+
   const WrappedComponent = (props) => (
     <Suspense fallback={<LoadingFallback type={fallbackType} />}>
       <LazyComponent {...props} />
     </Suspense>
   );
-  
+
   WrappedComponent.displayName = `LazyLoaded(${LazyComponent.displayName || LazyComponent.name || "Component"})`;
-  
+
   return WrappedComponent;
 };
 
@@ -125,7 +125,7 @@ export const createLazyComponent = (importFunc, options = {}) => {
 
   const LazyComponent = lazy(() => {
     let attempts = 0;
-    
+
     const loadComponent = () => {
       attempts++;
       return importFunc().catch((error) => {
@@ -138,14 +138,16 @@ export const createLazyComponent = (importFunc, options = {}) => {
         throw error;
       });
     };
-    
+
     return loadComponent();
   });
 
   const WrappedComponent = (props) => {
-    const fallback = CustomFallback 
-      ? <CustomFallback />
-      : <LoadingFallback type={fallbackType} />;
+    const fallback = CustomFallback ? (
+      <CustomFallback />
+    ) : (
+      <LoadingFallback type={fallbackType} />
+    );
 
     return (
       <Suspense fallback={fallback}>
@@ -155,7 +157,7 @@ export const createLazyComponent = (importFunc, options = {}) => {
   };
 
   WrappedComponent.displayName = `LazyComponent(${LazyComponent.displayName || "Component"})`;
-  
+
   return WrappedComponent;
 };
 
@@ -169,7 +171,7 @@ export class ComponentPreloader {
     }
 
     this.preloadedComponents.add(componentName);
-    
+
     // Preload durante idle time
     if ("requestIdleCallback" in window) {
       requestIdleCallback(() => {

@@ -18,10 +18,9 @@ const Description = tw(SectionDescription)`mx-auto`;
 const Posts = tw.div`mt-12 flex flex-wrap -mr-3 relative`;
 const Post = tw.a`flex flex-col h-full bg-gray-200 rounded`;
 const PostImage = styled.div`
-  ${(props) =>
-    css`
-      background-image: url("${props.imageSrc}");
-    `}
+  ${(props) => css`
+    background-image: url("${props.imageSrc}");
+  `}
   ${tw`h-64 sm:h-80 bg-center bg-cover rounded-t`}
 `;
 const PostText = tw.div`flex-1 px-6 py-8`;

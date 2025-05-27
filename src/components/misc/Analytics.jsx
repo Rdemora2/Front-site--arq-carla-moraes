@@ -9,7 +9,8 @@ import { useEnvironment } from "../../hooks/useEnvironment";
  * - Configuração condicional
  */
 const Analytics = () => {
-  const { googleAnalyticsId, facebookPixelId, isProduction, log } = useEnvironment();
+  const { googleAnalyticsId, facebookPixelId, isProduction, log } =
+    useEnvironment();
 
   // Função para carregar Google Analytics de forma otimizada
   const loadGoogleAnalytics = useCallback(() => {
@@ -19,9 +20,9 @@ const Analytics = () => {
       log("Carregando Google Analytics:", googleAnalyticsId);
 
       // Preconnect para melhorar performance
-      const preconnect = document.createElement('link');
-      preconnect.rel = 'preconnect';
-      preconnect.href = 'https://www.googletagmanager.com';
+      const preconnect = document.createElement("link");
+      preconnect.rel = "preconnect";
+      preconnect.href = "https://www.googletagmanager.com";
       document.head.appendChild(preconnect);
 
       // Carregar script do GA
@@ -29,7 +30,7 @@ const Analytics = () => {
       script.async = true;
       script.src = `https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsId}`;
       script.onerror = () => {
-        console.error('Erro ao carregar Google Analytics');
+        console.error("Erro ao carregar Google Analytics");
       };
       document.head.appendChild(script);
 
@@ -38,12 +39,12 @@ const Analytics = () => {
       function gtag() {
         window.dataLayer.push(arguments);
       }
-      
+
       gtag("js", new Date());
       gtag("config", googleAnalyticsId, {
         // Configurações de privacidade
         anonymize_ip: true,
-        cookie_flags: 'max-age=7200;secure;samesite=strict',
+        cookie_flags: "max-age=7200;secure;samesite=strict",
         // Melhorar performance
         send_page_view: true,
       });
@@ -81,7 +82,7 @@ const Analytics = () => {
         t.async = !0;
         t.src = v;
         t.onerror = () => {
-          console.error('Erro ao carregar Facebook Pixel');
+          console.error("Erro ao carregar Facebook Pixel");
         };
         s = b.getElementsByTagName(e)[0];
         s.parentNode.insertBefore(t, s);
@@ -94,7 +95,8 @@ const Analytics = () => {
 
       // Configurar pixel
       window.fbq("init", facebookPixelId);
-      window.fbq("track", "PageView");      log("Facebook Pixel carregado com sucesso");
+      window.fbq("track", "PageView");
+      log("Facebook Pixel carregado com sucesso");
     } catch (error) {
       console.error("Erro ao configurar Facebook Pixel:", error);
     }
@@ -121,16 +123,16 @@ const Analytics = () => {
     if (!isProduction || !window.gtag) return;
 
     const handleRouteChange = () => {
-      window.gtag('config', googleAnalyticsId, {
+      window.gtag("config", googleAnalyticsId, {
         page_path: window.location.pathname + window.location.search,
       });
     };
 
     // Listen para mudanças de URL (para SPA)
-    window.addEventListener('popstate', handleRouteChange);
-    
+    window.addEventListener("popstate", handleRouteChange);
+
     return () => {
-      window.removeEventListener('popstate', handleRouteChange);
+      window.removeEventListener("popstate", handleRouteChange);
     };
   }, [isProduction, googleAnalyticsId]);
 
@@ -201,7 +203,11 @@ export const trackPageView = (page_title, page_location) => {
  */
 export const trackConversion = (conversionData = {}) => {
   try {
-    const { action = 'conversion', value = 0, currency = 'BRL' } = conversionData;
+    const {
+      action = "conversion",
+      value = 0,
+      currency = "BRL",
+    } = conversionData;
 
     // Google Analytics
     if (window.gtag) {
@@ -209,7 +215,7 @@ export const trackConversion = (conversionData = {}) => {
         transaction_id: conversionData.transaction_id,
         value: value,
         currency: currency,
-        items: conversionData.items || []
+        items: conversionData.items || [],
       });
     }
 
@@ -218,7 +224,7 @@ export const trackConversion = (conversionData = {}) => {
       window.fbq("track", "Purchase", {
         value: value,
         currency: currency,
-        ...conversionData
+        ...conversionData,
       });
     }
   } catch (error) {

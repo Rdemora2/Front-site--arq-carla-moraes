@@ -1,15 +1,11 @@
-import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 
 /**
  * Hook para observar elementos entrando na viewport
  * Útil para lazy loading e animações
  */
 export const useIntersectionObserver = (options = {}) => {
-  const {
-    threshold = 0.1,
-    rootMargin = '0px',
-    triggerOnce = true,
-  } = options;
+  const { threshold = 0.1, rootMargin = "0px", triggerOnce = true } = options;
 
   const [isIntersecting, setIsIntersecting] = useState(false);
   const [hasIntersected, setHasIntersected] = useState(false);
@@ -23,7 +19,7 @@ export const useIntersectionObserver = (options = {}) => {
       ([entry]) => {
         const isVisible = entry.isIntersecting;
         setIsIntersecting(isVisible);
-        
+
         if (isVisible && !hasIntersected) {
           setHasIntersected(true);
           if (triggerOnce) {
@@ -55,11 +51,7 @@ export const useIntersectionObserver = (options = {}) => {
  * Hook para lazy loading de imagens
  */
 export const useLazyImage = (src, options = {}) => {
-  const {
-    placeholder = '',
-    threshold = 0.1,
-    fallback = '',
-  } = options;
+  const { placeholder = "", threshold = 0.1, fallback = "" } = options;
 
   const [imageSrc, setImageSrc] = useState(placeholder);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -70,7 +62,7 @@ export const useLazyImage = (src, options = {}) => {
     if (!hasIntersected || !src) return;
 
     const img = new Image();
-    
+
     img.onload = () => {
       setImageSrc(src);
       setIsLoaded(true);
@@ -114,7 +106,7 @@ export const useLazyComponent = (importFunc, fallback = null) => {
       setComponent(() => module.default || module);
     } catch (err) {
       setError(err);
-      console.error('Erro ao carregar componente:', err);
+      console.error("Erro ao carregar componente:", err);
     } finally {
       setIsLoading(false);
     }
@@ -154,19 +146,23 @@ export const useDebounce = (value, delay) => {
 export const useThrottle = (callback, delay) => {
   const lastCall = useRef(0);
 
-  return useCallback((...args) => {
-    const now = Date.now();
-    if (now - lastCall.current >= delay) {
-      lastCall.current = now;
-      callback(...args);
-    }
-  }, [callback, delay]);
+  return useCallback(
+    (...args) => {
+      const now = Date.now();
+      if (now - lastCall.current >= delay) {
+        lastCall.current = now;
+        callback(...args);
+      }
+    },
+    [callback, delay]
+  );
 };
 
 /**
  * Hook para cache com expiração
  */
-export const useCache = (key, fetcher, ttl = 300000) => { // 5 minutos default
+export const useCache = (key, fetcher, ttl = 300000) => {
+  // 5 minutos default
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -178,41 +174,44 @@ export const useCache = (key, fetcher, ttl = 300000) => { // 5 minutos default
     return Date.now() - timestamp > ttl;
   };
 
-  const fetchData = useCallback(async (forceRefresh = false) => {
-    const cacheKey = getCacheKey(key);
-    const timestampKey = getTimestampKey(key);
-    
-    // Verificar cache primeiro
-    if (!forceRefresh) {
-      const cachedData = localStorage.getItem(cacheKey);
-      const timestamp = localStorage.getItem(timestampKey);
-      
-      if (cachedData && timestamp && !isExpired(parseInt(timestamp), ttl)) {
-        try {
-          setData(JSON.parse(cachedData));
-          return;
-        } catch (e) {
-          // Cache inválido, continuar com fetch
+  const fetchData = useCallback(
+    async (forceRefresh = false) => {
+      const cacheKey = getCacheKey(key);
+      const timestampKey = getTimestampKey(key);
+
+      // Verificar cache primeiro
+      if (!forceRefresh) {
+        const cachedData = localStorage.getItem(cacheKey);
+        const timestamp = localStorage.getItem(timestampKey);
+
+        if (cachedData && timestamp && !isExpired(parseInt(timestamp), ttl)) {
+          try {
+            setData(JSON.parse(cachedData));
+            return;
+          } catch (e) {
+            // Cache inválido, continuar com fetch
+          }
         }
       }
-    }
 
-    setIsLoading(true);
-    setError(null);
+      setIsLoading(true);
+      setError(null);
 
-    try {
-      const result = await fetcher();
-      setData(result);
-      
-      // Salvar no cache
-      localStorage.setItem(cacheKey, JSON.stringify(result));
-      localStorage.setItem(timestampKey, Date.now().toString());
-    } catch (err) {
-      setError(err);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [key, fetcher, ttl]);
+      try {
+        const result = await fetcher();
+        setData(result);
+
+        // Salvar no cache
+        localStorage.setItem(cacheKey, JSON.stringify(result));
+        localStorage.setItem(timestampKey, Date.now().toString());
+      } catch (err) {
+        setError(err);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [key, fetcher, ttl]
+  );
 
   const invalidateCache = useCallback(() => {
     localStorage.removeItem(getCacheKey(key));
@@ -247,7 +246,7 @@ export const useAdvancedMemo = (factory, deps, options = {}) => {
   return useMemo(() => {
     // Criar chave do cache baseada nas dependências
     const cacheKey = JSON.stringify(deps);
-    
+
     // Verificar se existe no cache
     if (cache.current.has(cacheKey)) {
       // Mover para o final (LRU)
@@ -261,17 +260,17 @@ export const useAdvancedMemo = (factory, deps, options = {}) => {
 
     // Calcular novo valor
     const value = factory();
-    
+
     // Adicionar ao cache
     cache.current.set(cacheKey, value);
     cacheOrder.current.push(cacheKey);
-    
+
     // Remover itens antigos se exceder o tamanho máximo
     while (cacheOrder.current.length > maxSize) {
       const oldestKey = cacheOrder.current.shift();
       cache.current.delete(oldestKey);
     }
-    
+
     return value;
   }, deps);
 };
@@ -281,51 +280,59 @@ export const useAdvancedMemo = (factory, deps, options = {}) => {
  */
 export const useResourceHints = () => {
   const preloadResource = useCallback((href, as, type = null) => {
-    const link = document.createElement('link');
-    link.rel = 'preload';
+    const link = document.createElement("link");
+    link.rel = "preload";
     link.href = href;
     link.as = as;
     if (type) link.type = type;
-    
+
     // Evitar duplicatas
-    const existing = document.querySelector(`link[rel="preload"][href="${href}"]`);
+    const existing = document.querySelector(
+      `link[rel="preload"][href="${href}"]`
+    );
     if (!existing) {
       document.head.appendChild(link);
     }
   }, []);
 
   const prefetchResource = useCallback((href) => {
-    const link = document.createElement('link');
-    link.rel = 'prefetch';
+    const link = document.createElement("link");
+    link.rel = "prefetch";
     link.href = href;
-    
+
     // Evitar duplicatas
-    const existing = document.querySelector(`link[rel="prefetch"][href="${href}"]`);
+    const existing = document.querySelector(
+      `link[rel="prefetch"][href="${href}"]`
+    );
     if (!existing) {
       document.head.appendChild(link);
     }
   }, []);
 
   const preconnectOrigin = useCallback((origin, crossorigin = false) => {
-    const link = document.createElement('link');
-    link.rel = 'preconnect';
+    const link = document.createElement("link");
+    link.rel = "preconnect";
     link.href = origin;
-    if (crossorigin) link.crossOrigin = 'anonymous';
-    
+    if (crossorigin) link.crossOrigin = "anonymous";
+
     // Evitar duplicatas
-    const existing = document.querySelector(`link[rel="preconnect"][href="${origin}"]`);
+    const existing = document.querySelector(
+      `link[rel="preconnect"][href="${origin}"]`
+    );
     if (!existing) {
       document.head.appendChild(link);
     }
   }, []);
 
   const dnsPrefetch = useCallback((origin) => {
-    const link = document.createElement('link');
-    link.rel = 'dns-prefetch';
+    const link = document.createElement("link");
+    link.rel = "dns-prefetch";
     link.href = origin;
-    
+
     // Evitar duplicatas
-    const existing = document.querySelector(`link[rel="dns-prefetch"][href="${origin}"]`);
+    const existing = document.querySelector(
+      `link[rel="dns-prefetch"][href="${origin}"]`
+    );
     if (!existing) {
       document.head.appendChild(link);
     }
@@ -390,11 +397,15 @@ export const useDeviceCapabilities = () => {
   useEffect(() => {
     const updateCapabilities = () => {
       setCapabilities({
-        connection: navigator.connection || navigator.mozConnection || navigator.webkitConnection,
+        connection:
+          navigator.connection ||
+          navigator.mozConnection ||
+          navigator.webkitConnection,
         memory: navigator.deviceMemory,
         cores: navigator.hardwareConcurrency,
-        touchSupport: 'ontouchstart' in window || navigator.maxTouchPoints > 0,
-        reducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+        touchSupport: "ontouchstart" in window || navigator.maxTouchPoints > 0,
+        reducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)")
+          .matches,
       });
     };
 
@@ -402,24 +413,24 @@ export const useDeviceCapabilities = () => {
 
     // Observar mudanças na conexão
     if (navigator.connection) {
-      navigator.connection.addEventListener('change', updateCapabilities);
+      navigator.connection.addEventListener("change", updateCapabilities);
     }
 
     // Observar mudanças no prefers-reduced-motion
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    mediaQuery.addEventListener('change', updateCapabilities);
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    mediaQuery.addEventListener("change", updateCapabilities);
 
     return () => {
       if (navigator.connection) {
-        navigator.connection.removeEventListener('change', updateCapabilities);
+        navigator.connection.removeEventListener("change", updateCapabilities);
       }
-      mediaQuery.removeEventListener('change', updateCapabilities);
+      mediaQuery.removeEventListener("change", updateCapabilities);
     };
   }, []);
 
   const isLowEnd = useMemo(() => {
     const { connection, memory, cores } = capabilities;
-    
+
     // Considerar dispositivo low-end se:
     // - Memória < 4GB
     // - Cores < 4
@@ -427,7 +438,7 @@ export const useDeviceCapabilities = () => {
     return (
       (memory && memory < 4) ||
       (cores && cores < 4) ||
-      (connection && ['slow-2g', '2g'].includes(connection.effectiveType))
+      (connection && ["slow-2g", "2g"].includes(connection.effectiveType))
     );
   }, [capabilities]);
 
@@ -444,30 +455,33 @@ export const useMemoryCache = (maxSize = 50) => {
   const cache = useRef(new Map());
   const accessOrder = useRef([]);
 
-  const set = useCallback((key, value) => {
-    const stringKey = JSON.stringify(key);
-    
-    // Remove da lista de acesso se já existe
-    const existingIndex = accessOrder.current.indexOf(stringKey);
-    if (existingIndex > -1) {
-      accessOrder.current.splice(existingIndex, 1);
-    }
+  const set = useCallback(
+    (key, value) => {
+      const stringKey = JSON.stringify(key);
 
-    // Adiciona no final (mais recente)
-    accessOrder.current.push(stringKey);
-    cache.current.set(stringKey, value);
+      // Remove da lista de acesso se já existe
+      const existingIndex = accessOrder.current.indexOf(stringKey);
+      if (existingIndex > -1) {
+        accessOrder.current.splice(existingIndex, 1);
+      }
 
-    // Remove itens antigos se exceder o limite
-    while (cache.current.size > maxSize) {
-      const oldestKey = accessOrder.current.shift();
-      cache.current.delete(oldestKey);
-    }
-  }, [maxSize]);
+      // Adiciona no final (mais recente)
+      accessOrder.current.push(stringKey);
+      cache.current.set(stringKey, value);
+
+      // Remove itens antigos se exceder o limite
+      while (cache.current.size > maxSize) {
+        const oldestKey = accessOrder.current.shift();
+        cache.current.delete(oldestKey);
+      }
+    },
+    [maxSize]
+  );
 
   const get = useCallback((key) => {
     const stringKey = JSON.stringify(key);
     const value = cache.current.get(stringKey);
-    
+
     if (value !== undefined) {
       // Move para o final (mais recente)
       const existingIndex = accessOrder.current.indexOf(stringKey);
@@ -476,7 +490,7 @@ export const useMemoryCache = (maxSize = 50) => {
         accessOrder.current.push(stringKey);
       }
     }
-    
+
     return value;
   }, []);
 
@@ -530,13 +544,13 @@ export const usePerformanceOptimizations = (options = {}) => {
     if (!adaptToDevice) return options;
 
     const { isLowEnd, reducedMotion } = deviceCapabilities;
-    
+
     return {
       ...options,
       enableAnimations: !reducedMotion && !isLowEnd,
       enableHeavyFeatures: !isLowEnd,
       cacheSize: isLowEnd ? 5 : 20,
-      imageQuality: isLowEnd ? 'low' : 'high',
+      imageQuality: isLowEnd ? "low" : "high",
     };
   }, [options, adaptToDevice, deviceCapabilities]);
 
@@ -545,12 +559,12 @@ export const usePerformanceOptimizations = (options = {}) => {
     if (!enableResourceHints) return;
 
     // Preconnect para fontes
-    resourceHints.preconnectOrigin('https://fonts.googleapis.com');
-    resourceHints.preconnectOrigin('https://fonts.gstatic.com', true);
+    resourceHints.preconnectOrigin("https://fonts.googleapis.com");
+    resourceHints.preconnectOrigin("https://fonts.gstatic.com", true);
 
     // Prefetch para recursos comuns
-    resourceHints.dnsPrefetch('https://www.google-analytics.com');
-    resourceHints.dnsPrefetch('https://connect.facebook.net');
+    resourceHints.dnsPrefetch("https://www.google-analytics.com");
+    resourceHints.dnsPrefetch("https://connect.facebook.net");
   }, [enableResourceHints, resourceHints]);
   const memoryCache = useMemoryCache();
 

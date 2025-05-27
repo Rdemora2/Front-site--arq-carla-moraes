@@ -1,46 +1,40 @@
-import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { FormInput, FormTextArea, FormCheckbox } from '../../components/forms/FormElements';
-import { customRender } from '../utils/test-utils';
+import React from "react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import {
+  FormInput,
+  FormTextArea,
+  FormCheckbox,
+} from "../../components/forms/FormElements";
+import { customRender } from "../utils/test-utils";
 
-describe('FormElements', () => {
-  describe('FormInput', () => {
-    it('deve renderizar input básico', () => {
+describe("FormElements", () => {
+  describe("FormInput", () => {
+    it("deve renderizar input básico", () => {
       customRender(
-        <FormInput
-          id="test-input"
-          label="Nome"
-          value=""
-          onChange={() => {}}
-        />
+        <FormInput id="test-input" label="Nome" value="" onChange={() => {}} />
       );
 
-      expect(screen.getByLabelText('Nome')).toBeInTheDocument();
-      expect(screen.getByRole('textbox')).toBeInTheDocument();
+      expect(screen.getByLabelText("Nome")).toBeInTheDocument();
+      expect(screen.getByRole("textbox")).toBeInTheDocument();
     });
 
-    it('deve mostrar label flutuante', async () => {
+    it("deve mostrar label flutuante", async () => {
       const user = userEvent.setup();
-      
+
       customRender(
-        <FormInput
-          id="test-input"
-          label="Email"
-          value=""
-          onChange={() => {}}
-        />
+        <FormInput id="test-input" label="Email" value="" onChange={() => {}} />
       );
 
-      const input = screen.getByRole('textbox');
-      
+      const input = screen.getByRole("textbox");
+
       await user.click(input);
-      
+
       // Label deve estar posicionada como flutuante quando focado
-      expect(screen.getByText('Email')).toBeInTheDocument();
+      expect(screen.getByText("Email")).toBeInTheDocument();
     });
 
-    it('deve exibir mensagem de erro', () => {
+    it("deve exibir mensagem de erro", () => {
       customRender(
         <FormInput
           id="test-input"
@@ -51,11 +45,11 @@ describe('FormElements', () => {
         />
       );
 
-      expect(screen.getByText('Email inválido')).toBeInTheDocument();
-      expect(screen.getByRole('textbox')).toHaveClass('error');
+      expect(screen.getByText("Email inválido")).toBeInTheDocument();
+      expect(screen.getByRole("textbox")).toHaveClass("error");
     });
 
-    it('deve mostrar indicador de campo válido', () => {
+    it("deve mostrar indicador de campo válido", () => {
       customRender(
         <FormInput
           id="test-input"
@@ -66,10 +60,10 @@ describe('FormElements', () => {
         />
       );
 
-      expect(screen.getByRole('textbox')).toHaveClass('valid');
+      expect(screen.getByRole("textbox")).toHaveClass("valid");
     });
 
-    it('deve mostrar contador de caracteres', () => {
+    it("deve mostrar contador de caracteres", () => {
       customRender(
         <FormInput
           id="test-input"
@@ -81,13 +75,13 @@ describe('FormElements', () => {
         />
       );
 
-      expect(screen.getByText('4/50')).toBeInTheDocument();
+      expect(screen.getByText("4/50")).toBeInTheDocument();
     });
 
-    it('deve chamar onChange corretamente', async () => {
+    it("deve chamar onChange corretamente", async () => {
       const handleChange = jest.fn();
       const user = userEvent.setup();
-      
+
       customRender(
         <FormInput
           id="test-input"
@@ -97,16 +91,16 @@ describe('FormElements', () => {
         />
       );
 
-      const input = screen.getByRole('textbox');
-      await user.type(input, 'João');
+      const input = screen.getByRole("textbox");
+      await user.type(input, "João");
 
       expect(handleChange).toHaveBeenCalledTimes(4); // Uma chamada por caractere
     });
 
-    it('deve aplicar máscara de telefone', async () => {
+    it("deve aplicar máscara de telefone", async () => {
       const handleChange = jest.fn();
       const user = userEvent.setup();
-      
+
       customRender(
         <FormInput
           id="test-input"
@@ -117,20 +111,20 @@ describe('FormElements', () => {
         />
       );
 
-      const input = screen.getByRole('textbox');
-      await user.type(input, '11999999999');
+      const input = screen.getByRole("textbox");
+      await user.type(input, "11999999999");
 
       // Deve chamar onChange com valor formatado
       expect(handleChange).toHaveBeenLastCalledWith(
         expect.objectContaining({
           target: expect.objectContaining({
-            value: '(11) 99999-9999'
-          })
+            value: "(11) 99999-9999",
+          }),
         })
       );
     });
 
-    it('deve ser acessível', () => {
+    it("deve ser acessível", () => {
       customRender(
         <FormInput
           id="test-input"
@@ -141,13 +135,13 @@ describe('FormElements', () => {
         />
       );
 
-      const input = screen.getByRole('textbox');
-      expect(input).toHaveAttribute('aria-required', 'true');
-      expect(input).toHaveAttribute('id', 'test-input');
-      expect(screen.getByLabelText('Nome')).toBe(input);
+      const input = screen.getByRole("textbox");
+      expect(input).toHaveAttribute("aria-required", "true");
+      expect(input).toHaveAttribute("id", "test-input");
+      expect(screen.getByLabelText("Nome")).toBe(input);
     });
 
-    it('deve suportar diferentes tipos', () => {
+    it("deve suportar diferentes tipos", () => {
       customRender(
         <FormInput
           id="test-input"
@@ -158,12 +152,15 @@ describe('FormElements', () => {
         />
       );
 
-      expect(screen.getByLabelText('Senha')).toHaveAttribute('type', 'password');
+      expect(screen.getByLabelText("Senha")).toHaveAttribute(
+        "type",
+        "password"
+      );
     });
   });
 
-  describe('FormTextArea', () => {
-    it('deve renderizar textarea', () => {
+  describe("FormTextArea", () => {
+    it("deve renderizar textarea", () => {
       customRender(
         <FormTextArea
           id="test-textarea"
@@ -173,13 +170,13 @@ describe('FormElements', () => {
         />
       );
 
-      expect(screen.getByLabelText('Mensagem')).toBeInTheDocument();
-      expect(screen.getByRole('textbox')).toBeInTheDocument();
+      expect(screen.getByLabelText("Mensagem")).toBeInTheDocument();
+      expect(screen.getByRole("textbox")).toBeInTheDocument();
     });
 
-    it('deve redimensionar automaticamente', async () => {
+    it("deve redimensionar automaticamente", async () => {
       const user = userEvent.setup();
-      
+
       customRender(
         <FormTextArea
           id="test-textarea"
@@ -190,16 +187,16 @@ describe('FormElements', () => {
         />
       );
 
-      const textarea = screen.getByRole('textbox');
+      const textarea = screen.getByRole("textbox");
       const initialHeight = textarea.style.height;
-      
-      await user.type(textarea, 'Linha 1\nLinha 2\nLinha 3\nLinha 4');
-      
+
+      await user.type(textarea, "Linha 1\nLinha 2\nLinha 3\nLinha 4");
+
       // Altura deve ter aumentado
       expect(textarea.style.height).not.toBe(initialHeight);
     });
 
-    it('deve mostrar contador de caracteres', () => {
+    it("deve mostrar contador de caracteres", () => {
       customRender(
         <FormTextArea
           id="test-textarea"
@@ -211,13 +208,13 @@ describe('FormElements', () => {
         />
       );
 
-      expect(screen.getByText('9/100')).toBeInTheDocument();
+      expect(screen.getByText("9/100")).toBeInTheDocument();
     });
 
-    it('deve respeitar limite de caracteres', async () => {
+    it("deve respeitar limite de caracteres", async () => {
       const handleChange = jest.fn();
       const user = userEvent.setup();
-      
+
       customRender(
         <FormTextArea
           id="test-textarea"
@@ -228,22 +225,22 @@ describe('FormElements', () => {
         />
       );
 
-      const textarea = screen.getByRole('textbox');
-      await user.type(textarea, '12345678901234567890'); // 20 caracteres
+      const textarea = screen.getByRole("textbox");
+      await user.type(textarea, "12345678901234567890"); // 20 caracteres
 
       // Deve truncar para 10 caracteres
       expect(handleChange).toHaveBeenLastCalledWith(
         expect.objectContaining({
           target: expect.objectContaining({
-            value: '1234567890'
-          })
+            value: "1234567890",
+          }),
         })
       );
     });
   });
 
-  describe('FormCheckbox', () => {
-    it('deve renderizar checkbox', () => {
+  describe("FormCheckbox", () => {
+    it("deve renderizar checkbox", () => {
       customRender(
         <FormCheckbox
           id="test-checkbox"
@@ -253,14 +250,14 @@ describe('FormElements', () => {
         />
       );
 
-      expect(screen.getByLabelText('Aceito os termos')).toBeInTheDocument();
-      expect(screen.getByRole('checkbox')).toBeInTheDocument();
+      expect(screen.getByLabelText("Aceito os termos")).toBeInTheDocument();
+      expect(screen.getByRole("checkbox")).toBeInTheDocument();
     });
 
-    it('deve alternar estado quando clicado', async () => {
+    it("deve alternar estado quando clicado", async () => {
       const handleChange = jest.fn();
       const user = userEvent.setup();
-      
+
       customRender(
         <FormCheckbox
           id="test-checkbox"
@@ -270,19 +267,19 @@ describe('FormElements', () => {
         />
       );
 
-      const checkbox = screen.getByRole('checkbox');
+      const checkbox = screen.getByRole("checkbox");
       await user.click(checkbox);
 
       expect(handleChange).toHaveBeenCalledWith(
         expect.objectContaining({
           target: expect.objectContaining({
-            checked: true
-          })
+            checked: true,
+          }),
         })
       );
     });
 
-    it('deve exibir como obrigatório', () => {
+    it("deve exibir como obrigatório", () => {
       customRender(
         <FormCheckbox
           id="test-checkbox"
@@ -293,11 +290,11 @@ describe('FormElements', () => {
         />
       );
 
-      const checkbox = screen.getByRole('checkbox');
-      expect(checkbox).toHaveAttribute('aria-required', 'true');
+      const checkbox = screen.getByRole("checkbox");
+      expect(checkbox).toHaveAttribute("aria-required", "true");
     });
 
-    it('deve mostrar estado de erro', () => {
+    it("deve mostrar estado de erro", () => {
       customRender(
         <FormCheckbox
           id="test-checkbox"
@@ -308,14 +305,17 @@ describe('FormElements', () => {
         />
       );
 
-      expect(screen.getByText('Campo obrigatório')).toBeInTheDocument();
-      expect(screen.getByRole('checkbox')).toHaveAttribute('aria-invalid', 'true');
+      expect(screen.getByText("Campo obrigatório")).toBeInTheDocument();
+      expect(screen.getByRole("checkbox")).toHaveAttribute(
+        "aria-invalid",
+        "true"
+      );
     });
 
-    it('deve ser acessível com navegação por teclado', async () => {
+    it("deve ser acessível com navegação por teclado", async () => {
       const handleChange = jest.fn();
       const user = userEvent.setup();
-      
+
       customRender(
         <FormCheckbox
           id="test-checkbox"
@@ -325,17 +325,17 @@ describe('FormElements', () => {
         />
       );
 
-      const checkbox = screen.getByRole('checkbox');
+      const checkbox = screen.getByRole("checkbox");
       checkbox.focus();
-      
-      await user.keyboard(' '); // Espaço deve alternar o checkbox
+
+      await user.keyboard(" "); // Espaço deve alternar o checkbox
 
       expect(handleChange).toHaveBeenCalled();
     });
   });
 
-  describe('Integração e comportamentos avançados', () => {
-    it('deve aplicar delay de animação', () => {
+  describe("Integração e comportamentos avançados", () => {
+    it("deve aplicar delay de animação", () => {
       customRender(
         <FormInput
           id="test-input"
@@ -346,13 +346,13 @@ describe('FormElements', () => {
         />
       );
 
-      const container = screen.getByRole('textbox').closest('div');
-      expect(container).toHaveStyle('animation-delay: 0.2s');
+      const container = screen.getByRole("textbox").closest("div");
+      expect(container).toHaveStyle("animation-delay: 0.2s");
     });
 
-    it('deve suportar ref forwarding', () => {
+    it("deve suportar ref forwarding", () => {
       const ref = React.createRef();
-      
+
       customRender(
         <FormInput
           ref={ref}
@@ -366,7 +366,7 @@ describe('FormElements', () => {
       expect(ref.current).toBeInstanceOf(HTMLInputElement);
     });
 
-    it('deve validar PropTypes', () => {
+    it("deve validar PropTypes", () => {
       // Mock console.error para capturar warnings do PropTypes
       const originalError = console.error;
       console.error = jest.fn();
@@ -385,9 +385,9 @@ describe('FormElements', () => {
       console.error = originalError;
     });
 
-    it('deve manter performance com muitos campos', () => {
+    it("deve manter performance com muitos campos", () => {
       const start = performance.now();
-      
+
       customRender(
         <div>
           {Array.from({ length: 100 }, (_, i) => (
@@ -401,10 +401,10 @@ describe('FormElements', () => {
           ))}
         </div>
       );
-      
+
       const end = performance.now();
       const renderTime = end - start;
-      
+
       // Deve renderizar 100 campos em menos de 100ms
       expect(renderTime).toBeLessThan(100);
     });

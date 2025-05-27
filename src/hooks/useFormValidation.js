@@ -1,9 +1,9 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo } from "react";
 
 export const validationRules = {
   required: (value) => {
-    if (!value || (typeof value === 'string' && value.trim() === '')) {
-      return 'Este campo é obrigatório';
+    if (!value || (typeof value === "string" && value.trim() === "")) {
+      return "Este campo é obrigatório";
     }
     return null;
   },
@@ -12,7 +12,7 @@ export const validationRules = {
     if (!value) return null;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(value)) {
-      return 'Por favor, insira um email válido';
+      return "Por favor, insira um email válido";
     }
     return null;
   },
@@ -20,9 +20,10 @@ export const validationRules = {
   phone: (value) => {
     if (!value) return null;
     // Aceita formatos: (11) 99999-9999, 11999999999, +5511999999999
-    const phoneRegex = /^(\+55\s?)?(\(?[0-9]{2}\)?\s?)?[0-9]{4,5}[\s-]?[0-9]{4}$/;
-    if (!phoneRegex.test(value.replace(/\s/g, ''))) {
-      return 'Por favor, insira um telefone válido';
+    const phoneRegex =
+      /^(\+55\s?)?(\(?[0-9]{2}\)?\s?)?[0-9]{4,5}[\s-]?[0-9]{4}$/;
+    if (!phoneRegex.test(value.replace(/\s/g, ""))) {
+      return "Por favor, insira um telefone válido";
     }
     return null;
   },
@@ -46,7 +47,7 @@ export const validationRules = {
   pattern: (regex, message) => (value) => {
     if (!value) return null;
     if (!regex.test(value)) {
-      return message || 'Formato inválido';
+      return message || "Formato inválido";
     }
     return null;
   },
@@ -65,10 +66,10 @@ export const fieldConfigs = {
       validationRules.maxLength(100),
       validationRules.pattern(
         /^[a-zA-ZÀ-ÿ\s]+$/,
-        'Nome deve conter apenas letras e espaços'
+        "Nome deve conter apenas letras e espaços"
       ),
     ],
-    sanitize: (value) => value?.trim().replace(/\s+/g, ' '),
+    sanitize: (value) => value?.trim().replace(/\s+/g, " "),
   },
 
   email: {
@@ -81,13 +82,11 @@ export const fieldConfigs = {
   },
 
   phone: {
-    rules: [
-      validationRules.phone,
-    ],
-    sanitize: (value) => value?.replace(/\D/g, ''), // Remove non-digits for storage
+    rules: [validationRules.phone],
+    sanitize: (value) => value?.replace(/\D/g, ""), // Remove non-digits for storage
     format: (value) => {
-      if (!value) return '';
-      const digits = value.replace(/\D/g, '');
+      if (!value) return "";
+      const digits = value.replace(/\D/g, "");
       if (digits.length === 11) {
         return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
       }
@@ -108,7 +107,7 @@ export const fieldConfigs = {
     rules: [
       (value) => {
         if (!value) {
-          return 'Você deve aceitar a política de privacidade';
+          return "Você deve aceitar a política de privacidade";
         }
         return null;
       },
@@ -119,7 +118,10 @@ export const fieldConfigs = {
 /**
  * Hook principal para validação de formulários
  */
-export const useFormValidation = (initialValues = {}, fieldConfigOverrides = {}) => {
+export const useFormValidation = (
+  initialValues = {},
+  fieldConfigOverrides = {}
+) => {
   const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
@@ -127,114 +129,142 @@ export const useFormValidation = (initialValues = {}, fieldConfigOverrides = {})
   const [submitAttempted, setSubmitAttempted] = useState(false);
 
   // Mesclar configurações padrão com overrides
-  const finalConfigs = useMemo(() => ({
-    ...fieldConfigs,
-    ...fieldConfigOverrides,
-  }), [fieldConfigOverrides]);
+  const finalConfigs = useMemo(
+    () => ({
+      ...fieldConfigs,
+      ...fieldConfigOverrides,
+    }),
+    [fieldConfigOverrides]
+  );
 
   // Validar um campo específico
-  const validateField = useCallback((fieldName, value, allValues = values) => {
-    const config = finalConfigs[fieldName];
-    if (!config || !config.rules) return null;
+  const validateField = useCallback(
+    (fieldName, value, allValues = values) => {
+      const config = finalConfigs[fieldName];
+      if (!config || !config.rules) return null;
 
-    // Aplicar sanitização se definida
-    const sanitizedValue = config.sanitize ? config.sanitize(value) : value;
+      // Aplicar sanitização se definida
+      const sanitizedValue = config.sanitize ? config.sanitize(value) : value;
 
-    // Executar todas as regras de validação
-    for (const rule of config.rules) {
-      const error = rule(sanitizedValue, allValues);
-      if (error) {
-        return error;
+      // Executar todas as regras de validação
+      for (const rule of config.rules) {
+        const error = rule(sanitizedValue, allValues);
+        if (error) {
+          return error;
+        }
       }
-    }
 
-    return null;
-  }, [finalConfigs, values]);
+      return null;
+    },
+    [finalConfigs, values]
+  );
 
   // Validar todos os campos
-  const validateForm = useCallback((valuesToValidate = values) => {
-    const newErrors = {};
-    let isValid = true;
+  const validateForm = useCallback(
+    (valuesToValidate = values) => {
+      const newErrors = {};
+      let isValid = true;
 
-    Object.keys(finalConfigs).forEach(fieldName => {
-      const error = validateField(fieldName, valuesToValidate[fieldName], valuesToValidate);
-      if (error) {
-        newErrors[fieldName] = error;
-        isValid = false;
-      }
-    });
+      Object.keys(finalConfigs).forEach((fieldName) => {
+        const error = validateField(
+          fieldName,
+          valuesToValidate[fieldName],
+          valuesToValidate
+        );
+        if (error) {
+          newErrors[fieldName] = error;
+          isValid = false;
+        }
+      });
 
-    return { isValid, errors: newErrors };
-  }, [finalConfigs, validateField, values]);
+      return { isValid, errors: newErrors };
+    },
+    [finalConfigs, validateField, values]
+  );
 
   // Atualizar valor de um campo
-  const setValue = useCallback((fieldName, value) => {
-    setValues(prev => {
-      const newValues = { ...prev, [fieldName]: value };
-      
-      // Validação em tempo real se o campo já foi tocado ou após tentativa de submit
-      if (touched[fieldName] || submitAttempted) {
-        const error = validateField(fieldName, value, newValues);
-        setErrors(prev => ({
+  const setValue = useCallback(
+    (fieldName, value) => {
+      setValues((prev) => {
+        const newValues = { ...prev, [fieldName]: value };
+
+        // Validação em tempo real se o campo já foi tocado ou após tentativa de submit
+        if (touched[fieldName] || submitAttempted) {
+          const error = validateField(fieldName, value, newValues);
+          setErrors((prev) => ({
+            ...prev,
+            [fieldName]: error,
+          }));
+        }
+
+        return newValues;
+      });
+    },
+    [touched, submitAttempted, validateField]
+  );
+
+  // Marcar campo como tocado
+  const setFieldTouched = useCallback(
+    (fieldName, isTouched = true) => {
+      setTouched((prev) => ({
+        ...prev,
+        [fieldName]: isTouched,
+      }));
+
+      // Validar campo quando tocado
+      if (isTouched) {
+        const error = validateField(fieldName, values[fieldName]);
+        setErrors((prev) => ({
           ...prev,
           [fieldName]: error,
         }));
       }
-
-      return newValues;
-    });
-  }, [touched, submitAttempted, validateField]);
-
-  // Marcar campo como tocado
-  const setFieldTouched = useCallback((fieldName, isTouched = true) => {
-    setTouched(prev => ({
-      ...prev,
-      [fieldName]: isTouched,
-    }));
-
-    // Validar campo quando tocado
-    if (isTouched) {
-      const error = validateField(fieldName, values[fieldName]);
-      setErrors(prev => ({
-        ...prev,
-        [fieldName]: error,
-      }));
-    }
-  }, [validateField, values]);
+    },
+    [validateField, values]
+  );
 
   // Handler para mudança de input
-  const handleChange = useCallback((e) => {
-    const { name, value, type, checked } = e.target;
-    const finalValue = type === 'checkbox' ? checked : value;
-    setValue(name, finalValue);
-  }, [setValue]);
+  const handleChange = useCallback(
+    (e) => {
+      const { name, value, type, checked } = e.target;
+      const finalValue = type === "checkbox" ? checked : value;
+      setValue(name, finalValue);
+    },
+    [setValue]
+  );
 
   // Handler para blur (perda de foco)
-  const handleBlur = useCallback((e) => {
-    const { name } = e.target;
-    setFieldTouched(name, true);
-  }, [setFieldTouched]);
+  const handleBlur = useCallback(
+    (e) => {
+      const { name } = e.target;
+      setFieldTouched(name, true);
+    },
+    [setFieldTouched]
+  );
 
   // Formatar valor para exibição
-  const getFormattedValue = useCallback((fieldName) => {
-    const config = finalConfigs[fieldName];
-    const value = values[fieldName];
-    
-    if (config && config.format) {
-      return config.format(value);
-    }
-    
-    return value || '';
-  }, [finalConfigs, values]);
+  const getFormattedValue = useCallback(
+    (fieldName) => {
+      const config = finalConfigs[fieldName];
+      const value = values[fieldName];
+
+      if (config && config.format) {
+        return config.format(value);
+      }
+
+      return value || "";
+    },
+    [finalConfigs, values]
+  );
 
   // Obter valor sanitizado para envio
   const getSanitizedValues = useCallback(() => {
     const sanitized = {};
-    
-    Object.keys(values).forEach(fieldName => {
+
+    Object.keys(values).forEach((fieldName) => {
       const config = finalConfigs[fieldName];
       const value = values[fieldName];
-      
+
       if (config && config.sanitize) {
         sanitized[fieldName] = config.sanitize(value);
       } else {
@@ -246,40 +276,45 @@ export const useFormValidation = (initialValues = {}, fieldConfigOverrides = {})
   }, [values, finalConfigs]);
 
   // Handler para submit
-  const handleSubmit = useCallback(async (onSubmit) => {
-    setSubmitAttempted(true);
-    setIsSubmitting(true);
+  const handleSubmit = useCallback(
+    async (onSubmit) => {
+      setSubmitAttempted(true);
+      setIsSubmitting(true);
 
-    try {
-      const { isValid, errors: validationErrors } = validateForm();
-      setErrors(validationErrors);
+      try {
+        const { isValid, errors: validationErrors } = validateForm();
+        setErrors(validationErrors);
 
-      if (!isValid) {
-        // Focar no primeiro campo com erro
-        const firstErrorField = Object.keys(validationErrors)[0];
-        if (firstErrorField) {
-          const element = document.querySelector(`[name="${firstErrorField}"]`);
-          if (element) {
-            element.focus();
+        if (!isValid) {
+          // Focar no primeiro campo com erro
+          const firstErrorField = Object.keys(validationErrors)[0];
+          if (firstErrorField) {
+            const element = document.querySelector(
+              `[name="${firstErrorField}"]`
+            );
+            if (element) {
+              element.focus();
+            }
           }
+          return false;
         }
+
+        // Executar função de submit se fornecida
+        if (onSubmit) {
+          const sanitizedValues = getSanitizedValues();
+          await onSubmit(sanitizedValues);
+        }
+
+        return true;
+      } catch (error) {
+        console.error("Erro no submit:", error);
         return false;
+      } finally {
+        setIsSubmitting(false);
       }
-
-      // Executar função de submit se fornecida
-      if (onSubmit) {
-        const sanitizedValues = getSanitizedValues();
-        await onSubmit(sanitizedValues);
-      }
-
-      return true;
-    } catch (error) {
-      console.error('Erro no submit:', error);
-      return false;
-    } finally {
-      setIsSubmitting(false);
-    }
-  }, [validateForm, getSanitizedValues]);
+    },
+    [validateForm, getSanitizedValues]
+  );
 
   // Reset do formulário
   const resetForm = useCallback(() => {

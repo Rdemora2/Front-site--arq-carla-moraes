@@ -1,73 +1,73 @@
-import React from 'react';
-import { render } from '@testing-library/react';
-import { ThemeProvider } from 'styled-components';
-import GlobalStyles from '../../GlobalStyles';
-import 'twin.macro';
+import React from "react";
+import { render } from "@testing-library/react";
+import { ThemeProvider } from "styled-components";
+import GlobalStyles from "../../GlobalStyles";
+import "twin.macro";
 
 // Mock do theme para testes
 const mockTheme = {
   colors: {
     primary: {
-      500: '#3e4d2c',
-      600: '#2d3d20',
-      700: '#1c2b14',
+      500: "#3e4d2c",
+      600: "#2d3d20",
+      700: "#1c2b14",
     },
     secondary: {
-      500: '#6b8e23',
-      600: '#556b1e',
-      700: '#3f4f19',
+      500: "#6b8e23",
+      600: "#556b1e",
+      700: "#3f4f19",
     },
     gray: {
-      100: '#f7fafc',
-      500: '#a0aec0',
-      600: '#718096',
-      800: '#2d3748',
+      100: "#f7fafc",
+      500: "#a0aec0",
+      600: "#718096",
+      800: "#2d3748",
     },
     red: {
-      500: '#ef4444',
-      600: '#dc2626',
+      500: "#ef4444",
+      600: "#dc2626",
     },
     green: {
-      500: '#10b981',
-      600: '#059669',
+      500: "#10b981",
+      600: "#059669",
     },
   },
   breakpoints: {
-    sm: '640px',
-    md: '768px',
-    lg: '1024px',
-    xl: '1280px',
+    sm: "640px",
+    md: "768px",
+    lg: "1024px",
+    xl: "1280px",
   },
   spacing: {
-    1: '0.25rem',
-    2: '0.5rem',
-    3: '0.75rem',
-    4: '1rem',
-    5: '1.25rem',
-    6: '1.5rem',
-    8: '2rem',
-    10: '2.5rem',
-    12: '3rem',
-    16: '4rem',
-    20: '5rem',
-    24: '6rem',
-    32: '8rem',
+    1: "0.25rem",
+    2: "0.5rem",
+    3: "0.75rem",
+    4: "1rem",
+    5: "1.25rem",
+    6: "1.5rem",
+    8: "2rem",
+    10: "2.5rem",
+    12: "3rem",
+    16: "4rem",
+    20: "5rem",
+    24: "6rem",
+    32: "8rem",
   },
   fontSizes: {
-    xs: '0.75rem',
-    sm: '0.875rem',
-    base: '1rem',
-    lg: '1.125rem',
-    xl: '1.25rem',
-    '2xl': '1.5rem',
-    '3xl': '1.875rem',
-    '4xl': '2.25rem',
+    xs: "0.75rem",
+    sm: "0.875rem",
+    base: "1rem",
+    lg: "1.125rem",
+    xl: "1.25rem",
+    "2xl": "1.5rem",
+    "3xl": "1.875rem",
+    "4xl": "2.25rem",
   },
   shadows: {
-    sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
-    base: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
-    md: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-    lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+    sm: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+    base: "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
+    md: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+    lg: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
   },
 };
 
@@ -86,8 +86,8 @@ const AllTheProviders = ({ children }) => {
 /**
  * Re-export tudo do testing-library
  */
-export * from '@testing-library/react';
-export { userEvent } from '@testing-library/user-event';
+export * from "@testing-library/react";
+export { userEvent } from "@testing-library/user-event";
 
 /**
  * Override do método render para incluir providers
@@ -107,7 +107,8 @@ export const createFormEvent = (name, value) => ({
 /**
  * Helper para simular delay em testes assíncronos
  */
-export const waitFor = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+export const waitFor = (ms) =>
+  new Promise((resolve) => setTimeout(resolve, ms));
 
 /**
  * Helper para mock de intersection observer
@@ -125,7 +126,7 @@ export const mockIntersectionObserver = (isIntersecting = true) => {
 
   // Simula a callback do intersection observer
   const mockCallback = (entries) => {
-    entries.forEach(entry => {
+    entries.forEach((entry) => {
       entry.isIntersecting = isIntersecting;
     });
   };
@@ -166,9 +167,9 @@ export const mockResizeObserver = () => {
  * Helper para mock de media queries
  */
 export const mockMatchMedia = (matches = false) => {
-  Object.defineProperty(window, 'matchMedia', {
+  Object.defineProperty(window, "matchMedia", {
     writable: true,
-    value: jest.fn().mockImplementation(query => ({
+    value: jest.fn().mockImplementation((query) => ({
       matches,
       media: query,
       onchange: null,
@@ -204,7 +205,7 @@ export const testAccessibility = async (component) => {
  * Helper para simular falha de rede
  */
 export const mockNetworkError = () => {
-  global.fetch = jest.fn().mockRejectedValue(new Error('Network Error'));
+  global.fetch = jest.fn().mockRejectedValue(new Error("Network Error"));
 };
 
 /**

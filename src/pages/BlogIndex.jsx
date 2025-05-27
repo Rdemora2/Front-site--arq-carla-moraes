@@ -34,10 +34,9 @@ const PostContainer = styled.div`
 `;
 const Post = tw.div`cursor-pointer flex flex-col bg-gray-100 rounded-lg`;
 const Image = styled.div`
-  ${(props) =>
-    css`
-      background-image: url("${props.imageSrc}");
-    `}
+  ${(props) => css`
+    background-image: url("${props.imageSrc}");
+  `}
   ${tw`h-64 w-full bg-cover bg-center rounded-t-lg`}
 `;
 const Info = tw.div`p-8 border-2 border-t-0 rounded-lg rounded-t-none`;

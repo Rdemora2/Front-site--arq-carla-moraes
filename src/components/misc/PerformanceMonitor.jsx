@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import tw from 'twin.macro';
-import { useWebVitals } from '../../hooks/useWebVitals';
-import { usePerformanceOptimizations } from '../../hooks/usePerformanceOptimizations';
+import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import styled from "styled-components";
+import tw from "twin.macro";
+import { useWebVitals } from "../../hooks/useWebVitals";
+import { usePerformanceOptimizations } from "../../hooks/usePerformanceOptimizations";
 
 const MonitorContainer = styled.div`
   ${tw`fixed bg-white shadow-lg rounded-lg p-4 border-2 z-50`}
@@ -12,9 +12,9 @@ const MonitorContainer = styled.div`
   width: 300px;
   max-height: 400px;
   overflow-y: auto;
-  
-  ${props => props.isMinimized && tw`h-12 overflow-hidden cursor-pointer`}
-  
+
+  ${(props) => props.isMinimized && tw`h-12 overflow-hidden cursor-pointer`}
+
   @media (max-width: 768px) {
     left: 0.5rem;
     bottom: 0.5rem;
@@ -41,10 +41,10 @@ const ScoreContainer = styled.div`
 
 const OverallScore = styled.div`
   ${tw`text-lg font-bold`}
-  color: ${props => {
-    if (props.score >= 80) return '#10b981'; // green
-    if (props.score >= 50) return '#f59e0b'; // yellow
-    return '#ef4444'; // red
+  color: ${(props) => {
+    if (props.score >= 80) return "#10b981"; // green
+    if (props.score >= 50) return "#f59e0b"; // yellow
+    return "#ef4444"; // red
   }};
 `;
 
@@ -66,12 +66,16 @@ const MetricName = styled.span`
 
 const MetricValue = styled.span`
   ${tw`font-bold`}
-  color: ${props => {
+  color: ${(props) => {
     switch (props.rating) {
-      case 'good': return '#10b981';
-      case 'needs-improvement': return '#f59e0b';
-      case 'poor': return '#ef4444';
-      default: return '#6b7280';
+      case "good":
+        return "#10b981";
+      case "needs-improvement":
+        return "#f59e0b";
+      case "poor":
+        return "#ef4444";
+      default:
+        return "#6b7280";
     }
   }};
 `;
@@ -83,9 +87,9 @@ const Tooltip = styled.div`
   transform: translateX(-50%);
   margin-bottom: 4px;
   white-space: nowrap;
-  
+
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     top: 100%;
     left: 50%;
@@ -107,12 +111,12 @@ const ExportButton = styled.button`
   ${tw`flex-1 text-xs bg-green-500 hover:bg-green-600 text-white py-1 px-2 rounded transition-colors`}
 `;
 
-const PerformanceMonitor = ({ 
-  isEnabled = import.meta.env?.MODE === 'development',
+const PerformanceMonitor = ({
+  isEnabled = import.meta.env?.MODE === "development",
   showInProduction = false,
   enableAutoHide = true,
   autoHideDelay = 10000,
-  position = 'bottom-right',
+  position = "bottom-right",
   showTooltips = true,
 }) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -120,16 +124,17 @@ const PerformanceMonitor = ({
   const [hoveredMetric, setHoveredMetric] = useState(null);
   const [autoHideTimer, setAutoHideTimer] = useState(null);
 
-  const shouldShow = isEnabled || (import.meta.env.MODE === 'production' && showInProduction);
+  const shouldShow =
+    isEnabled || (import.meta.env.MODE === "production" && showInProduction);
 
   const webVitals = useWebVitals({
     enableAnalytics: true,
-    enableConsoleLog: import.meta.env.MODE === 'development',
+    enableConsoleLog: import.meta.env.MODE === "development",
     onMetric: () => {
       // Mostra o monitor quando uma métrica é coletada
       if (!isVisible && shouldShow) {
         setIsVisible(true);
-        
+
         // Auto-hide após delay se habilitado
         if (enableAutoHide) {
           if (autoHideTimer) clearTimeout(autoHideTimer);
@@ -151,12 +156,12 @@ const PerformanceMonitor = ({
   // Formata valores de métricas
   const formatMetricValue = (name, value) => {
     switch (name) {
-      case 'CLS':
+      case "CLS":
         return value.toFixed(3);
-      case 'LCP':
-      case 'FCP':
-      case 'FID':
-      case 'TTFB':
+      case "LCP":
+      case "FCP":
+      case "FID":
+      case "TTFB":
         return `${Math.round(value)}ms`;
       default:
         return Math.round(value);
@@ -166,21 +171,23 @@ const PerformanceMonitor = ({
   // Tooltips informativos
   const getTooltip = (metricName) => {
     const tooltips = {
-      LCP: 'Largest Contentful Paint - Tempo para carregar o maior elemento visível',
-      FID: 'First Input Delay - Tempo de resposta à primeira interação',
-      CLS: 'Cumulative Layout Shift - Estabilidade visual da página',
-      FCP: 'First Contentful Paint - Tempo para primeiro conteúdo aparecer',
-      TTFB: 'Time to First Byte - Tempo de resposta do servidor',
+      LCP: "Largest Contentful Paint - Tempo para carregar o maior elemento visível",
+      FID: "First Input Delay - Tempo de resposta à primeira interação",
+      CLS: "Cumulative Layout Shift - Estabilidade visual da página",
+      FCP: "First Contentful Paint - Tempo para primeiro conteúdo aparecer",
+      TTFB: "Time to First Byte - Tempo de resposta do servidor",
     };
-    return tooltips[metricName] || '';
+    return tooltips[metricName] || "";
   };
 
   // Exporta dados de performance
   const handleExportData = () => {
     const data = webVitals.exportData();
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const blob = new Blob([JSON.stringify(data, null, 2)], {
+      type: "application/json",
+    });
     const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.href = url;
     link.download = `performance-data-${Date.now()}.json`;
     document.body.appendChild(link);
@@ -192,11 +199,11 @@ const PerformanceMonitor = ({
   // Limpa cache de performance
   const handleClearCache = () => {
     cache.clear();
-    localStorage.removeItem('webVitals');
-    localStorage.removeItem('performance_cache');
-    
+    localStorage.removeItem("webVitals");
+    localStorage.removeItem("performance_cache");
+
     // Recarrega a página para recoletar métricas
-    if (confirm('Limpar cache de performance? A página será recarregada.')) {
+    if (confirm("Limpar cache de performance? A página será recarregada.")) {
       window.location.reload();
     }
   };
@@ -220,17 +227,15 @@ const PerformanceMonitor = ({
       isMinimized={isMinimized}
       onClick={isMinimized ? () => setIsMinimized(false) : undefined}
       style={{
-        bottom: position.includes('bottom') ? '1rem' : 'auto',
-        top: position.includes('top') ? '1rem' : 'auto',
-        right: position.includes('right') ? '1rem' : 'auto',
-        left: position.includes('left') ? '1rem' : 'auto',
+        bottom: position.includes("bottom") ? "1rem" : "auto",
+        top: position.includes("top") ? "1rem" : "auto",
+        right: position.includes("right") ? "1rem" : "auto",
+        left: position.includes("left") ? "1rem" : "auto",
       }}
     >
       <Header onClick={() => setIsMinimized(!isMinimized)}>
         <Title>Performance Monitor</Title>
-        <ToggleButton>
-          {isMinimized ? '▲' : '▼'}
-        </ToggleButton>
+        <ToggleButton>{isMinimized ? "▲" : "▼"}</ToggleButton>
       </Header>
 
       {!isMinimized && (
@@ -242,7 +247,7 @@ const PerformanceMonitor = ({
               </OverallScore>
               <ScoreLabel>Score Geral</ScoreLabel>
             </div>
-            <div style={{ fontSize: '10px', color: '#6b7280' }}>
+            <div style={{ fontSize: "10px", color: "#6b7280" }}>
               {metrics.length} métricas coletadas
             </div>
           </ScoreContainer>
@@ -251,28 +256,26 @@ const PerformanceMonitor = ({
             {metrics.map((metric) => (
               <MetricItem
                 key={metric.name}
-                onMouseEnter={() => showTooltips && setHoveredMetric(metric.name)}
+                onMouseEnter={() =>
+                  showTooltips && setHoveredMetric(metric.name)
+                }
                 onMouseLeave={() => setHoveredMetric(null)}
-                style={{ position: 'relative' }}
+                style={{ position: "relative" }}
               >
                 <MetricName>{metric.name}</MetricName>
                 <MetricValue rating={metric.rating}>
                   {formatMetricValue(metric.name, metric.value)}
                 </MetricValue>
-                
+
                 {showTooltips && hoveredMetric === metric.name && (
-                  <Tooltip>
-                    {getTooltip(metric.name)}
-                  </Tooltip>
+                  <Tooltip>{getTooltip(metric.name)}</Tooltip>
                 )}
               </MetricItem>
             ))}
           </MetricsList>
 
           <ActionButtons>
-            <ActionButton onClick={handleClearCache}>
-              Limpar Cache
-            </ActionButton>
+            <ActionButton onClick={handleClearCache}>Limpar Cache</ActionButton>
             <ExportButton onClick={handleExportData}>
               Exportar Dados
             </ExportButton>
@@ -289,10 +292,10 @@ PerformanceMonitor.propTypes = {
   enableAutoHide: PropTypes.bool,
   autoHideDelay: PropTypes.number,
   position: PropTypes.oneOf([
-    'top-left',
-    'top-right',
-    'bottom-left',
-    'bottom-right',
+    "top-left",
+    "top-right",
+    "bottom-left",
+    "bottom-right",
   ]),
   showTooltips: PropTypes.bool,
 };

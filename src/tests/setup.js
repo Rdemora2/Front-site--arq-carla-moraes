@@ -1,9 +1,9 @@
-import '@testing-library/jest-dom';
-import { configure } from '@testing-library/react';
+import "@testing-library/jest-dom";
+import { configure } from "@testing-library/react";
 
 // Configurações globais para testing-library
-configure({ 
-  testIdAttribute: 'data-testid',
+configure({
+  testIdAttribute: "data-testid",
   asyncUtilTimeout: 5000,
 });
 
@@ -14,7 +14,7 @@ global.IntersectionObserver = jest.fn().mockImplementation((callback) => ({
   disconnect: jest.fn(),
   thresholds: [0],
   root: null,
-  rootMargin: '0px',
+  rootMargin: "0px",
 }));
 
 // Mock do ResizeObserver
@@ -32,9 +32,9 @@ global.MutationObserver = jest.fn().mockImplementation((callback) => ({
 }));
 
 // Mock do matchMedia
-Object.defineProperty(window, 'matchMedia', {
+Object.defineProperty(window, "matchMedia", {
   writable: true,
-  value: jest.fn().mockImplementation(query => ({
+  value: jest.fn().mockImplementation((query) => ({
     matches: false,
     media: query,
     onchange: null,
@@ -67,7 +67,7 @@ const sessionStorageMock = {
 global.sessionStorage = sessionStorageMock;
 
 // Mock do navigator
-Object.defineProperty(window.navigator, 'serviceWorker', {
+Object.defineProperty(window.navigator, "serviceWorker", {
   value: {
     register: jest.fn().mockResolvedValue({}),
     ready: Promise.resolve({}),
@@ -78,8 +78,8 @@ Object.defineProperty(window.navigator, 'serviceWorker', {
 
 // Mock da Notification API
 global.Notification = {
-  permission: 'default',
-  requestPermission: jest.fn().mockResolvedValue('granted'),
+  permission: "default",
+  requestPermission: jest.fn().mockResolvedValue("granted"),
 };
 
 // Mock do console.error para testes mais limpos
@@ -87,8 +87,8 @@ const originalError = console.error;
 beforeAll(() => {
   console.error = (...args) => {
     if (
-      typeof args[0] === 'string' &&
-      args[0].includes('Warning: ReactDOM.render is deprecated')
+      typeof args[0] === "string" &&
+      args[0].includes("Warning: ReactDOM.render is deprecated")
     ) {
       return;
     }

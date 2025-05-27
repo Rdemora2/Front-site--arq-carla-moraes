@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback, useState } from 'react';
+import { useEffect, useRef, useCallback, useState } from "react";
 
 /**
  * Hook para melhorar a acessibilidade em componentes
@@ -9,18 +9,20 @@ import { useEffect, useRef, useCallback, useState } from 'react';
  * Hook para gestão de foco
  */
 export const useFocusManagement = () => {
-  const focusableElementsSelector = 
+  const focusableElementsSelector =
     'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
   const trapFocus = useCallback((container) => {
     if (!container) return;
 
-    const focusableElements = container.querySelectorAll(focusableElementsSelector);
+    const focusableElements = container.querySelectorAll(
+      focusableElementsSelector
+    );
     const firstElement = focusableElements[0];
     const lastElement = focusableElements[focusableElements.length - 1];
 
     const handleTabKey = (e) => {
-      if (e.key !== 'Tab') return;
+      if (e.key !== "Tab") return;
 
       if (e.shiftKey) {
         if (document.activeElement === firstElement) {
@@ -35,7 +37,7 @@ export const useFocusManagement = () => {
       }
     };
 
-    container.addEventListener('keydown', handleTabKey);
+    container.addEventListener("keydown", handleTabKey);
 
     // Focar no primeiro elemento
     if (firstElement) {
@@ -43,12 +45,12 @@ export const useFocusManagement = () => {
     }
 
     return () => {
-      container.removeEventListener('keydown', handleTabKey);
+      container.removeEventListener("keydown", handleTabKey);
     };
   }, []);
 
   const restoreFocus = useCallback((element) => {
-    if (element && typeof element.focus === 'function') {
+    if (element && typeof element.focus === "function") {
       element.focus();
     }
   }, []);
@@ -70,7 +72,7 @@ export const useFocusManagement = () => {
  */
 export const useKeyboardNavigation = (items, options = {}) => {
   const {
-    orientation = 'vertical', // 'vertical', 'horizontal', 'grid'
+    orientation = "vertical", // 'vertical', 'horizontal', 'grid'
     loop = true,
     onSelect,
     gridColumns = 1,
@@ -80,7 +82,7 @@ export const useKeyboardNavigation = (items, options = {}) => {
   const containerRef = useRef(null);
 
   const moveNext = useCallback(() => {
-    setCurrentIndex(prev => {
+    setCurrentIndex((prev) => {
       const nextIndex = prev + 1;
       if (nextIndex >= items.length) {
         return loop ? 0 : prev;
@@ -90,7 +92,7 @@ export const useKeyboardNavigation = (items, options = {}) => {
   }, [items.length, loop]);
 
   const movePrevious = useCallback(() => {
-    setCurrentIndex(prev => {
+    setCurrentIndex((prev) => {
       const prevIndex = prev - 1;
       if (prevIndex < 0) {
         return loop ? items.length - 1 : prev;
@@ -100,7 +102,7 @@ export const useKeyboardNavigation = (items, options = {}) => {
   }, [items.length, loop]);
 
   const moveUp = useCallback(() => {
-    setCurrentIndex(prev => {
+    setCurrentIndex((prev) => {
       const newIndex = prev - gridColumns;
       if (newIndex < 0) {
         return loop ? items.length + newIndex : prev;
@@ -110,7 +112,7 @@ export const useKeyboardNavigation = (items, options = {}) => {
   }, [gridColumns, items.length, loop]);
 
   const moveDown = useCallback(() => {
-    setCurrentIndex(prev => {
+    setCurrentIndex((prev) => {
       const newIndex = prev + gridColumns;
       if (newIndex >= items.length) {
         return loop ? newIndex - items.length : prev;
@@ -119,61 +121,73 @@ export const useKeyboardNavigation = (items, options = {}) => {
     });
   }, [gridColumns, items.length, loop]);
 
-  const handleKeyDown = useCallback((e) => {
-    switch (e.key) {
-      case 'ArrowDown':
-        e.preventDefault();
-        if (orientation === 'vertical' || orientation === 'grid') {
-          orientation === 'vertical' ? moveNext() : moveDown();
-        }
-        break;
-      
-      case 'ArrowUp':
-        e.preventDefault();
-        if (orientation === 'vertical' || orientation === 'grid') {
-          orientation === 'vertical' ? movePrevious() : moveUp();
-        }
-        break;
-      
-      case 'ArrowRight':
-        e.preventDefault();
-        if (orientation === 'horizontal' || orientation === 'grid') {
-          orientation === 'horizontal' ? moveNext() : moveNext();
-        }
-        break;
-      
-      case 'ArrowLeft':
-        e.preventDefault();
-        if (orientation === 'horizontal' || orientation === 'grid') {
-          orientation === 'horizontal' ? movePrevious() : movePrevious();
-        }
-        break;
-      
-      case 'Home':
-        e.preventDefault();
-        setCurrentIndex(0);
-        break;
-      
-      case 'End':
-        e.preventDefault();
-        setCurrentIndex(items.length - 1);
-        break;
-      
-      case 'Enter':
-      case ' ':
-        e.preventDefault();
-        if (onSelect) {
-          onSelect(items[currentIndex], currentIndex);
-        }
-        break;
-    }
-  }, [orientation, moveNext, movePrevious, moveUp, moveDown, onSelect, items, currentIndex]);
+  const handleKeyDown = useCallback(
+    (e) => {
+      switch (e.key) {
+        case "ArrowDown":
+          e.preventDefault();
+          if (orientation === "vertical" || orientation === "grid") {
+            orientation === "vertical" ? moveNext() : moveDown();
+          }
+          break;
+
+        case "ArrowUp":
+          e.preventDefault();
+          if (orientation === "vertical" || orientation === "grid") {
+            orientation === "vertical" ? movePrevious() : moveUp();
+          }
+          break;
+
+        case "ArrowRight":
+          e.preventDefault();
+          if (orientation === "horizontal" || orientation === "grid") {
+            orientation === "horizontal" ? moveNext() : moveNext();
+          }
+          break;
+
+        case "ArrowLeft":
+          e.preventDefault();
+          if (orientation === "horizontal" || orientation === "grid") {
+            orientation === "horizontal" ? movePrevious() : movePrevious();
+          }
+          break;
+
+        case "Home":
+          e.preventDefault();
+          setCurrentIndex(0);
+          break;
+
+        case "End":
+          e.preventDefault();
+          setCurrentIndex(items.length - 1);
+          break;
+
+        case "Enter":
+        case " ":
+          e.preventDefault();
+          if (onSelect) {
+            onSelect(items[currentIndex], currentIndex);
+          }
+          break;
+      }
+    },
+    [
+      orientation,
+      moveNext,
+      movePrevious,
+      moveUp,
+      moveDown,
+      onSelect,
+      items,
+      currentIndex,
+    ]
+  );
 
   // Focus no item atual
   useEffect(() => {
     if (containerRef.current) {
       const currentItem = containerRef.current.children[currentIndex];
-      if (currentItem && typeof currentItem.focus === 'function') {
+      if (currentItem && typeof currentItem.focus === "function") {
         currentItem.focus();
       }
     }
@@ -194,7 +208,7 @@ export const useScreenReaderAnnouncements = () => {
   const [announcements, setAnnouncements] = useState([]);
   const announcementRef = useRef(null);
 
-  const announce = useCallback((message, priority = 'polite') => {
+  const announce = useCallback((message, priority = "polite") => {
     const id = Date.now();
     const announcement = {
       id,
@@ -203,11 +217,11 @@ export const useScreenReaderAnnouncements = () => {
       timestamp: new Date(),
     };
 
-    setAnnouncements(prev => [...prev, announcement]);
+    setAnnouncements((prev) => [...prev, announcement]);
 
     // Remove o anúncio após um tempo
     setTimeout(() => {
-      setAnnouncements(prev => prev.filter(a => a.id !== id));
+      setAnnouncements((prev) => prev.filter((a) => a.id !== id));
     }, 5000);
   }, []);
 
@@ -226,23 +240,17 @@ export const useScreenReaderAnnouncements = () => {
           className="sr-only"
         >
           {announcements
-            .filter(a => a.priority === 'polite')
-            .map(a => (
+            .filter((a) => a.priority === "polite")
+            .map((a) => (
               <div key={a.id}>{a.message}</div>
-            ))
-          }
+            ))}
         </div>
-        <div
-          aria-live="assertive"
-          aria-atomic="true"
-          className="sr-only"
-        >
+        <div aria-live="assertive" aria-atomic="true" className="sr-only">
           {announcements
-            .filter(a => a.priority === 'assertive')
-            .map(a => (
+            .filter((a) => a.priority === "assertive")
+            .map((a) => (
               <div key={a.id}>{a.message}</div>
-            ))
-          }
+            ))}
         </div>
       </>
     );
@@ -264,7 +272,7 @@ export const useNavigationMode = () => {
 
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.key === 'Tab') {
+      if (e.key === "Tab") {
         setIsKeyboardNavigation(true);
       }
     };
@@ -273,12 +281,12 @@ export const useNavigationMode = () => {
       setIsKeyboardNavigation(false);
     };
 
-    document.addEventListener('keydown', handleKeyDown);
-    document.addEventListener('mousedown', handleMouseDown);
+    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("mousedown", handleMouseDown);
 
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-      document.removeEventListener('mousedown', handleMouseDown);
+      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("mousedown", handleMouseDown);
     };
   }, []);
 
@@ -292,17 +300,17 @@ export const useReducedMotion = () => {
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     setPrefersReducedMotion(mediaQuery.matches);
 
     const handleChange = (e) => {
       setPrefersReducedMotion(e.matches);
     };
 
-    mediaQuery.addEventListener('change', handleChange);
+    mediaQuery.addEventListener("change", handleChange);
 
     return () => {
-      mediaQuery.removeEventListener('change', handleChange);
+      mediaQuery.removeEventListener("change", handleChange);
     };
   }, []);
 
@@ -316,7 +324,7 @@ export const useHighContrast = () => {
   const [prefersHighContrast, setPrefersHighContrast] = useState(false);
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-contrast: high)');
+    const mediaQuery = window.matchMedia("(prefers-contrast: high)");
     setPrefersHighContrast(mediaQuery.matches);
 
     const handleChange = (e) => {
@@ -324,8 +332,8 @@ export const useHighContrast = () => {
     };
 
     if (mediaQuery.addEventListener) {
-      mediaQuery.addEventListener('change', handleChange);
-      return () => mediaQuery.removeEventListener('change', handleChange);
+      mediaQuery.addEventListener("change", handleChange);
+      return () => mediaQuery.removeEventListener("change", handleChange);
     } else {
       // Fallback para navegadores mais antigos
       mediaQuery.addListener(handleChange);
@@ -344,29 +352,53 @@ export const useARIAAttributes = (element) => {
     if (!element) return [];
 
     const issues = [];
-    
+
     // Verificar labels
-    if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA' || element.tagName === 'SELECT') {
+    if (
+      element.tagName === "INPUT" ||
+      element.tagName === "TEXTAREA" ||
+      element.tagName === "SELECT"
+    ) {
       const hasLabel = element.labels && element.labels.length > 0;
-      const hasAriaLabel = element.hasAttribute('aria-label');
-      const hasAriaLabelledBy = element.hasAttribute('aria-labelledby');
-      
+      const hasAriaLabel = element.hasAttribute("aria-label");
+      const hasAriaLabelledBy = element.hasAttribute("aria-labelledby");
+
       if (!hasLabel && !hasAriaLabel && !hasAriaLabelledBy) {
-        issues.push('Form element missing accessible label');
+        issues.push("Form element missing accessible label");
       }
     }
 
     // Verificar role
-    if (element.hasAttribute('role')) {
-      const role = element.getAttribute('role');
+    if (element.hasAttribute("role")) {
+      const role = element.getAttribute("role");
       const validRoles = [
-        'alert', 'button', 'checkbox', 'dialog', 'grid', 'gridcell',
-        'link', 'log', 'marquee', 'menuitem', 'menuitemcheckbox',
-        'menuitemradio', 'option', 'progressbar', 'radio', 'scrollbar',
-        'slider', 'spinbutton', 'status', 'tab', 'tabpanel', 'textbox',
-        'timer', 'tooltip', 'treeitem'
+        "alert",
+        "button",
+        "checkbox",
+        "dialog",
+        "grid",
+        "gridcell",
+        "link",
+        "log",
+        "marquee",
+        "menuitem",
+        "menuitemcheckbox",
+        "menuitemradio",
+        "option",
+        "progressbar",
+        "radio",
+        "scrollbar",
+        "slider",
+        "spinbutton",
+        "status",
+        "tab",
+        "tabpanel",
+        "textbox",
+        "timer",
+        "tooltip",
+        "treeitem",
       ];
-      
+
       if (!validRoles.includes(role)) {
         issues.push(`Invalid ARIA role: ${role}`);
       }
@@ -376,10 +408,10 @@ export const useARIAAttributes = (element) => {
     const styles = window.getComputedStyle(element);
     const backgroundColor = styles.backgroundColor;
     const color = styles.color;
-    
-    if (backgroundColor === 'rgba(0, 0, 0, 0)' && color === 'rgb(0, 0, 0)') {
+
+    if (backgroundColor === "rgba(0, 0, 0, 0)" && color === "rgb(0, 0, 0)") {
       // Não há contraste suficiente (muito básico)
-      issues.push('Possible low color contrast');
+      issues.push("Possible low color contrast");
     }
 
     return issues;
@@ -408,22 +440,32 @@ export const useAccessibility = (options = {}) => {
   useEffect(() => {
     if (!manageSkipLinks) return;
 
-    const skipLink = document.querySelector('.skip-link');
+    const skipLink = document.querySelector(".skip-link");
     if (!skipLink) {
       // Criar skip link se não existir
-      const link = document.createElement('a');
-      link.href = '#main-content';
-      link.textContent = 'Pular para o conteúdo principal';
-      link.className = 'skip-link sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 bg-blue-600 text-white p-2 z-50';
+      const link = document.createElement("a");
+      link.href = "#main-content";
+      link.textContent = "Pular para o conteúdo principal";
+      link.className =
+        "skip-link sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 bg-blue-600 text-white p-2 z-50";
       document.body.insertBefore(link, document.body.firstChild);
     }
   }, [manageSkipLinks]);
 
   // Adicionar classes CSS para estados de acessibilidade
   useEffect(() => {
-    document.documentElement.classList.toggle('keyboard-navigation', isKeyboardNavigation);
-    document.documentElement.classList.toggle('reduced-motion', prefersReducedMotion);
-    document.documentElement.classList.toggle('high-contrast', prefersHighContrast);
+    document.documentElement.classList.toggle(
+      "keyboard-navigation",
+      isKeyboardNavigation
+    );
+    document.documentElement.classList.toggle(
+      "reduced-motion",
+      prefersReducedMotion
+    );
+    document.documentElement.classList.toggle(
+      "high-contrast",
+      prefersHighContrast
+    );
   }, [isKeyboardNavigation, prefersReducedMotion, prefersHighContrast]);
 
   return {

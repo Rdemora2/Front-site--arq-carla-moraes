@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useRef } from 'react';
+import { useEffect, useCallback, useRef } from "react";
 
 /**
  * Hook para monitoramento de Web Vitals (Core Web Vitals)
@@ -23,62 +23,70 @@ export const useWebVitals = (options = {}) => {
   const observersRef = useRef([]);
 
   // Utilitários para classificação de métricas
-  const getMetricRating = useCallback((name, value) => {
-    const threshold = thresholds[name];
-    if (!threshold) return 'unknown';
-    
-    if (value <= threshold.good) return 'good';
-    if (value <= threshold.poor) return 'needs-improvement';
-    return 'poor';
-  }, [thresholds]);
+  const getMetricRating = useCallback(
+    (name, value) => {
+      const threshold = thresholds[name];
+      if (!threshold) return "unknown";
+
+      if (value <= threshold.good) return "good";
+      if (value <= threshold.poor) return "needs-improvement";
+      return "poor";
+    },
+    [thresholds]
+  );
 
   // Função para reportar métricas
-  const reportMetric = useCallback((metric) => {
-    const { name, value, rating } = metric;
-    
-    // Armazena no Map local
-    metricsRef.current.set(name, metric);
+  const reportMetric = useCallback(
+    (metric) => {
+      const { name, value, rating } = metric;
 
-    // Log no console se habilitado
-    if (enableConsoleLog) {
-      console.log(`[Web Vitals] ${name}:`, {
-        value: Math.round(value * 100) / 100,
-        rating,
-        ...metric,
-      });
-    }
+      // Armazena no Map local
+      metricsRef.current.set(name, metric);
 
-    // Salva no localStorage se habilitado
-    if (enableLocalStorage) {
-      try {
-        const webVitalsData = JSON.parse(localStorage.getItem('webVitals') || '{}');
-        webVitalsData[name] = {
+      // Log no console se habilitado
+      if (enableConsoleLog) {
+        console.log(`[Web Vitals] ${name}:`, {
           value: Math.round(value * 100) / 100,
           rating,
-          timestamp: Date.now(),
-          url: window.location.href,
-        };
-        localStorage.setItem('webVitals', JSON.stringify(webVitalsData));
-      } catch (error) {
-        console.warn('[Web Vitals] Erro ao salvar no localStorage:', error);
+          ...metric,
+        });
       }
-    }
 
-    // Envia para analytics se habilitado
-    if (enableAnalytics && typeof gtag !== 'undefined') {
-      gtag('event', 'web_vitals', {
-        event_category: 'Web Vitals',
-        event_label: name,
-        value: Math.round(value),
-        custom_map: { metric_rating: rating },
-      });
-    }
+      // Salva no localStorage se habilitado
+      if (enableLocalStorage) {
+        try {
+          const webVitalsData = JSON.parse(
+            localStorage.getItem("webVitals") || "{}"
+          );
+          webVitalsData[name] = {
+            value: Math.round(value * 100) / 100,
+            rating,
+            timestamp: Date.now(),
+            url: window.location.href,
+          };
+          localStorage.setItem("webVitals", JSON.stringify(webVitalsData));
+        } catch (error) {
+          console.warn("[Web Vitals] Erro ao salvar no localStorage:", error);
+        }
+      }
 
-    // Callback personalizado
-    if (onMetric && typeof onMetric === 'function') {
-      onMetric(metric);
-    }
-  }, [enableAnalytics, enableConsoleLog, enableLocalStorage, onMetric]);
+      // Envia para analytics se habilitado
+      if (enableAnalytics && typeof gtag !== "undefined") {
+        gtag("event", "web_vitals", {
+          event_category: "Web Vitals",
+          event_label: name,
+          value: Math.round(value),
+          custom_map: { metric_rating: rating },
+        });
+      }
+
+      // Callback personalizado
+      if (onMetric && typeof onMetric === "function") {
+        onMetric(metric);
+      }
+    },
+    [enableAnalytics, enableConsoleLog, enableLocalStorage, onMetric]
+  );
 
   // Função para criar observer de métricas
   const createMetricObserver = useCallback((entryType, callback) => {
@@ -86,13 +94,16 @@ export const useWebVitals = (options = {}) => {
       const observer = new PerformanceObserver((list) => {
         list.getEntries().forEach(callback);
       });
-      
+
       observer.observe({ entryTypes: [entryType] });
       observersRef.current.push(observer);
-      
+
       return observer;
     } catch (error) {
-      console.warn(`[Web Vitals] Observer para ${entryType} não suportado:`, error);
+      console.warn(
+        `[Web Vitals] Observer para ${entryType} não suportado:`,
+        error
+      );
       return null;
     }
   }, []);
@@ -106,48 +117,48 @@ export const useWebVitals = (options = {}) => {
       lcpValue = lastEntry.startTime;
     };
 
-    createMetricObserver('largest-contentful-paint', handleLCP);
+    createMetricObserver("largest-contentful-paint", handleLCP);
 
     // Reporta LCP quando a página é totalmente carregada ou escondida
     const reportLCP = () => {
       if (lcpValue > 0) {
-        const rating = getMetricRating('LCP', lcpValue);
+        const rating = getMetricRating("LCP", lcpValue);
         reportMetric({
-          name: 'LCP',
+          name: "LCP",
           value: lcpValue,
           rating,
           entries: [],
-          id: 'LCP',
+          id: "LCP",
           delta: lcpValue,
         });
       }
     };
 
-    addEventListener('visibilitychange', reportLCP, { once: true });
-    addEventListener('pagehide', reportLCP, { once: true });
+    addEventListener("visibilitychange", reportLCP, { once: true });
+    addEventListener("pagehide", reportLCP, { once: true });
   }, [createMetricObserver, getMetricRating, reportMetric]);
 
   // First Input Delay (FID)
   const observeFID = useCallback(() => {
     const handleFID = (entries) => {
       entries.forEach((entry) => {
-        if (entry.name === 'first-input') {
+        if (entry.name === "first-input") {
           const fidValue = entry.processingStart - entry.startTime;
-          const rating = getMetricRating('FID', fidValue);
-          
+          const rating = getMetricRating("FID", fidValue);
+
           reportMetric({
-            name: 'FID',
+            name: "FID",
             value: fidValue,
             rating,
             entries: [entry],
-            id: 'FID',
+            id: "FID",
             delta: fidValue,
           });
         }
       });
     };
 
-    createMetricObserver('first-input', handleFID);
+    createMetricObserver("first-input", handleFID);
   }, [createMetricObserver, getMetricRating, reportMetric]);
 
   // Cumulative Layout Shift (CLS)
@@ -188,64 +199,65 @@ export const useWebVitals = (options = {}) => {
       });
     };
 
-    createMetricObserver('layout-shift', handleLayoutShift);
+    createMetricObserver("layout-shift", handleLayoutShift);
 
     // Reporta CLS quando a página é escondida
     const reportCLS = () => {
       if (clsValue > 0) {
-        const rating = getMetricRating('CLS', clsValue);
+        const rating = getMetricRating("CLS", clsValue);
         reportMetric({
-          name: 'CLS',
+          name: "CLS",
           value: clsValue,
           rating,
           entries: sessionEntries,
-          id: 'CLS',
+          id: "CLS",
           delta: clsValue,
         });
       }
     };
 
-    addEventListener('visibilitychange', reportCLS);
-    addEventListener('pagehide', reportCLS);
+    addEventListener("visibilitychange", reportCLS);
+    addEventListener("pagehide", reportCLS);
   }, [createMetricObserver, getMetricRating, reportMetric]);
 
   // First Contentful Paint (FCP)
   const observeFCP = useCallback(() => {
     const handleFCP = (entries) => {
       entries.forEach((entry) => {
-        if (entry.name === 'first-contentful-paint') {
+        if (entry.name === "first-contentful-paint") {
           const fcpValue = entry.startTime;
-          const rating = getMetricRating('FCP', fcpValue);
-          
+          const rating = getMetricRating("FCP", fcpValue);
+
           reportMetric({
-            name: 'FCP',
+            name: "FCP",
             value: fcpValue,
             rating,
             entries: [entry],
-            id: 'FCP',
+            id: "FCP",
             delta: fcpValue,
           });
         }
       });
     };
 
-    createMetricObserver('paint', handleFCP);
+    createMetricObserver("paint", handleFCP);
   }, [createMetricObserver, getMetricRating, reportMetric]);
 
   // Time to First Byte (TTFB)
   const observeTTFB = useCallback(() => {
-    const navigationEntry = performance.getEntriesByType('navigation')[0];
-    
+    const navigationEntry = performance.getEntriesByType("navigation")[0];
+
     if (navigationEntry) {
-      const ttfbValue = navigationEntry.responseStart - navigationEntry.fetchStart;
-      const rating = getMetricRating('TTFB', ttfbValue);
-      
+      const ttfbValue =
+        navigationEntry.responseStart - navigationEntry.fetchStart;
+      const rating = getMetricRating("TTFB", ttfbValue);
+
       reportMetric({
-        name: 'TTFB',
+        name: "TTFB",
         value: ttfbValue,
         rating,
         entries: [navigationEntry],
-        id: 'TTFB',
+        id: "TTFB",
         delta: ttfbValue,
       });
     }
@@ -254,14 +266,14 @@ export const useWebVitals = (options = {}) => {
   // Inicia observação de todas as métricas
   useEffect(() => {
     // Aguarda o carregamento completo antes de iniciar observação
-    if (document.readyState === 'complete') {
+    if (document.readyState === "complete") {
       observeLCP();
       observeFID();
       observeCLS();
       observeFCP();
       observeTTFB();
     } else {
-      addEventListener('load', () => {
+      addEventListener("load", () => {
         observeLCP();
         observeFID();
         observeCLS();
@@ -276,7 +288,7 @@ export const useWebVitals = (options = {}) => {
         try {
           observer.disconnect();
         } catch (error) {
-          console.warn('[Web Vitals] Erro ao desconectar observer:', error);
+          console.warn("[Web Vitals] Erro ao desconectar observer:", error);
         }
       });
       observersRef.current = [];
@@ -298,14 +310,20 @@ export const useWebVitals = (options = {}) => {
 
     const scores = metrics.map((metric) => {
       switch (metric.rating) {
-        case 'good': return 100;
-        case 'needs-improvement': return 50;
-        case 'poor': return 0;
-        default: return 50;
+        case "good":
+          return 100;
+        case "needs-improvement":
+          return 50;
+        case "poor":
+          return 0;
+        default:
+          return 50;
       }
     });
 
-    return Math.round(scores.reduce((sum, score) => sum + score, 0) / scores.length);
+    return Math.round(
+      scores.reduce((sum, score) => sum + score, 0) / scores.length
+    );
   }, [getMetrics]);
 
   const exportData = useCallback(() => {
@@ -332,6 +350,6 @@ export const useWebVitals = (options = {}) => {
     getMetricByName,
     getOverallScore,
     exportData,
-    isSupported: typeof PerformanceObserver !== 'undefined',
+    isSupported: typeof PerformanceObserver !== "undefined",
   };
 };

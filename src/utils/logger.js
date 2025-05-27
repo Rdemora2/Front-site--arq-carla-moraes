@@ -16,8 +16,8 @@ class Logger {
     this.rateLimiter = new Map();
     this.maxBufferSize = 1000;
     this.flushInterval = 5000; // 5 segundos
-    this.isEnabled = this.getEnvironment() !== 'test';
-    
+    this.isEnabled = this.getEnvironment() !== "test";
+
     this.initializePerformanceMetrics();
     this.initializeErrorHandlers();
     this.startFlushTimer();
@@ -25,9 +25,9 @@ class Logger {
 
   getEnvironment() {
     try {
-      return import.meta.env?.MODE || 'production';
+      return import.meta.env?.MODE || "production";
     } catch (error) {
-      return 'production';
+      return "production";
     }
   }
 
@@ -46,35 +46,39 @@ class Logger {
 
   initializeErrorHandlers() {
     // Captura erros JavaScript globais
-    window.addEventListener('error', (event) => {
-      this.error('Global Error', {
+    window.addEventListener("error", (event) => {
+      this.error("Global Error", {
         message: event.message,
         filename: event.filename,
         lineno: event.lineno,
         colno: event.colno,
         stack: event.error?.stack,
-        type: 'javascript_error',
+        type: "javascript_error",
       });
     });
 
     // Captura rejeições de promises não tratadas
-    window.addEventListener('unhandledrejection', (event) => {
-      this.error('Unhandled Promise Rejection', {
+    window.addEventListener("unhandledrejection", (event) => {
+      this.error("Unhandled Promise Rejection", {
         reason: event.reason,
-        type: 'promise_rejection',
+        type: "promise_rejection",
       });
     });
 
     // Captura erros de recursos (imagens, scripts, etc.)
-    window.addEventListener('error', (event) => {
-      if (event.target !== window) {
-        this.error('Resource Error', {
-          tagName: event.target.tagName,
-          source: event.target.src || event.target.href,
-          type: 'resource_error',
-        });
-      }
-    }, true);
+    window.addEventListener(
+      "error",
+      (event) => {
+        if (event.target !== window) {
+          this.error("Resource Error", {
+            tagName: event.target.tagName,
+            source: event.target.src || event.target.href,
+            type: "resource_error",
+          });
+        }
+      },
+      true
+    );
   }
 
   startFlushTimer() {
@@ -89,18 +93,18 @@ class Logger {
   isRateLimited(key, limit = 10, window = 60000) {
     const now = Date.now();
     const windowStart = now - window;
-    
+
     if (!this.rateLimiter.has(key)) {
       this.rateLimiter.set(key, []);
     }
-    
+
     const timestamps = this.rateLimiter.get(key);
-    const recentTimestamps = timestamps.filter(ts => ts > windowStart);
-    
+    const recentTimestamps = timestamps.filter((ts) => ts > windowStart);
+
     if (recentTimestamps.length >= limit) {
       return true;
     }
-    
+
     recentTimestamps.push(now);
     this.rateLimiter.set(key, recentTimestamps);
     return false;
@@ -109,7 +113,7 @@ class Logger {
   createLogEntry(level, message, metadata = {}) {
     const timestamp = new Date().toISOString();
     const correlationId = this.generateCorrelationId();
-    
+
     return {
       id: correlationId,
       timestamp,
@@ -123,11 +127,13 @@ class Logger {
         height: window.innerHeight,
       },
       performance: {
-        memory: performance.memory ? {
-          used: performance.memory.usedJSHeapSize,
-          total: performance.memory.totalJSHeapSize,
-          limit: performance.memory.jsHeapSizeLimit,
-        } : null,
+        memory: performance.memory
+          ? {
+              used: performance.memory.usedJSHeapSize,
+              total: performance.memory.totalJSHeapSize,
+              limit: performance.memory.jsHeapSizeLimit,
+            }
+          : null,
         timing: performance.timing,
       },
       metadata: {
@@ -150,16 +156,16 @@ class Logger {
     }
 
     const logEntry = this.createLogEntry(level, message, metadata);
-    
+
     // Console output com formatação
     this.outputToConsole(logEntry);
-    
+
     // Adicionar ao buffer para envio
     this.addToBuffer(logEntry);
-    
+
     // Salvar localmente para recuperação
     this.saveToLocalStorage(logEntry);
-    
+
     // Atualizar métricas de performance
     this.updatePerformanceMetrics(level);
   }
@@ -167,19 +173,19 @@ class Logger {
   outputToConsole(logEntry) {
     const { level, message, metadata, timestamp } = logEntry;
     const prefix = `[${timestamp}] [${level.toUpperCase()}]`;
-    
+
     const styles = {
-      error: 'color: #ff4444; font-weight: bold;',
-      warn: 'color: #ffaa00; font-weight: bold;',
-      info: 'color: #4444ff;',
-      debug: 'color: #888888;',
+      error: "color: #ff4444; font-weight: bold;",
+      warn: "color: #ffaa00; font-weight: bold;",
+      info: "color: #4444ff;",
+      debug: "color: #888888;",
     };
 
-    if (level === 'error' || level === 'warn') {
+    if (level === "error" || level === "warn") {
       console.group(`%c${prefix} ${message}`, styles[level]);
-      console.error('Metadata:', metadata);
+      console.error("Metadata:", metadata);
       if (metadata.stack) {
-        console.trace('Stack Trace');
+        console.trace("Stack Trace");
       }
       console.groupEnd();
     } else {
@@ -189,7 +195,7 @@ class Logger {
 
   addToBuffer(logEntry) {
     this.logBuffer.push(logEntry);
-    
+
     if (this.logBuffer.length > this.maxBufferSize) {
       this.logBuffer = this.logBuffer.slice(-this.maxBufferSize);
     }
@@ -197,10 +203,10 @@ class Logger {
 
   saveToLocalStorage(logEntry) {
     try {
-      const storageKey = 'app_logs';
-      const existingLogs = JSON.parse(localStorage.getItem(storageKey) || '[]');
+      const storageKey = "app_logs";
+      const existingLogs = JSON.parse(localStorage.getItem(storageKey) || "[]");
       existingLogs.push(logEntry);
-      
+
       // Manter apenas os últimos 100 logs no localStorage
       const recentLogs = existingLogs.slice(-100);
       localStorage.setItem(storageKey, JSON.stringify(recentLogs));
@@ -211,10 +217,10 @@ class Logger {
 
   updatePerformanceMetrics(level) {
     switch (level) {
-      case 'error':
+      case "error":
         this.performanceMarks.errors++;
         break;
-      case 'warn':
+      case "warn":
         this.performanceMarks.warnings++;
         break;
     }
@@ -222,20 +228,20 @@ class Logger {
 
   // Métodos de conveniência para diferentes níveis
   error(message, metadata = {}) {
-    this.log('error', message, { ...metadata, severity: 'high' });
+    this.log("error", message, { ...metadata, severity: "high" });
   }
 
   warn(message, metadata = {}) {
-    this.log('warn', message, { ...metadata, severity: 'medium' });
+    this.log("warn", message, { ...metadata, severity: "medium" });
   }
 
   info(message, metadata = {}) {
-    this.log('info', message, { ...metadata, severity: 'low' });
+    this.log("info", message, { ...metadata, severity: "low" });
   }
 
   debug(message, metadata = {}) {
-    if (process.env.NODE_ENV === 'development') {
-      this.log('debug', message, metadata);
+    if (process.env.NODE_ENV === "development") {
+      this.log("debug", message, metadata);
     }
   }
 
@@ -244,16 +250,16 @@ class Logger {
     this.performanceMarks.userInteractions++;
     this.info(`User Action: ${action}`, {
       ...metadata,
-      category: 'user_interaction',
+      category: "user_interaction",
       timestamp: Date.now(),
     });
   }
 
   apiCall(method, url, status, duration, metadata = {}) {
-    const level = status >= 400 ? 'error' : status >= 300 ? 'warn' : 'info';
+    const level = status >= 400 ? "error" : status >= 300 ? "warn" : "info";
     this.log(level, `API ${method} ${url}`, {
       ...metadata,
-      category: 'api_call',
+      category: "api_call",
       method,
       url,
       status,
@@ -268,7 +274,7 @@ class Logger {
   pageView(route, metadata = {}) {
     this.info(`Page View: ${route}`, {
       ...metadata,
-      category: 'navigation',
+      category: "navigation",
       route,
       referrer: document.referrer,
       loadTime: performance.now() - this.performanceMarks.pageLoad,
@@ -278,7 +284,7 @@ class Logger {
   featureUsage(feature, metadata = {}) {
     this.info(`Feature Used: ${feature}`, {
       ...metadata,
-      category: 'feature_usage',
+      category: "feature_usage",
       feature,
     });
   }
@@ -292,11 +298,14 @@ class Logger {
 
     try {
       // Em produção, enviar para serviço de logging
-      if (process.env.NODE_ENV === 'production' && process.env.REACT_APP_LOGGING_ENDPOINT) {
+      if (
+        process.env.NODE_ENV === "production" &&
+        process.env.REACT_APP_LOGGING_ENDPOINT
+      ) {
         await fetch(process.env.REACT_APP_LOGGING_ENDPOINT, {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             sessionId: this.sessionId,
@@ -311,10 +320,10 @@ class Logger {
       }
 
       // Enviar para Google Analytics se disponível
-      if (typeof gtag !== 'undefined') {
-        const errorLogs = logsToSend.filter(log => log.level === 'error');
-        errorLogs.forEach(log => {
-          gtag('event', 'exception', {
+      if (typeof gtag !== "undefined") {
+        const errorLogs = logsToSend.filter((log) => log.level === "error");
+        errorLogs.forEach((log) => {
+          gtag("event", "exception", {
             description: log.message,
             fatal: false,
             custom_map: {
@@ -325,27 +334,27 @@ class Logger {
       }
     } catch (error) {
       // Falha silenciosa no envio de logs
-      console.warn('Failed to send logs:', error);
+      console.warn("Failed to send logs:", error);
     }
   }
 
   // Método para limpar logs antigos
   clearOldLogs() {
     try {
-      localStorage.removeItem('app_logs');
+      localStorage.removeItem("app_logs");
       this.logBuffer = [];
       this.rateLimiter.clear();
     } catch (error) {
-      this.warn('Failed to clear old logs', { error: error.message });
+      this.warn("Failed to clear old logs", { error: error.message });
     }
   }
 
   // Método para recuperar logs salvos
   getSavedLogs() {
     try {
-      return JSON.parse(localStorage.getItem('app_logs') || '[]');
+      return JSON.parse(localStorage.getItem("app_logs") || "[]");
     } catch (error) {
-      this.warn('Failed to retrieve saved logs', { error: error.message });
+      this.warn("Failed to retrieve saved logs", { error: error.message });
       return [];
     }
   }
@@ -360,11 +369,11 @@ class Logger {
     };
 
     const blob = new Blob([JSON.stringify(allLogs, null, 2)], {
-      type: 'application/json',
+      type: "application/json",
     });
-    
+
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = url;
     a.download = `logs-${this.sessionId}.json`;
     a.click();
@@ -377,7 +386,9 @@ class Logger {
       ...this.performanceMarks,
       sessionDuration: Date.now() - this.performanceMarks.pageLoad,
       logsGenerated: this.logBuffer.length,
-      errorRate: this.performanceMarks.errors / (this.performanceMarks.userInteractions || 1),
+      errorRate:
+        this.performanceMarks.errors /
+        (this.performanceMarks.userInteractions || 1),
     };
   }
 }
@@ -409,7 +420,8 @@ export const useLogger = () => {
 
   const logFeatureUsage = (feature, metadata) => {
     logger.featureUsage(feature, metadata);
-  };  return {
+  };
+  return {
     logUserAction,
     logError,
     logApiCall,

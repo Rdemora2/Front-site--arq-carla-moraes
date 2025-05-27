@@ -193,21 +193,33 @@ const LoadingSpinner = styled.div`
   animation: spin 1s linear infinite;
 
   @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
   }
 `;
 
 // Ícones para mensagens
 const SuccessIcon = () => (
   <svg fill="currentColor" viewBox="0 0 20 20">
-    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+    <path
+      fillRule="evenodd"
+      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+      clipRule="evenodd"
+    />
   </svg>
 );
 
 const ErrorIcon = () => (
   <svg fill="currentColor" viewBox="0 0 20 20">
-    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+    <path
+      fillRule="evenodd"
+      d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+      clipRule="evenodd"
+    />
   </svg>
 );
 
@@ -225,28 +237,31 @@ const ContactForm = ({
   // Configuração do formulário com validação
   const form = useFormValidation(
     {
-      nome: '',
-      email: '',
-      telefone: '',
-      mensagem: '',
+      nome: "",
+      email: "",
+      telefone: "",
+      mensagem: "",
       privacy: false,
     },
     {
       // Configurações específicas do formulário
       nome: {
         rules: [
-          (value) => !value?.trim() ? 'Nome é obrigatório' : null,
-          (value) => value?.trim().length < 2 ? 'Nome deve ter pelo menos 2 caracteres' : null,
-          (value) => value?.trim().length > 100 ? 'Nome muito longo' : null,
+          (value) => (!value?.trim() ? "Nome é obrigatório" : null),
+          (value) =>
+            value?.trim().length < 2
+              ? "Nome deve ter pelo menos 2 caracteres"
+              : null,
+          (value) => (value?.trim().length > 100 ? "Nome muito longo" : null),
         ],
-        sanitize: (value) => value?.trim().replace(/\s+/g, ' '),
+        sanitize: (value) => value?.trim().replace(/\s+/g, " "),
       },
       email: {
         rules: [
-          (value) => !value?.trim() ? 'Email é obrigatório' : null,
+          (value) => (!value?.trim() ? "Email é obrigatório" : null),
           (value) => {
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return value && !emailRegex.test(value) ? 'Email inválido' : null;
+            return value && !emailRegex.test(value) ? "Email inválido" : null;
           },
         ],
         sanitize: (value) => value?.trim().toLowerCase(),
@@ -255,13 +270,16 @@ const ContactForm = ({
         rules: [
           (value) => {
             if (!value) return null;
-            const phoneRegex = /^(\+55\s?)?(\(?[0-9]{2}\)?\s?)?[0-9]{4,5}[\s-]?[0-9]{4}$/;
-            return !phoneRegex.test(value.replace(/\s/g, '')) ? 'Telefone inválido' : null;
+            const phoneRegex =
+              /^(\+55\s?)?(\(?[0-9]{2}\)?\s?)?[0-9]{4,5}[\s-]?[0-9]{4}$/;
+            return !phoneRegex.test(value.replace(/\s/g, ""))
+              ? "Telefone inválido"
+              : null;
           },
         ],
         format: (value) => {
-          if (!value) return '';
-          const digits = value.replace(/\D/g, '');
+          if (!value) return "";
+          const digits = value.replace(/\D/g, "");
           if (digits.length === 11) {
             return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
           }
@@ -270,15 +288,22 @@ const ContactForm = ({
       },
       mensagem: {
         rules: [
-          (value) => !value?.trim() ? 'Mensagem é obrigatória' : null,
-          (value) => value?.trim().length < 10 ? 'Mensagem muito curta (mínimo 10 caracteres)' : null,
-          (value) => value?.trim().length > 2000 ? 'Mensagem muito longa (máximo 2000 caracteres)' : null,
+          (value) => (!value?.trim() ? "Mensagem é obrigatória" : null),
+          (value) =>
+            value?.trim().length < 10
+              ? "Mensagem muito curta (mínimo 10 caracteres)"
+              : null,
+          (value) =>
+            value?.trim().length > 2000
+              ? "Mensagem muito longa (máximo 2000 caracteres)"
+              : null,
         ],
         sanitize: (value) => value?.trim(),
       },
       privacy: {
         rules: [
-          (value) => !value ? 'Você deve aceitar nossa política de privacidade' : null,
+          (value) =>
+            !value ? "Você deve aceitar nossa política de privacidade" : null,
         ],
       },
     }
@@ -288,32 +313,32 @@ const ContactForm = ({
   const handleFormSubmit = async (formData) => {
     try {
       setSubmitStatus(null);
-      
+
       // Track evento de tentativa de envio
-      trackEvent('form_submit_attempt', 'contact', 'contact_form');
+      trackEvent("form_submit_attempt", "contact", "contact_form");
 
       // Simular delay de envio
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 2000));
 
       // Aqui você integraria com sua API
-      console.log('Dados do formulário:', formData);
-      
+      console.log("Dados do formulário:", formData);
+
       // Simular sucesso (90% das vezes)
       if (Math.random() > 0.1) {
-        setSubmitStatus('success');
+        setSubmitStatus("success");
         form.resetForm();
-        
+
         // Track evento de sucesso
-        trackEvent('form_submit_success', 'contact', 'contact_form');
+        trackEvent("form_submit_success", "contact", "contact_form");
       } else {
-        throw new Error('Erro simulado');
+        throw new Error("Erro simulado");
       }
     } catch (error) {
-      console.error('Erro ao enviar formulário:', error);
-      setSubmitStatus('error');
-      
+      console.error("Erro ao enviar formulário:", error);
+      setSubmitStatus("error");
+
       // Track evento de erro
-      trackEvent('form_submit_error', 'contact', 'contact_form');
+      trackEvent("form_submit_error", "contact", "contact_form");
     }
   };
 
@@ -361,7 +386,7 @@ const ContactForm = ({
                 type="text"
                 name="nome"
                 label="Seu Nome"
-                value={form.getFormattedValue('nome')}
+                value={form.getFormattedValue("nome")}
                 onChange={form.handleChange}
                 onBlur={form.handleBlur}
                 error={form.errors.nome}
@@ -377,7 +402,7 @@ const ContactForm = ({
                 type="email"
                 name="email"
                 label="Seu Email"
-                value={form.getFormattedValue('email')}
+                value={form.getFormattedValue("email")}
                 onChange={form.handleChange}
                 onBlur={form.handleBlur}
                 error={form.errors.email}
@@ -393,7 +418,7 @@ const ContactForm = ({
                 type="tel"
                 name="telefone"
                 label="Seu Telefone (opcional)"
-                value={form.getFormattedValue('telefone')}
+                value={form.getFormattedValue("telefone")}
                 onChange={form.handleChange}
                 onBlur={form.handleBlur}
                 error={form.errors.telefone}
@@ -406,7 +431,7 @@ const ContactForm = ({
               <FormTextArea
                 name="mensagem"
                 label="Sua Mensagem"
-                value={form.getFormattedValue('mensagem')}
+                value={form.getFormattedValue("mensagem")}
                 onChange={form.handleChange}
                 onBlur={form.handleBlur}
                 error={form.errors.mensagem}
@@ -428,7 +453,7 @@ const ContactForm = ({
                 label='Ao enviar, você concorda com nossa <a href="/privacy-policy" target="_blank">política de privacidade</a> e <a href="/terms" target="_blank">termos de serviço</a>.'
               />
 
-              {submitStatus === 'success' && (
+              {submitStatus === "success" && (
                 <SuccessMessage>
                   <SuccessIcon />
                   <div>
@@ -438,7 +463,7 @@ const ContactForm = ({
                 </SuccessMessage>
               )}
 
-              {submitStatus === 'error' && (
+              {submitStatus === "error" && (
                 <ErrorMessage>
                   <ErrorIcon />
                   <div>
@@ -448,8 +473,8 @@ const ContactForm = ({
                 </ErrorMessage>
               )}
 
-              <SubmitButton 
-                type="submit" 
+              <SubmitButton
+                type="submit"
                 disabled={!form.isFormValid || form.isSubmitting}
                 isLoading={form.isSubmitting}
               >
@@ -488,7 +513,8 @@ ContactForm.propTypes = {
 
 ContactForm.defaultProps = {
   heading: "Entre em contato conosco",
-  description: "Estamos aqui para transformar seus sonhos em realidade através de projetos paisagísticos únicos e personalizados.",
+  description:
+    "Estamos aqui para transformar seus sonhos em realidade através de projetos paisagísticos únicos e personalizados.",
   submitButtonText: "Enviar Mensagem",
   formAction: "https://formspree.io/f/mzzbowjl",
   formMethod: "POST",

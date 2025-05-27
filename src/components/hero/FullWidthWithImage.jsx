@@ -12,7 +12,8 @@ const StyledHeader = styled(Header)`
   ${tw`justify-between py-4`}
   ${LogoLink} {
     ${tw`mr-8 pb-0`}
-  }  @media (max-width: 1024px) {
+  }
+  @media (max-width: 1024px) {
     background-color: rgba(249, 245, 239, 0.6);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
@@ -43,7 +44,7 @@ const StyledHeader = styled(Header)`
       margin: 0;
       padding: 0;
     }
-      ${LogoLink} {
+    ${LogoLink} {
       @media (max-width: 1024px) {
         margin-right: 0;
         flex-shrink: 0;
@@ -58,7 +59,7 @@ const NavLink = tw(NavLinkBase)`
 
 const Container = styled.div`
   ${tw`relative -mx-8 -mt-8 min-h-screen`}
-  
+
   @media (max-width: 1024px) {
     min-height: 100vh;
     height: calc(var(--vh, 1vh) * 100);
@@ -66,7 +67,7 @@ const Container = styled.div`
 `;
 const TwoColumn = tw.div`flex flex-col lg:flex-row min-h-screen`;
 const LeftColumn = styled.div`
-  ${tw`ml-8 mr-8 xl:pl-10 flex flex-col justify-center relative z-10`}  @media (max-width: 1024px) {
+  ${tw`ml-8 mr-8 xl:pl-10 flex flex-col justify-center relative z-10`} @media (max-width: 1024px) {
     margin-left: 0;
     margin-right: 0;
     padding-left: 2rem;
@@ -78,7 +79,7 @@ const LeftColumn = styled.div`
     height: calc(var(--vh, 1vh) * 100 - 4.5rem);
     display: flex;
     flex-direction: column;
-    
+
     &::before {
       content: "";
       position: absolute;
@@ -109,7 +110,7 @@ const RightColumn = styled.div`
 `;
 
 const Content = styled.div`
-  ${tw`mt-8 lg:mt-24 lg:mb-24 flex flex-col sm:items-center lg:items-stretch`}  @media (max-width: 1024px) {
+  ${tw`mt-8 lg:mt-24 lg:mb-24 flex flex-col sm:items-center lg:items-stretch`} @media (max-width: 1024px) {
     position: relative;
     padding: 2rem;
     margin: 0 -2rem;
@@ -194,16 +195,16 @@ const FullWidthWithImageComponent = ({
   useEffect(() => {
     const setVH = () => {
       const vh = window.innerHeight * 0.01;
-      document.documentElement.style.setProperty('--vh', `${vh}px`);
+      document.documentElement.style.setProperty("--vh", `${vh}px`);
     };
 
     setVH();
-    window.addEventListener('resize', setVH);
-    window.addEventListener('orientationchange', setVH);
+    window.addEventListener("resize", setVH);
+    window.addEventListener("orientationchange", setVH);
 
     return () => {
-      window.removeEventListener('resize', setVH);
-      window.removeEventListener('orientationchange', setVH);
+      window.removeEventListener("resize", setVH);
+      window.removeEventListener("orientationchange", setVH);
     };
   }, []);
 
