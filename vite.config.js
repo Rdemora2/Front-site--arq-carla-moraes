@@ -71,7 +71,7 @@ export default defineConfig(({ command, mode }) => {
     },
 
     build: {
-      sourcemap: env.VITE_ENABLE_SOURCEMAP === "true",
+      sourcemap: true,
       chunkSizeWarningLimit: 1000,
 
       minify: env.VITE_BUILD_OPTIMIZATION === "true" ? "terser" : false,
