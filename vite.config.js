@@ -16,6 +16,7 @@ export default defineConfig(({ command, mode }) => {
         jsxImportSource: "react",
         babel: {
           plugins: [
+            "babel-plugin-macros",
             [
               "styled-components",
               {
@@ -63,6 +64,8 @@ export default defineConfig(({ command, mode }) => {
         hooks: path.resolve(__dirname, "./src/hooks"),
         constants: path.resolve(__dirname, "./src/constants"),
         utils: path.resolve(__dirname, "./src/utils"),
+        config: path.resolve(__dirname, "./src/config"),
+        assets: path.resolve(__dirname, "./src/assets"),
       },
       extensions: [".jsx", ".js", ".tsx", ".ts", ".json"],
     },
@@ -81,6 +84,11 @@ export default defineConfig(({ command, mode }) => {
                   "react-vendor": ["react", "react-dom", "react-router-dom"],
                   styled: ["styled-components"],
                   tw: ["tailwindcss", "twin.macro"],
+                  "ui-components": [
+                    "styled-components",
+                    "twin.macro",
+                    "framer-motion",
+                  ],
                 }
               : undefined,
           sourcemapExcludeSources: env.VITE_ENABLE_SOURCEMAP === "true",

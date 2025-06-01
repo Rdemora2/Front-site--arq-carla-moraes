@@ -1,90 +1,99 @@
-import React, { lazy, Suspense } from "react";
+import React, { lazy, Suspense, useEffect } from "react";
 import AnimationRevealPage from "helpers/AnimationRevealPage.jsx";
 import MetaTags from "components/misc/MetaTags.jsx";
+import { usePerformanceOptimizations } from "../hooks/usePerformanceOptimizations";
 
 import Hero from "components/hero/FullWidthWithImage.jsx";
 import Footer from "components/footers/FiveColumnWithInputForm.jsx";
 
-const PriorityComponents = lazy(() => {
-  const MainFeaturePromise = import(
-    "components/features/TwoColSingleFeatureWithStats.jsx"
-  );
-  const FeaturesPromise = import("components/features/ThreeColSimple.jsx");
+import MainFeature from "components/features/TwoColSingleFeatureWithStats.jsx";
+import Features from "components/features/ThreeColSimple.jsx";
 
-  return Promise.all([MainFeaturePromise, FeaturesPromise]).then(
-    ([MainFeatureModule, FeaturesModule]) => ({
-      default: () => (
-        <>
-          <MainFeatureModule.default />
-          <FeaturesModule.default />
-        </>
-      ),
-    })
-  );
-});
-
-const SecondaryComponents = lazy(() => {
-  const SliderCardPromise = import("components/cards/ThreeColSlider.jsx");
-  const TrendingCardPromise = import(
-    "components/cards/TwoTrendingPreviewCardsWithImage.jsx"
-  );
-  const TestimonialPromise = import(
-    "components/testimonials/TwoColumnWithImageAndProfilePictureReview.jsx"
-  );
-  const FAQPromise = import("components/faqs/SimpleWithSideImage.jsx");
-
-  if (window.requestIdleCallback) {
-    window.requestIdleCallback(() => {
-      import("components/forms/TwoColContactUsWithIllustrationFullForm.jsx");
-    });
-  }
-
-  return Promise.all([
-    SliderCardPromise,
-    TrendingCardPromise,
-    TestimonialPromise,
-    FAQPromise,
-  ]).then(([SliderModule, TrendingModule, TestimonialModule, FAQModule]) => ({
-    default: () => (
-      <>
-        <SliderModule.default />
-        <TrendingModule.default />
-        <TestimonialModule.default textOnLeft={true} />
-        <FAQModule.default />
-      </>
-    ),
-  }));
-});
+const SliderCards = lazy(() => import("components/cards/ThreeColSlider.jsx"));
+const TrendingCards = lazy(
+  () => import("components/cards/TwoTrendingPreviewCardsWithImage.jsx")
+);
+const Testimonial = lazy(
+  () =>
+    import(
+      "components/testimonials/TwoColumnWithImageAndProfilePictureReview.jsx"
+    )
+);
+const FAQ = lazy(() => import("components/faqs/SimpleWithSideImage.jsx"));
 
 const LoadingFallback = () => (
   <div
     className="loading-skeleton"
     style={{
-      minHeight: "200px",
+      minHeight: "100px",
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
-      background:
-        "linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%)",
-      backgroundSize: "200% 100%",
-      animation: "pulse 1.5s ease-in-out infinite",
+      margin: "2rem 0",
+      background: "#f7fafc",
     }}
     aria-busy="true"
-  />
+    aria-label="Carregando conteúdo"
+  >
+    <div
+      style={{
+        width: "40px",
+        height: "40px",
+        border: "3px solid #e2e8f0",
+        borderRadius: "50%",
+        borderTopColor: "#3e4d2c",
+        animation: "spin 1s linear infinite",
+      }}
+    />
+  </div>
 );
 
-const Home = React.memo(() => (
-  <AnimationRevealPage>
-    <MetaTags />
-    <Hero />
-    <Suspense fallback={<LoadingFallback />}>
-      <PriorityComponents />
-    </Suspense>
-    <Suspense fallback={<LoadingFallback />}>
-      <SecondaryComponents />
-    </Suspense>
-    <Footer />
-  </AnimationRevealPage>
-));
+const Home = () => {
+  const { preloadCriticalImages } = usePerformanceOptimizations();
 
-export default Home;
+  useEffect(() => {
+    if (typeof preloadCriticalImages === "function") {
+      preloadCriticalImages([
+        "/images/components/hero/Frances-hero.webp",
+        "/images/logo/logo_reduced.webp",
+      ]);
+    }
+  }, [preloadCriticalImages]);
+
+  return (
+    <AnimationRevealPage>
+      <MetaTags
+        title="Carla Moraes - Arquitetura paisagística"
+        description="Há mais de 25 anos criando projetos paisagísticos exclusivos que harmonizam arquitetura e natureza. Do conceito à execução, trazemos beleza e propósito para cada ambiente."
+        imageUrl="/images/components/hero/Frances-hero.webp"
+        keywords="arquitetura paisagística, paisagismo, projetos de jardim, design exterior, São Paulo"
+      />
+      <Hero />
+
+      {/* Componentes principais carregados diretamente */}
+      <MainFeature />
+      <Features />
+
+      {/* Componentes secundários com Suspense */}
+      <Suspense fallback={<LoadingFallback />}>
+        <SliderCards />
+      </Suspense>
+
+      <Suspense fallback={<LoadingFallback />}>
+        <TrendingCards />
+      </Suspense>
+
+      <Suspense fallback={<LoadingFallback />}>
+        <Testimonial textOnLeft={true} />
+      </Suspense>
+
+      <Suspense fallback={<LoadingFallback />}>
+        <FAQ />
+      </Suspense>
+
+      <Footer />
+    </AnimationRevealPage>
+  );
+};
+
+export default React.memo(Home);

@@ -1,9 +1,5 @@
 import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 
-/**
- * Hook para observar elementos entrando na viewport
- * Útil para lazy loading e animações
- */
 export const useIntersectionObserver = (options = {}) => {
   const { threshold = 0.1, rootMargin = "0px", triggerOnce = true } = options;
 
@@ -46,10 +42,6 @@ export const useIntersectionObserver = (options = {}) => {
     hasIntersected,
   };
 };
-
-/**
- * Hook para lazy loading de imagens
- */
 export const useLazyImage = (src, options = {}) => {
   const { placeholder = "", threshold = 0.1, fallback = "" } = options;
 
@@ -87,9 +79,6 @@ export const useLazyImage = (src, options = {}) => {
   };
 };
 
-/**
- * Hook para lazy loading de componentes
- */
 export const useLazyComponent = (importFunc, fallback = null) => {
   const [Component, setComponent] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -121,9 +110,6 @@ export const useLazyComponent = (importFunc, fallback = null) => {
   };
 };
 
-/**
- * Hook para debounce de valores
- */
 export const useDebounce = (value, delay) => {
   const [debouncedValue, setDebouncedValue] = useState(value);
 
@@ -140,9 +126,6 @@ export const useDebounce = (value, delay) => {
   return debouncedValue;
 };
 
-/**
- * Hook para throttle de funções
- */
 export const useThrottle = (callback, delay) => {
   const lastCall = useRef(0);
 
@@ -158,11 +141,7 @@ export const useThrottle = (callback, delay) => {
   );
 };
 
-/**
- * Hook para cache com expiração
- */
 export const useCache = (key, fetcher, ttl = 300000) => {
-  // 5 minutos default
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -179,7 +158,6 @@ export const useCache = (key, fetcher, ttl = 300000) => {
       const cacheKey = getCacheKey(key);
       const timestampKey = getTimestampKey(key);
 
-      // Verificar cache primeiro
       if (!forceRefresh) {
         const cachedData = localStorage.getItem(cacheKey);
         const timestamp = localStorage.getItem(timestampKey);
@@ -188,9 +166,7 @@ export const useCache = (key, fetcher, ttl = 300000) => {
           try {
             setData(JSON.parse(cachedData));
             return;
-          } catch (e) {
-            // Cache inválido, continuar com fetch
-          }
+          } catch (e) {}
         }
       }
 
@@ -201,7 +177,6 @@ export const useCache = (key, fetcher, ttl = 300000) => {
         const result = await fetcher();
         setData(result);
 
-        // Salvar no cache
         localStorage.setItem(cacheKey, JSON.stringify(result));
         localStorage.setItem(timestampKey, Date.now().toString());
       } catch (err) {
@@ -231,9 +206,6 @@ export const useCache = (key, fetcher, ttl = 300000) => {
   };
 };
 
-/**
- * Hook para memoização avançada
- */
 export const useAdvancedMemo = (factory, deps, options = {}) => {
   const {
     compare = (a, b) => JSON.stringify(a) === JSON.stringify(b),
@@ -244,12 +216,9 @@ export const useAdvancedMemo = (factory, deps, options = {}) => {
   const cacheOrder = useRef([]);
 
   return useMemo(() => {
-    // Criar chave do cache baseada nas dependências
     const cacheKey = JSON.stringify(deps);
 
-    // Verificar se existe no cache
     if (cache.current.has(cacheKey)) {
-      // Mover para o final (LRU)
       const index = cacheOrder.current.indexOf(cacheKey);
       if (index > -1) {
         cacheOrder.current.splice(index, 1);
@@ -258,14 +227,11 @@ export const useAdvancedMemo = (factory, deps, options = {}) => {
       return cache.current.get(cacheKey);
     }
 
-    // Calcular novo valor
     const value = factory();
 
-    // Adicionar ao cache
     cache.current.set(cacheKey, value);
     cacheOrder.current.push(cacheKey);
 
-    // Remover itens antigos se exceder o tamanho máximo
     while (cacheOrder.current.length > maxSize) {
       const oldestKey = cacheOrder.current.shift();
       cache.current.delete(oldestKey);
@@ -275,9 +241,6 @@ export const useAdvancedMemo = (factory, deps, options = {}) => {
   }, deps);
 };
 
-/**
- * Hook para resource hints (preload, prefetch, etc.)
- */
 export const useResourceHints = () => {
   const preloadResource = useCallback((href, as, type = null) => {
     const link = document.createElement("link");
@@ -286,7 +249,6 @@ export const useResourceHints = () => {
     link.as = as;
     if (type) link.type = type;
 
-    // Evitar duplicatas
     const existing = document.querySelector(
       `link[rel="preload"][href="${href}"]`
     );
@@ -300,7 +262,6 @@ export const useResourceHints = () => {
     link.rel = "prefetch";
     link.href = href;
 
-    // Evitar duplicatas
     const existing = document.querySelector(
       `link[rel="prefetch"][href="${href}"]`
     );
@@ -315,7 +276,6 @@ export const useResourceHints = () => {
     link.href = origin;
     if (crossorigin) link.crossOrigin = "anonymous";
 
-    // Evitar duplicatas
     const existing = document.querySelector(
       `link[rel="preconnect"][href="${origin}"]`
     );
@@ -329,7 +289,6 @@ export const useResourceHints = () => {
     link.rel = "dns-prefetch";
     link.href = origin;
 
-    // Evitar duplicatas
     const existing = document.querySelector(
       `link[rel="dns-prefetch"][href="${origin}"]`
     );
@@ -346,9 +305,6 @@ export const useResourceHints = () => {
   };
 };
 
-/**
- * Hook para otimizar renderização de listas grandes
- */
 export const useVirtualList = (items, itemHeight, containerHeight) => {
   const [scrollTop, setScrollTop] = useState(0);
   const scrollElementRef = useRef(null);
@@ -371,7 +327,7 @@ export const useVirtualList = (items, itemHeight, containerHeight) => {
 
   const handleScroll = useThrottle((e) => {
     setScrollTop(e.target.scrollTop);
-  }, 16); // ~60fps
+  }, 16);
 
   return {
     visibleItems,
@@ -382,9 +338,6 @@ export const useVirtualList = (items, itemHeight, containerHeight) => {
   };
 };
 
-/**
- * Hook para detectar capabilities do dispositivo
- */
 export const useDeviceCapabilities = () => {
   const [capabilities, setCapabilities] = useState({
     connection: null,
@@ -411,12 +364,10 @@ export const useDeviceCapabilities = () => {
 
     updateCapabilities();
 
-    // Observar mudanças na conexão
     if (navigator.connection) {
       navigator.connection.addEventListener("change", updateCapabilities);
     }
 
-    // Observar mudanças no prefers-reduced-motion
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     mediaQuery.addEventListener("change", updateCapabilities);
 
@@ -431,10 +382,6 @@ export const useDeviceCapabilities = () => {
   const isLowEnd = useMemo(() => {
     const { connection, memory, cores } = capabilities;
 
-    // Considerar dispositivo low-end se:
-    // - Memória < 4GB
-    // - Cores < 4
-    // - Conexão slow-2g ou 2g
     return (
       (memory && memory < 4) ||
       (cores && cores < 4) ||
@@ -448,9 +395,6 @@ export const useDeviceCapabilities = () => {
   };
 };
 
-/**
- * Hook para cache em memória
- */
 export const useMemoryCache = (maxSize = 50) => {
   const cache = useRef(new Map());
   const accessOrder = useRef([]);
@@ -459,17 +403,14 @@ export const useMemoryCache = (maxSize = 50) => {
     (key, value) => {
       const stringKey = JSON.stringify(key);
 
-      // Remove da lista de acesso se já existe
       const existingIndex = accessOrder.current.indexOf(stringKey);
       if (existingIndex > -1) {
         accessOrder.current.splice(existingIndex, 1);
       }
 
-      // Adiciona no final (mais recente)
       accessOrder.current.push(stringKey);
       cache.current.set(stringKey, value);
 
-      // Remove itens antigos se exceder o limite
       while (cache.current.size > maxSize) {
         const oldestKey = accessOrder.current.shift();
         cache.current.delete(oldestKey);
@@ -483,7 +424,6 @@ export const useMemoryCache = (maxSize = 50) => {
     const value = cache.current.get(stringKey);
 
     if (value !== undefined) {
-      // Move para o final (mais recente)
       const existingIndex = accessOrder.current.indexOf(stringKey);
       if (existingIndex > -1) {
         accessOrder.current.splice(existingIndex, 1);
@@ -525,9 +465,6 @@ export const useMemoryCache = (maxSize = 50) => {
   };
 };
 
-/**
- * Hook principal para performance
- */
 export const usePerformanceOptimizations = (options = {}) => {
   const {
     enableVirtualization = false,
@@ -539,7 +476,6 @@ export const usePerformanceOptimizations = (options = {}) => {
   const resourceHints = useResourceHints();
   const deviceCapabilities = useDeviceCapabilities();
 
-  // Adaptar configurações baseado no dispositivo
   const adaptiveOptions = useMemo(() => {
     if (!adaptToDevice) return options;
 
@@ -554,19 +490,95 @@ export const usePerformanceOptimizations = (options = {}) => {
     };
   }, [options, adaptToDevice, deviceCapabilities]);
 
-  // Precarregar recursos críticos
   useEffect(() => {
     if (!enableResourceHints) return;
 
-    // Preconnect para fontes
     resourceHints.preconnectOrigin("https://fonts.googleapis.com");
     resourceHints.preconnectOrigin("https://fonts.gstatic.com", true);
 
-    // Prefetch para recursos comuns
     resourceHints.dnsPrefetch("https://www.google-analytics.com");
     resourceHints.dnsPrefetch("https://connect.facebook.net");
   }, [enableResourceHints, resourceHints]);
   const memoryCache = useMemoryCache();
+
+  const useLazyLoading = (rootMargin = "200px 0px", threshold = 0.1) => {
+    const [isVisible, setIsVisible] = useState(false);
+    const ref = useRef(null);
+
+    useEffect(() => {
+      if (typeof window === "undefined" || !window.IntersectionObserver) return;
+
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+            observer.disconnect();
+          }
+        },
+        { rootMargin, threshold }
+      );
+
+      const currentRef = ref.current;
+      if (currentRef) {
+        observer.observe(currentRef);
+      }
+
+      return () => {
+        if (currentRef) {
+          observer.unobserve(currentRef);
+        }
+      };
+    }, [rootMargin, threshold]);
+
+    return { ref, isVisible };
+  };
+
+  const preloadCriticalImages = useCallback((imagePaths = []) => {
+    if (!imagePaths || !imagePaths.length) return;
+
+    const loadImage = (path) => {
+      if (!path) return;
+
+      const link = document.createElement("link");
+      link.rel = "preload";
+      link.as = "image";
+      link.href = path;
+      document.head.appendChild(link);
+
+      const img = new Image();
+      img.src = path;
+    };
+
+    if (window.requestIdleCallback) {
+      window.requestIdleCallback(() => {
+        imagePaths.forEach(loadImage);
+      });
+    } else {
+      setTimeout(() => {
+        imagePaths.forEach(loadImage);
+      }, 200);
+    }
+  }, []);
+
+  const optimizeImage = useCallback((src, options = {}) => {
+    if (!src) return "";
+
+    const { width, quality = 80, format = "webp" } = options;
+
+    if (process.env.NODE_ENV === "production" && src.startsWith("/")) {
+      const params = [];
+
+      if (width) params.push(`w=${width}`);
+      if (quality) params.push(`q=${quality}`);
+      if (format) params.push(`fmt=${format}`);
+
+      if (params.length > 0) {
+        return `${src}?${params.join("&")}`;
+      }
+    }
+
+    return src;
+  }, []);
 
   return {
     deviceCapabilities,
@@ -574,6 +586,9 @@ export const usePerformanceOptimizations = (options = {}) => {
     resourceHints,
     isLowEndDevice: deviceCapabilities.isLowEnd,
     useMemoryCache: () => memoryCache,
+    useLazyLoading,
+    preloadCriticalImages,
+    optimizeImage,
   };
 };
 
