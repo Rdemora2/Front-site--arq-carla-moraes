@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from "react";
+import React, { Suspense, lazy, useEffect } from "react";
 import GlobalStyles from "./styles/GlobalStyles";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { StyledComponentsProvider } from "./styles/StyledComponentsConfig";
@@ -7,8 +7,9 @@ import ErrorBoundary from "./components/errors/ErrorBoundary";
 import PerformanceMonitor from "./components/misc/PerformanceMonitor";
 import LighthouseMetrics from "./components/misc/LighthouseMetrics";
 import { LazyComponentWrapper } from "./components/lazy/LazyLoadingSystem.jsx";
+import { useEnvironment } from "./hooks/useEnvironment";
+import { initEnvironmentValidation } from "./utils/environmentValidator";
 
-// Lazy loading dos componentes de página usando sistema avançado
 const Home = () => (
   <LazyComponentWrapper importFn={() => import("./pages/Home")} />
 );
@@ -22,7 +23,6 @@ const ThankYouPage = () => (
   <LazyComponentWrapper importFn={() => import("./ThankYouPage")} />
 );
 
-// Componente de loading melhorado
 const LoadingFallback = () => (
   <div
     className="loading-skeleton"
@@ -41,27 +41,35 @@ const LoadingFallback = () => (
   />
 );
 
-// Provider de contexto para toda a aplicação
-const AppWithProviders = ({ children }) => (
-  <ErrorBoundary>
-    <StyledComponentsProvider>
-      <GlobalStyles />
-      <Analytics />
-      <PerformanceMonitor />
-      <LighthouseMetrics />
-      {children}
-    </StyledComponentsProvider>
-  </ErrorBoundary>
-);
+const AppWithProviders = ({ children }) => {
+  const { isDevelopment } = useEnvironment();
 
-// Função helper para criar elementos de rota
+  useEffect(() => {
+    if (!window.__APP_ENV_VALIDATION_DONE__) {
+      initEnvironmentValidation();
+      window.__APP_ENV_VALIDATION_DONE__ = true;
+    }
+  }, []);
+
+  return (
+    <ErrorBoundary>
+      <StyledComponentsProvider>
+        <GlobalStyles />
+        <Analytics />
+        <PerformanceMonitor />
+        <LighthouseMetrics />
+        {children}
+      </StyledComponentsProvider>
+    </ErrorBoundary>
+  );
+};
+
 const createRouteElement = (Component) => (
   <AppWithProviders>
     <Component />
   </AppWithProviders>
 );
 
-// Configuração do roteador
 const router = createBrowserRouter(
   [
     {

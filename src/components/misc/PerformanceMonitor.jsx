@@ -5,6 +5,7 @@ import tw from "twin.macro";
 import { useWebVitals } from "../../hooks/useWebVitals";
 import { usePerformanceOptimizations } from "../../hooks/usePerformanceOptimizations";
 import usePerformanceMonitoring from "../../hooks/usePerformanceMonitoring";
+import { useEnvironment } from "../../hooks/useEnvironment";
 
 const MonitorContainer = styled.div`
   ${tw`fixed bg-white shadow-lg rounded-lg p-4 border-2 z-50`}
@@ -127,9 +128,9 @@ const LighthouseScoreItem = styled.div`
 const ScoreCircle = styled.div`
   ${tw`w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-1 text-white font-bold text-xs`}
   background-color: ${(props) => {
-    if (props.score >= 90) return "#10b981"; // green
-    if (props.score >= 50) return "#f59e0b"; // yellow
-    return "#ef4444"; // red
+    if (props.score >= 90) return "#10b981";
+    if (props.score >= 50) return "#f59e0b";
+    return "#ef4444";
   }}
 `;
 
@@ -163,25 +164,24 @@ const PerformanceMonitor = ({
   const [autoHideTimer, setAutoHideTimer] = useState(null);
   const [selectedTab, setSelectedTab] = useState("metrics"); // 'metrics' ou 'lighthouse'
 
-  const shouldShow =
-    isEnabled || (import.meta.env.MODE === "production" && showInProduction);
+  const { isFeatureEnabled } = useEnvironment();
+  const isPerformanceMonitoringEnabled = isFeatureEnabled(
+    "performanceMonitoring"
+  );
+  const shouldShow = isEnabled && isPerformanceMonitoringEnabled;
 
-  // Agora usamos o hook usePerformanceMonitoring que já integra métricas do Lighthouse
   const performanceMonitoring = usePerformanceMonitoring();
   const { useMemoryCache } = usePerformanceOptimizations();
   const cache = useMemoryCache();
 
-  // Obter métricas do nosso hook melhorado
   const metrics = performanceMonitoring.getMetrics();
   const overallScore = performanceMonitoring.performanceScore;
   const lighthouseScores = performanceMonitoring.getLighthouseScores();
 
-  // Efeito para mostrar o monitor quando métricas forem coletadas
   useEffect(() => {
     if (metrics.length > 0 && !isVisible && shouldShow) {
       setIsVisible(true);
 
-      // Auto-hide após delay se habilitado
       if (enableAutoHide) {
         if (autoHideTimer) clearTimeout(autoHideTimer);
         const timer = setTimeout(() => {
@@ -192,7 +192,6 @@ const PerformanceMonitor = ({
     }
   }, [metrics, isVisible, shouldShow, enableAutoHide, autoHideDelay]);
 
-  // Formata valores de métricas
   const formatMetricValue = (name, value) => {
     switch (name) {
       case "CLS":
@@ -210,7 +209,6 @@ const PerformanceMonitor = ({
     }
   };
 
-  // Tooltips informativos - versões mais concisas
   const getTooltip = (metricName) => {
     const tooltips = {
       LCP: "Tempo de carregamento do maior elemento visível",
@@ -229,7 +227,6 @@ const PerformanceMonitor = ({
     return tooltips[metricName] || "";
   };
 
-  // Exporta dados de performance
   const handleExportData = () => {
     const data = performanceMonitoring.exportLighthouseData();
     const blob = new Blob([JSON.stringify(data, null, 2)], {
@@ -245,19 +242,16 @@ const PerformanceMonitor = ({
     URL.revokeObjectURL(url);
   };
 
-  // Limpa cache de performance
   const handleClearCache = () => {
     cache.clear();
     localStorage.removeItem("webVitals");
     localStorage.removeItem("performance_cache");
 
-    // Recarrega a página para recoletar métricas
     if (confirm("Limpar cache de performance? A página será recarregada.")) {
       window.location.reload();
     }
   };
 
-  // Cleanup do timer
   useEffect(() => {
     return () => {
       if (autoHideTimer) {
@@ -266,7 +260,6 @@ const PerformanceMonitor = ({
     };
   }, [autoHideTimer]);
 
-  // Não renderiza se não deve mostrar ou não há suporte
   if (!shouldShow || !isVisible) {
     return null;
   }

@@ -11,23 +11,37 @@ import usePerformanceMonitoring from "@/hooks/usePerformanceMonitoring";
  * - Configuração condicional
  */
 const Analytics = () => {
-  const { googleAnalyticsId, facebookPixelId, isProduction, log } =
-    useEnvironment();
+  const {
+    googleAnalyticsId,
+    facebookPixelId,
+    isProduction,
+    log,
+    isFeatureEnabled,
+    hasValidAnalytics,
+    shouldLoadAnalytics,
+    hasValidGoogleAnalytics,
+    hasValidFacebookPixel,
+  } = useEnvironment();
 
-  // Função para carregar Google Analytics de forma otimizada
+  const isAnalyticsEnabled = isFeatureEnabled("analytics");
+  const isPerformanceTrackingEnabled = isFeatureEnabled("performanceTracking");
+
+  const shouldInitializeAnalytics = shouldLoadAnalytics && hasValidAnalytics;
+
   const loadGoogleAnalytics = useCallback(() => {
-    if (!googleAnalyticsId) return;
+    if (!googleAnalyticsId || !hasValidGoogleAnalytics()) {
+      log("Google Analytics não configurado ou inválido");
+      return;
+    }
 
     try {
       log("Carregando Google Analytics:", googleAnalyticsId);
 
-      // Preconnect para melhorar performance
       const preconnect = document.createElement("link");
       preconnect.rel = "preconnect";
       preconnect.href = "https://www.googletagmanager.com";
       document.head.appendChild(preconnect);
 
-      // Carregar script do GA
       const script = document.createElement("script");
       script.async = true;
       script.src = `https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsId}`;
@@ -36,7 +50,6 @@ const Analytics = () => {
       };
       document.head.appendChild(script);
 
-      // Configurar gtag
       window.dataLayer = window.dataLayer || [];
       function gtag() {
         window.dataLayer.push(arguments);
@@ -44,14 +57,11 @@ const Analytics = () => {
 
       gtag("js", new Date());
       gtag("config", googleAnalyticsId, {
-        // Configurações de privacidade
         anonymize_ip: true,
         cookie_flags: "max-age=7200;secure;samesite=strict",
-        // Melhorar performance
         send_page_view: true,
       });
 
-      // Disponibilizar globalmente
       window.gtag = gtag;
 
       log("Google Analytics carregado com sucesso");
@@ -60,14 +70,15 @@ const Analytics = () => {
     }
   }, [googleAnalyticsId, log]);
 
-  // Função para carregar Facebook Pixel de forma otimizada
   const loadFacebookPixel = useCallback(() => {
-    if (!facebookPixelId) return;
+    if (!facebookPixelId || !hasValidFacebookPixel()) {
+      log("Facebook Pixel não configurado ou inválido");
+      return;
+    }
 
     try {
       log("Carregando Facebook Pixel:", facebookPixelId);
 
-      // Implementação otimizada do Facebook Pixel
       !(function (f, b, e, v, n, t, s) {
         if (f.fbq) return;
         n = f.fbq = function () {
@@ -95,7 +106,6 @@ const Analytics = () => {
         "https://connect.facebook.net/en_US/fbevents.js"
       );
 
-      // Configurar pixel
       window.fbq("init", facebookPixelId);
       window.fbq("track", "PageView");
       log("Facebook Pixel carregado com sucesso");
@@ -104,7 +114,6 @@ const Analytics = () => {
     }
   }, [facebookPixelId, log]);
 
-  // Hook para monitoramento de performance - usando as funções corretas
   const {
     metrics,
     performanceScore,
@@ -116,12 +125,10 @@ const Analytics = () => {
     getTTFB,
   } = usePerformanceMonitoring();
 
-  // Função para enviar métricas de performance para analytics
   const trackPerformanceMetrics = useCallback(() => {
-    if (!window.gtag || !isProduction) return;
+    if (!window.gtag || !isProduction || !isPerformanceTrackingEnabled) return;
 
     try {
-      // Enviar pontuação geral para Google Analytics
       if (performanceScore > 0) {
         window.gtag("event", "lighthouse_score", {
           event_category: "Performance",
@@ -130,7 +137,6 @@ const Analytics = () => {
         });
       }
 
-      // Enviar métricas Core Web Vitals usando as funções do hook
       const coreWebVitals = {
         LCP: getLCP(),
         FID: getFID(),
@@ -170,7 +176,6 @@ const Analytics = () => {
     log,
   ]);
 
-  // Função auxiliar para classificar métricas
   const getRating = (metricName, value) => {
     const thresholds = {
       LCP: { good: 2500, poor: 4000 },
@@ -189,28 +194,31 @@ const Analytics = () => {
     return "poor";
   };
 
-  // Carregar analytics apenas em produção
   useEffect(() => {
-    if (!isProduction) {
-      log("Analytics desabilitado em desenvolvimento");
+    if (!shouldInitializeAnalytics) {
+      if (!window.__ANALYTICS_LOG_SHOWN__) {
+        log("Analytics não será carregado:", {
+          isProduction,
+          isAnalyticsEnabled,
+          hasValidAnalytics,
+          shouldLoadAnalytics,
+        });
+        window.__ANALYTICS_LOG_SHOWN__ = true;
+      }
       return;
     }
 
-    // Carregar analytics com delay para não impactar performance inicial
     const timeoutId = setTimeout(() => {
       loadGoogleAnalytics();
       loadFacebookPixel();
     }, 1000);
 
     return () => clearTimeout(timeoutId);
-  }, [isProduction, loadGoogleAnalytics, loadFacebookPixel, log]);
+  }, [shouldInitializeAnalytics, loadGoogleAnalytics, loadFacebookPixel, log]);
 
-  // Enviar métricas de performance quando a página estiver totalmente carregada
   useEffect(() => {
-    if (!isProduction) return;
+    if (!isProduction || !isPerformanceTrackingEnabled) return;
 
-    // Aguardar o carregamento completo da página e mais 10 segundos
-    // para que todas as métricas sejam coletadas adequadamente
     const handleLoad = () => {
       setTimeout(trackPerformanceMetrics, 10000);
     };
@@ -226,9 +234,8 @@ const Analytics = () => {
     };
   }, [isProduction, trackPerformanceMetrics]);
 
-  // Monitorar mudanças de rota para SPA
   useEffect(() => {
-    if (!isProduction || !window.gtag) return;
+    if (!isProduction || !window.gtag || !isAnalyticsEnabled) return;
 
     const handleRouteChange = () => {
       window.gtag("config", googleAnalyticsId, {
@@ -236,22 +243,16 @@ const Analytics = () => {
       });
     };
 
-    // Listen para mudanças de URL (para SPA)
     window.addEventListener("popstate", handleRouteChange);
 
     return () => {
       window.removeEventListener("popstate", handleRouteChange);
     };
-  }, [isProduction, googleAnalyticsId]);
+  }, [isProduction, isAnalyticsEnabled, googleAnalyticsId]);
 
-  // Não renderiza nada - componente apenas para side effects
   return null;
 };
 
-/**
- * Função utilitária para tracking de eventos
- * Suporta múltiplos provedores de analytics
- */
 export const trackEvent = (
   action,
   category = "engagement",
@@ -259,7 +260,6 @@ export const trackEvent = (
   value = 0
 ) => {
   try {
-    // Google Analytics
     if (window.gtag) {
       window.gtag("event", action, {
         event_category: category,
@@ -268,7 +268,6 @@ export const trackEvent = (
       });
     }
 
-    // Facebook Pixel
     if (window.fbq) {
       window.fbq("track", "CustomEvent", {
         action,
@@ -282,13 +281,8 @@ export const trackEvent = (
   }
 };
 
-/**
- * Função utilitária para tracking de page views
- * Útil para SPAs com roteamento client-side
- */
 export const trackPageView = (page_title, page_location) => {
   try {
-    // Google Analytics
     if (window.gtag && window.GA_MEASUREMENT_ID) {
       window.gtag("config", window.GA_MEASUREMENT_ID, {
         page_title,
@@ -296,7 +290,6 @@ export const trackPageView = (page_title, page_location) => {
       });
     }
 
-    // Facebook Pixel
     if (window.fbq) {
       window.fbq("track", "PageView");
     }
@@ -305,10 +298,6 @@ export const trackPageView = (page_title, page_location) => {
   }
 };
 
-/**
- * Função para tracking de conversões
- * Útil para e-commerce e lead generation
- */
 export const trackConversion = (conversionData = {}) => {
   try {
     const {
@@ -317,7 +306,6 @@ export const trackConversion = (conversionData = {}) => {
       currency = "BRL",
     } = conversionData;
 
-    // Google Analytics
     if (window.gtag) {
       window.gtag("event", "purchase", {
         transaction_id: conversionData.transaction_id,
@@ -327,7 +315,6 @@ export const trackConversion = (conversionData = {}) => {
       });
     }
 
-    // Facebook Pixel
     if (window.fbq) {
       window.fbq("track", "Purchase", {
         value: value,
@@ -340,37 +327,25 @@ export const trackConversion = (conversionData = {}) => {
   }
 };
 
-/**
- * Exporta métricas do Lighthouse no formato JSON
- * Útil para armazenar resultados ou enviar para sistemas de monitoramento
- * Função modificada para usar o hook de performance diretamente
- */
 export function exportLighthouseReport() {
   try {
-    // Criar uma instância temporária do hook para obter as métricas
     const perf = usePerformanceMonitoring();
 
-    // Obter dados do relatório
     const data = perf.exportLighthouseData();
 
-    // Criar um Blob com os dados JSON
     const blob = new Blob([JSON.stringify(data, null, 2)], {
       type: "application/json",
     });
 
-    // Criar URL para o blob
     const url = URL.createObjectURL(blob);
 
-    // Criar link para download
     const link = document.createElement("a");
     link.href = url;
     link.download = `lighthouse-report-${new Date().toISOString().slice(0, 10)}.json`;
 
-    // Adicionar o link ao documento e clicar automaticamente
     document.body.appendChild(link);
     link.click();
 
-    // Limpar
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
 

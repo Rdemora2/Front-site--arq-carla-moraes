@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import usePerformanceMonitoring from "../../hooks/usePerformanceMonitoring";
+import { useEnvironment } from "../../hooks/useEnvironment";
 import styled from "styled-components";
 import LighthouseDetailedReport from "./LighthouseDetailedReport";
 
@@ -145,6 +146,8 @@ const StatusDot = styled.span`
 
 const LighthouseMetrics = ({ showInDevelopment = true }) => {
   const { getMetrics, getLighthouseScores, score } = usePerformanceMonitoring();
+  const { isFeatureEnabled, isDevelopment } = useEnvironment();
+
   const [isOpen, setIsOpen] = useState(false);
   const [showDetailedReport, setShowDetailedReport] = useState(false);
   const [metrics, setMetrics] = useState([]);
@@ -171,8 +174,11 @@ const LighthouseMetrics = ({ showInDevelopment = true }) => {
     return () => clearInterval(interval);
   }, [getMetrics, getLighthouseScores]);
 
-  // Só exibe em desenvolvimento, a menos que explicitamente solicitado
-  if (process.env.NODE_ENV !== "development" && !showInDevelopment) {
+  const isLighthouseMonitorEnabled = isFeatureEnabled("lighthouseMonitor");
+  const shouldShow =
+    (isDevelopment && showInDevelopment) || isLighthouseMonitorEnabled;
+
+  if (!shouldShow) {
     return null;
   }
 

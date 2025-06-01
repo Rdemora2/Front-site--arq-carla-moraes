@@ -1,7 +1,14 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useWebVitals } from "./useWebVitals";
+import { useEnvironment } from "./useEnvironment";
 
 const usePerformanceMonitoring = () => {
+  const { isFeatureEnabled } = useEnvironment();
+
+  const isPerformanceTrackingEnabled = isFeatureEnabled("performanceTracking");
+  const isWebVitalsEnabled = isFeatureEnabled("webVitals");
+  const isMemoryMonitoringEnabled = isFeatureEnabled("memoryMonitoring");
+
   const [metrics, setMetrics] = useState({
     tti: null,
     fcp: null,
@@ -9,8 +16,8 @@ const usePerformanceMonitoring = () => {
     cls: null,
     fid: null,
     ttfb: null,
-    si: null, // Speed Index
-    tbt: null, // Total Blocking Time
+    si: null,
+    tbt: null,
   });
 
   const [lighthouseScores, setLighthouseScores] = useState({
@@ -20,7 +27,6 @@ const usePerformanceMonitoring = () => {
     seo: null,
   });
 
-  // Usar useRef para manter referências persistentes dos timers
   const timersRef = useRef({
     ttiTimer: null,
     fcpTimer: null,
@@ -32,14 +38,50 @@ const usePerformanceMonitoring = () => {
 
   const [performanceScore, setPerformanceScore] = useState(0);
   const [loading, setLoading] = useState(true);
+  const longTasksRef = useRef([]);
 
-  // Integração com Web Vitals para dados mais precisos
+  useEffect(() => {
+    if (!isPerformanceTrackingEnabled) return;
+
+    let longTaskObserver;
+
+    if (
+      typeof PerformanceObserver !== "undefined" &&
+      PerformanceObserver.supportedEntryTypes &&
+      PerformanceObserver.supportedEntryTypes.includes("longtask")
+    ) {
+      try {
+        longTaskObserver = new PerformanceObserver((list) => {
+          const entries = list.getEntries();
+          longTasksRef.current = [...longTasksRef.current, ...entries];
+
+          if (longTasksRef.current.length > 100) {
+            longTasksRef.current = longTasksRef.current.slice(-100);
+          }
+        });
+
+        longTaskObserver.observe({ entryTypes: ["longtask"] });
+      } catch (error) {
+        console.warn(
+          "Erro ao configurar PerformanceObserver para longtasks:",
+          error
+        );
+      }
+    }
+
+    return () => {
+      if (longTaskObserver) {
+        longTaskObserver.disconnect();
+      }
+    };
+  }, [isPerformanceTrackingEnabled]);
+
   const webVitals = useWebVitals({
-    enableAnalytics: false,
-    enableConsoleLog: false,
+    enableAnalytics: isWebVitalsEnabled && isFeatureEnabled("analytics"),
+    enableConsoleLog: isWebVitalsEnabled && isFeatureEnabled("consoleLogging"),
+    enableLocalStorage: isWebVitalsEnabled && isFeatureEnabled("localStorage"),
   });
 
-  // Função para calcular TTI
   const calculateTTI = useCallback(() => {
     try {
       if (!performance.getEntriesByType) return null;
@@ -50,7 +92,6 @@ const usePerformanceMonitoring = () => {
       const domContentLoaded = navigationEntry.domContentLoadedEventEnd;
       const loadComplete = navigationEntry.loadEventEnd;
 
-      // TTI aproximado baseado no carregamento completo
       return Math.round(loadComplete - navigationEntry.startTime);
     } catch (error) {
       console.warn("Erro ao calcular TTI:", error);
@@ -58,7 +99,6 @@ const usePerformanceMonitoring = () => {
     }
   }, []);
 
-  // Função para calcular FCP
   const calculateFCP = useCallback(() => {
     try {
       const fcpEntries = performance.getEntriesByType("paint");
@@ -72,7 +112,6 @@ const usePerformanceMonitoring = () => {
     }
   }, []);
 
-  // Função para calcular LCP
   const calculateLCP = useCallback(() => {
     try {
       if (!window.PerformanceObserver) return null;
@@ -89,7 +128,6 @@ const usePerformanceMonitoring = () => {
 
       observer.observe({ entryTypes: ["largest-contentful-paint"] });
 
-      // Cleanup observer após 5 segundos
       setTimeout(() => {
         observer.disconnect();
       }, 5000);
@@ -100,7 +138,6 @@ const usePerformanceMonitoring = () => {
       return null;
     }
   }, []);
-  // Função para calcular TTFB
   const calculateTTFB = useCallback(() => {
     try {
       const navigationEntry = performance.getEntriesByType("navigation")[0];
@@ -115,7 +152,6 @@ const usePerformanceMonitoring = () => {
     }
   }, []);
 
-  // Função para calcular Speed Index (estimado)
   const calculateSI = useCallback(() => {
     try {
       const navigationEntry = performance.getEntriesByType("navigation")[0];
@@ -123,7 +159,6 @@ const usePerformanceMonitoring = () => {
 
       if (!navigationEntry || !paintEntries.length) return null;
 
-      // Speed Index é complexo, esta é uma aproximação simplificada
       // Basicamente, uma média ponderada de eventos de renderização
       const fcp = paintEntries.find(
         (entry) => entry.name === "first-contentful-paint"
@@ -134,7 +169,6 @@ const usePerformanceMonitoring = () => {
       const domComplete = navigationEntry.domComplete;
       const loadEventEnd = navigationEntry.loadEventEnd;
 
-      // Fórmula simplificada para estimar o Speed Index
       return Math.round(
         fcp.startTime * 0.25 + domComplete * 0.5 + loadEventEnd * 0.25
       );
@@ -144,12 +178,8 @@ const usePerformanceMonitoring = () => {
     }
   }, []);
 
-  // Função para calcular Total Blocking Time (estimado)
   const calculateTBT = useCallback(() => {
     try {
-      // TBT é complexo e requer análise detalhada das tarefas do thread principal
-      // Esta é uma implementação simplificada baseada em eventos de performance
-
       const fcpEntry = performance
         .getEntriesByType("paint")
         .find((entry) => entry.name === "first-contentful-paint");
@@ -158,24 +188,20 @@ const usePerformanceMonitoring = () => {
 
       if (!fcpEntry || !navigationEntry) return null;
 
-      // Calcular uma aproximação do TBT baseado no tempo entre FCP e domInteractive
       const interactive = navigationEntry.domInteractive;
       const fcp = fcpEntry.startTime;
 
-      // Extrair apenas o tempo de bloqueio significativo (>50ms)
-      // Esta é uma estimativa, o valor real requer análise de cada tarefa
-      const longTasks = performance.getEntriesByType("longtask") || [];
+      // Usar apenas as longtasks coletadas pelo PerformanceObserver
+      let longTasks = longTasksRef.current || [];
+
       const totalBlockingTime = longTasks.reduce((total, task) => {
-        // Apenas considerar tarefas após o FCP
         if (task.startTime > fcp) {
-          // Apenas o tempo além de 50ms é considerado bloqueante
           const blockingTime = Math.max(0, task.duration - 50);
           return total + blockingTime;
         }
         return total;
       }, 0);
 
-      // Se não tivermos dados de longTask, fazer uma estimativa
       return longTasks.length > 0
         ? Math.round(totalBlockingTime)
         : Math.round(Math.max(0, (interactive - fcp) * 0.3)); // 30% do tempo entre FCP e interatividade
@@ -184,20 +210,17 @@ const usePerformanceMonitoring = () => {
       return null;
     }
   }, []);
-  // Calcula pontuação de performance segundo critérios do Lighthouse
   const calculatePerformanceScore = useCallback((metricsData) => {
-    // Pesos aproximados baseados no Lighthouse 6+
     const weights = {
-      fcp: 0.1, // First Contentful Paint: 10%
-      si: 0.1, // Speed Index: 10%
-      lcp: 0.25, // Largest Contentful Paint: 25%
-      ttfb: 0.05, // Time to First Byte: 5% (implícito no Lighthouse)
-      tbt: 0.3, // Total Blocking Time: 30%
-      cls: 0.15, // Cumulative Layout Shift: 15%
-      tti: 0.05, // Time to Interactive: 5% (menos peso nas versões mais recentes)
+      fcp: 0.1,
+      si: 0.1,
+      lcp: 0.25,
+      ttfb: 0.05,
+      tbt: 0.3,
+      cls: 0.15,
+      tti: 0.05,
     };
 
-    // Notas para cada métrica (0-100)
     const scores = {
       fcp: calculateMetricScore("fcp", metricsData.fcp),
       si: calculateMetricScore("si", metricsData.si),
@@ -208,7 +231,6 @@ const usePerformanceMonitoring = () => {
       tti: calculateMetricScore("tti", metricsData.tti),
     };
 
-    // Calcular pontuação ponderada final
     let finalScore = 0;
     let weightSum = 0;
 
@@ -219,7 +241,6 @@ const usePerformanceMonitoring = () => {
       }
     });
 
-    // Ajustar para os pesos disponíveis
     if (weightSum > 0) {
       finalScore = finalScore / weightSum;
     }
@@ -227,11 +248,9 @@ const usePerformanceMonitoring = () => {
     return Math.round(finalScore);
   }, []);
 
-  // Função auxiliar para calcular pontuação de cada métrica individual
   const calculateMetricScore = useCallback((metric, value) => {
     if (value === null || value === undefined) return null;
 
-    // Limiares baseados no Lighthouse (valor bom, médio, ruim)
     const thresholds = {
       fcp: [1800, 3000, 4500], // ms
       si: [3400, 5800, 8500], // ms
@@ -242,13 +261,10 @@ const usePerformanceMonitoring = () => {
       tti: [3800, 7300, 12500], // ms
     };
 
-    // Se não temos limiares definidos para esta métrica
     if (!thresholds[metric]) return 50;
 
     const [good, medium, poor] = thresholds[metric];
 
-    // Fórmula baseada no Lighthouse para pontuação
-    // https://web.dev/performance-scoring/
     if (value <= good) {
       return 90 + (10 * (good - value)) / good; // 90-100
     } else if (value <= medium) {
@@ -260,28 +276,20 @@ const usePerformanceMonitoring = () => {
     }
   }, []);
 
-  // Função para calcular escores adicionais do Lighthouse
   const calculateLighthouseScores = useCallback(() => {
     return {
-      // Performance baseado nas métricas Web Vitals
       performance: performanceScore,
 
-      // Os outros escores são estimados ou podem ser configurados estaticamente
-      // Na implementação real, estes viriam de auditorias reais
       accessibility: estimateAccessibilityScore(),
       bestPractices: estimateBestPracticesScore(),
       seo: estimateSEOScore(),
     };
   }, [performanceScore]);
 
-  // Funções para estimar outros scores do Lighthouse
-  // Estas poderiam ser implementadas com verificações reais em uma versão completa
   const estimateAccessibilityScore = useCallback(() => {
-    // Verificar se temos elementos com problemas de acessibilidade básicos
-    let score = 90; // Começa com score alto
+    let score = 90;
 
     try {
-      // Verificar atributos alt nas imagens
       const images = document.querySelectorAll("img");
       const imagesWithoutAlt = Array.from(images).filter(
         (img) => !img.hasAttribute("alt")
@@ -290,9 +298,6 @@ const usePerformanceMonitoring = () => {
         score -= Math.min(15, imagesWithoutAlt.length * 2);
       }
 
-      // Verificar contraste de cores (simplificado)
-      // Verificar headings em ordem (simplificado)
-      // Verificar labels em formulários
       const inputs = document.querySelectorAll("input, select, textarea");
       const inputsWithoutLabels = Array.from(inputs).filter((input) => {
         const id = input.getAttribute("id");
@@ -314,12 +319,10 @@ const usePerformanceMonitoring = () => {
     let score = 95;
 
     try {
-      // Verificar uso de HTTPS
       if (window.location.protocol !== "https:") {
         score -= 20;
       }
 
-      // Verificar console errors
       if (window.console && window.console.error) {
         const originalError = window.console.error;
         let errorCount = 0;
@@ -329,7 +332,6 @@ const usePerformanceMonitoring = () => {
           originalError.apply(console, arguments);
         };
 
-        // Restaurar após 1 segundo
         setTimeout(() => {
           window.console.error = originalError;
           if (errorCount > 0) {
@@ -348,7 +350,6 @@ const usePerformanceMonitoring = () => {
     let score = 90;
 
     try {
-      // Verificar title e meta description
       if (!document.title) {
         score -= 15;
       } else if (document.title.length < 10 || document.title.length > 70) {
@@ -367,7 +368,6 @@ const usePerformanceMonitoring = () => {
         }
       }
 
-      // Verificar links
       const links = document.querySelectorAll("a");
       const linksWithoutText = Array.from(links).filter((link) => {
         const text = link.textContent.trim();
@@ -384,24 +384,25 @@ const usePerformanceMonitoring = () => {
 
     return Math.max(50, score);
   }, []);
-  // Effect principal para coleta de métricas
   useEffect(() => {
+    if (!isPerformanceTrackingEnabled) {
+      setLoading(false);
+      return;
+    }
+
     const collectMetrics = () => {
       try {
-        // Aguardar o carregamento completo da página
         if (document.readyState === "complete") {
-          // Obter métricas do Web Vitals quando disponíveis
-          const webVitalsMetrics = webVitals.getMetrics();
+          const webVitalsMetrics = isWebVitalsEnabled
+            ? webVitals.getMetrics()
+            : [];
           const webVitalsMap = {};
 
-          // Converter métricas do Web Vitals para nosso formato
           webVitalsMetrics.forEach((metric) => {
-            // Padronizar nome da métrica (minúsculo)
             const name = metric.name.toLowerCase();
             webVitalsMap[name] = metric.value;
           });
 
-          // Mesclar as métricas coletadas pelo Web Vitals com nossas métricas calculadas
           const metricsData = {
             ttfb: webVitalsMap.ttfb || calculateTTFB(),
             fcp: webVitalsMap.fcp || calculateFCP(),
@@ -413,14 +414,11 @@ const usePerformanceMonitoring = () => {
             tbt: calculateTBT(),
           };
 
-          // Atualizar estado de métricas
           setMetrics(metricsData);
 
-          // Calcular pontuação de performance
           const perfScore = calculatePerformanceScore(metricsData);
           setPerformanceScore(perfScore);
 
-          // Calcular outros escores do Lighthouse
           const lighthouseScores = {
             performance: perfScore,
             accessibility: estimateAccessibilityScore(),
@@ -431,13 +429,10 @@ const usePerformanceMonitoring = () => {
           setLighthouseScores(lighthouseScores);
           setLoading(false);
 
-          // Agendar próxima atualização para dados dinâmicos (como CLS)
-          // que podem continuar mudando mesmo após o carregamento inicial
           timersRef.current.updateTimer = setTimeout(() => {
             collectMetrics();
-          }, 5000); // Atualizar a cada 5 segundos
+          }, 5000);
         } else {
-          // Se a página ainda não carregou completamente, agendar nova tentativa
           timersRef.current.ttiTimer = setTimeout(collectMetrics, 100);
         }
       } catch (error) {
@@ -446,12 +441,11 @@ const usePerformanceMonitoring = () => {
       }
     };
 
-    // Iniciar coleta após um pequeno delay para garantir que os recursos de performance API estejam disponíveis
-    timersRef.current.ttiTimer = setTimeout(collectMetrics, 1000);
+    if (isPerformanceTrackingEnabled) {
+      timersRef.current.ttiTimer = setTimeout(collectMetrics, 1000);
+    }
 
-    // Cleanup function
     return () => {
-      // Limpar todos os timers usando as referências
       Object.keys(timersRef.current).forEach((key) => {
         if (timersRef.current[key]) {
           clearTimeout(timersRef.current[key]);
@@ -471,12 +465,17 @@ const usePerformanceMonitoring = () => {
     estimateBestPracticesScore,
     estimateSEOScore,
     webVitals,
+    isPerformanceTrackingEnabled,
+    isWebVitalsEnabled,
   ]);
-  // Função para refazer a coleta de métricas
   const refreshMetrics = useCallback(() => {
+    if (!isPerformanceTrackingEnabled) {
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
 
-    // Limpar timers existentes
     Object.keys(timersRef.current).forEach((key) => {
       if (timersRef.current[key]) {
         clearTimeout(timersRef.current[key]);
@@ -484,20 +483,15 @@ const usePerformanceMonitoring = () => {
       }
     });
 
-    // Reagendar coleta
     timersRef.current.ttiTimer = setTimeout(() => {
-      // Obter métricas do Web Vitals quando disponíveis
-      const webVitalsMetrics = webVitals.getMetrics();
+      const webVitalsMetrics = isWebVitalsEnabled ? webVitals.getMetrics() : [];
       const webVitalsMap = {};
 
-      // Converter métricas do Web Vitals para nosso formato
       webVitalsMetrics.forEach((metric) => {
-        // Padronizar nome da métrica (minúsculo)
         const name = metric.name.toLowerCase();
         webVitalsMap[name] = metric.value;
       });
 
-      // Mesclar as métricas
       const metricsData = {
         ttfb: webVitalsMap.ttfb || calculateTTFB(),
         fcp: webVitalsMap.fcp || calculateFCP(),
@@ -511,11 +505,9 @@ const usePerformanceMonitoring = () => {
 
       setMetrics(metricsData);
 
-      // Calcular scores
       const perfScore = calculatePerformanceScore(metricsData);
       setPerformanceScore(perfScore);
 
-      // Atualizar Lighthouse scores
       setLighthouseScores({
         performance: perfScore,
         accessibility: estimateAccessibilityScore(),
@@ -537,11 +529,11 @@ const usePerformanceMonitoring = () => {
     estimateBestPracticesScore,
     estimateSEOScore,
     webVitals,
+    isPerformanceTrackingEnabled,
+    isWebVitalsEnabled,
   ]);
 
-  // Função para converter as métricas para o formato esperado pelo componente LighthouseMetrics
   const getMetrics = useCallback(() => {
-    // Transformar nossas métricas num formato compatível com o componente de UI
     const formattedMetrics = [
       {
         name: "LCP",
@@ -596,11 +588,9 @@ const usePerformanceMonitoring = () => {
     return formattedMetrics;
   }, [metrics]);
 
-  // Função para classificar cada métrica
   const getRating = useCallback((name, value) => {
     if (value === null || value === undefined) return "unknown";
 
-    // Limiares para classificação (bom, precisa melhorar, ruim)
     const thresholds = {
       LCP: [2500, 4000], // ms
       FID: [100, 300], // ms
@@ -619,7 +609,6 @@ const usePerformanceMonitoring = () => {
     return "poor";
   }, []);
 
-  // Exportar dados completos para relatórios ou análise externa
   const exportLighthouseData = useCallback(() => {
     return {
       timestamp: Date.now(),
@@ -640,27 +629,29 @@ const usePerformanceMonitoring = () => {
   }, [metrics, lighthouseScores]);
 
   return {
-    // Dados brutos
-    metrics,
-    performanceScore,
-    lighthouseScores,
-    loading,
+    metrics: isPerformanceTrackingEnabled ? metrics : {},
+    performanceScore: isPerformanceTrackingEnabled ? performanceScore : 0,
+    lighthouseScores: isPerformanceTrackingEnabled ? lighthouseScores : {},
+    loading: isPerformanceTrackingEnabled ? loading : false,
 
-    // Funções auxiliares
+    isPerformanceTrackingEnabled,
+    isWebVitalsEnabled,
+    isMemoryMonitoringEnabled,
+
     refreshMetrics,
     getMetrics,
-    getLighthouseScores: () => lighthouseScores,
+    getLighthouseScores: () =>
+      isPerformanceTrackingEnabled ? lighthouseScores : {},
     exportLighthouseData,
 
-    // Funções utilitárias para acessar métricas individualmente
-    getTTI: () => metrics.tti,
-    getFCP: () => metrics.fcp,
-    getLCP: () => metrics.lcp,
-    getTTFB: () => metrics.ttfb,
-    getCLS: () => metrics.cls,
-    getFID: () => metrics.fid,
-    getSI: () => metrics.si,
-    getTBT: () => metrics.tbt,
+    getTTI: () => (isPerformanceTrackingEnabled ? metrics.tti : null),
+    getFCP: () => (isPerformanceTrackingEnabled ? metrics.fcp : null),
+    getLCP: () => (isPerformanceTrackingEnabled ? metrics.lcp : null),
+    getTTFB: () => (isPerformanceTrackingEnabled ? metrics.ttfb : null),
+    getCLS: () => (isPerformanceTrackingEnabled ? metrics.cls : null),
+    getFID: () => (isPerformanceTrackingEnabled ? metrics.fid : null),
+    getSI: () => (isPerformanceTrackingEnabled ? metrics.si : null),
+    getTBT: () => (isPerformanceTrackingEnabled ? metrics.tbt : null),
   };
 };
 
