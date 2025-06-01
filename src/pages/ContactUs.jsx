@@ -28,7 +28,7 @@ const StyledContactUsForm = styled(ContactUsForm)`
 export default () => {
   return (
     <AnimationRevealPage>
-      <MetaTags 
+      <MetaTags
         title="Contato - Carla Moraes Arquitetura Paisagística"
         description="Entre em contato conosco para criar seu projeto paisagístico único. Desenvolvemos jardins que transformam espaços e vidas."
         url="/contato"

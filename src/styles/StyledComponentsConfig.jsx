@@ -12,15 +12,24 @@ const shouldForwardProp = (prop) => {
     "imageDecoratorBlobCss",
     "imageCss",
     "imageInsideDiv",
+    "css",
+    "as",
   ];
 
   return (
-    !customProps.includes(prop) && prop !== "theme" && !prop.startsWith("$")
+    !customProps.includes(prop) &&
+    prop !== "theme" &&
+    !prop.startsWith("$") &&
+    !prop.startsWith("__")
   );
 };
 
 export const StyledComponentsProvider = ({ children }) => (
-  <StyleSheetManager shouldForwardProp={shouldForwardProp}>
+  <StyleSheetManager
+    shouldForwardProp={shouldForwardProp}
+    enableVendorPrefixes={true}
+    disableVendorPrefixes={false}
+  >
     {children}
   </StyleSheetManager>
 );

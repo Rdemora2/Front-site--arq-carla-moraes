@@ -2,7 +2,23 @@ import React from "react";
 import { createGlobalStyle } from "styled-components";
 import tw, { GlobalStyles as BaseStyles } from "twin.macro";
 
-const CustomStyles = createGlobalStyle`
+const ModalStyles = `
+  /* Below animations are for modal created using React-Modal */
+  .ReactModal__Overlay {
+    transition: transform 300ms ease-in-out;
+    transition-delay: 100ms;
+    transform: scale(0);
+  }
+  .ReactModal__Overlay--after-open{
+    transform: scale(1);
+  }
+  .ReactModal__Overlay--before-close{
+    transform: scale(0);
+  }
+`;
+
+const CustomStyles = createGlobalStyle([
+  `
   :root {
     --color-primary: #6b7959;
     --color-primary-text: #3e4d2c;
@@ -13,7 +29,9 @@ const CustomStyles = createGlobalStyle`
 
   body {
     -webkit-tap-highlight-color: transparent;
-    ${tw`antialiased`}
+    `,
+  tw`antialiased`,
+  `
     background-color: var(--color-background);
   }
   
@@ -49,7 +67,12 @@ const CustomStyles = createGlobalStyle`
   p, .Description-BbZVu {
     color: #333333; /* Texto mais escuro para melhor contraste */
   }
-`;
+
+  `,
+  ModalStyles,
+  `
+`,
+]);
 
 const GlobalStyles = () => (
   <>

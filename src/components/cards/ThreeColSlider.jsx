@@ -97,7 +97,7 @@ const ThreeColSlider = ({
   cards = [
     {
       imageSrc:
-        "https://images.unsplash.com/photo-1546500840-ae38253aba9b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+        "https://images.unsplash.com/photo-1588557132645-ff567110cafd?ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&q=80",
       title: "Residencial Ipê Amarelo",
       description:
         "Jardim tropical contemporâneo com áreas de convivência integradas e iluminação cênica para esta residência de alto padrão.",
@@ -107,7 +107,7 @@ const ThreeColSlider = ({
     },
     {
       imageSrc:
-        "https://images.unsplash.com/photo-1569185835836-a9753dfcf317?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+        "https://images.unsplash.com/photo-1588557132645-ff567110cafd?ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&q=80",
       title: "Condomínio Villa Verde",
       description:
         "Áreas comuns e paisagismo do entorno, criando ambientes de lazer que valorizam a interação social e o contato com a natureza.",
@@ -117,7 +117,7 @@ const ThreeColSlider = ({
     },
     {
       imageSrc:
-        "https://images.unsplash.com/photo-1551201602-13d11c97d344?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+        "https://images.unsplash.com/photo-1588557132645-ff567110cafd?ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&q=80",
       title: "Corporativo Jardins",
       description:
         "Projeto biofílico para sede empresarial que integra elementos naturais ao ambiente de trabalho, promovendo bem-estar e produtividade.",

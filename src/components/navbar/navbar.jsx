@@ -82,7 +82,7 @@ export const LogoLink = styled(NavLink)`
   ${tw`flex items-center font-black border-b-0 text-2xl! ml-0!`}
 
   img {
-    ${tw`w-32 mr-3`}
+    ${tw`w-24 mr-3 lg:w-32`}
     transition: transform 0.3s ease;
   }
 `;
@@ -125,7 +125,9 @@ export const MobileNavLinks = motion(styled.div`
   }
 
   ${NavLink} {
-    transition: transform 0.3s ease, color 0.3s ease;
+    transition:
+      transform 0.3s ease,
+      color 0.3s ease;
 
     &:hover {
       transform: scale(1.05) translateY(-2px);
@@ -162,17 +164,18 @@ const Header = ({
   const collapseBreakpointCss =
     collapseBreakPointCssMap[collapseBreakpointClass];
 
-  const defaultLogoLink = (      <LogoLink href="/">
-        <picture>
-          <source srcSet="/images/logo/logo_full.webp" type="image/webp" />
-          <img
-            src="/images/logo/logo_full.webp"
-            alt="logo"
-            width="128"
-            height="75"
-            fetchpriority="high"
-          />
-        </picture>
+  const defaultLogoLink = (
+    <LogoLink href="/">
+      <picture>
+        <source srcSet="/images/logo/logo_full.webp" type="image/webp" />
+        <img
+          src="/images/logo/logo_full.webp"
+          alt="logo"
+          width="128"
+          height="75"
+          fetchpriority="high"
+        />
+      </picture>
     </LogoLink>
   );
 

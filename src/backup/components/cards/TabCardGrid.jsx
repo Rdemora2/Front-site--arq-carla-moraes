@@ -30,10 +30,9 @@ const Card = tw(
   motion.a
 )`bg-gray-200 rounded-b block max-w-xs mx-auto sm:max-w-none sm:mx-0`;
 const CardImageContainer = styled.div`
-  ${(props) =>
-    css`
-      background-image: url("${props.imageSrc}");
-    `}
+  ${(props) => css`
+    background-image: url("${props.imageSrc}");
+  `}
   ${tw`h-56 xl:h-64 bg-center bg-cover relative rounded-t`}
 `;
 const CardRatingContainer = tw.div`leading-none absolute inline-flex bg-gray-100 bottom-0 left-0 ml-4 mb-4 rounded-full px-5 py-2 items-end`;

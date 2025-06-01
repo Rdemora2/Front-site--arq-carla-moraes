@@ -1,27 +1,70 @@
 import React from "react";
+import PropTypes from "prop-types";
 import tw from "twin.macro";
 import styled from "styled-components";
+import { RefreshCw, AlertTriangle, Home } from "react-feather";
 
 const ErrorContainer = styled.div`
-  ${tw`flex flex-col items-center justify-center min-h-screen p-5 text-center bg-red-50`}
+  ${tw`flex flex-col items-center justify-center min-h-screen p-5 text-center bg-gray-500`}
+`;
+
+const ErrorIcon = styled.div`
+  ${tw`mb-6 text-red-500`}
+  svg {
+    ${tw`w-16 h-16`}
+  }
 `;
 
 const ErrorHeading = styled.h1`
-  ${tw`text-2xl font-bold text-red-700 mb-4`}
+  ${tw`text-2xl font-bold text-gray-800 mb-4`}
 `;
 
 const ErrorMessage = styled.div`
-  ${tw`text-gray-700 mb-6`}
+  ${tw`text-gray-600 mb-8 max-w-md leading-relaxed`}
 `;
 
-const RetryButton = styled.button`
-  ${tw`bg-primary-500 hover:bg-primary-700 text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline transition duration-300`}
+const ErrorDetails = styled.details`
+  ${tw`mb-8 max-w-md text-left`}
+  summary {
+    ${tw`cursor-pointer text-sm text-gray-500 hover:text-gray-700 mb-2`}
+  }
+  pre {
+    ${tw`text-xs bg-gray-100 p-3 rounded overflow-auto text-red-600`}
+    max-height: 8rem;
+  }
+`;
+
+const ButtonGroup = styled.div`
+  ${tw`flex gap-4 flex-col sm:flex-row`}
+`;
+
+const Button = styled.button`
+  ${tw`px-6 py-3 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2`}
+`;
+
+const RetryButton = styled(Button)`
+  ${tw`bg-primary-600 hover:bg-primary-700 text-white focus:ring-primary-500`}
+  svg {
+    ${tw`w-4 h-4 mr-2`}
+  }
+`;
+
+const HomeButton = styled(Button)`
+  ${tw`bg-gray-200 hover:bg-gray-300 text-gray-700 focus:ring-gray-500`}
+  svg {
+    ${tw`w-4 h-4 mr-2`}
+  }
 `;
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { hasError: false, error: null, errorInfo: null };
+    this.state = {
+      hasError: false,
+      error: null,
+      errorInfo: null,
+      errorId: null,
+    };
   }
 
   static getDerivedStateFromError(error) {
@@ -29,25 +72,89 @@ class ErrorBoundary extends React.Component {
   }
 
   componentDidCatch(error, errorInfo) {
-    console.error("Error boundary capturou um erro:", error, errorInfo);
+    const errorId = Date.now().toString();
+
+    // Log detalhado do erro
+    console.group(`🚨 Error Boundary [${errorId}]`);
+    console.error("Error:", error);
+    console.error("Error Info:", errorInfo);
+    console.error("Component Stack:", errorInfo.componentStack);
+    console.groupEnd();
+
+    // Reportar erro para serviço de monitoramento (se configurado)
+    this.reportError(error, errorInfo, errorId);
+
     this.setState({
       error,
       errorInfo,
+      errorId,
     });
   }
 
+  reportError = (error, errorInfo, errorId) => {
+    // Integração futura com Sentry, LogRocket, etc.
+    if (process.env.NODE_ENV === "production") {
+      // Exemplo: window.Sentry?.captureException(error, { extra: errorInfo });
+    }
+  };
+
+  handleRetry = () => {
+    this.setState({
+      hasError: false,
+      error: null,
+      errorInfo: null,
+      errorId: null,
+    });
+  };
+
+  handleGoHome = () => {
+    window.location.href = "/";
+  };
+
   render() {
     if (this.state.hasError) {
+      const isDevelopment = process.env.NODE_ENV === "development";
+
       return (
-        <ErrorContainer>
-          <ErrorHeading>Algo deu errado</ErrorHeading>
+        <ErrorContainer role="alert">
+          <ErrorIcon>
+            <AlertTriangle />
+          </ErrorIcon>
+
+          <ErrorHeading>Oops! Algo deu errado</ErrorHeading>
+
           <ErrorMessage>
-            Pedimos desculpas pelo inconveniente. Nossa equipe foi notificada e
-            está trabalhando para resolver o problema.
+            Pedimos desculpas pelo inconveniente. Ocorreu um erro inesperado e
+            nossa equipe foi notificada automaticamente.
           </ErrorMessage>
-          <RetryButton onClick={() => window.location.reload()}>
-            Tente Novamente
-          </RetryButton>
+
+          {isDevelopment && this.state.error && (
+            <ErrorDetails>
+              <summary>Detalhes técnicos (desenvolvimento)</summary>
+              <pre>
+                {this.state.error.toString()}
+                {this.state.errorInfo.componentStack}
+              </pre>
+            </ErrorDetails>
+          )}
+
+          <ButtonGroup>
+            <RetryButton onClick={this.handleRetry}>
+              <RefreshCw />
+              Tente Novamente
+            </RetryButton>
+
+            <HomeButton onClick={this.handleGoHome}>
+              <Home />
+              Voltar ao Início
+            </HomeButton>
+          </ButtonGroup>
+
+          {this.state.errorId && (
+            <p className="text-xs text-gray-400 mt-4">
+              ID do erro: {this.state.errorId}
+            </p>
+          )}
         </ErrorContainer>
       );
     }
@@ -55,5 +162,18 @@ class ErrorBoundary extends React.Component {
     return this.props.children;
   }
 }
+
+ErrorBoundary.propTypes = {
+  children: PropTypes.node,
+  fallback: PropTypes.func,
+  onError: PropTypes.func,
+  showDetails: PropTypes.bool,
+};
+
+ErrorBoundary.defaultProps = {
+  fallback: null,
+  onError: null,
+  showDetails: process.env.NODE_ENV === "development",
+};
 
 export default ErrorBoundary;

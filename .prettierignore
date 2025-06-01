@@ -1,0 +1,32 @@
+# Arquivos e pastas ignoradas pelo Prettier
+node_modules/
+dist/
+build/
+coverage/
+.next/
+.nuxt/
+.cache/
+.vscode/
+.DS_Store
+*.log
+*.lock
+package-lock.json
+yarn.lock
+
+# Arquivos de configuração que não devem ser formatados
+*.min.js
+*.min.css
+*.bundle.js
+*.bundle.css
+
+# Arquivos gerados automaticamente
+stats.html
+bundle-analyzer-report.html
+
+# Arquivos de backup
+*.bak
+*.backup
+
+# Arquivos específicos do projeto
+src/assets/icons/svg/*.svg
+public/manifest.json

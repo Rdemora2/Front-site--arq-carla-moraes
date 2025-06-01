@@ -78,7 +78,7 @@ export default ({
     },
     {
       imageSrc:
-        "https://images.unsplash.com/photo-1513135467880-6c41609898f1?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+        "https://images.unsplash.com/photo-1588557132645-ff567110cafd?ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&q=80",
       title: "Paisagismo Biofílico",
       description:
         "Projetos que reconectam as pessoas à natureza através de elementos orgânicos integrados à arquitetura, promovendo bem-estar e qualidade de vida.",

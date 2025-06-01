@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
 
@@ -11,23 +11,23 @@ import Header, {
 const StyledHeader = styled(Header)`
   ${tw`justify-between py-4`}
   ${LogoLink} {
-    ${tw`mr-8 pb-0`}  }  /* Fundo bege/cream no mobile para harmonizar com o site */
+    ${tw`mr-8 pb-0`}
+  }
   @media (max-width: 1024px) {
-    background-color: #f9f5ef;
+    background-color: rgba(249, 245, 239, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     position: relative;
     z-index: 20;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-    padding-left: 1.875rem;
-    padding-right: 1.875rem;
+    padding: 0.625rem 1.875rem;
     width: calc(100% + 4rem);
     margin-left: -2rem;
     margin-right: -2rem;
+    height: 4.5rem;
+    display: flex;
+    align-items: center;
   }
-  
-  /* Garantir que o logo fique à esquerda no desktop */
   nav:first-child {
-    /* Desktop nav - logo à esquerda, menu à direita */
     @media (min-width: 1024px) {
       display: flex;
       justify-content: space-between;
@@ -35,10 +35,7 @@ const StyledHeader = styled(Header)`
       width: 100%;
     }
   }
-  
-  /* Container do mobile (logo + toggle) */
   & > div:last-child {
-    /* Mobile nav container */
     @media (max-width: 1024px) {
       width: 100%;
       display: flex;
@@ -47,8 +44,6 @@ const StyledHeader = styled(Header)`
       margin: 0;
       padding: 0;
     }
-    
-    /* Logo no mobile */
     ${LogoLink} {
       @media (max-width: 1024px) {
         margin-right: 0;
@@ -62,25 +57,49 @@ const NavLink = tw(NavLinkBase)`
   sm:text-sm sm:mx-6
 `;
 
-const Container = tw.div`relative -mx-8 -mt-8 min-h-screen`;
+const Container = styled.div`
+  ${tw`relative -mx-8 -mt-8 min-h-screen`}
+
+  @media (max-width: 1024px) {
+    min-height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
+  }
+`;
 const TwoColumn = tw.div`flex flex-col lg:flex-row min-h-screen`;
 const LeftColumn = styled.div`
-  ${tw`ml-8 mr-8 xl:pl-10 flex flex-col justify-center relative z-10`}
-  
-  /* Mobile: remover background da coluna inteira */
-  @media (max-width: 1024px) {
+  ${tw`ml-8 mr-8 xl:pl-10 flex flex-col justify-center relative z-10`} @media (max-width: 1024px) {
     margin-left: 0;
     margin-right: 0;
     padding-left: 2rem;
     padding-right: 2rem;
     padding-top: 0;
     padding-bottom: 0;
+    position: relative;
+    min-height: calc(100vh - 4.5rem);
+    height: calc(var(--vh, 1vh) * 100 - 4.5rem);
+    display: flex;
+    flex-direction: column;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: -4.5rem;
+      left: -2rem;
+      right: -2rem;
+      bottom: 0;
+      background-image: url("/images/components/hero/Modern-hero.webp");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      filter: blur(1px);
+      z-index: -10;
+      min-height: 100vh;
+      height: calc(var(--vh, 1vh) * 100);
+    }
   }
 `;
 const RightColumn = styled.div`
   ${tw`bg-cover bg-center xl:ml-20 lg:w-1/2 lg:flex-1 min-h-screen lg:min-h-full`}
-  
-  /* Esconder no mobile */
   @media (max-width: 1024px) {
     display: none;
   }
@@ -91,36 +110,31 @@ const RightColumn = styled.div`
 `;
 
 const Content = styled.div`
-  ${tw`mt-8 lg:mt-24 lg:mb-24 flex flex-col sm:items-center lg:items-stretch`}
-  
-  /* Mobile: background image apenas no conteúdo */
-  @media (max-width: 1024px) {
-    background-image: url('/images/components/hero/Frances-hero.webp');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+  ${tw`mt-8 lg:mt-24 lg:mb-24 flex flex-col sm:items-center lg:items-stretch`} @media (max-width: 1024px) {
     position: relative;
     padding: 2rem;
     margin: 0 -2rem;
     margin-top: 0;
-    
-    /* Overlay para melhor legibilidade do texto */
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.3);
       z-index: -1;
     }
   }
 `;
 const Heading = styled.h1`
   ${tw`text-3xl sm:text-5xl md:text-6xl lg:text-5xl font-black leading-none`}
-  
-  /* Melhor contraste no mobile com background */
   @media (max-width: 1024px) {
     color: white;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
@@ -130,8 +144,6 @@ const Heading = styled.h1`
 `;
 const Paragraph = styled.p`
   ${tw`max-w-md my-8 lg:my-5 lg:my-8 sm:text-lg lg:text-base xl:text-lg leading-loose`}
-  
-  /* Melhor contraste no mobile com background */
   @media (max-width: 1024px) {
     color: white;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
@@ -151,15 +163,13 @@ const Actions = styled.div`
   .secondaryAction {
     ${tw`mt-4 sm:mt-0 sm:ml-4 bg-gray-300 text-gray-700 hover:bg-gray-400 hover:text-gray-800`}
   }
-  
-  /* Z-index para ficar acima do background no mobile */
   @media (max-width: 1024px) {
     position: relative;
     z-index: 1;
   }
 `;
 
-export default ({
+const FullWidthWithImageComponent = ({
   navLinks = [
     <NavLinks key={1}>
       <NavLink href="/sobre-nos">Sobre</NavLink>
@@ -182,6 +192,22 @@ export default ({
   secondaryActionUrl = "#",
   secondaryActionText = "Nossos Projetos",
 }) => {
+  useEffect(() => {
+    const setVH = () => {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty("--vh", `${vh}px`);
+    };
+
+    setVH();
+    window.addEventListener("resize", setVH);
+    window.addEventListener("orientationchange", setVH);
+
+    return () => {
+      window.removeEventListener("resize", setVH);
+      window.removeEventListener("orientationchange", setVH);
+    };
+  }, []);
+
   return (
     <Container>
       <TwoColumn>
@@ -214,3 +240,5 @@ export default ({
     </Container>
   );
 };
+
+export default FullWidthWithImageComponent;
