@@ -4,11 +4,11 @@ import { config, getAbsoluteUrl } from "../../config/environment";
 
 const MetaTags = ({
   title = "Carla Moraes - Arquitetura paisagística",
-  description = "Há mais de 25 anos criando projetos paisagísticos exclusivos que harmonizam arquitetura e natureza",
+  description = "Há mais de 25 anos criando projetos paisagísticos exclusivos que harmonizam arquitetura e natureza. Do conceito à execução, trazemos beleza e propósito para cada ambiente.",
   image = "/images/logo/logo_full.webp",
   url = "",
   type = "website",
-  keywords = "arquitetura paisagística, paisagismo, jardins, design exterior, projetos paisagísticos",
+  keywords = "arquitetura paisagística, paisagismo, jardins, design exterior, projetos paisagísticos, Carla Moraes, São Paulo",
   author = "Carla Moraes",
   locale = "pt_BR",
   siteName = "Carla Moraes Arquitetura Paisagística",
@@ -24,72 +24,44 @@ const MetaTags = ({
     email: "contato@carlamoraes.com.br",
   },
 }) => {
-  const processedData = useMemo(() => {
-    const absoluteUrl = getAbsoluteUrl(url);
-    const absoluteImage = getAbsoluteUrl(image);
+  // Garantindo que títulos longos sejam truncados para SEO
+  const processedData = {
+    title: title.length > 60 ? `${title.substring(0, 57)}...` : title,
+    description:
+      description.length > 160
+        ? `${description.substring(0, 157)}...`
+        : description,
+    image: getAbsoluteUrl(image),
+    url: getAbsoluteUrl(url),
+  };
 
-    const validTitle =
-      title?.trim() || "Carla Moraes - Arquitetura paisagística";
-    const validDescription =
-      description?.trim() ||
-      "Há mais de 25 anos criando projetos paisagísticos exclusivos";
-
-    const truncatedTitle =
-      validTitle.length > 60 ? validTitle.substring(0, 57) + "..." : validTitle;
-    const truncatedDescription =
-      validDescription.length > 160
-        ? validDescription.substring(0, 157) + "..."
-        : validDescription;
-
-    return {
-      title: truncatedTitle,
-      description: truncatedDescription,
-      url: absoluteUrl,
-      image: absoluteImage,
-      keywords: keywords?.trim() || "",
-    };
-  }, [title, description, url, image, keywords]);
-
-  const jsonLdData = useMemo(() => {
-    if (structuredData) return structuredData;
-
-    return {
-      "@context": "https://schema.org",
-      "@type": type === "website" ? "Organization" : "WebPage",
-      name: siteName,
-      url: processedData.url,
-      description: processedData.description,
-      image: processedData.image,
-      author: {
-        "@type": "Person",
-        name: author,
-      },
-      contactPoint: {
-        "@type": "ContactPoint",
-        telephone: contactPoint.telephone,
-        email: contactPoint.email,
-        contactType: "customer service",
-      },
-      openingHours: openingHours,
-      sameAs: [
-        "https://www.instagram.com/carlamoraesarq",
-        "https://www.linkedin.com/in/carlamoraes",
-      ],
-      address: {
-        "@type": "PostalAddress",
-        addressCountry: "BR",
-        addressLocality: "São Paulo",
-      },
-    };
-  }, [
-    structuredData,
-    type,
-    siteName,
-    processedData,
-    author,
-    contactPoint,
+  // Criando dados estruturados aprimorados para SEO
+  const jsonLdData = structuredData || {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    name: siteName,
+    description: processedData.description,
+    image: processedData.image,
+    url: processedData.url || getAbsoluteUrl("/"),
+    telephone: contactPoint.telephone,
+    email: contactPoint.email,
     openingHours,
-  ]);
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "São Paulo",
+      addressRegion: "SP",
+      addressCountry: "BR",
+    },
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: "-23.5505",
+      longitude: "-46.6333",
+    },
+    sameAs: [
+      "https://www.facebook.com/carlamoraesarquiteturapaisagistica",
+      "https://www.instagram.com/carlamoraes_paisagismo/",
+    ],
+  };
 
   const updateMetaTag = (selector, content, property = null) => {
     let element = document.querySelector(selector);
@@ -122,50 +94,32 @@ const MetaTags = ({
   };
 
   useEffect(() => {
-    // Title tag
+    // Atualizar título
     document.title = processedData.title;
 
-    // Basic Meta Tags
+    // Atualizar meta tags básicas
     updateMetaTag('meta[name="description"]', processedData.description);
-    updateMetaTag('meta[name="keywords"]', processedData.keywords);
+    updateMetaTag('meta[name="keywords"]', keywords);
     updateMetaTag('meta[name="author"]', author);
     updateMetaTag('meta[name="robots"]', robots);
     updateMetaTag('meta[name="viewport"]', viewport);
     updateMetaTag('meta[name="theme-color"]', themeColor);
-    updateMetaTag('meta[name="language"]', locale);
 
-    // Open Graph Tags
-    updateMetaTag('meta[property="og:url"]', processedData.url, "og:url");
-    updateMetaTag('meta[property="og:title"]', processedData.title, "og:title");
-    updateMetaTag(
-      'meta[property="og:description"]',
-      processedData.description,
-      "og:description"
-    );
-    updateMetaTag('meta[property="og:image"]', processedData.image, "og:image");
-    updateMetaTag('meta[property="og:image:width"]', "1200", "og:image:width");
-    updateMetaTag('meta[property="og:image:height"]', "630", "og:image:height");
-    updateMetaTag(
-      'meta[property="og:image:alt"]',
-      processedData.title,
-      "og:image:alt"
-    );
-    updateMetaTag('meta[property="og:type"]', type, "og:type");
-    updateMetaTag('meta[property="og:site_name"]', siteName, "og:site_name");
-    updateMetaTag('meta[property="og:locale"]', locale, "og:locale");
+    // Meta tags Open Graph
+    updateMetaTag('meta[property="og:title"]', processedData.title);
+    updateMetaTag('meta[property="og:description"]', processedData.description);
+    updateMetaTag('meta[property="og:image"]', processedData.image);
+    updateMetaTag('meta[property="og:url"]', processedData.url);
+    updateMetaTag('meta[property="og:type"]', type);
+    updateMetaTag('meta[property="og:locale"]', locale);
+    updateMetaTag('meta[property="og:site_name"]', siteName);
 
-    // Twitter Card Tags
-    updateMetaTag('meta[name="twitter:card"]', twitterCardType, "twitter:card");
-    updateMetaTag('meta[name="twitter:url"]', processedData.url, "twitter:url");
-    updateMetaTag(
-      'meta[name="twitter:title"]',
-      processedData.title,
-      "twitter:title"
-    );
+    // Meta tags Twitter
+    updateMetaTag('meta[name="twitter:card"]', twitterCardType);
+    updateMetaTag('meta[name="twitter:title"]', processedData.title);
     updateMetaTag(
       'meta[name="twitter:description"]',
-      processedData.description,
-      "twitter:description"
+      processedData.description
     );
     updateMetaTag(
       'meta[name="twitter:image"]',
@@ -246,12 +200,12 @@ const MetaTags = ({
       };
 
       let breadcrumbScript = document.querySelector(
-        'script[data-type="breadcrumb"]'
+        'script[data-type="breadcrumb-jsonld"]'
       );
       if (!breadcrumbScript) {
         breadcrumbScript = document.createElement("script");
         breadcrumbScript.type = "application/ld+json";
-        breadcrumbScript.setAttribute("data-type", "breadcrumb");
+        breadcrumbScript.setAttribute("data-type", "breadcrumb-jsonld");
         document.head.appendChild(breadcrumbScript);
       }
       breadcrumbScript.textContent = JSON.stringify(breadcrumbData);
