@@ -1,12 +1,14 @@
 import React from "react";
 import tw from "twin.macro";
+import styled from "styled-components";
 
-/* framer-motion and useInView here are used to animate the sections in when we reach them in the viewport
- */
 import { motion } from "framer-motion";
 import useInView from "helpers/useInView";
 
-const StyledDiv = tw.div`font-display min-h-screen text-secondary-500 p-8 overflow-hidden`;
+const StyledDiv = styled.div`
+  ${tw`font-display min-h-screen p-8 overflow-hidden`}
+  color: var(--color-primary-text);
+`;
 function AnimationReveal({ disabled, children }) {
   if (disabled) {
     return <>{children}</>;
@@ -28,7 +30,6 @@ function AnimationReveal({ disabled, children }) {
   return <>{childrenWithAnimation}</>;
 }
 
-// AUDIT: [MÉDIA] Observer não é limpo corretamente
 function AnimatedSlideInComponent({
   direction = "left",
   offset = 30,
