@@ -65,18 +65,21 @@ const ThreeColSimple = ({
       title: "Projetos Personalizados",
       description:
         "Cada projeto é único e concebido para refletir a personalidade e necessidades do cliente, respeitando a arquitetura existente e o entorno natural.",
+      url: "/",
     },
     {
       imageSrc: ShieldIconImage,
       title: "Soluções Sustentáveis",
       description:
         "Integramos práticas ecológicas em nossos projetos, com uso consciente de água, espécies nativas e materiais de baixo impacto ambiental.",
+      url: "/",
     },
     {
       imageSrc: CustomizeIconImage,
       title: "Execução Especializada",
       description:
         "Nossa equipe técnica garante a fidelidade do projeto do papel à realidade, com acompanhamento detalhado em todas as etapas de implementação.",
+      url: "/",
     },
   ],
   linkText = "Saiba Mais",
@@ -102,7 +105,7 @@ const ThreeColSimple = ({
         <ThreeColumnContainer>
           {cards.map((card, i) => (
             <Column key={i}>
-              <Card href={card.url}>
+              <Card href={card.url || `#card-${i}`}>
                 <span className="imageContainer" css={imageContainerCss}>
                   <img
                     src={typeof card.imageSrc === "string" ? card.imageSrc : ""}
