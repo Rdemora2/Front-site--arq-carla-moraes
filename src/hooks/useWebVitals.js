@@ -1,14 +1,13 @@
 import { useEffect, useCallback, useRef } from "react";
+import { useEnvironment } from "./useEnvironment";
 
-/**
- * Hook para monitoramento de Web Vitals (Core Web Vitals)
- * Monitora LCP, FID, CLS e outras métricas importantes de performance
- */
 export const useWebVitals = (options = {}) => {
+  const { isFeatureEnabled } = useEnvironment();
+
   const {
-    enableAnalytics = true,
-    enableConsoleLog = false,
-    enableLocalStorage = true,
+    enableAnalytics = isFeatureEnabled("analytics"),
+    enableConsoleLog = isFeatureEnabled("consoleLogging"),
+    enableLocalStorage = isFeatureEnabled("localStorage"),
     thresholds = {
       LCP: { good: 2500, poor: 4000 },
       FID: { good: 100, poor: 300 },
@@ -22,7 +21,6 @@ export const useWebVitals = (options = {}) => {
   const metricsRef = useRef(new Map());
   const observersRef = useRef([]);
 
-  // Utilitários para classificação de métricas
   const getMetricRating = useCallback(
     (name, value) => {
       const threshold = thresholds[name];
@@ -35,15 +33,12 @@ export const useWebVitals = (options = {}) => {
     [thresholds]
   );
 
-  // Função para reportar métricas
   const reportMetric = useCallback(
     (metric) => {
       const { name, value, rating } = metric;
 
-      // Armazena no Map local
       metricsRef.current.set(name, metric);
 
-      // Log no console se habilitado
       if (enableConsoleLog) {
         console.log(`[Web Vitals] ${name}:`, {
           value: Math.round(value * 100) / 100,
@@ -52,7 +47,6 @@ export const useWebVitals = (options = {}) => {
         });
       }
 
-      // Salva no localStorage se habilitado
       if (enableLocalStorage) {
         try {
           const webVitalsData = JSON.parse(
@@ -70,7 +64,6 @@ export const useWebVitals = (options = {}) => {
         }
       }
 
-      // Envia para analytics se habilitado
       if (enableAnalytics && typeof gtag !== "undefined") {
         gtag("event", "web_vitals", {
           event_category: "Web Vitals",
@@ -80,7 +73,6 @@ export const useWebVitals = (options = {}) => {
         });
       }
 
-      // Callback personalizado
       if (onMetric && typeof onMetric === "function") {
         onMetric(metric);
       }
@@ -88,11 +80,13 @@ export const useWebVitals = (options = {}) => {
     [enableAnalytics, enableConsoleLog, enableLocalStorage, onMetric]
   );
 
-  // Função para criar observer de métricas
   const createMetricObserver = useCallback((entryType, callback) => {
     try {
       const observer = new PerformanceObserver((list) => {
-        list.getEntries().forEach(callback);
+        const entries = list.getEntries();
+        if (entries && entries.length > 0) {
+          callback(entries);
+        }
       });
 
       observer.observe({ entryTypes: [entryType] });
@@ -108,18 +102,20 @@ export const useWebVitals = (options = {}) => {
     }
   }, []);
 
-  // Largest Contentful Paint (LCP)
   const observeLCP = useCallback(() => {
     let lcpValue = 0;
 
     const handleLCP = (entries) => {
-      const lastEntry = entries[entries.length - 1];
-      lcpValue = lastEntry.startTime;
+      if (entries && entries.length > 0) {
+        const lastEntry = entries[entries.length - 1];
+        if (lastEntry && lastEntry.startTime !== undefined) {
+          lcpValue = lastEntry.startTime;
+        }
+      }
     };
 
     createMetricObserver("largest-contentful-paint", handleLCP);
 
-    // Reporta LCP quando a página é totalmente carregada ou escondida
     const reportLCP = () => {
       if (lcpValue > 0) {
         const rating = getMetricRating("LCP", lcpValue);
@@ -138,70 +134,81 @@ export const useWebVitals = (options = {}) => {
     addEventListener("pagehide", reportLCP, { once: true });
   }, [createMetricObserver, getMetricRating, reportMetric]);
 
-  // First Input Delay (FID)
   const observeFID = useCallback(() => {
     const handleFID = (entries) => {
-      entries.forEach((entry) => {
-        if (entry.name === "first-input") {
-          const fidValue = entry.processingStart - entry.startTime;
-          const rating = getMetricRating("FID", fidValue);
+      if (entries && entries.length > 0) {
+        entries.forEach((entry) => {
+          if (
+            entry &&
+            entry.name === "first-input" &&
+            entry.startTime !== undefined &&
+            entry.processingStart !== undefined
+          ) {
+            const fidValue = entry.processingStart - entry.startTime;
+            const rating = getMetricRating("FID", fidValue);
 
-          reportMetric({
-            name: "FID",
-            value: fidValue,
-            rating,
-            entries: [entry],
-            id: "FID",
-            delta: fidValue,
-          });
-        }
-      });
+            reportMetric({
+              name: "FID",
+              value: fidValue,
+              rating,
+              entries: [entry],
+              id: "FID",
+              delta: fidValue,
+            });
+          }
+        });
+      }
     };
 
     createMetricObserver("first-input", handleFID);
   }, [createMetricObserver, getMetricRating, reportMetric]);
 
-  // Cumulative Layout Shift (CLS)
   const observeCLS = useCallback(() => {
     let clsValue = 0;
     let sessionValue = 0;
     let sessionEntries = [];
 
     const handleLayoutShift = (entries) => {
-      entries.forEach((entry) => {
-        if (!entry.hadRecentInput) {
-          const firstSessionEntry = sessionEntries[0];
-          const lastSessionEntry = sessionEntries[sessionEntries.length - 1];
-
-          // Nova sessão se passou mais de 1 segundo sem shifts
+      if (entries && entries.length > 0) {
+        entries.forEach((entry) => {
           if (
-            sessionValue &&
-            entry.startTime - lastSessionEntry.startTime > 1000
+            entry &&
+            !entry.hadRecentInput &&
+            entry.startTime !== undefined &&
+            entry.value !== undefined
           ) {
-            sessionValue = 0;
-            sessionEntries = [];
+            const firstSessionEntry = sessionEntries[0];
+            const lastSessionEntry = sessionEntries[sessionEntries.length - 1];
+
+            if (
+              sessionValue &&
+              lastSessionEntry &&
+              entry.startTime - lastSessionEntry.startTime > 1000
+            ) {
+              sessionValue = 0;
+              sessionEntries = [];
+            }
+
+            if (
+              sessionValue &&
+              firstSessionEntry &&
+              entry.startTime - firstSessionEntry.startTime > 5000
+            ) {
+              sessionValue = 0;
+              sessionEntries = [];
+            }
+
+            sessionValue += entry.value;
+            sessionEntries.push(entry);
+
+            clsValue = Math.max(clsValue, sessionValue);
           }
-
-          // Nova sessão se passou mais de 5 segundos desde a primeira entrada
-          if (
-            sessionValue &&
-            entry.startTime - firstSessionEntry.startTime > 5000
-          ) {
-            sessionValue = 0;
-            sessionEntries = [];
-          }
-
-          sessionValue += entry.value;
-          sessionEntries.push(entry);
-
-          clsValue = Math.max(clsValue, sessionValue);
-        }
-      });
+        });
+      }
     };
 
     createMetricObserver("layout-shift", handleLayoutShift);
 
-    // Reporta CLS quando a página é escondida
     const reportCLS = () => {
       if (clsValue > 0) {
         const rating = getMetricRating("CLS", clsValue);
@@ -220,30 +227,34 @@ export const useWebVitals = (options = {}) => {
     addEventListener("pagehide", reportCLS);
   }, [createMetricObserver, getMetricRating, reportMetric]);
 
-  // First Contentful Paint (FCP)
   const observeFCP = useCallback(() => {
     const handleFCP = (entries) => {
-      entries.forEach((entry) => {
-        if (entry.name === "first-contentful-paint") {
-          const fcpValue = entry.startTime;
-          const rating = getMetricRating("FCP", fcpValue);
+      if (entries && entries.length > 0) {
+        entries.forEach((entry) => {
+          if (
+            entry &&
+            entry.name === "first-contentful-paint" &&
+            entry.startTime !== undefined
+          ) {
+            const fcpValue = entry.startTime;
+            const rating = getMetricRating("FCP", fcpValue);
 
-          reportMetric({
-            name: "FCP",
-            value: fcpValue,
-            rating,
-            entries: [entry],
-            id: "FCP",
-            delta: fcpValue,
-          });
-        }
-      });
+            reportMetric({
+              name: "FCP",
+              value: fcpValue,
+              rating,
+              entries: [entry],
+              id: "FCP",
+              delta: fcpValue,
+            });
+          }
+        });
+      }
     };
 
     createMetricObserver("paint", handleFCP);
   }, [createMetricObserver, getMetricRating, reportMetric]);
 
-  // Time to First Byte (TTFB)
   const observeTTFB = useCallback(() => {
     const navigationEntry = performance.getEntriesByType("navigation")[0];
 
@@ -263,9 +274,7 @@ export const useWebVitals = (options = {}) => {
     }
   }, [getMetricRating, reportMetric]);
 
-  // Inicia observação de todas as métricas
   useEffect(() => {
-    // Aguarda o carregamento completo antes de iniciar observação
     if (document.readyState === "complete") {
       observeLCP();
       observeFID();
@@ -282,7 +291,6 @@ export const useWebVitals = (options = {}) => {
       });
     }
 
-    // Cleanup
     return () => {
       observersRef.current.forEach((observer) => {
         try {
@@ -295,7 +303,6 @@ export const useWebVitals = (options = {}) => {
     };
   }, [observeLCP, observeFID, observeCLS, observeFCP, observeTTFB]);
 
-  // Funções utilitárias
   const getMetrics = useCallback(() => {
     return Array.from(metricsRef.current.values());
   }, []);

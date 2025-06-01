@@ -1,21 +1,10 @@
-/**
- * Sistema avançado de logs e monitoramento de erros
- * Características:
- * - Múltiplos níveis de log (error, warn, info, debug)
- * - Correlação de eventos com IDs únicos
- * - Rate limiting para evitar spam
- * - Storage local para persistência offline
- * - Integração com analytics
- * - Filtragem por contexto e tags
- */
-
 class Logger {
   constructor() {
     this.sessionId = this.generateSessionId();
     this.logBuffer = [];
     this.rateLimiter = new Map();
     this.maxBufferSize = 1000;
-    this.flushInterval = 5000; // 5 segundos
+    this.flushInterval = 5000;
     this.isEnabled = this.getEnvironment() !== "test";
 
     this.initializePerformanceMetrics();
@@ -45,7 +34,6 @@ class Logger {
   }
 
   initializeErrorHandlers() {
-    // Captura erros JavaScript globais
     window.addEventListener("error", (event) => {
       this.error("Global Error", {
         message: event.message,
@@ -57,7 +45,6 @@ class Logger {
       });
     });
 
-    // Captura rejeições de promises não tratadas
     window.addEventListener("unhandledrejection", (event) => {
       this.error("Unhandled Promise Rejection", {
         reason: event.reason,
@@ -65,16 +52,22 @@ class Logger {
       });
     });
 
-    // Captura erros de recursos (imagens, scripts, etc.)
     window.addEventListener(
       "error",
       (event) => {
         if (event.target !== window) {
-          this.error("Resource Error", {
-            tagName: event.target.tagName,
-            source: event.target.src || event.target.href,
-            type: "resource_error",
-          });
+          const source = event.target.src || event.target.href;
+          if (
+            source &&
+            typeof source === "string" &&
+            !source.includes("[object Object]")
+          ) {
+            this.error("Resource Error", {
+              tagName: event.target.tagName,
+              source: source,
+              type: "resource_error",
+            });
+          }
         }
       },
       true
@@ -89,7 +82,6 @@ class Logger {
     }, this.flushInterval);
   }
 
-  // Rate limiting para evitar spam de logs
   isRateLimited(key, limit = 10, window = 60000) {
     const now = Date.now();
     const windowStart = now - window;
@@ -157,16 +149,12 @@ class Logger {
 
     const logEntry = this.createLogEntry(level, message, metadata);
 
-    // Console output com formatação
     this.outputToConsole(logEntry);
 
-    // Adicionar ao buffer para envio
     this.addToBuffer(logEntry);
 
-    // Salvar localmente para recuperação
     this.saveToLocalStorage(logEntry);
 
-    // Atualizar métricas de performance
     this.updatePerformanceMetrics(level);
   }
 
@@ -207,12 +195,9 @@ class Logger {
       const existingLogs = JSON.parse(localStorage.getItem(storageKey) || "[]");
       existingLogs.push(logEntry);
 
-      // Manter apenas os últimos 100 logs no localStorage
       const recentLogs = existingLogs.slice(-100);
       localStorage.setItem(storageKey, JSON.stringify(recentLogs));
-    } catch (error) {
-      // Falha silenciosa se o localStorage estiver cheio
-    }
+    } catch (error) {}
   }
 
   updatePerformanceMetrics(level) {
@@ -226,7 +211,6 @@ class Logger {
     }
   }
 
-  // Métodos de conveniência para diferentes níveis
   error(message, metadata = {}) {
     this.log("error", message, { ...metadata, severity: "high" });
   }
@@ -245,7 +229,6 @@ class Logger {
     }
   }
 
-  // Métodos especializados
   userAction(action, metadata = {}) {
     this.performanceMarks.userInteractions++;
     this.info(`User Action: ${action}`, {
@@ -289,7 +272,6 @@ class Logger {
     });
   }
 
-  // Método para envio dos logs para servidor externo
   async flush() {
     if (this.logBuffer.length === 0) return;
 
@@ -297,7 +279,6 @@ class Logger {
     this.logBuffer = [];
 
     try {
-      // Em produção, enviar para serviço de logging
       if (
         process.env.NODE_ENV === "production" &&
         process.env.REACT_APP_LOGGING_ENDPOINT
@@ -319,7 +300,6 @@ class Logger {
         });
       }
 
-      // Enviar para Google Analytics se disponível
       if (typeof gtag !== "undefined") {
         const errorLogs = logsToSend.filter((log) => log.level === "error");
         errorLogs.forEach((log) => {
@@ -333,12 +313,10 @@ class Logger {
         });
       }
     } catch (error) {
-      // Falha silenciosa no envio de logs
       console.warn("Failed to send logs:", error);
     }
   }
 
-  // Método para limpar logs antigos
   clearOldLogs() {
     try {
       localStorage.removeItem("app_logs");
@@ -349,7 +327,6 @@ class Logger {
     }
   }
 
-  // Método para recuperar logs salvos
   getSavedLogs() {
     try {
       return JSON.parse(localStorage.getItem("app_logs") || "[]");
@@ -359,7 +336,6 @@ class Logger {
     }
   }
 
-  // Método para exportar logs para debugging
   exportLogs() {
     const allLogs = {
       session: this.sessionId,
@@ -380,7 +356,6 @@ class Logger {
     URL.revokeObjectURL(url);
   }
 
-  // Método para obter estatísticas de performance
   getPerformanceStats() {
     return {
       ...this.performanceMarks,
@@ -393,10 +368,8 @@ class Logger {
   }
 }
 
-// Instância singleton do logger
 const logger = new Logger();
 
-// Hook React para usar o logger
 export const useLogger = () => {
   const logUserAction = (action, metadata) => {
     logger.userAction(action, metadata);

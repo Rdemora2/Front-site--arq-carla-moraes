@@ -192,19 +192,21 @@ const MetaTags = ({
     updateLinkTag("dns-prefetch", "https://connect.facebook.net");
 
     // Favicon e ícones
-    updateLinkTag("icon", "/favicon.ico", { type: "image/x-icon" });
-    updateLinkTag("apple-touch-icon", "/apple-touch-icon.png", {
+    updateLinkTag("icon", "/images/favicon/favicon.ico", {
+      type: "image/x-icon",
+    });
+    updateLinkTag("apple-touch-icon", "/images/favicon/apple-touch-icon.png", {
       sizes: "180x180",
     });
-    updateLinkTag("icon", "/favicon-32x32.png", {
+    updateLinkTag("icon", "/images/favicon/favicon-32x32.png", {
       type: "image/png",
       sizes: "32x32",
     });
-    updateLinkTag("icon", "/favicon-16x16.png", {
+    updateLinkTag("icon", "/images/favicon/favicon-16x16.png", {
       type: "image/png",
       sizes: "16x16",
     });
-    updateLinkTag("manifest", "/site.webmanifest");
+    updateLinkTag("manifest", "/manifest.json");
 
     // Alternates para idiomas
     alternates.forEach(({ hreflang, href }) => {
