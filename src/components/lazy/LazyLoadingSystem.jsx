@@ -11,6 +11,7 @@ import React, {
 import { useInView } from "react-intersection-observer";
 import styled, { keyframes } from "styled-components";
 import { useLogger } from "../../utils/logger";
+import { PageLoadingSpinner } from "../misc/LoadingSpinner.jsx";
 
 // Cache global para componentes carregados
 const componentCache = new Map();
@@ -26,18 +27,66 @@ const shimmer = keyframes`
   }
 `;
 
+const spin = keyframes`
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+`;
+
+const pulse = keyframes`
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+`;
+
 const LoadingPlaceholder = styled.div`
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-  background-size: 1000px 100%;
-  animation: ${shimmer} 2s infinite linear;
-  border-radius: 4px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(5px);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: #999;
-  font-size: 0.875rem;
-  min-height: 100px;
-  width: 100%;
+  z-index: 9999;
+  
+  .loading-content {
+    text-align: center;
+    padding: 2rem;
+  }
+  
+  .spinner {
+    width: 48px;
+    height: 48px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3e4d2c;
+    border-radius: 50%;
+    animation: ${spin} 1s linear infinite;
+    margin: 0 auto 1rem auto;
+  }
+  
+  .loading-text {
+    color: #3e4d2c;
+    font-size: 1rem;
+    font-weight: 500;
+    animation: ${pulse} 2s ease-in-out infinite;
+    margin-bottom: 0.5rem;
+  }
+  
+  .loading-subtitle {
+    color: #666;
+    font-size: 0.875rem;
+    opacity: 0.8;
+  }
 `;
 
 const ErrorBoundary = styled.div`
@@ -170,11 +219,7 @@ export const LazyComponentWrapper = ({
   }, [loadingState, error, onLoad, onError]);
 
   const defaultFallback = (
-    <LoadingPlaceholder>
-      {loadingState === "loading" && "Carregando componente..."}
-      {loadingState === "retrying" && "Tentando novamente..."}
-      {loadingState === "idle" && "Preparando..."}
-    </LoadingPlaceholder>
+    <PageLoadingSpinner />
   );
 
   const defaultErrorFallback = (

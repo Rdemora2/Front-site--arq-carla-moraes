@@ -1,8 +1,8 @@
-import { useRef, useMemo, useEffect } from "react";
-import { useInView as useInViewFromFramer } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
 
 /**
  * Hook customizado para detectar quando elementos entram na viewport
+ * Usa Intersection Observer API nativo para máxima compatibilidade
  * @param {Object} options Opções de configuração
  * @param {boolean} options.once Se verdadeiro, dispara apenas uma vez
  * @param {string} options.margin Margem de observação
@@ -15,15 +15,44 @@ export default function useInView({
   amount = 0.1,
 } = {}) {
   const ref = useRef(null);
-  const isInView = useInViewFromFramer(ref, {
-    once,
-    margin,
-    amount,
-  });
+  const [isInView, setIsInView] = useState(false);
 
   useEffect(() => {
-    return () => {};
-  }, []);
+    const element = ref.current;
+    if (!element) return;
+
+    // Verificar se Intersection Observer está disponível
+    if (!window.IntersectionObserver) {
+      // Fallback para navegadores antigos
+      setIsInView(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+          if (once) {
+            observer.unobserve(element);
+          }
+        } else if (!once) {
+          setIsInView(false);
+        }
+      },
+      {
+        rootMargin: margin,
+        threshold: amount,
+      },
+    );
+
+    observer.observe(element);
+
+    return () => {
+      if (element && observer) {
+        observer.unobserve(element);
+      }
+    };
+  }, [margin, amount, once]);
 
   return [ref, isInView];
 }

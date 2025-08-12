@@ -25,9 +25,11 @@ const Column = styled.div`
 const Card = styled.a`
   ${tw`flex flex-col items-center text-center h-full mx-4 px-4 py-8 rounded transition-transform duration-300 hover:cursor-pointer transform hover:scale-105 `}
   .imageContainer {
-    ${tw`text-center rounded-full p-4 bg-gray-100`}
+    ${tw`text-center rounded-full p-4`}
+    background-color: #3e4d2c;
     img {
       ${tw`w-8 h-8`}
+      filter: brightness(0) invert(1);
     }
   }
 
@@ -62,30 +64,30 @@ const ThreeColSimple = ({
   cards = [
     {
       imageSrc: SupportIconImage,
-      title: "Projetos Personalizados",
+      title: "Projetos Sob Medida",
       description:
-        "Cada projeto é único e concebido para refletir a personalidade e necessidades do cliente, respeitando a arquitetura existente e o entorno natural.",
+        "Desenvolvemos projetos únicos e personalizados que refletem a essência de cada cliente. Cada elemento é cuidadosamente pensado para harmonizar com a arquitetura existente e valorizar o espaço disponível.",
       url: "/",
     },
     {
       imageSrc: ShieldIconImage,
-      title: "Soluções Sustentáveis",
+      title: "Sustentabilidade Comprovada",
       description:
-        "Integramos práticas ecológicas em nossos projetos, com uso consciente de água, espécies nativas e materiais de baixo impacto ambiental.",
+        "Priorizamos o uso de espécies nativas, sistemas de irrigação eficientes e materiais sustentáveis. Nossos projetos respeitam o meio ambiente e garantem baixa manutenção a longo prazo.",
       url: "/",
     },
     {
       imageSrc: CustomizeIconImage,
-      title: "Execução Especializada",
+      title: "Execução de Excelência",
       description:
-        "Nossa equipe técnica garante a fidelidade do projeto do papel à realidade, com acompanhamento detalhado em todas as etapas de implementação.",
+        "Da concepção à entrega final, nossa equipe técnica especializada acompanha cada etapa do projeto. Garantimos fidelidade ao design original e acabamento impecável em todos os detalhes.",
       url: "/",
     },
   ],
   linkText = "Saiba Mais",
-  heading = "Nossa Abordagem",
-  subheading = "Princípios de Trabalho",
-  description = "Combinamos sensibilidade estética e conhecimento técnico para criar paisagens que transcendem o tempo e valorizam os espaços.",
+  heading = "Diferenciais que Transformam",
+  subheading = "Nossa Expertise",
+  description = "Com mais de 25 anos de experiência, combinamos visão artística e conhecimento técnico para criar paisagens atemporais que valorizam seu investimento e elevam sua qualidade de vida.",
   imageContainerCss = null,
   imageCss = null,
 }) => {

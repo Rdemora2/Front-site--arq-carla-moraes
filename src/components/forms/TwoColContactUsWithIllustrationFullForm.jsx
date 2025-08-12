@@ -424,7 +424,6 @@ const ContactForm = ({
                 error={form.errors.telefone}
                 showSuccess={true}
                 delay="0.3s"
-                placeholder="(11) 99999-9999"
                 helperText="Formato: (11) 99999-9999"
               />
 

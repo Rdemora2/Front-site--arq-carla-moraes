@@ -1,6 +1,7 @@
 import React, { lazy, Suspense, useEffect } from "react";
 import AnimationRevealPage from "helpers/AnimationRevealPage.jsx";
 import MetaTags from "components/misc/MetaTags.jsx";
+import { ComponentLoadingSpinner } from "components/misc/LoadingSpinner.jsx";
 import { usePerformanceOptimizations } from "../hooks/usePerformanceOptimizations";
 
 import Hero from "components/hero/FullWidthWithImage.jsx";
@@ -10,43 +11,13 @@ import MainFeature from "components/features/TwoColSingleFeatureWithStats.jsx";
 import Features from "components/features/ThreeColSimple.jsx";
 
 const SliderCards = lazy(() => import("components/cards/ThreeColSlider.jsx"));
-const TrendingCards = lazy(
-  () => import("components/cards/TwoTrendingPreviewCardsWithImage.jsx")
-);
 const Testimonial = lazy(
   () =>
     import(
       "components/testimonials/TwoColumnWithImageAndProfilePictureReview.jsx"
-    )
+    ),
 );
-const FAQ = lazy(() => import("components/faqs/SimpleWithSideImage.jsx"));
-
-const LoadingFallback = () => (
-  <div
-    className="loading-skeleton"
-    style={{
-      minHeight: "100px",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      margin: "2rem 0",
-      background: "#f7fafc",
-    }}
-    aria-busy="true"
-    aria-label="Carregando conteúdo"
-  >
-    <div
-      style={{
-        width: "40px",
-        height: "40px",
-        border: "3px solid #e2e8f0",
-        borderRadius: "50%",
-        borderTopColor: "#3e4d2c",
-        animation: "spin 1s linear infinite",
-      }}
-    />
-  </div>
-);
+const FaqSection = lazy(() => import("components/faqs/SimpleWithSideImage.jsx"));
 
 const Home = () => {
   const { preloadCriticalImages } = usePerformanceOptimizations();
@@ -75,20 +46,16 @@ const Home = () => {
       <Features />
 
       {/* Componentes secundários com Suspense */}
-      <Suspense fallback={<LoadingFallback />}>
+      <Suspense fallback={<ComponentLoadingSpinner />}>
         <SliderCards />
       </Suspense>
 
-      <Suspense fallback={<LoadingFallback />}>
-        <TrendingCards />
-      </Suspense>
-
-      <Suspense fallback={<LoadingFallback />}>
+      <Suspense fallback={<ComponentLoadingSpinner />}>
         <Testimonial textOnLeft={true} />
       </Suspense>
 
-      <Suspense fallback={<LoadingFallback />}>
-        <FAQ />
+      <Suspense fallback={<ComponentLoadingSpinner />}>
+        <FaqSection />
       </Suspense>
 
       <Footer />

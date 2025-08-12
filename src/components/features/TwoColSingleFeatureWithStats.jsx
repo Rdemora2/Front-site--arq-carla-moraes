@@ -35,10 +35,10 @@ const Key = tw.div`font-medium text-gray-700`;
 export default ({
   heading = (
     <>
-      <span tw="text-primary-500">Features</span>
+      <span tw="text-primary-500">Excelência Reconhecida</span>
     </>
   ),
-  description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  description = "Desde 1996, a Carla Moraes Arquitetura Paisagística é referência em projetos que transformam espaços em experiências sensoriais únicas. Nossa expertise combina técnica apurada, visão estética refinada e compromisso com a sustentabilidade, criando paisagens que resistem ao tempo e valorizam significativamente seu patrimônio.",
   primaryButtonText = "Learn More",
   primaryButtonUrl = "https://timerse.com",
   imageSrc = null,
@@ -78,7 +78,7 @@ export default ({
           <Image
             $imageSrc={
               imageSrc ||
-              "https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&q=80"
+              "/images/projects/Jardim-tropical/tropical-4.webp"
             }
           />
         </ImageColumn>
@@ -89,7 +89,7 @@ export default ({
             </Heading>
             <Description>
               {description ||
-                "Desde 1996, a Carla Moraes Arquitetura Paisagística tem transformado espaços em experiências sensoriais únicas. Nossa equipe de especialistas combina técnica apurada e sensibilidade estética para criar paisagens que dialogam harmoniosamente com a arquitetura e as necessidades dos usuários. Priorizamos soluções que resistam ao tempo, com espécies adequadas e materiais de alta qualidade."}
+                "Desde 1996, a Carla Moraes Arquitetura Paisagística é referência em projetos que transformam espaços em experiências sensoriais únicas. Nossa expertise combina técnica apurada, visão estética refinada e compromisso com a sustentabilidade, criando paisagens que resistem ao tempo e valorizam significativamente seu patrimônio."}
             </Description>
             <Statistics>
               {(statistics || defaultStatistics).map((statistic, index) => (
