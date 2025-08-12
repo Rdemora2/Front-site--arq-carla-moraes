@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
@@ -5,11 +6,14 @@ import styled from "styled-components";
 import { motion } from "framer-motion";
 import useInView from "helpers/useInView";
 
+// Função auxiliar para gerar IDs únicos
+const generateUniqueId = () => `anim-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+
 const StyledDiv = styled.div`
   ${tw`font-display min-h-screen p-8 overflow-hidden`}
   color: var(--color-primary-text);
 `;
-function AnimationReveal({ disabled, children }) {
+function AnimationReveal({ disabled = false, children = null }) {
   if (disabled) {
     return <>{children}</>;
   }
@@ -17,11 +21,11 @@ function AnimationReveal({ disabled, children }) {
   if (!Array.isArray(children)) children = [children];
 
   const directions = ["left", "right"];
-  const childrenWithAnimation = children.map((child, i) => {
+  const childrenWithAnimation = children.map((child) => {
     return (
       <AnimatedSlideInComponent
-        key={i}
-        direction={directions[i % directions.length]}
+        key={generateUniqueId()}
+        direction={directions[Math.floor(Math.random() * directions.length)]}
       >
         {child}
       </AnimatedSlideInComponent>
@@ -33,7 +37,7 @@ function AnimationReveal({ disabled, children }) {
 function AnimatedSlideInComponent({
   direction = "left",
   offset = 30,
-  children,
+  children = null,
 }) {
   const [ref, inView] = useInView({ margin: `-${offset}px 0px 0px 0px` });
 
@@ -42,14 +46,17 @@ function AnimatedSlideInComponent({
   if (direction === "left") x.initial = "-150%";
   else x.initial = "150%";
 
+  // Garantir que inView seja um booleano válido
+  const isVisible = Boolean(inView);
+
   return (
     <div ref={ref}>
       <motion.section
         initial={{ x: x.initial }}
         animate={{
-          x: inView && x.target,
+          x: isVisible ? x.target : x.initial,
           transitionEnd: {
-            x: inView && 0,
+            x: isVisible ? 0 : undefined,
           },
         }}
         transition={{ type: "spring", damping: 19 }}

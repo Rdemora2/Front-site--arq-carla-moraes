@@ -42,6 +42,7 @@ module.exports = [
       // React Rules
       "react/react-in-jsx-scope": "off",
       "react/jsx-uses-react": "off",
+      "react/jsx-uses-vars": "error",
       "react/jsx-no-duplicate-props": "error",
       "react/jsx-no-undef": "error",
       "react/jsx-pascal-case": "error",
@@ -67,7 +68,15 @@ module.exports = [
       // JavaScript Rules
       "no-console": process.env.NODE_ENV === "production" ? "error" : "warn",
       "no-debugger": process.env.NODE_ENV === "production" ? "error" : "warn",
-      "no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
+      "no-unused-vars": [
+        "error", 
+        { 
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^(React|[A-Z])",
+          ignoreRestSiblings: true,
+          caughtErrorsIgnorePattern: "^_",
+        }
+      ],
       "no-var": "error",
       "prefer-const": "error",
       "prefer-arrow-callback": "error",

@@ -1,4 +1,3 @@
-import React from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
 import { Instagram, Linkedin } from "react-feather";
@@ -147,19 +146,19 @@ const Footer = () => {
             </LinkList>
           </Column>
           <Column>
-            <ColumnHeading>Serviços</ColumnHeading>
+            <ColumnHeading>Nossos Serviços</ColumnHeading>
             <LinkList>
               <LinkListItem>
-                <Link href="#">Projetos Residenciais</Link>
+                <Link href="#">Arquitetura Paisagística</Link>
               </LinkListItem>
               <LinkListItem>
-                <Link href="#">Projetos Comerciais</Link>
+                <Link href="#">Projetos Corporativos</Link>
               </LinkListItem>
               <LinkListItem>
-                <Link href="#">Consultoria</Link>
+                <Link href="#">Consultoria Especializada</Link>
               </LinkListItem>
               <LinkListItem>
-                <Link href="#">Manutenção</Link>
+                <Link href="#">Acompanhamento de Obra</Link>
               </LinkListItem>
             </LinkList>
           </Column>

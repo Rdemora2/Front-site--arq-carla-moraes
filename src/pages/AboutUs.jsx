@@ -10,16 +10,18 @@ import Footer from "components/footers/FiveColumnWithInputForm.jsx";
 import MainFeature1 from "components/features/TwoColWithButton.jsx";
 import Features from "components/features/ThreeColSimple.jsx";
 
-import SupportIconImage from "../assets/icons/svg/support-icon.svg";
-import ShieldIconImage from "../assets/icons/svg/shield-icon.svg";
-import CustomerLoveIconImage from "../assets/icons/svg/simple-icon.svg";
+import SupportIconImage from "../assets/icons/svg/support-icon.svg?url";
+import ShieldIconImage from "../assets/icons/svg/shield-icon.svg?url";
+import CustomerLoveIconImage from "../assets/icons/svg/simple-icon.svg?url";
 
 const Subheading = styled.span`
   ${tw`uppercase tracking-wider text-sm`}
   color: #3e4d2c;
 `;
 
-const StyledMainFeature = styled(MainFeature1)`
+const StyledMainFeature = styled(MainFeature1).withConfig({
+  shouldForwardProp: (prop) => !["bgColor"].includes(prop),
+})`
   background-color: ${(props) => props.bgColor || "#f9f5ef"};
   h2 {
     color: #3e4d2c;
@@ -38,6 +40,12 @@ const StyledFeatures = styled(Features)`
   p {
     color: #3e4d2c;
   }
+  .imageContainer {
+    background-color: #3e4d2c !important;
+    img {
+      filter: brightness(0) invert(1) !important;
+    }
+  }
 `;
 
 export default () => {
@@ -53,43 +61,45 @@ export default () => {
         subheading={
           <Subheading>Sobre Carla Moraes Arquitetura Paisagística</Subheading>
         }
-        heading="Criamos ambientes que transformam espaços e vidas."
+        heading="Criamos jardins únicos há mais de 25 anos."
+        description="Começamos em 1996 com a missão de conectar pessoas à natureza através do paisagismo. Desenvolvemos projetos personalizados que respeitam seu estilo de vida e as características do seu espaço. Nossa equipe trabalha junto com você desde a primeira conversa até a entrega final, garantindo que cada detalhe reflita seus sonhos e necessidades."
         buttonRounded={false}
-        primaryButtonText="Ver Portfólio"
+        primaryButtonText="Conheça nosso Portfólio"
         primaryButtonUrl="/portfolio"
-        imageSrc="https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=768&q=80"
+        imageSrc="/images/projects/Jardim-frances/Frances-3.webp"
       />
       <StyledMainFeature
-        subheading={<Subheading>Nossa Visão</Subheading>}
-        heading="Buscamos harmonizar a natureza com o design contemporâneo."
+        subheading={<Subheading>Nossa Filosofia</Subheading>}
+        heading="Jardins que combinam com você."
+        description="Acreditamos que cada jardim deve refletir a personalidade do cliente. Por isso, escutamos suas ideias, entendemos seu estilo e criamos um espaço que funciona de verdade para sua rotina. Cuidamos de todos os detalhes técnicos para que você só precise se preocupar em desfrutar de seu novo jardim."
         buttonRounded={false}
-        primaryButtonText="Fale Conosco"
+        primaryButtonText="Vamos conversar?"
         primaryButtonUrl="/contato"
-        imageSrc="https://images.unsplash.com/3/doctype-hi-res.jpg?ixlib=rb-1.2.1&auto=format&fit=crop&w=768&q=80"
+        imageSrc="/images/projects/Jardim-frances/Frances-4.webp"
         textOnLeft={false}
       />
       <StyledFeatures
-        subheading={<Subheading>Nossos Valores</Subheading>}
-        heading="Princípios que norteiam nosso trabalho"
-        description="Compromisso com a sustentabilidade, qualidade e satisfação do cliente são os pilares que sustentam cada projeto que desenvolvemos."
+        subheading={<Subheading>Nossos Diferenciais</Subheading>}
+        heading="Por que escolher nosso time"
+        description="Ao longo de 25 anos, desenvolvemos uma forma de trabalhar que prioriza você e seu projeto. Confira o que nos diferencia:"
         cards={[
           {
             imageSrc: SupportIconImage,
-            title: "Atendimento Personalizado",
+            title: "Atendimento próximo",
             description:
-              "Cada cliente recebe atenção individualizada. Construímos projetos únicos que refletem personalidade e estilo de vida.",
+              "Conversamos de verdade com você para entender o que quer e precisa. Cada projeto é único porque cada pessoa é única.",
           },
           {
             imageSrc: ShieldIconImage,
-            title: "Equipe Especializada",
+            title: "Conhecimento técnico",
             description:
-              "Nossa equipe multidisciplinar combina conhecimento técnico e visão estética para criar projetos paisagísticos excepcionais.",
+              "Com profundo conhecimento em botânica e técnicas de paisagismo, desenvolvemos projetos que harmonizam estética e funcionalidade, garantindo jardins duradouros e sempre exuberantes.",
           },
           {
             imageSrc: CustomerLoveIconImage,
-            title: "Compromisso Ambiental",
+            title: "Cuidado com o meio ambiente",
             description:
-              "Priorizamos práticas sustentáveis e soluções ecológicas que respeitam a flora local e otimizam recursos naturais.",
+              "Priorizamos práticas sustentáveis com seleção criteriosa de espécies nativas, sistemas de irrigação inteligente e materiais eco-eficientes que preservam os recursos naturais.",
           },
         ]}
         linkText=""
