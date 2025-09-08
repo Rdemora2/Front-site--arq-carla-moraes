@@ -150,6 +150,7 @@ const Header = ({
     <NavLinks key={1}>
       <NavLink href="/">Início</NavLink>
       <NavLink href="/sobre-nos">Sobre Nós</NavLink>
+      <NavLink href="/projetos">Projetos</NavLink>
       <NavLink href="/contato">Contato</NavLink>
       <PrimaryLink
         css={roundedHeaderButton && tw`rounded-full`}

@@ -173,7 +173,7 @@ const FullWidthWithImageComponent = ({
   navLinks = [
     <NavLinks key={1}>
       <NavLink href="/sobre-nos">Sobre</NavLink>
-      <NavLink href="#">Projetos</NavLink>
+      <NavLink href="/projetos">Projetos</NavLink>
       <NavLink href="#">Serviços</NavLink>
       <NavLink href="/contato">Contato</NavLink>
     </NavLinks>,

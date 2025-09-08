@@ -16,6 +16,9 @@ const Home = () => (
 const AboutUs = () => (
   <LazyComponentWrapper importFn={() => import("./pages/AboutUs")} />
 );
+const Projects = () => (
+  <LazyComponentWrapper importFn={() => import("./pages/Projects")} />
+);
 const ContactUs = () => (
   <LazyComponentWrapper importFn={() => import("./pages/ContactUs")} />
 );
@@ -83,6 +86,11 @@ const router = createBrowserRouter(
       errorElement: <ErrorBoundary />,
     },
     {
+      path: "/projetos",
+      element: createRouteElement(Projects),
+      errorElement: <ErrorBoundary />,
+    },
+    {
       path: "/contato",
       element: createRouteElement(ContactUs),
       errorElement: <ErrorBoundary />,
@@ -102,7 +110,7 @@ const router = createBrowserRouter(
       v7_partialHydration: true,
       v7_skipActionErrorRevalidation: true,
     },
-  }
+  },
 );
 
 export default function App() {
