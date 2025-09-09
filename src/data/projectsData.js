@@ -120,10 +120,10 @@ export const getProjectById = (id) => {
 export const getProjectStats = () => {
   const total = projectsData.length;
   const residential = projectsData.filter(
-    (p) => p.clientType === "residencial"
+    (p) => p.clientType === "residencial",
   ).length;
   const corporate = projectsData.filter(
-    (p) => p.clientType === "corporativo"
+    (p) => p.clientType === "corporativo",
   ).length;
 
   return {
@@ -131,4 +131,40 @@ export const getProjectStats = () => {
     residential,
     corporate,
   };
+};
+
+export const getAvailableClientTypes = () => {
+  // Extrai todos os tipos de cliente únicos dos dados
+  const clientTypes = [...new Set(projectsData.map(project => project.clientType))];
+  
+  // Mapeamento para labels amigáveis
+  const clientTypeLabels = {
+    "residencial": "Residencial",
+    "corporativo": "Corporativo",
+    "comercial": "Comercial",
+    "publico": "Público",
+    "institucional": "Institucional",
+  };
+  
+  return clientTypes.map(type => ({
+    key: type,
+    label: clientTypeLabels[type] || type.charAt(0).toUpperCase() + type.slice(1),
+    count: projectsData.filter(p => p.clientType === type).length,
+  }));
+};
+
+export const getDynamicFilterOptions = () => {
+  const availableTypes = getAvailableClientTypes();
+  const total = projectsData.length;
+  
+  // Sempre inclui a opção "Todos" no início
+  const filters = [
+    { key: "todos", label: "Todos", count: total },
+  ];
+  
+  // Adiciona os tipos disponíveis ordenados alfabeticamente
+  const sortedTypes = availableTypes.sort((a, b) => a.label.localeCompare(b.label));
+  filters.push(...sortedTypes);
+  
+  return filters;
 };

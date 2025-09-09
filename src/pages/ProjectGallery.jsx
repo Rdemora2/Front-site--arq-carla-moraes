@@ -29,7 +29,7 @@ const BackButton = styled(motion.button)`
   background-color: rgba(145, 160, 130, 0.1);
   color: var(--color-primary-text);
   border: 1px solid rgba(107, 121, 89, 0.2);
-  
+
   &:hover {
     background-color: rgba(107, 121, 89, 0.1);
     border-color: var(--color-primary);
@@ -49,7 +49,7 @@ const GalleryGrid = tw.div`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 
 const GalleryImageContainer = styled(motion.div)`
   ${tw`relative overflow-hidden rounded-lg cursor-pointer`}
   aspect-ratio: 4/3;
-  
+
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(107, 121, 89, 0.2);
@@ -58,7 +58,7 @@ const GalleryImageContainer = styled(motion.div)`
 
 const GalleryImage = styled.img`
   ${tw`w-full h-full object-cover transition-transform duration-300`}
-  
+
   .group:hover & {
     transform: scale(1.05);
   }
@@ -67,7 +67,7 @@ const GalleryImage = styled.img`
 const ImageOverlay = styled(motion.div)`
   ${tw`absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300`}
   background: rgba(0, 0, 0, 0.4);
-  
+
   .group:hover & {
     opacity: 1;
   }
@@ -132,20 +132,24 @@ const ProjectGallery = () => {
 
   const prevImage = useCallback(() => {
     if (project && selectedImageIndex !== null) {
-      const prevIndex = selectedImageIndex === 0 
-        ? project.gallery.length - 1 
-        : selectedImageIndex - 1;
+      const prevIndex =
+        selectedImageIndex === 0
+          ? project.gallery.length - 1
+          : selectedImageIndex - 1;
       setSelectedImageIndex(prevIndex);
     }
   }, [project, selectedImageIndex]);
 
-  const handleKeyPress = useCallback((e) => {
-    if (selectedImageIndex !== null) {
-      if (e.key === "Escape") closeImageModal();
-      if (e.key === "ArrowRight") nextImage();
-      if (e.key === "ArrowLeft") prevImage();
-    }
-  }, [selectedImageIndex, closeImageModal, nextImage, prevImage]);
+  const handleKeyPress = useCallback(
+    (e) => {
+      if (selectedImageIndex !== null) {
+        if (e.key === "Escape") closeImageModal();
+        if (e.key === "ArrowRight") nextImage();
+        if (e.key === "ArrowLeft") prevImage();
+      }
+    },
+    [selectedImageIndex, closeImageModal, nextImage, prevImage]
+  );
 
   useEffect(() => {
     window.addEventListener("keydown", handleKeyPress);
@@ -162,9 +166,9 @@ const ProjectGallery = () => {
           description={project.fullDescription}
           imageUrl={project.featuredImage}
         />
-        
+
         <Header />
-        
+
         <Container>
           <ContentWithPaddingXl>
             <GalleryHeader>
@@ -176,28 +180,26 @@ const ProjectGallery = () => {
                 <BackIcon size={16} style={{ marginRight: "8px" }} />
                 Voltar aos Projetos
               </BackButton>
-              
+
               <ProjectTitle>{project.title}</ProjectTitle>
               <ProjectDescription>{project.fullDescription}</ProjectDescription>
-              
+
               <ProjectMetadata>
                 <MetadataItem>
                   <MetadataIcon>
                     <LocationIcon size={18} />
                   </MetadataIcon>
-                  <span><strong>Local:</strong> {project.location}</span>
+                  <span>
+                    <strong>Local:</strong> {project.location}
+                  </span>
                 </MetadataItem>
                 <MetadataItem>
                   <MetadataIcon>
                     <CalendarIcon size={18} />
                   </MetadataIcon>
-                  <span><strong>Ano:</strong> {project.year}</span>
-                </MetadataItem>
-                <MetadataItem>
-                  <MetadataIcon>
-                    <ClientTypeIcon size={18} />
-                  </MetadataIcon>
-                  <span><strong>Área:</strong> {project.area}</span>
+                  <span>
+                    <strong>Ano:</strong> {project.year}
+                  </span>
                 </MetadataItem>
               </ProjectMetadata>
             </GalleryHeader>
@@ -241,13 +243,13 @@ const ProjectGallery = () => {
                       src={project.gallery[selectedImageIndex]}
                       alt={`${project.title} - Imagem ${selectedImageIndex + 1}`}
                     />
-                    
+
                     <ModalControls>
                       <ControlButton onClick={closeImageModal}>
                         <CloseIcon size={20} />
                       </ControlButton>
                     </ModalControls>
-                    
+
                     <NavigationButtons>
                       <NavButton onClick={prevImage}>
                         <ChevronLeftIcon size={24} />
@@ -263,7 +265,7 @@ const ProjectGallery = () => {
           </ContentWithPaddingXl>
         </Container>
       </AnimationRevealPage>
-      
+
       {/* Footer fora do AnimationRevealPage para remover a animação */}
       <Footer />
     </>

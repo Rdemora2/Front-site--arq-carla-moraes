@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
 import { SectionHeading } from "components/misc/Headings";
 import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons";
-import { getProjectsByFilter, getProjectStats } from "../../data/projectsData";
+import { getProjectsByFilter, getDynamicFilterOptions } from "../../data/projectsData";
 import {
   MapPin as LocationIcon,
   Calendar as CalendarIcon,
@@ -167,17 +167,10 @@ const ProjectsPortfolio = ({
 }) => {
   const navigate = useNavigate();
 
-  const projectStats = getProjectStats();
-
-  const filters = [
-    { key: "todos", label: "Todos", count: projectStats.total },
-    {
-      key: "residencial",
-      label: "Residencial",
-      count: projectStats.residential,
-    },
-    { key: "corporativo", label: "Corporativo", count: projectStats.corporate },
-  ];
+  // Usa filtros dinâmicos baseados nos dados disponíveis
+  const filters = useMemo(() => {
+    return getDynamicFilterOptions();
+  }, []);
 
   const filteredProjects = useMemo(() => {
     return getProjectsByFilter(currentFilter);
