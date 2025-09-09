@@ -66,7 +66,7 @@ export default () => {
           description="Começamos em 1996 com a missão de conectar pessoas à natureza através do paisagismo. Desenvolvemos projetos personalizados que respeitam seu estilo de vida e as características do seu espaço. Nossa equipe trabalha junto com você desde a primeira conversa até a entrega final, garantindo que cada detalhe reflita seus sonhos e necessidades."
           buttonRounded={false}
           primaryButtonText="Conheça nosso Portfólio"
-          primaryButtonUrl="/portfolio"
+          primaryButtonUrl="/projetos"
           imageSrc="/images/projects/Jardim-frances/Frances-3.webp"
         />
         <StyledMainFeature
@@ -106,7 +106,7 @@ export default () => {
           linkText=""
         />
       </AnimationRevealPage>
-      
+
       {/* Footer fora do AnimationRevealPage para remover a animação */}
       <Footer />
     </>
