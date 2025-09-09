@@ -74,7 +74,7 @@ export const projectsData = [
     year: "2020",
     featuredImage: "/images/projects/Sicoob-liberdade/sicoob-02.jpg",
     gallery: [
-      "/images/projects/Sicoob-liberdade/siccob-01.jpg",
+      "/images/projects/Sicoob-liberdade/sicoob-01.jpg",
       "/images/projects/Sicoob-liberdade/sicoob-02.jpg",
       "/images/projects/Sicoob-liberdade/sicoob-03.jpg",
       "/images/projects/Sicoob-liberdade/sicoob-04.jpg",
