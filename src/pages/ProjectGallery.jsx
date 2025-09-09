@@ -155,115 +155,118 @@ const ProjectGallery = () => {
   if (!project) return null;
 
   return (
-    <AnimationRevealPage>
-      <MetaTags
-        title={`${project.title} | Galeria Completa | Carla Moraes Arquitetura Paisagística`}
-        description={project.fullDescription}
-        imageUrl={project.featuredImage}
-      />
-      
-      <Header />
-      
-      <Container>
-        <ContentWithPaddingXl>
-          <GalleryHeader>
-            <BackButton
-              onClick={() => navigate("/projetos")}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <BackIcon size={16} style={{ marginRight: "8px" }} />
-              Voltar aos Projetos
-            </BackButton>
-            
-            <ProjectTitle>{project.title}</ProjectTitle>
-            <ProjectDescription>{project.fullDescription}</ProjectDescription>
-            
-            <ProjectMetadata>
-              <MetadataItem>
-                <MetadataIcon>
-                  <LocationIcon size={18} />
-                </MetadataIcon>
-                <span><strong>Local:</strong> {project.location}</span>
-              </MetadataItem>
-              <MetadataItem>
-                <MetadataIcon>
-                  <CalendarIcon size={18} />
-                </MetadataIcon>
-                <span><strong>Ano:</strong> {project.year}</span>
-              </MetadataItem>
-              <MetadataItem>
-                <MetadataIcon>
-                  <ClientTypeIcon size={18} />
-                </MetadataIcon>
-                <span><strong>Área:</strong> {project.area}</span>
-              </MetadataItem>
-            </ProjectMetadata>
-          </GalleryHeader>
-
-          <GalleryGrid>
-            {project.gallery.map((image, index) => (
-              <GalleryImageContainer
-                key={image}
-                className="group"
-                onClick={() => openImageModal(index)}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
-                whileHover={{ y: -4 }}
+    <>
+      <AnimationRevealPage>
+        <MetaTags
+          title={`${project.title} | Galeria Completa | Carla Moraes Arquitetura Paisagística`}
+          description={project.fullDescription}
+          imageUrl={project.featuredImage}
+        />
+        
+        <Header />
+        
+        <Container>
+          <ContentWithPaddingXl>
+            <GalleryHeader>
+              <BackButton
+                onClick={() => navigate("/projetos")}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
-                <GalleryImage
-                  src={image}
-                  alt={`${project.title} - Imagem ${index + 1}`}
-                  loading="lazy"
-                />
-                <ImageOverlay>
-                  <ExpandButton>
-                    <ExpandIcon size={20} />
-                  </ExpandButton>
-                </ImageOverlay>
-              </GalleryImageContainer>
-            ))}
-          </GalleryGrid>
+                <BackIcon size={16} style={{ marginRight: "8px" }} />
+                Voltar aos Projetos
+              </BackButton>
+              
+              <ProjectTitle>{project.title}</ProjectTitle>
+              <ProjectDescription>{project.fullDescription}</ProjectDescription>
+              
+              <ProjectMetadata>
+                <MetadataItem>
+                  <MetadataIcon>
+                    <LocationIcon size={18} />
+                  </MetadataIcon>
+                  <span><strong>Local:</strong> {project.location}</span>
+                </MetadataItem>
+                <MetadataItem>
+                  <MetadataIcon>
+                    <CalendarIcon size={18} />
+                  </MetadataIcon>
+                  <span><strong>Ano:</strong> {project.year}</span>
+                </MetadataItem>
+                <MetadataItem>
+                  <MetadataIcon>
+                    <ClientTypeIcon size={18} />
+                  </MetadataIcon>
+                  <span><strong>Área:</strong> {project.area}</span>
+                </MetadataItem>
+              </ProjectMetadata>
+            </GalleryHeader>
 
-          {/* Modal de imagem em tela cheia */}
-          <AnimatePresence>
-            {selectedImageIndex !== null && (
-              <ImageModal
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                onClick={closeImageModal}
-              >
-                <ModalContent onClick={(e) => e.stopPropagation()}>
-                  <ModalImage
-                    src={project.gallery[selectedImageIndex]}
-                    alt={`${project.title} - Imagem ${selectedImageIndex + 1}`}
+            <GalleryGrid>
+              {project.gallery.map((image, index) => (
+                <GalleryImageContainer
+                  key={image}
+                  className="group"
+                  onClick={() => openImageModal(index)}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: index * 0.1 }}
+                  whileHover={{ y: -4 }}
+                >
+                  <GalleryImage
+                    src={image}
+                    alt={`${project.title} - Imagem ${index + 1}`}
+                    loading="lazy"
                   />
-                  
-                  <ModalControls>
-                    <ControlButton onClick={closeImageModal}>
-                      <CloseIcon size={20} />
-                    </ControlButton>
-                  </ModalControls>
-                  
-                  <NavigationButtons>
-                    <NavButton onClick={prevImage}>
-                      <ChevronLeftIcon size={24} />
-                    </NavButton>
-                    <NavButton onClick={nextImage}>
-                      <ChevronRightIcon size={24} />
-                    </NavButton>
-                  </NavigationButtons>
-                </ModalContent>
-              </ImageModal>
-            )}
-          </AnimatePresence>
-        </ContentWithPaddingXl>
-      </Container>
+                  <ImageOverlay>
+                    <ExpandButton>
+                      <ExpandIcon size={20} />
+                    </ExpandButton>
+                  </ImageOverlay>
+                </GalleryImageContainer>
+              ))}
+            </GalleryGrid>
+
+            {/* Modal de imagem em tela cheia */}
+            <AnimatePresence>
+              {selectedImageIndex !== null && (
+                <ImageModal
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={closeImageModal}
+                >
+                  <ModalContent onClick={(e) => e.stopPropagation()}>
+                    <ModalImage
+                      src={project.gallery[selectedImageIndex]}
+                      alt={`${project.title} - Imagem ${selectedImageIndex + 1}`}
+                    />
+                    
+                    <ModalControls>
+                      <ControlButton onClick={closeImageModal}>
+                        <CloseIcon size={20} />
+                      </ControlButton>
+                    </ModalControls>
+                    
+                    <NavigationButtons>
+                      <NavButton onClick={prevImage}>
+                        <ChevronLeftIcon size={24} />
+                      </NavButton>
+                      <NavButton onClick={nextImage}>
+                        <ChevronRightIcon size={24} />
+                      </NavButton>
+                    </NavigationButtons>
+                  </ModalContent>
+                </ImageModal>
+              )}
+            </AnimatePresence>
+          </ContentWithPaddingXl>
+        </Container>
+      </AnimationRevealPage>
       
+      {/* Footer fora do AnimationRevealPage para remover a animação */}
       <Footer />
-    </AnimationRevealPage>
+    </>
   );
 };
 

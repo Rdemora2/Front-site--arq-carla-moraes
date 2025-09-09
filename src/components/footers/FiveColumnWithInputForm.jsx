@@ -5,12 +5,12 @@ import { Instagram, Linkedin } from "react-feather";
 const LogoImage = "/images/logo/logo_reduced.webp";
 
 const Container = styled.div`
-  ${tw`relative -mb-8 -mx-8 px-8 py-20 lg:py-24`}
+  ${tw`relative py-20 lg:py-24`}
   background-color: var(--color-primary-text);
   color: var(--color-background);
 `;
 
-const Content = tw.div`max-w-screen-xl mx-auto relative z-10`;
+const Content = tw.div`max-w-screen-xl mx-auto relative z-10 px-8`;
 const FourColumns = tw.div`flex flex-wrap text-center sm:text-left justify-center sm:justify-start md:justify-between -mt-12`;
 
 const Column = tw.div`px-4 sm:px-0 sm:w-1/4 md:w-auto mt-12`;
@@ -29,6 +29,13 @@ const Link = styled.a`
     ${tw`border-b-2`}
     border-color: var(--color-gold);
   }
+`;
+
+const DisabledLink = styled.span`
+  ${tw`border-b-2 border-transparent pb-1 cursor-not-allowed`}
+  color: var(--color-background);
+  user-select: none;
+  pointer-events: none;
 `;
 
 const Divider = styled.div`
@@ -132,20 +139,21 @@ const Footer = () => {
             <ColumnHeading>Principal</ColumnHeading>
             <LinkList>
               <LinkListItem>
-                <Link href="#">Início</Link>
+                <Link href="/">Início</Link>
               </LinkListItem>
               <LinkListItem>
                 <Link href="/sobre-nos">Sobre Nós</Link>
               </LinkListItem>
               <LinkListItem>
-                <Link href="/portfolio">Portfólio</Link>
+                <Link href="/projetos">Projetos</Link>
               </LinkListItem>
               <LinkListItem>
                 <Link href="/contato">Contato</Link>
               </LinkListItem>
             </LinkList>
           </Column>
-          <Column>
+          {/* Seção "Nossos Serviços" temporariamente oculta */}
+          {/* <Column>
             <ColumnHeading>Nossos Serviços</ColumnHeading>
             <LinkList>
               <LinkListItem>
@@ -161,21 +169,21 @@ const Footer = () => {
                 <Link href="#">Acompanhamento de Obra</Link>
               </LinkListItem>
             </LinkList>
-          </Column>
+          </Column> */}
           <Column>
             <ColumnHeading>Legal</ColumnHeading>
             <LinkList>
               <LinkListItem>
-                <Link href="#">LGPD</Link>
+                <DisabledLink>LGPD</DisabledLink>
               </LinkListItem>
               <LinkListItem>
-                <Link href="#">Política de Privacidade</Link>
+                <DisabledLink>Política de Privacidade</DisabledLink>
               </LinkListItem>
               <LinkListItem>
-                <Link href="#">Termos de Serviço</Link>
+                <DisabledLink>Termos de Serviço</DisabledLink>
               </LinkListItem>
               <LinkListItem>
-                <Link href="#">Isenção de Responsabilidade</Link>
+                <DisabledLink>Isenção de Responsabilidade</DisabledLink>
               </LinkListItem>
             </LinkList>
           </Column>

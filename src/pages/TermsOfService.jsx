@@ -37,15 +37,16 @@ const Text = styled.div`
 
 export default ({ headingText = "Terms And Condition" }) => {
   return (
-    <AnimationRevealPage>
-      <Header />
-      <Container>
-        <ContentWithPaddingXl>
-          <HeadingRow>
-            <Heading>{headingText}</Heading>
-          </HeadingRow>
-          <Text>
-            <p>Last updated: April 21, 2048</p>
+    <>
+      <AnimationRevealPage>
+        <Header />
+        <Container>
+          <ContentWithPaddingXl>
+            <HeadingRow>
+              <Heading>{headingText}</Heading>
+            </HeadingRow>
+            <Text>
+              <p>Last updated: April 21, 2048</p>
 
             <p>
               Please read these terms and conditions carefully before using Our
@@ -333,7 +334,10 @@ export default ({ headingText = "Terms And Condition" }) => {
           </Text>
         </ContentWithPaddingXl>
       </Container>
+      </AnimationRevealPage>
+      
+      {/* Footer fora do AnimationRevealPage para remover a animação */}
       <Footer />
-    </AnimationRevealPage>
+    </>
   );
 };
