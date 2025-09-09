@@ -83,8 +83,10 @@ const LeftColumn = styled.div`
   @media (min-width: 1024px) {
     width: 50%;
     flex: none;
-    padding-left: 2rem;
+    padding-left: 3rem;
+    padding-top: 1rem;
     padding-right: 2rem;
+    margin-left: 1rem;
   }
 
   @media (max-width: 1024px) {
