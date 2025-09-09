@@ -28,7 +28,7 @@ const Heading = tw(SectionHeading)`lg:text-left`;
 const Description = tw.p`max-w-xl text-center mx-auto lg:mx-0 lg:text-left lg:max-w-none leading-relaxed text-sm sm:text-base lg:text-lg font-medium mt-4 text-secondary-100`;
 
 const FAQSContainer = tw.dl`mt-12`;
-const FAQ = tw.div`cursor-pointer mt-8 select-none border lg:border-0 px-8 py-4 lg:p-0 rounded-lg lg:rounded-none`;
+const FAQItem = tw.div`cursor-pointer mt-8 select-none border lg:border-0 px-8 py-4 lg:p-0 rounded-lg lg:rounded-none`;
 const Question = tw.dt`flex justify-between items-center`;
 const QuestionText = tw.span`text-lg lg:text-xl font-semibold`;
 const QuestionToggleIcon = styled.span`
@@ -103,8 +103,8 @@ const SimpleWithSideImage = ({
               <FAQSContainer>
                 {faqs &&
                   faqs.map((faq, index) => (
-                    <FAQ
-                      key={index}
+                    <FAQItem
+                      key={`faq-${faq.question.slice(0, 20).replace(/\s+/g, "-").toLowerCase()}`}
                       onClick={() => toggleQuestion(index)}
                       className="group"
                       role="button"
@@ -146,7 +146,7 @@ const SimpleWithSideImage = ({
                       >
                         {faq.answer}
                       </Answer>
-                    </FAQ>
+                    </FAQItem>
                   ))}
               </FAQSContainer>
             </FAQContent>
@@ -188,7 +188,7 @@ SimpleWithSideImage.defaultProps = {
   imageSrc: "https://images.unsplash.com/photo-1493246507139-91e8fad9978e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&q=80",
   imageContain: false,
   imageShadow: true,
-  faqs: [],
+  faqs: undefined,
 };
 
 export default memo(SimpleWithSideImage);

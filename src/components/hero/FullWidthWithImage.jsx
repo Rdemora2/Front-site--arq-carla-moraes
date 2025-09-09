@@ -174,6 +174,10 @@ const Actions = styled.div`
   }
 `;
 
+const HighlightText = styled.span`
+  ${tw`text-primary-500`}
+`;
+
 const FullWidthWithImageComponent = ({
   navLinks = [
     <NavLinks key={1}>
@@ -187,12 +191,12 @@ const FullWidthWithImageComponent = ({
       Transformamos Espaços
       <wbr />
       <br />
-      <span tw="text-primary-500">em Experiências Naturais.</span>
+      <HighlightText>em Experiências Naturais.</HighlightText>
     </>
   ),
   description = "Há mais de 25 anos criando projetos paisagísticos exclusivos que harmonizam arquitetura e natureza. Do conceito à execução, trazemos beleza e propósito para cada ambiente.",
   primaryActionUrl = "/contato",
-  primaryActionText = "Solicite um Orçamento",
+  primaryActionText = "Fale conosco",
   secondaryActionUrl = "/projetos",
   secondaryActionText = "Nossos Projetos",
 }) => {
@@ -257,10 +261,18 @@ FullWidthWithImageComponent.propTypes = {
 
 FullWidthWithImageComponent.defaultProps = {
   navLinks: null,
-  heading: null,
-  description: "Há mais de 25 anos criando projetos paisagísticos exclusivos que harmonizam arquitetura e natureza. Do conceito à execução, trazemos beleza e propósito para cada ambiente.",
+  heading: (
+    <>
+      Transformamos Espaços
+      <wbr />
+      <br />
+      <HighlightText>em Experiências Naturais.</HighlightText>
+    </>
+  ),
+  description:
+    "Há mais de 25 anos criando projetos paisagísticos exclusivos que harmonizam arquitetura e natureza. Do conceito à execução, trazemos beleza e propósito para cada ambiente.",
   primaryActionUrl: "/contato",
-  primaryActionText: "Solicite um Orçamento",
+  primaryActionText: "Fale conosco",
   secondaryActionUrl: "/projetos",
   secondaryActionText: "Nossos Projetos",
 };
