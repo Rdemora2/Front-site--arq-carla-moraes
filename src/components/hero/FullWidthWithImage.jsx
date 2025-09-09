@@ -14,18 +14,17 @@ const StyledHeader = styled(Header)`
     ${tw`mr-8 pb-0`}
   }
   @media (max-width: 1024px) {
-    background-color: rgba(249, 245, 239, 0.6);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    background-color: #e2e8f0;
     position: relative;
-    z-index: 20;
+    z-index: 30;
     padding: 0.625rem 1.875rem;
     width: calc(100% + 4rem);
     margin-left: -2rem;
     margin-right: -2rem;
-    height: 4.5rem;
+    height: 5.5rem;
     display: flex;
     align-items: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   }
   nav:first-child {
     @media (min-width: 1024px) {
@@ -62,7 +61,9 @@ const Container = styled.div`
 
   @media (max-width: 1024px) {
     min-height: 100vh;
-    height: calc(var(--vh, 1vh) * 100);
+    height: 100vh;
+    max-height: 100vh;
+    overflow: hidden;
   }
 `;
 const TwoColumn = tw.div`flex flex-col lg:flex-row min-h-screen`;
@@ -75,26 +76,28 @@ const LeftColumn = styled.div`
     padding-top: 0;
     padding-bottom: 0;
     position: relative;
-    min-height: calc(100vh - 4.5rem);
-    height: calc(var(--vh, 1vh) * 100 - 4.5rem);
+    min-height: 100vh;
+    height: 100vh;
+    max-height: 100vh;
     display: flex;
     flex-direction: column;
 
     &::before {
       content: "";
       position: absolute;
-      top: -4.5rem;
-      left: -2rem;
-      right: -2rem;
+      top: 0;
+      left: 0;
+      right: 0;
       bottom: 0;
       background-image: url("/images/components/hero/Modern-hero.webp");
       background-size: cover;
-      background-position: center;
+      background-position: center center;
       background-repeat: no-repeat;
+      background-attachment: local;
       filter: blur(1px);
       z-index: -10;
-      min-height: 100vh;
-      height: calc(var(--vh, 1vh) * 100);
+      width: 100%;
+      height: 100%;
     }
   }
 `;
@@ -119,7 +122,8 @@ const Content = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    height: 100%;
+    height: calc(100vh - 5.5rem);
+    max-height: calc(100vh - 5.5rem);
 
     &::before {
       content: "";
