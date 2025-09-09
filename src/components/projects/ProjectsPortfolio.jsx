@@ -27,12 +27,13 @@ const ProjectsGrid = tw.div`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8
 
 const ProjectCard = styled(motion.div)`
   ${tw`bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer border border-gray-100`}
-  
+
   &:hover {
     transform: translateY(-8px);
     box-shadow: 0 20px 40px rgba(107, 121, 89, 0.15);
   }
-`;const ProjectImageContainer = styled.div`
+`;
+const ProjectImageContainer = styled.div`
   ${tw`relative overflow-hidden`}
   height: 16rem;
 `;
@@ -61,7 +62,7 @@ const DetailIcon = tw.div`mr-2 text-green-600`;
 const ViewProjectButton = styled(PrimaryButtonBase)`
   ${tw`w-full mt-4 text-sm transition-colors duration-300`}
   background-color: #6b7959;
-  
+
   &:hover {
     background-color: #3e4d2c;
   }
@@ -110,7 +111,7 @@ const ImageViewerControls = tw.div`absolute top-0 right-0 m-4 flex gap-2`;
 const ControlButton = styled.button`
   ${tw`p-2 bg-white rounded-full text-white transition-all hover:bg-gray-200`}
   background-color: rgba(255, 255, 255, 0.2);
-  
+
   &:hover {
     background-color: rgba(255, 255, 255, 0.3);
   }
@@ -249,7 +250,8 @@ const ProjectsPortfolio = ({
 
   const filteredProjects = useMemo(() => {
     return projectsData.filter(
-      (project) => currentFilter === "todos" || project.clientType === currentFilter,
+      (project) =>
+        currentFilter === "todos" || project.clientType === currentFilter
     );
   }, [currentFilter]);
 
@@ -301,65 +303,68 @@ const ProjectsPortfolio = ({
         </HeaderContainer>
 
         <ProjectsGrid>
-          {filteredProjects.map((project, index) => (
-            <ProjectCard
-              key={project.id}
-              layout
-              onClick={() => openProjectModal(project)}
-              initial={{ opacity: 0, y: 20, scale: 0.9 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ 
-                duration: 0.3, 
-                delay: index * 0.05,
-                ease: "easeOut",
-              }}
-              whileHover={{ y: -8, scale: 1.02 }}
-            >
-              <ProjectImageContainer>
-                <ProjectImage
-                  src={project.featuredImage}
-                  alt={project.title}
-                  loading="lazy"
-                />
-                <ClientTypeBadge clientType={project.clientType}>
-                  {project.clientType === "residencial"
-                    ? "Residencial"
-                    : "Corporativo"}
-                </ClientTypeBadge>
-              </ProjectImageContainer>
+          <AnimatePresence mode="wait">
+            {filteredProjects.map((project, index) => (
+              <ProjectCard
+                key={`project-${project.id}`}
+                layout
+                onClick={() => openProjectModal(project)}
+                initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -20, scale: 0.9 }}
+                transition={{
+                  duration: 0.3,
+                  delay: index * 0.05,
+                  ease: "easeOut",
+                }}
+                whileHover={{ y: -8, scale: 1.02 }}
+              >
+                <ProjectImageContainer>
+                  <ProjectImage
+                    src={project.featuredImage}
+                    alt={project.title}
+                    loading="lazy"
+                  />
+                  <ClientTypeBadge clientType={project.clientType}>
+                    {project.clientType === "residencial"
+                      ? "Residencial"
+                      : "Corporativo"}
+                  </ClientTypeBadge>
+                </ProjectImageContainer>
 
-              <ProjectInfo>
-                <ProjectTitle>{project.title}</ProjectTitle>
-                <ProjectDescription>{project.description}</ProjectDescription>
+                <ProjectInfo>
+                  <ProjectTitle>{project.title}</ProjectTitle>
+                  <ProjectDescription>{project.description}</ProjectDescription>
 
-                <ProjectDetails>
-                  <DetailItem>
-                    <DetailIcon>
-                      <LocationIcon size={14} />
-                    </DetailIcon>
-                    {project.location}
-                  </DetailItem>
-                  <DetailItem>
-                    <DetailIcon>
-                      <CalendarIcon size={14} />
-                    </DetailIcon>
-                    {project.year}
-                  </DetailItem>
-                  <DetailItem>
-                    <DetailIcon>
-                      <ClientTypeIcon size={14} />
-                    </DetailIcon>
-                    {project.area}
-                  </DetailItem>
-                </ProjectDetails>
+                  <ProjectDetails>
+                    <DetailItem>
+                      <DetailIcon>
+                        <LocationIcon size={14} />
+                      </DetailIcon>
+                      {project.location}
+                    </DetailItem>
+                    <DetailItem>
+                      <DetailIcon>
+                        <CalendarIcon size={14} />
+                      </DetailIcon>
+                      {project.year}
+                    </DetailItem>
+                    <DetailItem>
+                      <DetailIcon>
+                        <ClientTypeIcon size={14} />
+                      </DetailIcon>
+                      {project.area}
+                    </DetailItem>
+                  </ProjectDetails>
 
-                <ViewProjectButton>
-                  <GalleryIcon size={16} style={{ marginRight: "8px" }} />
-                  Explorar Galeria Completa
-                </ViewProjectButton>
-              </ProjectInfo>
-            </ProjectCard>
-          ))}
+                  <ViewProjectButton>
+                    <GalleryIcon size={16} style={{ marginRight: "8px" }} />
+                    Explorar Galeria Completa
+                  </ViewProjectButton>
+                </ProjectInfo>
+              </ProjectCard>
+            ))}
+          </AnimatePresence>
         </ProjectsGrid>
 
         {/* Modal do Projeto */}

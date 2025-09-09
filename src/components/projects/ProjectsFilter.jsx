@@ -1,4 +1,4 @@
-import React, { useState, memo } from "react";
+import React, { useState, memo, useEffect } from "react";
 import PropTypes from "prop-types";
 import tw from "twin.macro";
 import styled from "styled-components";
@@ -15,21 +15,27 @@ const FiltersContainer = tw.div`flex flex-wrap justify-center gap-4`;
 
 const FilterButton = styled(motion.button)`
   ${tw`px-8 py-4 rounded-full font-semibold text-sm transition-all duration-300 border-2 shadow-md`}
-  
-  ${props => props.active 
-    ? `${tw`text-white shadow-lg`} background-color: var(--color-primary); border-color: var(--color-primary);` 
-    : `${tw`bg-white text-gray-700 hover:text-white hover:shadow-lg`} border-color: var(--color-primary); &:hover { background-color: var(--color-primary); }`
-  }
+
+  ${(props) =>
+    props.active
+      ? `${tw`text-white shadow-lg`} background-color: var(--color-primary); border-color: var(--color-primary);`
+      : `${tw`bg-white text-gray-700 hover:text-white hover:shadow-lg`} border-color: var(--color-primary); &:hover { background-color: var(--color-primary); }`}
 `;
 
 const FilterCount = tw.span`ml-2 text-xs opacity-75`;
 
-const ProjectsFilter = ({ 
+const ProjectsFilter = ({
   heading = "Explore Nossos Projetos por Categoria",
   onFilterChange,
   activeFilter = "todos",
 }) => {
   const [selectedFilter, setSelectedFilter] = useState(activeFilter);
+
+  useEffect(() => {
+    if (activeFilter !== selectedFilter) {
+      setSelectedFilter(activeFilter);
+    }
+  }, [activeFilter, selectedFilter]);
 
   const filters = [
     { key: "todos", label: "Todos os Projetos", count: 6 },
@@ -38,9 +44,11 @@ const ProjectsFilter = ({
   ];
 
   const handleFilterClick = (filterKey) => {
-    setSelectedFilter(filterKey);
-    if (onFilterChange) {
-      onFilterChange(filterKey);
+    if (filterKey !== selectedFilter) {
+      setSelectedFilter(filterKey);
+      if (onFilterChange) {
+        onFilterChange(filterKey);
+      }
     }
   };
 
