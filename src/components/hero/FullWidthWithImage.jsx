@@ -11,6 +11,14 @@ import Header, {
 
 const StyledHeader = styled(Header)`
   ${tw`justify-between py-4`}
+
+  /* Alinhamento à esquerda no desktop */
+  @media (min-width: 1024px) {
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
   ${LogoLink} {
     ${tw`mr-8 pb-0`}
   }
@@ -30,7 +38,7 @@ const StyledHeader = styled(Header)`
   nav:first-child {
     @media (min-width: 1024px) {
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-start;
       align-items: center;
       width: 100%;
     }
@@ -69,7 +77,17 @@ const Container = styled.div`
 `;
 const TwoColumn = tw.div`flex flex-col lg:flex-row min-h-screen`;
 const LeftColumn = styled.div`
-  ${tw`ml-8 mr-8 xl:pl-10 flex flex-col justify-center relative z-10`} @media (max-width: 1024px) {
+  ${tw`flex flex-col justify-center relative z-10`}
+
+  /* Desktop: exatamente 50% da largura */
+  @media (min-width: 1024px) {
+    width: 50%;
+    flex: none;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  @media (max-width: 1024px) {
     margin-left: 0;
     margin-right: 0;
     padding-left: 2rem;
@@ -103,18 +121,36 @@ const LeftColumn = styled.div`
   }
 `;
 const RightColumn = styled.div`
-  ${tw`bg-cover bg-center xl:ml-20 lg:w-1/2 lg:flex-1 min-h-screen lg:min-h-full`}
+  ${tw`bg-cover bg-center min-h-screen lg:min-h-full`}
+
+  /* Desktop: exatamente 50% da largura */
+  @media (min-width: 1024px) {
+    width: 50%;
+    flex: none;
+  }
+
   @media (max-width: 1024px) {
     display: none;
   }
 
   .hero-image {
-    ${tw`w-full h-full min-h-screen lg:min-h-full`}
+    ${tw`w-full h-full min-h-screen lg:min-h-full object-cover`}
   }
 `;
 
 const Content = styled.div`
-  ${tw`mt-8 lg:mt-24 lg:mb-24 flex flex-col sm:items-center lg:items-stretch`} @media (max-width: 1024px) {
+  ${tw`flex flex-col sm:items-center lg:items-stretch`}
+
+  /* Desktop: centralizar conteúdo verticalmente na coluna de 50% */
+  @media (min-width: 1024px) {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2rem 0;
+  }
+
+  @media (max-width: 1024px) {
     position: relative;
     padding: 2rem;
     margin: 0 -2rem;
@@ -260,7 +296,13 @@ FullWidthWithImageComponent.propTypes = {
 };
 
 FullWidthWithImageComponent.defaultProps = {
-  navLinks: null,
+  navLinks: [
+    <NavLinks key={1}>
+      <NavLink href="/sobre-nos">Sobre Nós</NavLink>
+      <NavLink href="/projetos">Projetos</NavLink>
+      <NavLink href="/contato">Contato</NavLink>
+    </NavLinks>,
+  ],
   heading: (
     <>
       Transformamos Espaços
