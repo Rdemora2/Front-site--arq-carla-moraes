@@ -4,6 +4,7 @@ import AnimationRevealPage from "helpers/AnimationRevealPage.jsx";
 import MetaTags from "components/misc/MetaTags.jsx";
 import Header from "components/navbar/navbar.jsx";
 import Footer from "components/footers/FiveColumnWithInputForm.jsx";
+import { getProjectById } from "../data/projectsData";
 import tw from "twin.macro";
 import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
@@ -99,46 +100,6 @@ const NavButton = styled.button`
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 `;
 
-// Dados dos projetos (mesmo array do ProjectsPortfolio)
-const projectsData = [
-  {
-    id: 1,
-    title: "Jardim Francês Clássico - Alphaville",
-    description: "Projeto paisagístico residencial premium inspirado nos jardins franceses de Versalhes. Topiarias elaboradas, espelhos d'água e design geométrico sofisticado.",
-    clientType: "residencial",
-    location: "Alphaville, SP",
-    year: "2023",
-    area: "480 m²",
-    featuredImage: "/images/projects/Jardim-frances/frances-hero.webp",
-    gallery: [
-      "/images/projects/Jardim-frances/frances-1.webp",
-      "/images/projects/Jardim-frances/frances-2.webp",
-      "/images/projects/Jardim-frances/frances-3.webp",
-      "/images/projects/Jardim-frances/frances-4.webp",
-      "/images/projects/Jardim-frances/frances-5.webp",
-      "/images/projects/Jardim-frances/frances-6.webp",
-    ],
-    fullDescription: "Este projeto residencial de alto padrão foi inspirado nos jardins franceses clássicos de Versalhes, cuidadosamente adaptados ao clima tropical brasileiro. O paisagismo inclui topiarias artesanais em buxo, espelhos d'água simétricos que refletem o céu e um parterre central com flores sazonais que proporcionam cor durante todo o ano.",
-  },
-  {
-    id: 2,
-    title: "Design Biofílico Corporativo - Vila Olímpia",
-    description: "Ambiente corporativo sustentável com jardins verticais, espécies nativas da Mata Atlântica e sistema inteligente de irrigação para bem-estar dos colaboradores.",
-    clientType: "corporativo",
-    location: "Vila Olímpia, SP",
-    year: "2023",
-    area: "650 m²",
-    featuredImage: "/images/projects/Jardim-tropical/tropical-hero.webp",
-    gallery: [
-      "/images/projects/Jardim-tropical/tropical-1.webp",
-      "/images/projects/Jardim-tropical/tropical-2.webp",
-      "/images/projects/Jardim-tropical/tropical-3.webp",
-      "/images/projects/Jardim-tropical/tropical-4.webp",
-    ],
-    fullDescription: "Desenvolvido para uma multinacional de tecnologia, este projeto integra conceitos de design biofílico ao ambiente corporativo. Utilizamos espécies nativas da Mata Atlântica, sistema de captação de água da chuva e áreas de contemplação que promovem o bem-estar dos colaboradores.",
-  },
-];
-
 const ProjectGallery = () => {
   const { projectId } = useParams();
   const navigate = useNavigate();
@@ -146,7 +107,7 @@ const ProjectGallery = () => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
 
   useEffect(() => {
-    const foundProject = projectsData.find(p => p.id === parseInt(projectId));
+    const foundProject = getProjectById(projectId);
     if (foundProject) {
       setProject(foundProject);
     } else {

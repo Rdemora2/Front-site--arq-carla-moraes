@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useCallback, memo, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
 import Slider from "react-slick";
 import tw from "twin.macro";
 import styled from "styled-components";
 import { SectionHeading } from "components/misc/Headings";
 import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons";
+import { getFeaturedProjects } from "../../data/projectsData";
 import {
   DollarSign as PriceIcon,
   MapPin as LocationIcon,
@@ -11,7 +14,6 @@ import {
   ChevronLeft as ChevronLeftIcon,
   ChevronRight as ChevronRightIcon,
 } from "react-feather";
-import { useInView } from "react-intersection-observer";
 
 const Container = tw.div`relative`;
 const Content = tw.div`max-w-screen-xl mx-auto py-16 lg:py-20`;
@@ -71,83 +73,11 @@ const PrimaryButton = tw(
   PrimaryButtonBase
 )`mt-auto sm:text-lg rounded-none w-full rounded sm:rounded-none sm:rounded-br-4xl py-3 sm:py-6`;
 
-const SliderCard = memo(({ heading, description, imageSrc }) => {
-  const { ref, inView } = useInView({
-    triggerOnce: true,
-    rootMargin: "200px 0px",
-  });
-
-  return (
-    <div ref={ref} className="slider-card">
-      {inView && (
-        <>
-          <img src={imageSrc} alt={heading} loading="lazy" />
-          <h3>{heading}</h3>
-          <p>{description}</p>
-        </>
-      )}
-    </div>
-  );
-});
-
-const ThreeColSlider = ({
-  heading = <span>Projetos em Destaque</span>,
-  subheading = "Nosso Portfólio",
-  description = "Conheça alguns dos projetos executados pela Carla Moraes Arquitetura Paisagística em diferentes contextos e necessidades.",
-  cards = [
-    {
-      imageSrc:
-        "https://images.unsplash.com/photo-1588557132645-ff567110cafd?ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&q=80",
-      title: "Residencial Ipê Amarelo",
-      description:
-        "Jardim tropical contemporâneo com áreas de convivência integradas e iluminação cênica para esta residência de alto padrão.",
-      locationText: "São Paulo, SP",
-      pricingText: "480 m²",
-      url: "#",
-    },
-    {
-      imageSrc:
-        "https://images.unsplash.com/photo-1588557132645-ff567110cafd?ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&q=80",
-      title: "Condomínio Villa Verde",
-      description:
-        "Áreas comuns e paisagismo do entorno, criando ambientes de lazer que valorizam a interação social e o contato com a natureza.",
-      locationText: "Campinas, SP",
-      pricingText: "1.200 m²",
-      url: "#",
-    },
-    {
-      imageSrc:
-        "https://images.unsplash.com/photo-1588557132645-ff567110cafd?ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&q=80",
-      title: "Corporativo Jardins",
-      description:
-        "Projeto biofílico para sede empresarial que integra elementos naturais ao ambiente de trabalho, promovendo bem-estar e produtividade.",
-      locationText: "Rio de Janeiro, RJ",
-      pricingText: "650 m²",
-      url: "#",
-    },
-    {
-      imageSrc:
-        "https://images.unsplash.com/photo-1587502537104-aac10f5fb6f7?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-      title: "Casa de Campo Arvoredo",
-      description:
-        "Paisagismo rural que harmoniza a vegetação existente com novas espécies, criando áreas de contemplação e vivência com a natureza.",
-      locationText: "Itatiba, SP",
-      pricingText: "2.500 m²",
-      url: "#",
-    },
-    {
-      imageSrc:
-        "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-      title: "Terraço Vila Nova",
-      description:
-        "Transformação de cobertura em oásis urbano com jardins de cobertura, deck e área gourmet integrada à vegetação.",
-      locationText: "Belo Horizonte, MG",
-      pricingText: "120 m²",
-      url: "#",
-    },
-  ],
-}) => {
+const ThreeColSlider = ({ heading = <span>Projetos em Destaque</span> }) => {
+  const navigate = useNavigate();
   const [sliderRef, setSliderRef] = useState(null);
+
+  const featuredProjects = useMemo(() => getFeaturedProjects(5), []);
 
   const sliderSettings = useMemo(
     () => ({
@@ -178,6 +108,10 @@ const ThreeColSlider = ({
   const handleNextClick = useCallback(() => {
     if (sliderRef) sliderRef.slickNext();
   }, [sliderRef]);
+
+  const handleViewAllProjects = useCallback(() => {
+    navigate("/projetos");
+  }, [navigate]);
 
   const updateTabIndex = useCallback(() => {
     const hiddenSlides = document.querySelectorAll(
@@ -225,20 +159,20 @@ const ThreeColSlider = ({
           {...sliderSettings}
           afterChange={updateTabIndex}
         >
-          {cards.map((card, index) => (
-            <Card key={index}>
+          {featuredProjects.map((project, index) => (
+            <Card key={`project-${project.id}`}>
               <CardImage
-                imageSrc={card.imageSrc}
+                imageSrc={project.featuredImage}
                 role="img"
-                aria-label={`Imagem do projeto ${card.title}`}
+                aria-label={`Imagem do projeto ${project.title}`}
                 loading={index > 2 ? "lazy" : "eager"}
               />
               <TextInfo>
                 <TitleReviewContainer>
-                  <Title>{card.title}</Title>
+                  <Title>{project.title}</Title>
                   <RatingsInfo>
                     <StarIcon aria-hidden="true" />
-                    <Rating>{card.rating}</Rating>
+                    <Rating>5.0</Rating>
                   </RatingsInfo>
                 </TitleReviewContainer>
                 <SecondaryInfoContainer>
@@ -246,23 +180,22 @@ const ThreeColSlider = ({
                     <IconContainer aria-hidden="true">
                       <LocationIcon />
                     </IconContainer>
-                    <Text>{card.locationText}</Text>
+                    <Text>{project.location}</Text>
                   </IconWithText>
                   <IconWithText>
                     <IconContainer aria-hidden="true">
                       <PriceIcon />
                     </IconContainer>
-                    <Text>{card.pricingText}</Text>
+                    <Text>{project.area}</Text>
                   </IconWithText>
                 </SecondaryInfoContainer>
-                <Description>{card.description}</Description>
+                <Description>{project.description}</Description>
               </TextInfo>
               <PrimaryButton
-                as="a"
-                href={card.url}
-                aria-label={`Ver mais detalhes sobre o projeto ${card.title}`}
+                onClick={handleViewAllProjects}
+                aria-label={`Ver todos os projetos - ${project.title}`}
               >
-                Ver Mais
+                Ver Todos os Projetos
               </PrimaryButton>
             </Card>
           ))}
@@ -270,6 +203,14 @@ const ThreeColSlider = ({
       </Content>
     </Container>
   );
+};
+
+ThreeColSlider.propTypes = {
+  heading: PropTypes.node,
+};
+
+ThreeColSlider.defaultProps = {
+  heading: <span>Projetos em Destaque</span>,
 };
 
 export default memo(ThreeColSlider);
