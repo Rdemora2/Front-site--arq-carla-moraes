@@ -30,7 +30,7 @@ export const useWebVitals = (options = {}) => {
       if (value <= threshold.poor) return "needs-improvement";
       return "poor";
     },
-    [thresholds]
+    [thresholds],
   );
 
   const reportMetric = useCallback(
@@ -50,7 +50,7 @@ export const useWebVitals = (options = {}) => {
       if (enableLocalStorage) {
         try {
           const webVitalsData = JSON.parse(
-            localStorage.getItem("webVitals") || "{}"
+            localStorage.getItem("webVitals") || "{}",
           );
           webVitalsData[name] = {
             value: Math.round(value * 100) / 100,
@@ -77,7 +77,7 @@ export const useWebVitals = (options = {}) => {
         onMetric(metric);
       }
     },
-    [enableAnalytics, enableConsoleLog, enableLocalStorage, onMetric]
+    [enableAnalytics, enableConsoleLog, enableLocalStorage, onMetric],
   );
 
   const createMetricObserver = useCallback((entryType, callback) => {
@@ -96,7 +96,7 @@ export const useWebVitals = (options = {}) => {
     } catch (error) {
       console.warn(
         `[Web Vitals] Observer para ${entryType} não suportado:`,
-        error
+        error,
       );
       return null;
     }
@@ -329,7 +329,7 @@ export const useWebVitals = (options = {}) => {
     });
 
     return Math.round(
-      scores.reduce((sum, score) => sum + score, 0) / scores.length
+      scores.reduce((sum, score) => sum + score, 0) / scores.length,
     );
   }, [getMetrics]);
 

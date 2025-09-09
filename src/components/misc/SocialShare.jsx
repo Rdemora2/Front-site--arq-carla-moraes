@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import styled from "styled-components";
 import tw from "twin.macro";
 import { useEnvironment } from "../../hooks/useEnvironment";
@@ -104,6 +105,20 @@ const SocialShare = ({
       </ShareButton>
     </SocialShareContainer>
   );
+};
+
+SocialShare.propTypes = {
+  title: PropTypes.string,
+  description: PropTypes.string,
+  path: PropTypes.string,
+  showText: PropTypes.bool,
+};
+
+SocialShare.defaultProps = {
+  title: "Confira este projeto paisagístico incrível!",
+  description: "",
+  path: "",
+  showText: true,
 };
 
 export default SocialShare;

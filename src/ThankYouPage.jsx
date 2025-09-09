@@ -14,12 +14,12 @@ const logo = "/images/logo/logo_full.webp";
 const Row = tw.div`flex`;
 const NavRow = tw(Row)`flex flex-col lg:flex-row items-center justify-between`;
 const HeroRow = tw(
-  Row
+  Row,
 )`max-w-xl flex-col justify-between items-center py-20 lg:py-24 mx-auto`;
 
 const Heading = tw(HeadingBase)`text-center text-primary-900 leading-snug`;
 const Description = tw(
-  DescriptionBase
+  DescriptionBase,
 )`mt-4 text-center lg:text-base text-gray-700 max-w-lg mx-auto lg:mx-0`;
 
 export default () => {

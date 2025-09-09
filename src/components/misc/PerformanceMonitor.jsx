@@ -166,7 +166,7 @@ const PerformanceMonitor = ({
 
   const { isFeatureEnabled } = useEnvironment();
   const isPerformanceMonitoringEnabled = isFeatureEnabled(
-    "performanceMonitoring"
+    "performanceMonitoring",
   );
   const shouldShow = isEnabled && isPerformanceMonitoringEnabled;
 

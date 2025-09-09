@@ -148,7 +148,7 @@ const ProjectGallery = () => {
         if (e.key === "ArrowLeft") prevImage();
       }
     },
-    [selectedImageIndex, closeImageModal, nextImage, prevImage]
+    [selectedImageIndex, closeImageModal, nextImage, prevImage],
   );
 
   useEffect(() => {

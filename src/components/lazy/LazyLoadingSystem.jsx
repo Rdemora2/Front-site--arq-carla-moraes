@@ -163,7 +163,7 @@ export const useLazyComponent = (importFn, options = {}) => {
 
           // Delay antes do retry
           await new Promise((resolve) =>
-            setTimeout(resolve, retryDelay * retryCountRef.current)
+            setTimeout(resolve, retryDelay * retryCountRef.current),
           );
 
           // Recursively retry
@@ -376,7 +376,7 @@ const PlaceholderDiv = styled.div`
 export const LazyImage = forwardRef(
   (
     { src, alt, placeholder, className, style, onLoad, onError, ...imageProps },
-    forwardedRef
+    forwardedRef,
   ) => {
     const isLazyLoadingEnabled = true; // Sempre habilitado
 
@@ -402,7 +402,7 @@ export const LazyImage = forwardRef(
           }
         }
       },
-      [inViewRef, forwardedRef]
+      [inViewRef, forwardedRef],
     );
 
     useEffect(() => {
@@ -437,7 +437,7 @@ export const LazyImage = forwardRef(
         )}
       </LazyImageContainer>
     );
-  }
+  },
 );
 
 LazyImage.displayName = "LazyImage";
@@ -477,7 +477,7 @@ export const usePreloader = () => {
         });
       }
     },
-    [logger]
+    [logger],
   );
 
   const preloadImage = useCallback(
@@ -507,7 +507,7 @@ export const usePreloader = () => {
         img.src = src;
       });
     },
-    [logger]
+    [logger],
   );
 
   const preloadResources = useCallback(
@@ -532,7 +532,7 @@ export const usePreloader = () => {
         });
       }
     },
-    [preloadComponent, preloadImage, logger]
+    [preloadComponent, preloadImage, logger],
   );
 
   return {
@@ -569,7 +569,9 @@ export const ScrollBasedPreloader = ({
 export const clearLazyLoadingCache = () => {
   componentCache.clear();
   imageCache.clear();
-  console.log("Lazy loading cache cleared");
+  if (process.env.NODE_ENV === "development") {
+    console.log("Lazy loading cache cleared");
+  }
 };
 
 // Utility para obter estatísticas de cache

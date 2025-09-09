@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from "react";
 import PropTypes from "prop-types";
-import { config, getAbsoluteUrl } from "../../config/environment";
+import { getAbsoluteUrl } from "../../config/environment";
 
 const MetaTags = ({
   title = "Carla Moraes - Arquitetura paisagística",
@@ -25,7 +25,7 @@ const MetaTags = ({
   },
 }) => {
   // Garantindo que títulos longos sejam truncados para SEO
-  const processedData = {
+  const processedData = useMemo(() => ({
     title: title.length > 60 ? `${title.substring(0, 57)}...` : title,
     description:
       description.length > 160
@@ -33,10 +33,10 @@ const MetaTags = ({
         : description,
     image: getAbsoluteUrl(image),
     url: getAbsoluteUrl(url),
-  };
+  }), [title, description, image, url]);
 
   // Criando dados estruturados aprimorados para SEO
-  const jsonLdData = structuredData || {
+  const jsonLdData = useMemo(() => structuredData || {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
     name: siteName,
@@ -61,7 +61,7 @@ const MetaTags = ({
       "https://www.facebook.com/carlamoraesarquiteturapaisagistica",
       "https://www.instagram.com/carlamoraes_paisagismo/",
     ],
-  };
+  }, [structuredData, siteName, processedData, contactPoint, openingHours]);
 
   const updateMetaTag = (selector, content, property = null) => {
     let element = document.querySelector(selector);
@@ -70,7 +70,7 @@ const MetaTags = ({
       if (property) {
         element.setAttribute(
           property.startsWith("twitter:") ? "name" : "property",
-          property
+          property,
         );
       }
       document.head.appendChild(element);
@@ -98,38 +98,38 @@ const MetaTags = ({
     document.title = processedData.title;
 
     // Atualizar meta tags básicas
-    updateMetaTag('meta[name="description"]', processedData.description);
-    updateMetaTag('meta[name="keywords"]', keywords);
-    updateMetaTag('meta[name="author"]', author);
-    updateMetaTag('meta[name="robots"]', robots);
-    updateMetaTag('meta[name="viewport"]', viewport);
-    updateMetaTag('meta[name="theme-color"]', themeColor);
+    updateMetaTag("meta[name=\"description\"]", processedData.description);
+    updateMetaTag("meta[name=\"keywords\"]", keywords);
+    updateMetaTag("meta[name=\"author\"]", author);
+    updateMetaTag("meta[name=\"robots\"]", robots);
+    updateMetaTag("meta[name=\"viewport\"]", viewport);
+    updateMetaTag("meta[name=\"theme-color\"]", themeColor);
 
     // Meta tags Open Graph
-    updateMetaTag('meta[property="og:title"]', processedData.title);
-    updateMetaTag('meta[property="og:description"]', processedData.description);
-    updateMetaTag('meta[property="og:image"]', processedData.image);
-    updateMetaTag('meta[property="og:url"]', processedData.url);
-    updateMetaTag('meta[property="og:type"]', type);
-    updateMetaTag('meta[property="og:locale"]', locale);
-    updateMetaTag('meta[property="og:site_name"]', siteName);
+    updateMetaTag("meta[property=\"og:title\"]", processedData.title);
+    updateMetaTag("meta[property=\"og:description\"]", processedData.description);
+    updateMetaTag("meta[property=\"og:image\"]", processedData.image);
+    updateMetaTag("meta[property=\"og:url\"]", processedData.url);
+    updateMetaTag("meta[property=\"og:type\"]", type);
+    updateMetaTag("meta[property=\"og:locale\"]", locale);
+    updateMetaTag("meta[property=\"og:site_name\"]", siteName);
 
     // Meta tags Twitter
-    updateMetaTag('meta[name="twitter:card"]', twitterCardType);
-    updateMetaTag('meta[name="twitter:title"]', processedData.title);
+    updateMetaTag("meta[name=\"twitter:card\"]", twitterCardType);
+    updateMetaTag("meta[name=\"twitter:title\"]", processedData.title);
     updateMetaTag(
-      'meta[name="twitter:description"]',
-      processedData.description
+      "meta[name=\"twitter:description\"]",
+      processedData.description,
     );
     updateMetaTag(
-      'meta[name="twitter:image"]',
+      "meta[name=\"twitter:image\"]",
       processedData.image,
-      "twitter:image"
+      "twitter:image",
     );
     updateMetaTag(
-      'meta[name="twitter:image:alt"]',
+      "meta[name=\"twitter:image:alt\"]",
       processedData.title,
-      "twitter:image:alt"
+      "twitter:image:alt",
     );
 
     // Canonical URL
@@ -169,7 +169,7 @@ const MetaTags = ({
 
     // JSON-LD Structured Data
     let jsonLdScript = document.querySelector(
-      'script[type="application/ld+json"]'
+      "script[type=\"application/ld+json\"]",
     );
     if (!jsonLdScript) {
       jsonLdScript = document.createElement("script");
@@ -200,7 +200,7 @@ const MetaTags = ({
       };
 
       let breadcrumbScript = document.querySelector(
-        'script[data-type="breadcrumb-jsonld"]'
+        "script[data-type=\"breadcrumb-jsonld\"]",
       );
       if (!breadcrumbScript) {
         breadcrumbScript = document.createElement("script");
@@ -222,6 +222,8 @@ const MetaTags = ({
     themeColor,
     alternates,
     jsonLdData,
+    keywords,
+    url,
   ]);
 
   // PropTypes para validação
@@ -249,7 +251,7 @@ const MetaTags = ({
       PropTypes.shape({
         href: PropTypes.string.isRequired,
         hreflang: PropTypes.string.isRequired,
-      })
+      }),
     ),
     openingHours: PropTypes.string,
     contactPoint: PropTypes.shape({
@@ -261,7 +263,7 @@ const MetaTags = ({
       PropTypes.shape({
         name: PropTypes.string.isRequired,
         url: PropTypes.string.isRequired,
-      })
+      }),
     ),
     article: PropTypes.shape({
       publishedTime: PropTypes.string,
@@ -276,6 +278,32 @@ const MetaTags = ({
       availability: PropTypes.string,
       condition: PropTypes.string,
     }),
+  };
+
+  MetaTags.defaultProps = {
+    title: "Carla Moraes - Arquitetura paisagística",
+    description: "Há mais de 25 anos criando projetos paisagísticos exclusivos que harmonizam arquitetura e natureza. Do conceito à execução, trazemos beleza e propósito para cada ambiente.",
+    image: "/images/logo/logo_full.webp",
+    url: "",
+    type: "website",
+    keywords: "arquitetura paisagística, paisagismo, jardins, design exterior, projetos paisagísticos, Carla Moraes, São Paulo",
+    author: "Carla Moraes",
+    locale: "pt_BR",
+    siteName: "Carla Moraes Arquitetura Paisagística",
+    twitterCardType: "summary_large_image",
+    structuredData: null,
+    robots: "index, follow",
+    viewport: "width=device-width, initial-scale=1.0",
+    themeColor: "#2D5A27",
+    alternates: [],
+    openingHours: "Mo-Fr 09:00-18:00",
+    contactPoint: {
+      telephone: "+55-11-99985-4345",
+      email: "contato@carlamoraes.com.br",
+    },
+    breadcrumbs: [],
+    article: null,
+    product: null,
   };
 
   return null;

@@ -36,7 +36,7 @@ export class EnvironmentValidator {
 
     if (!config.baseUrl) {
       this.errors.push(
-        `URL base não configurada para o ambiente ${config.currentMode}`
+        `URL base não configurada para o ambiente ${config.currentMode}`,
       );
     }
   }
@@ -45,14 +45,14 @@ export class EnvironmentValidator {
     if (config.enableAnalytics && config.isProduction) {
       if (!isAnalyticsConfigured()) {
         this.warnings.push(
-          "Analytics habilitado mas nenhum provedor válido configurado"
+          "Analytics habilitado mas nenhum provedor válido configurado",
         );
       }
 
       if (config.googleAnalyticsId) {
         if (!config.hasValidGoogleAnalytics()) {
           this.errors.push(
-            'Google Analytics ID inválido - deve começar com "G-"'
+            "Google Analytics ID inválido - deve começar com \"G-\"",
           );
         }
       }
@@ -60,7 +60,7 @@ export class EnvironmentValidator {
       if (config.facebookPixelId) {
         if (!config.hasValidFacebookPixel()) {
           this.errors.push(
-            "Facebook Pixel ID inválido - deve conter apenas números"
+            "Facebook Pixel ID inválido - deve conter apenas números",
           );
         }
       }

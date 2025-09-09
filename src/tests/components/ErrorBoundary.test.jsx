@@ -29,7 +29,7 @@ describe("ErrorBoundary", () => {
     render(
       <ErrorBoundary>
         <ThrowError shouldThrow={false} />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     expect(screen.getByText("Componente funcionando")).toBeInTheDocument();
@@ -39,12 +39,12 @@ describe("ErrorBoundary", () => {
     render(
       <ErrorBoundary>
         <ThrowError shouldThrow={true} />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     expect(screen.getByText("Oops! Algo deu errado")).toBeInTheDocument();
     expect(
-      screen.getByText(/Parece que encontramos um pequeno problema/)
+      screen.getByText(/Parece que encontramos um pequeno problema/),
     ).toBeInTheDocument();
   });
 
@@ -52,7 +52,7 @@ describe("ErrorBoundary", () => {
     render(
       <ErrorBoundary>
         <ThrowError shouldThrow={true} />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     const retryButton = screen.getByText("Tentar Novamente");
@@ -63,7 +63,7 @@ describe("ErrorBoundary", () => {
     const { rerender } = render(
       <ErrorBoundary>
         <ThrowError shouldThrow={true} />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     expect(screen.getByText("Oops! Algo deu errado")).toBeInTheDocument();
@@ -75,7 +75,7 @@ describe("ErrorBoundary", () => {
     rerender(
       <ErrorBoundary>
         <ThrowError shouldThrow={false} />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     expect(screen.getByText("Componente funcionando")).toBeInTheDocument();
@@ -85,7 +85,7 @@ describe("ErrorBoundary", () => {
     render(
       <ErrorBoundary>
         <ThrowError shouldThrow={true} />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     const homeButton = screen.getByText("Voltar ao Início");
@@ -104,7 +104,7 @@ describe("ErrorBoundary", () => {
     render(
       <ErrorBoundary fallback={CustomFallback}>
         <ThrowError shouldThrow={true} />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     expect(screen.getByText("Erro customizado")).toBeInTheDocument();
@@ -117,14 +117,14 @@ describe("ErrorBoundary", () => {
     render(
       <ErrorBoundary onError={onError}>
         <ThrowError shouldThrow={true} />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     expect(onError).toHaveBeenCalledWith(
       expect.any(Error),
       expect.objectContaining({
         componentStack: expect.any(String),
-      })
+      }),
     );
   });
 
@@ -132,7 +132,7 @@ describe("ErrorBoundary", () => {
     render(
       <ErrorBoundary>
         <ThrowError shouldThrow={true} />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     const detailsElement = screen.getByText("Detalhes técnicos");
@@ -145,13 +145,13 @@ describe("ErrorBoundary", () => {
     const { container: container1 } = render(
       <ErrorBoundary>
         <ThrowError shouldThrow={true} />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     const { container: container2 } = render(
       <ErrorBoundary>
         <ThrowError shouldThrow={true} />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     const button1 = container1.querySelector("button");
@@ -171,7 +171,7 @@ describe("ErrorBoundary", () => {
     render(
       <ErrorBoundary onError={onError}>
         <ThrowError shouldThrow={true} />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     expect(onError).toHaveBeenCalled();
@@ -181,7 +181,7 @@ describe("ErrorBoundary", () => {
     render(
       <ErrorBoundary>
         <ThrowError shouldThrow={true} />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     // Verifica se tem estrutura semântica correta
@@ -201,7 +201,7 @@ describe("ErrorBoundary", () => {
     render(
       <ErrorBoundary>
         <ThrowError shouldThrow={true} />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     const retryButton = screen.getByText("Tentar Novamente");
@@ -214,7 +214,7 @@ describe("ErrorBoundary", () => {
     const { unmount } = render(
       <ErrorBoundary>
         <ThrowError shouldThrow={true} />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     // Deve desmontar sem erros
@@ -227,7 +227,7 @@ describe("ErrorBoundary", () => {
         render(
           <ErrorBoundary>
             <div>Conteúdo válido</div>
-          </ErrorBoundary>
+          </ErrorBoundary>,
         );
       }).not.toThrow();
     });
@@ -241,7 +241,7 @@ describe("ErrorBoundary", () => {
         render(
           <ErrorBoundary fallback={fallback}>
             <ThrowError shouldThrow={true} />
-          </ErrorBoundary>
+          </ErrorBoundary>,
         );
       }).not.toThrow();
     });
@@ -253,7 +253,7 @@ describe("ErrorBoundary", () => {
         render(
           <ErrorBoundary onError={onError}>
             <ThrowError shouldThrow={true} />
-          </ErrorBoundary>
+          </ErrorBoundary>,
         );
       }).not.toThrow();
     });

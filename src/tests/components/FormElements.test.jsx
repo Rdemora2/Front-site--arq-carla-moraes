@@ -12,7 +12,7 @@ describe("FormElements", () => {
   describe("FormInput", () => {
     it("deve renderizar input básico", () => {
       customRender(
-        <FormInput id="test-input" label="Nome" value="" onChange={() => {}} />
+        <FormInput id="test-input" label="Nome" value="" onChange={() => {}} />,
       );
 
       expect(screen.getByLabelText("Nome")).toBeInTheDocument();
@@ -23,7 +23,7 @@ describe("FormElements", () => {
       const user = userEvent.setup();
 
       customRender(
-        <FormInput id="test-input" label="Email" value="" onChange={() => {}} />
+        <FormInput id="test-input" label="Email" value="" onChange={() => {}} />,
       );
 
       const input = screen.getByRole("textbox");
@@ -42,7 +42,7 @@ describe("FormElements", () => {
           value="email-inválido"
           error="Email inválido"
           onChange={() => {}}
-        />
+        />,
       );
 
       expect(screen.getByText("Email inválido")).toBeInTheDocument();
@@ -57,7 +57,7 @@ describe("FormElements", () => {
           value="teste@email.com"
           isValid={true}
           onChange={() => {}}
-        />
+        />,
       );
 
       expect(screen.getByRole("textbox")).toHaveClass("valid");
@@ -72,7 +72,7 @@ describe("FormElements", () => {
           maxLength={50}
           showCharacterCount={true}
           onChange={() => {}}
-        />
+        />,
       );
 
       expect(screen.getByText("4/50")).toBeInTheDocument();
@@ -88,7 +88,7 @@ describe("FormElements", () => {
           label="Nome"
           value=""
           onChange={handleChange}
-        />
+        />,
       );
 
       const input = screen.getByRole("textbox");
@@ -108,7 +108,7 @@ describe("FormElements", () => {
           value=""
           mask="phone"
           onChange={handleChange}
-        />
+        />,
       );
 
       const input = screen.getByRole("textbox");
@@ -120,7 +120,7 @@ describe("FormElements", () => {
           target: expect.objectContaining({
             value: "(11) 99999-9999",
           }),
-        })
+        }),
       );
     });
 
@@ -132,7 +132,7 @@ describe("FormElements", () => {
           value=""
           required={true}
           onChange={() => {}}
-        />
+        />,
       );
 
       const input = screen.getByRole("textbox");
@@ -149,12 +149,12 @@ describe("FormElements", () => {
           type="password"
           value=""
           onChange={() => {}}
-        />
+        />,
       );
 
       expect(screen.getByLabelText("Senha")).toHaveAttribute(
         "type",
-        "password"
+        "password",
       );
     });
   });
@@ -167,7 +167,7 @@ describe("FormElements", () => {
           label="Mensagem"
           value=""
           onChange={() => {}}
-        />
+        />,
       );
 
       expect(screen.getByLabelText("Mensagem")).toBeInTheDocument();
@@ -184,7 +184,7 @@ describe("FormElements", () => {
           value=""
           autoResize={true}
           onChange={() => {}}
-        />
+        />,
       );
 
       const textarea = screen.getByRole("textbox");
@@ -205,7 +205,7 @@ describe("FormElements", () => {
           maxLength={100}
           showCharacterCount={true}
           onChange={() => {}}
-        />
+        />,
       );
 
       expect(screen.getByText("9/100")).toBeInTheDocument();
@@ -222,7 +222,7 @@ describe("FormElements", () => {
           value=""
           maxLength={10}
           onChange={handleChange}
-        />
+        />,
       );
 
       const textarea = screen.getByRole("textbox");
@@ -234,7 +234,7 @@ describe("FormElements", () => {
           target: expect.objectContaining({
             value: "1234567890",
           }),
-        })
+        }),
       );
     });
   });
@@ -247,7 +247,7 @@ describe("FormElements", () => {
           label="Aceito os termos"
           checked={false}
           onChange={() => {}}
-        />
+        />,
       );
 
       expect(screen.getByLabelText("Aceito os termos")).toBeInTheDocument();
@@ -264,7 +264,7 @@ describe("FormElements", () => {
           label="Aceito os termos"
           checked={false}
           onChange={handleChange}
-        />
+        />,
       );
 
       const checkbox = screen.getByRole("checkbox");
@@ -275,7 +275,7 @@ describe("FormElements", () => {
           target: expect.objectContaining({
             checked: true,
           }),
-        })
+        }),
       );
     });
 
@@ -287,7 +287,7 @@ describe("FormElements", () => {
           checked={false}
           required={true}
           onChange={() => {}}
-        />
+        />,
       );
 
       const checkbox = screen.getByRole("checkbox");
@@ -302,13 +302,13 @@ describe("FormElements", () => {
           checked={false}
           error="Campo obrigatório"
           onChange={() => {}}
-        />
+        />,
       );
 
       expect(screen.getByText("Campo obrigatório")).toBeInTheDocument();
       expect(screen.getByRole("checkbox")).toHaveAttribute(
         "aria-invalid",
-        "true"
+        "true",
       );
     });
 
@@ -322,7 +322,7 @@ describe("FormElements", () => {
           label="Aceito os termos"
           checked={false}
           onChange={handleChange}
-        />
+        />,
       );
 
       const checkbox = screen.getByRole("checkbox");
@@ -343,7 +343,7 @@ describe("FormElements", () => {
           value=""
           delay="0.2s"
           onChange={() => {}}
-        />
+        />,
       );
 
       const container = screen.getByRole("textbox").closest("div");
@@ -360,7 +360,7 @@ describe("FormElements", () => {
           label="Nome"
           value=""
           onChange={() => {}}
-        />
+        />,
       );
 
       expect(ref.current).toBeInstanceOf(HTMLInputElement);
@@ -378,7 +378,7 @@ describe("FormElements", () => {
           label="Nome"
           value=""
           onChange="invalid" // Deve ser função
-        />
+        />,
       );
 
       expect(console.error).toHaveBeenCalled();
@@ -399,7 +399,7 @@ describe("FormElements", () => {
               onChange={() => {}}
             />
           ))}
-        </div>
+        </div>,
       );
 
       const end = performance.now();

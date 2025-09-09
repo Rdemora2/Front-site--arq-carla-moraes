@@ -30,7 +30,7 @@ const QuestionToggleIcon = motion(styled.span`
   }
 `);
 const Answer = motion(
-  tw.dd`pointer-events-none text-sm sm:text-base leading-relaxed`
+  tw.dd`pointer-events-none text-sm sm:text-base leading-relaxed`,
 );
 
 const DecoratorBlob1 = styled(SvgDecoratorBlob1)`

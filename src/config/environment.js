@@ -121,16 +121,20 @@ export const validateEnvironment = () => {
     config.enableAnalytics &&
     !config.hasValidGoogleAnalytics()
   ) {
-    console.warn(
-      "Analytics habilitado em produção mas Google Analytics ID não é válido"
-    );
+    if (process.env.NODE_ENV === "development") {
+      console.warn(
+        "Analytics habilitado em produção mas Google Analytics ID não é válido",
+      );
+    }
   }
 
   if (errors.length > 0) {
-    console.error("Erros de configuração de ambiente:", errors);
+    if (process.env.NODE_ENV === "development") {
+      console.error("Erros de configuração de ambiente:", errors);
+    }
     return {
       isValid: false,
-      errors: errors,
+      errors,
     };
   }
 
@@ -184,9 +188,13 @@ export const getEnvironmentInfo = () => ({
 if (config.isDevelopment && !window.__ENV_VALIDATED__) {
   try {
     validateEnvironment();
-    console.log("✅ Configuração de ambiente validada:", getEnvironmentInfo());
+    if (process.env.NODE_ENV === "development") {
+      console.log("✅ Configuração de ambiente validada:", getEnvironmentInfo());
+    }
     window.__ENV_VALIDATED__ = true;
   } catch (error) {
-    console.error("❌ Erro na configuração de ambiente:", error.message);
+    if (process.env.NODE_ENV === "development") {
+      console.error("❌ Erro na configuração de ambiente:", error.message);
+    }
   }
 }

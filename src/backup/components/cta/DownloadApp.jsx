@@ -21,7 +21,7 @@ const Row = tw.div`px-8 flex items-center relative z-10 flex-col lg:flex-row tex
 const ColumnContainer = tw.div`max-w-2xl`;
 const TextContainer = tw(ColumnContainer)``;
 const Text = tw(
-  SectionHeading
+  SectionHeading,
 )`text-gray-100 lg:text-left max-w-none text-3xl leading-snug`;
 const Subheading = tw(SubheadingBase)`text-yellow-500 mb-4 tracking-wider`;
 
@@ -37,15 +37,15 @@ const Link = styled.a`
 `;
 
 const ImageContainer = tw(
-  ColumnContainer
+  ColumnContainer,
 )`mt-16 lg:mt-0 lg:ml-16 flex justify-end`;
 
 const DecoratorBlobContainer = tw.div`absolute inset-0 overflow-hidden rounded-lg`;
 const DecoratorBlob1 = tw(
-  SvgDecoratorBlob1
+  SvgDecoratorBlob1,
 )`absolute bottom-0 left-0 w-80 h-80 transform -translate-x-20 translate-y-32 text-gray-800 opacity-50`;
 const DecoratorBlob2 = tw(
-  SvgDecoratorBlob1
+  SvgDecoratorBlob1,
 )`absolute top-0 right-0 w-80 h-80 transform  translate-x-20 -translate-y-64 text-gray-800 opacity-50`;
 export default ({
   subheading = "Download App",

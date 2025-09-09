@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { motion } from "framer-motion";
 import tw from "twin.macro";
 import styled from "styled-components";
@@ -174,7 +175,7 @@ const Header = ({
           alt="logo"
           width="128"
           height="75"
-          fetchpriority="high"
+          fetchPriority="high"
         />
       </picture>
     </LogoLink>
@@ -216,6 +217,22 @@ const Header = ({
       </MobileNavLinksContainer>
     </HeaderContainer>
   );
+};
+
+Header.propTypes = {
+  roundedHeaderButton: PropTypes.bool,
+  logoLink: PropTypes.node,
+  links: PropTypes.node,
+  className: PropTypes.string,
+  collapseBreakpointClass: PropTypes.string,
+};
+
+Header.defaultProps = {
+  roundedHeaderButton: false,
+  logoLink: null,
+  links: null,
+  className: "",
+  collapseBreakpointClass: "lg",
 };
 
 export default Header;

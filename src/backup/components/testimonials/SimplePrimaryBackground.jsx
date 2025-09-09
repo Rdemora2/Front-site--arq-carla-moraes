@@ -15,7 +15,7 @@ import ArrowRightIcon from "../assets/icons/svg/arrow-right-3-icon.svg";
 import "slick-carousel/slick/slick.css";
 
 const PrimaryBackgroundContainer = tw(
-  Container
+  Container,
 )`-mx-8 px-8 bg-primary-900 text-gray-100`;
 
 const HeadingContainer = tw.div``;
@@ -38,7 +38,7 @@ const TestimonialsSlider = styled(Slider)`
 const Testimonial = tw.div`px-6 py-12 sm:px-20 sm:py-16 focus:outline-none flex! flex-col justify-between h-full`;
 const QuoteContainer = tw.div`relative`;
 const QuoteIcon = tw(
-  QuoteIconBase
+  QuoteIconBase,
 )`absolute opacity-15 top-0 left-0 transform -translate-y-2 -translate-x-1/2 sm:-translate-x-full w-10 fill-current text-primary-500`;
 const Quote = tw.blockquote`font-medium sm:font-normal relative text-sm sm:text-xl text-center sm:text-left`;
 const CustomerInfoAndControlsContainer = tw.div`mt-8 flex items-center flex-col sm:flex-row justify-center text-center sm:text-left`;

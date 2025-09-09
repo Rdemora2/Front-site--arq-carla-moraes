@@ -90,7 +90,7 @@ const OptimizedImage = memo(
           })
           .join(", ");
       },
-      [srcSet]
+      [srcSet],
     );
 
     // Otimizar URL da imagem baseado no formato e qualidade
@@ -118,7 +118,7 @@ const OptimizedImage = memo(
 
         return url;
       },
-      [quality, format]
+      [quality, format],
     );
 
     // Intersection Observer para lazy loading
@@ -138,7 +138,7 @@ const OptimizedImage = memo(
         {
           rootMargin: "50px",
           threshold: 0.1,
-        }
+        },
       );
 
       if (imgRef.current) {
@@ -161,7 +161,7 @@ const OptimizedImage = memo(
         setIsLowQuality(false);
         onLoad?.(e);
       },
-      [onLoad]
+      [onLoad],
     );
 
     // Handler para erro na imagem
@@ -178,7 +178,7 @@ const OptimizedImage = memo(
 
         onError?.(e);
       },
-      [fallbackSrc, currentSrc, onError]
+      [fallbackSrc, currentSrc, onError],
     );
 
     // Progressive loading: carregar versão low-quality primeiro
@@ -307,7 +307,7 @@ const OptimizedImage = memo(
         )}
       </ImageContainer>
     );
-  }
+  },
 );
 
 OptimizedImage.displayName = "OptimizedImage";

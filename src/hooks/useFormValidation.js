@@ -66,7 +66,7 @@ export const fieldConfigs = {
       validationRules.maxLength(100),
       validationRules.pattern(
         /^[a-zA-ZÀ-ÿ\s]+$/,
-        "Nome deve conter apenas letras e espaços"
+        "Nome deve conter apenas letras e espaços",
       ),
     ],
     sanitize: (value) => value?.trim().replace(/\s+/g, " "),
@@ -120,7 +120,7 @@ export const fieldConfigs = {
  */
 export const useFormValidation = (
   initialValues = {},
-  fieldConfigOverrides = {}
+  fieldConfigOverrides = {},
 ) => {
   const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState({});
@@ -134,7 +134,7 @@ export const useFormValidation = (
       ...fieldConfigs,
       ...fieldConfigOverrides,
     }),
-    [fieldConfigOverrides]
+    [fieldConfigOverrides],
   );
 
   // Validar um campo específico
@@ -156,7 +156,7 @@ export const useFormValidation = (
 
       return null;
     },
-    [finalConfigs, values]
+    [finalConfigs, values],
   );
 
   // Validar todos os campos
@@ -169,7 +169,7 @@ export const useFormValidation = (
         const error = validateField(
           fieldName,
           valuesToValidate[fieldName],
-          valuesToValidate
+          valuesToValidate,
         );
         if (error) {
           newErrors[fieldName] = error;
@@ -179,7 +179,7 @@ export const useFormValidation = (
 
       return { isValid, errors: newErrors };
     },
-    [finalConfigs, validateField, values]
+    [finalConfigs, validateField, values],
   );
 
   // Atualizar valor de um campo
@@ -200,7 +200,7 @@ export const useFormValidation = (
         return newValues;
       });
     },
-    [touched, submitAttempted, validateField]
+    [touched, submitAttempted, validateField],
   );
 
   // Marcar campo como tocado
@@ -220,7 +220,7 @@ export const useFormValidation = (
         }));
       }
     },
-    [validateField, values]
+    [validateField, values],
   );
 
   // Handler para mudança de input
@@ -230,7 +230,7 @@ export const useFormValidation = (
       const finalValue = type === "checkbox" ? checked : value;
       setValue(name, finalValue);
     },
-    [setValue]
+    [setValue],
   );
 
   // Handler para blur (perda de foco)
@@ -239,7 +239,7 @@ export const useFormValidation = (
       const { name } = e.target;
       setFieldTouched(name, true);
     },
-    [setFieldTouched]
+    [setFieldTouched],
   );
 
   // Formatar valor para exibição
@@ -254,7 +254,7 @@ export const useFormValidation = (
 
       return value || "";
     },
-    [finalConfigs, values]
+    [finalConfigs, values],
   );
 
   // Obter valor sanitizado para envio
@@ -290,7 +290,7 @@ export const useFormValidation = (
           const firstErrorField = Object.keys(validationErrors)[0];
           if (firstErrorField) {
             const element = document.querySelector(
-              `[name="${firstErrorField}"]`
+              `[name="${firstErrorField}"]`,
             );
             if (element) {
               element.focus();
@@ -313,7 +313,7 @@ export const useFormValidation = (
         setIsSubmitting(false);
       }
     },
-    [validateForm, getSanitizedValues]
+    [validateForm, getSanitizedValues],
   );
 
   // Reset do formulário

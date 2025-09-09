@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import PropTypes from "prop-types";
 import tw from "twin.macro";
 import styled from "styled-components";
 
@@ -233,7 +234,7 @@ const FullWidthWithImageComponent = ({
           <img
             src="/images/components/hero/Frances-hero.webp"
             alt="Projeto arquitetônico paisagístico de um jardim francês"
-            fetchpriority="high"
+            fetchPriority="high"
             width="1200"
             height="800"
             className="hero-image"
@@ -242,6 +243,26 @@ const FullWidthWithImageComponent = ({
       </TwoColumn>
     </Container>
   );
+};
+
+FullWidthWithImageComponent.propTypes = {
+  navLinks: PropTypes.node,
+  heading: PropTypes.node,
+  description: PropTypes.string,
+  primaryActionUrl: PropTypes.string,
+  primaryActionText: PropTypes.string,
+  secondaryActionUrl: PropTypes.string,
+  secondaryActionText: PropTypes.string,
+};
+
+FullWidthWithImageComponent.defaultProps = {
+  navLinks: null,
+  heading: null,
+  description: "Há mais de 25 anos criando projetos paisagísticos exclusivos que harmonizam arquitetura e natureza. Do conceito à execução, trazemos beleza e propósito para cada ambiente.",
+  primaryActionUrl: "/contato",
+  primaryActionText: "Solicite um Orçamento",
+  secondaryActionUrl: "/projetos",
+  secondaryActionText: "Nossos Projetos",
 };
 
 export default FullWidthWithImageComponent;

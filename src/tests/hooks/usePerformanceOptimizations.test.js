@@ -19,7 +19,7 @@ describe("usePerformanceOptimizations", () => {
   describe("useLazyLoading", () => {
     it("deve inicializar como não visível", () => {
       const { result } = renderHook(() =>
-        usePerformanceOptimizations().useLazyLoading()
+        usePerformanceOptimizations().useLazyLoading(),
       );
 
       expect(result.current.isVisible).toBe(false);
@@ -27,7 +27,7 @@ describe("usePerformanceOptimizations", () => {
 
     it("deve retornar ref para observação", () => {
       const { result } = renderHook(() =>
-        usePerformanceOptimizations().useLazyLoading()
+        usePerformanceOptimizations().useLazyLoading(),
       );
 
       expect(result.current.ref).toBeDefined();
@@ -36,7 +36,7 @@ describe("usePerformanceOptimizations", () => {
 
     it("deve configurar threshold personalizado", () => {
       const { result } = renderHook(() =>
-        usePerformanceOptimizations().useLazyLoading({ threshold: 0.5 })
+        usePerformanceOptimizations().useLazyLoading({ threshold: 0.5 }),
       );
 
       expect(result.current.ref).toBeDefined();
@@ -48,7 +48,7 @@ describe("usePerformanceOptimizations", () => {
       const callback = jest.fn();
 
       renderHook(() =>
-        usePerformanceOptimizations().useIntersectionObserver(callback)
+        usePerformanceOptimizations().useIntersectionObserver(callback),
       );
 
       expect(window.IntersectionObserver).toHaveBeenCalled();
@@ -59,7 +59,7 @@ describe("usePerformanceOptimizations", () => {
       const mockIO = mockIntersectionObserver(true);
 
       const { result } = renderHook(() =>
-        usePerformanceOptimizations().useIntersectionObserver(callback)
+        usePerformanceOptimizations().useIntersectionObserver(callback),
       );
 
       // Simula elemento entrando em vista
@@ -80,18 +80,18 @@ describe("usePerformanceOptimizations", () => {
 
     it("deve calcular itens visíveis corretamente", () => {
       const { result } = renderHook(() =>
-        usePerformanceOptimizations().useVirtualList(items, 50, 500)
+        usePerformanceOptimizations().useVirtualList(items, 50, 500),
       );
 
       expect(result.current.visibleItems).toBeDefined();
       expect(result.current.visibleItems.length).toBeLessThanOrEqual(
-        items.length
+        items.length,
       );
     });
 
     it("deve atualizar ao fazer scroll", () => {
       const { result } = renderHook(() =>
-        usePerformanceOptimizations().useVirtualList(items, 50, 500)
+        usePerformanceOptimizations().useVirtualList(items, 50, 500),
       );
 
       const initialStart = result.current.startIndex;
@@ -105,7 +105,7 @@ describe("usePerformanceOptimizations", () => {
 
     it("deve calcular altura total corretamente", () => {
       const { result } = renderHook(() =>
-        usePerformanceOptimizations().useVirtualList(items, 50, 500)
+        usePerformanceOptimizations().useVirtualList(items, 50, 500),
       );
 
       expect(result.current.totalHeight).toBe(items.length * 50);
@@ -123,7 +123,7 @@ describe("usePerformanceOptimizations", () => {
       const { result, rerender } = renderHook(
         ({ value, delay }) =>
           usePerformanceOptimizations().useDebounce(value, delay),
-        { initialProps: { value: "initial", delay: 500 } }
+        { initialProps: { value: "initial", delay: 500 } },
       );
 
       expect(result.current).toBe("initial");
@@ -142,7 +142,7 @@ describe("usePerformanceOptimizations", () => {
       const { result, rerender } = renderHook(
         ({ value, delay }) =>
           usePerformanceOptimizations().useDebounce(value, delay),
-        { initialProps: { value: "initial", delay: 500 } }
+        { initialProps: { value: "initial", delay: 500 } },
       );
 
       rerender({ value: "first", delay: 500 });
@@ -172,7 +172,7 @@ describe("usePerformanceOptimizations", () => {
       const callback = jest.fn();
 
       const { result } = renderHook(() =>
-        usePerformanceOptimizations().useThrottle(callback, 1000)
+        usePerformanceOptimizations().useThrottle(callback, 1000),
       );
 
       // Primeira chamada deve executar imediatamente
@@ -212,7 +212,7 @@ describe("usePerformanceOptimizations", () => {
       global.Image = jest.fn(() => mockImage);
 
       const { result } = renderHook(() =>
-        usePerformanceOptimizations().useImagePreloader(images)
+        usePerformanceOptimizations().useImagePreloader(images),
       );
 
       expect(result.current.isLoading).toBe(true);
@@ -237,7 +237,7 @@ describe("usePerformanceOptimizations", () => {
       global.Image = jest.fn(() => mockImage);
 
       const { result } = renderHook(() =>
-        usePerformanceOptimizations().useImagePreloader(images)
+        usePerformanceOptimizations().useImagePreloader(images),
       );
 
       // Simula erro de carregamento
@@ -252,7 +252,7 @@ describe("usePerformanceOptimizations", () => {
   describe("useMemoryCache", () => {
     it("deve cachear valores", () => {
       const { result } = renderHook(() =>
-        usePerformanceOptimizations().useMemoryCache()
+        usePerformanceOptimizations().useMemoryCache(),
       );
 
       act(() => {
@@ -264,7 +264,7 @@ describe("usePerformanceOptimizations", () => {
 
     it("deve limpar cache quando cheio", () => {
       const { result } = renderHook(() =>
-        usePerformanceOptimizations().useMemoryCache(2)
+        usePerformanceOptimizations().useMemoryCache(2),
       );
 
       act(() => {
@@ -280,7 +280,7 @@ describe("usePerformanceOptimizations", () => {
 
     it("deve deletar chaves específicas", () => {
       const { result } = renderHook(() =>
-        usePerformanceOptimizations().useMemoryCache()
+        usePerformanceOptimizations().useMemoryCache(),
       );
 
       act(() => {
@@ -293,7 +293,7 @@ describe("usePerformanceOptimizations", () => {
 
     it("deve limpar todo o cache", () => {
       const { result } = renderHook(() =>
-        usePerformanceOptimizations().useMemoryCache()
+        usePerformanceOptimizations().useMemoryCache(),
       );
 
       act(() => {
@@ -326,7 +326,7 @@ describe("usePerformanceOptimizations", () => {
       });
 
       const { result } = renderHook(() =>
-        usePerformanceOptimizations().useDeviceCapabilities()
+        usePerformanceOptimizations().useDeviceCapabilities(),
       );
 
       expect(result.current.isLowEnd).toBe(true);
@@ -350,7 +350,7 @@ describe("usePerformanceOptimizations", () => {
       });
 
       const { result } = renderHook(() =>
-        usePerformanceOptimizations().useDeviceCapabilities()
+        usePerformanceOptimizations().useDeviceCapabilities(),
       );
 
       expect(result.current.isLowEnd).toBe(false);

@@ -7,7 +7,7 @@ export default ({ url, background = "black", className = "video" }) => {
       className={className}
       style={{
         position: "relative",
-        background: background,
+        background,
         paddingBottom: "56.25%" /* 16:9 */,
         paddingTop: 25,
         height: 0,

@@ -9,44 +9,38 @@ const ErrorContainer = styled.div`
 `;
 
 const ErrorIcon = styled.div`
-  ${tw`mb-6 text-red-500`}
+  ${tw`mb-4 text-red-500`}
   svg {
     ${tw`w-16 h-16`}
   }
 `;
 
-const ErrorHeading = styled.h1`
-  ${tw`text-2xl font-bold text-gray-800 mb-4`}
+const ErrorTitle = styled.h2`
+  ${tw`mb-2 text-2xl font-bold text-gray-800`}
 `;
 
-const ErrorMessage = styled.div`
-  ${tw`text-gray-600 mb-8 max-w-md leading-relaxed`}
+const ErrorMessage = styled.p`
+  ${tw`mb-6 text-gray-600 max-w-md`}
 `;
 
 const ErrorDetails = styled.details`
-  ${tw`mb-8 max-w-md text-left`}
-  summary {
-    ${tw`cursor-pointer text-sm text-gray-500 hover:text-gray-700 mb-2`}
-  }
-  pre {
-    ${tw`text-xs bg-gray-100 p-3 rounded overflow-auto text-red-600`}
-    max-height: 8rem;
-  }
-`;
-
-const ButtonGroup = styled.div`
-  ${tw`flex gap-4 flex-col sm:flex-row`}
+  ${tw`mb-6 p-4 bg-gray-100 rounded-lg text-left max-w-2xl`}
 `;
 
 const Button = styled.button`
-  ${tw`px-6 py-3 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2`}
-`;
+  ${tw`inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-primary-600 border border-transparent rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors duration-200`}
 
-const RetryButton = styled(Button)`
-  ${tw`bg-primary-600 hover:bg-primary-700 text-white focus:ring-primary-500`}
+  &:disabled {
+    ${tw`opacity-50 cursor-not-allowed`}
+  }
+
   svg {
     ${tw`w-4 h-4 mr-2`}
   }
+`;
+
+const RetryButton = styled(Button)`
+  ${tw`mr-3 bg-primary-600 hover:bg-primary-700 focus:ring-primary-500`}
 `;
 
 const HomeButton = styled(Button)`
@@ -67,21 +61,22 @@ class ErrorBoundary extends React.Component {
     };
   }
 
-  static getDerivedStateFromError(error) {
+  static getDerivedStateFromError(_error) {
     return { hasError: true };
   }
 
   componentDidCatch(error, errorInfo) {
     const errorId = Date.now().toString();
 
-    // Log detalhado do erro
-    console.group(`🚨 Error Boundary [${errorId}]`);
-    console.error("Error:", error);
-    console.error("Error Info:", errorInfo);
-    console.error("Component Stack:", errorInfo.componentStack);
-    console.groupEnd();
+    // Em desenvolvimento, mostra detalhes completos
+    if (process.env.NODE_ENV === "development") {
+      console.group(`🚨 Error Boundary [${errorId}]`);
+      console.error("Error:", error);
+      console.error("Error Info:", errorInfo);
+      console.error("Component Stack:", errorInfo.componentStack);
+      console.groupEnd();
+    }
 
-    // Reportar erro para serviço de monitoramento (se configurado)
     this.reportError(error, errorInfo, errorId);
 
     this.setState({
@@ -91,25 +86,25 @@ class ErrorBoundary extends React.Component {
     });
   }
 
-  reportError = (error, errorInfo, errorId) => {
+  reportError(_error, _errorInfo, _errorId) {
     // Integração futura com Sentry, LogRocket, etc.
     if (process.env.NODE_ENV === "production") {
       // Exemplo: window.Sentry?.captureException(error, { extra: errorInfo });
     }
-  };
+  }
 
-  handleRetry = () => {
+  handleRetry() {
     this.setState({
       hasError: false,
       error: null,
       errorInfo: null,
       errorId: null,
     });
-  };
+  }
 
-  handleGoHome = () => {
+  handleGoHome() {
     window.location.href = "/";
-  };
+  }
 
   render() {
     if (this.state.hasError) {
@@ -121,36 +116,45 @@ class ErrorBoundary extends React.Component {
             <AlertTriangle />
           </ErrorIcon>
 
-          <ErrorHeading>Oops! Algo deu errado</ErrorHeading>
+          <ErrorTitle>Ops! Algo deu errado</ErrorTitle>
 
           <ErrorMessage>
-            Pedimos desculpas pelo inconveniente. Ocorreu um erro inesperado e
-            nossa equipe foi notificada automaticamente.
+            Encontramos um erro inesperado. Nossos desenvolvedores foram
+            notificados e estão trabalhando para resolver isso.
           </ErrorMessage>
 
           {isDevelopment && this.state.error && (
             <ErrorDetails>
-              <summary>Detalhes técnicos (desenvolvimento)</summary>
-              <pre>
+              <summary style={{ cursor: "pointer", fontWeight: "bold" }}>
+                Detalhes do erro (somente em desenvolvimento)
+              </summary>
+              <pre
+                style={{
+                  whiteSpace: "pre-wrap",
+                  fontSize: "12px",
+                  marginTop: "10px",
+                  color: "#dc2626",
+                }}
+              >
                 {this.state.error.toString()}
                 {this.state.errorInfo.componentStack}
               </pre>
             </ErrorDetails>
           )}
 
-          <ButtonGroup>
+          <div className="flex space-x-3">
             <RetryButton onClick={this.handleRetry}>
               <RefreshCw />
-              Tente Novamente
+              Tentar Novamente
             </RetryButton>
 
             <HomeButton onClick={this.handleGoHome}>
               <Home />
               Voltar ao Início
             </HomeButton>
-          </ButtonGroup>
+          </div>
 
-          {this.state.errorId && (
+          {isDevelopment && this.state.errorId && (
             <p className="text-xs text-gray-400 mt-4">
               ID do erro: {this.state.errorId}
             </p>
@@ -171,6 +175,7 @@ ErrorBoundary.propTypes = {
 };
 
 ErrorBoundary.defaultProps = {
+  children: null,
   fallback: null,
   onError: null,
   showDetails: process.env.NODE_ENV === "development",

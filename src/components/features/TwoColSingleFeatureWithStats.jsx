@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import tw from "twin.macro";
 import styled from "styled-components";
 import { SectionHeading } from "components/misc/Headings.jsx";
@@ -7,7 +8,7 @@ const Container = tw.div`relative`;
 const TwoColumn = tw.div`flex flex-col md:flex-row justify-between max-w-screen-xl mx-auto py-20 md:py-24`;
 const Column = tw.div`w-full max-w-md mx-auto md:max-w-none md:mx-0`;
 const ImageColumn = tw(
-  Column
+  Column,
 )`md:w-6/12 lg:w-5/12 flex-shrink-0 h-80 md:h-auto`;
 const TextColumn = styled(Column)(({ $textOnLeft }) => [
   tw`md:w-6/12 mt-8 md:mt-0`,
@@ -23,7 +24,7 @@ const Image = styled.div(({ $imageSrc }) => [
 const TextContent = tw.div`lg:py-8`;
 
 const Heading = tw(
-  SectionHeading
+  SectionHeading,
 )`text-left text-3xl sm:text-4xl lg:text-5xl text-center md:text-left leading-tight`;
 const Description = tw.p`text-center md:text-left text-sm md:text-base lg:text-lg font-medium leading-relaxed text-secondary-100 mt-4`;
 
@@ -32,7 +33,7 @@ const Statistic = tw.div`text-lg sm:text-2xl lg:text-3xl w-1/2 mt-4 lg:mt-10 tex
 const Value = tw.div`font-bold text-primary-500`;
 const Key = tw.div`font-medium text-gray-700`;
 
-export default ({
+const TwoColSingleFeatureWithStats = ({
   heading = (
     <>
       <span tw="text-primary-500">Excelência Reconhecida</span>
@@ -105,3 +106,44 @@ export default ({
     </Container>
   );
 };
+
+TwoColSingleFeatureWithStats.propTypes = {
+  heading: PropTypes.node,
+  description: PropTypes.string,
+  primaryButtonText: PropTypes.string,
+  primaryButtonUrl: PropTypes.string,
+  imageSrc: PropTypes.string,
+  buttonRounded: PropTypes.bool,
+  imageRounded: PropTypes.bool,
+  imageBorder: PropTypes.bool,
+  imageShadow: PropTypes.bool,
+  showDecoratorBlob: PropTypes.bool,
+  textOnLeft: PropTypes.bool,
+  statistics: PropTypes.arrayOf(
+    PropTypes.shape({
+      key: PropTypes.string.isRequired,
+      value: PropTypes.string.isRequired,
+    }),
+  ),
+  testimonial: PropTypes.object,
+  imageContain: PropTypes.bool,
+};
+
+TwoColSingleFeatureWithStats.defaultProps = {
+  heading: null,
+  description: "Desde 1996, a Carla Moraes Arquitetura Paisagística é referência em projetos que transformam espaços em experiências sensoriais únicas. Nossa expertise combina técnica apurada, visão estética refinada e compromisso com a sustentabilidade, criando paisagens que resistem ao tempo e valorizam significativamente seu patrimônio.",
+  primaryButtonText: "Learn More",
+  primaryButtonUrl: "https://timerse.com",
+  imageSrc: null,
+  buttonRounded: true,
+  imageRounded: true,
+  imageBorder: false,
+  imageShadow: false,
+  showDecoratorBlob: false,
+  textOnLeft: true,
+  statistics: null,
+  testimonial: null,
+  imageContain: false,
+};
+
+export default TwoColSingleFeatureWithStats;

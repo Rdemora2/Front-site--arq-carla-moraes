@@ -94,7 +94,7 @@ describe("Logger System", () => {
 
       expect(localStorageMock.setItem).toHaveBeenCalledWith(
         "app_logs",
-        expect.any(String)
+        expect.any(String),
       );
     });
 
@@ -121,7 +121,7 @@ describe("Logger System", () => {
         expect.objectContaining({
           category: "user_interaction",
           buttonId: "submit",
-        })
+        }),
       );
 
       consoleSpy.mockRestore();
@@ -148,7 +148,7 @@ describe("Logger System", () => {
         expect.objectContaining({
           category: "navigation",
           route: "/home",
-        })
+        }),
       );
 
       consoleSpy.mockRestore();
@@ -165,7 +165,7 @@ describe("Logger System", () => {
         expect.objectContaining({
           category: "feature_usage",
           feature: "dark_mode",
-        })
+        }),
       );
 
       consoleSpy.mockRestore();
@@ -250,7 +250,7 @@ describe("Logger System", () => {
             "Content-Type": "application/json",
           },
           body: expect.any(String),
-        })
+        }),
       );
     });
 
@@ -265,7 +265,7 @@ describe("Logger System", () => {
         expect.objectContaining({
           description: "Test error for analytics",
           fatal: false,
-        })
+        }),
       );
     });
 
@@ -278,7 +278,7 @@ describe("Logger System", () => {
 
       expect(warnSpy).toHaveBeenCalledWith(
         "Failed to send logs:",
-        expect.any(Error)
+        expect.any(Error),
       );
 
       warnSpy.mockRestore();
@@ -313,7 +313,7 @@ describe("Logger System", () => {
         "Failed to retrieve saved logs",
         expect.objectContaining({
           error: expect.any(String),
-        })
+        }),
       );
 
       warnSpy.mockRestore();
@@ -369,7 +369,7 @@ describe("useLogger Hook", () => {
       expect.objectContaining({
         category: "user_interaction",
         key: "value",
-      })
+      }),
     );
 
     consoleSpy.mockRestore();
@@ -407,7 +407,7 @@ describe("useLogger Hook", () => {
         url: "/api/test",
         status: 200,
         duration: 1500,
-      })
+      }),
     );
 
     logSpy.mockRestore();

@@ -18,11 +18,9 @@ const slideInUp = keyframes`
   to { transform: translateY(0); opacity: 0.99; }
 `;
 
-const pulse = keyframes`
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
-`;
+// Removido 'pulse' pois não estava sendo usado
+
+// Container principal do formulário
 
 const shake = keyframes`
   0%, 100% { transform: translateX(0); }
@@ -225,16 +223,13 @@ const ErrorIcon = () => (
 
 const ContactForm = ({
   heading = "Entre em contato conosco",
-  description = "Estamos disponíveis para responder suas dúvidas e transformar seu projeto em realidade.",
-  submitButtonText = "Enviar mensagem",
-  formAction = "#",
-  formMethod = "POST",
+  description = "Estamos aqui para transformar seus sonhos em realidade através de projetos paisagísticos únicos e personalizados.",
+  submitButtonText = "Enviar Mensagem",
   phoneNumber = "(11) 99985-4345",
   emailAddress = "arq.carlamoraes@gmail.com",
 }) => {
   const [submitStatus, setSubmitStatus] = useState(null); // 'success', 'error', null
 
-  // Configuração do formulário com validação
   const form = useFormValidation(
     {
       nome: "",
@@ -244,7 +239,6 @@ const ContactForm = ({
       privacy: false,
     },
     {
-      // Configurações específicas do formulário
       nome: {
         rules: [
           (value) => (!value?.trim() ? "Nome é obrigatório" : null),
@@ -306,7 +300,7 @@ const ContactForm = ({
             !value ? "Você deve aceitar nossa política de privacidade" : null,
         ],
       },
-    }
+    },
   );
 
   // Simular envio do formulário
@@ -321,7 +315,9 @@ const ContactForm = ({
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
       // Aqui você integraria com sua API
-      console.log("Dados do formulário:", formData);
+      if (process.env.NODE_ENV === "development") {
+        console.log("Dados do formulário:", formData);
+      }
 
       // Simular sucesso (90% das vezes)
       if (Math.random() > 0.1) {
@@ -334,7 +330,9 @@ const ContactForm = ({
         throw new Error("Erro simulado");
       }
     } catch (error) {
-      console.error("Erro ao enviar formulário:", error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("Erro ao enviar formulário:", error);
+      }
       setSubmitStatus("error");
 
       // Track evento de erro
@@ -499,15 +497,9 @@ ContactForm.propTypes = {
   heading: PropTypes.string,
   description: PropTypes.string,
   submitButtonText: PropTypes.string,
-  formAction: PropTypes.string,
-  formMethod: PropTypes.string,
-  illustrationImageSrc: PropTypes.string,
-  className: PropTypes.string,
-  onSubmitSuccess: PropTypes.func,
-  onSubmitError: PropTypes.func,
-  showIllustration: PropTypes.bool,
-  customValidation: PropTypes.object,
-  trackingEnabled: PropTypes.bool,
+  phoneNumber: PropTypes.string,
+  emailAddress: PropTypes.string,
+  // Props opcionais prefixadas com _ não precisam de PropTypes
 };
 
 ContactForm.defaultProps = {
@@ -515,11 +507,8 @@ ContactForm.defaultProps = {
   description:
     "Estamos aqui para transformar seus sonhos em realidade através de projetos paisagísticos únicos e personalizados.",
   submitButtonText: "Enviar Mensagem",
-  formAction: "https://formspree.io/f/mzzbowjl",
-  formMethod: "POST",
-  illustrationImageSrc: "/images/components/forms/email-illustration.svg",
-  showIllustration: true,
-  trackingEnabled: true,
+  phoneNumber: "(11) 99985-4345",
+  emailAddress: "arq.carlamoraes@gmail.com",
 };
 
 export default ContactForm;

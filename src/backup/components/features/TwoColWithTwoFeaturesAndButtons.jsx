@@ -31,7 +31,7 @@ const TextContent = tw.div`lg:py-8 text-center md:text-left`;
 
 const Subheading = tw(SubheadingBase)`text-center md:text-left`;
 const Heading = tw(
-  SectionHeading
+  SectionHeading,
 )`mt-4 font-black text-left text-3xl sm:text-4xl lg:text-5xl text-center md:text-left leading-tight`;
 const Description = tw.p`mt-4 text-center md:text-left text-sm md:text-base lg:text-lg font-medium leading-relaxed text-secondary-100`;
 
@@ -50,7 +50,7 @@ const FeatureHeading = tw.div`font-bold text-lg text-primary-500`;
 const FeatureDescription = tw.div`mt-1 text-sm`;
 
 const PrimaryButton = tw(
-  PrimaryButtonBase
+  PrimaryButtonBase,
 )`mt-8 md:mt-10 text-sm inline-block mx-auto md:mx-0`;
 
 export default ({

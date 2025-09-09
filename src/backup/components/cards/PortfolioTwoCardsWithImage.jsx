@@ -18,7 +18,7 @@ const HeadingColumn = styled(Column)((props) => [
   props.textOnLeft ? tw`xl:order-first` : tw`xl:order-last xl:ml-12 xl:mr-0`,
 ]);
 const CardColumn = tw(
-  Column
+  Column,
 )`w-full md:w-1/2 xl:w-3/12 mt-16 xl:mt-0 xl:last:ml-auto`;
 
 const HeadingInfoContainer = tw.div`text-center xl:text-left max-w-lg xl:max-w-none mx-auto xl:mx-0`;

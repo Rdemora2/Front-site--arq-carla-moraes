@@ -105,7 +105,7 @@ const IconContainer = styled.div`
 const Text = tw.div`ml-2 text-sm font-semibold text-gray-800`;
 
 const PrimaryButton = tw(
-  PrimaryButtonBase
+  PrimaryButtonBase,
 )`mt-auto sm:text-lg rounded-none w-full rounded sm:rounded-none sm:rounded-br-4xl py-3 sm:py-6`;
 
 const ThreeColSlider = ({ heading = <span>Projetos em Destaque</span> }) => {
@@ -133,7 +133,7 @@ const ThreeColSlider = ({ heading = <span>Projetos em Destaque</span> }) => {
         },
       ],
     }),
-    []
+    [],
   );
 
   const handlePrevClick = useCallback(
@@ -141,7 +141,7 @@ const ThreeColSlider = ({ heading = <span>Projetos em Destaque</span> }) => {
       if (sliderRef) sliderRef.slickPrev();
       e.target.blur();
     },
-    [sliderRef]
+    [sliderRef],
   );
 
   const handleNextClick = useCallback(
@@ -149,7 +149,7 @@ const ThreeColSlider = ({ heading = <span>Projetos em Destaque</span> }) => {
       if (sliderRef) sliderRef.slickNext();
       e.target.blur();
     },
-    [sliderRef]
+    [sliderRef],
   );
 
   const handleViewAllProjects = useCallback(() => {
@@ -158,7 +158,7 @@ const ThreeColSlider = ({ heading = <span>Projetos em Destaque</span> }) => {
 
   const updateTabIndex = useCallback(() => {
     const hiddenSlides = document.querySelectorAll(
-      '.slick-slide[aria-hidden="true"]'
+      ".slick-slide[aria-hidden=\"true\"]",
     );
     hiddenSlides.forEach((slide) => {
       const focusableElements = slide.querySelectorAll("a, button, [tabindex]");

@@ -175,11 +175,11 @@ export const FormInput = forwardRef(
       className,
       ...props
     },
-    ref
+    ref,
   ) => {
     const [isFocused, setIsFocused] = React.useState(false);
     const [value, setValue] = React.useState(
-      props.value || props.defaultValue || ""
+      props.value || props.defaultValue || "",
     );
 
     const hasError = Boolean(error);
@@ -267,7 +267,7 @@ export const FormInput = forwardRef(
         )}
       </InputContainer>
     );
-  }
+  },
 );
 
 FormInput.displayName = "FormInput";
@@ -289,11 +289,11 @@ export const FormTextArea = forwardRef(
       className,
       ...props
     },
-    ref
+    ref,
   ) => {
     const [isFocused, setIsFocused] = React.useState(false);
     const [value, setValue] = React.useState(
-      props.value || props.defaultValue || ""
+      props.value || props.defaultValue || "",
     );
 
     const hasError = Boolean(error);
@@ -382,7 +382,7 @@ export const FormTextArea = forwardRef(
         )}
       </InputContainer>
     );
-  }
+  },
 );
 
 FormTextArea.displayName = "FormTextArea";

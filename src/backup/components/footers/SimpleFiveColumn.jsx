@@ -13,7 +13,7 @@ const FiveColumns = tw.div`max-w-screen-xl mx-auto py-16 lg:py-20 flex flex-wrap
 
 const Column = tw.div`md:w-1/5`;
 const WideColumn = tw(
-  Column
+  Column,
 )`text-center md:text-left w-full md:w-2/5 mb-10 md:mb-0`;
 
 const ColumnHeading = tw.h5`font-bold`;

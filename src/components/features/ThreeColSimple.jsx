@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import styled from "styled-components";
 import tw from "twin.macro";
 import {
@@ -137,6 +138,33 @@ const ThreeColSimple = ({
       <DecoratorBlob />
     </Container>
   );
+};
+
+ThreeColSimple.propTypes = {
+  cards: PropTypes.arrayOf(
+    PropTypes.shape({
+      imageSrc: PropTypes.string,
+      title: PropTypes.string,
+      description: PropTypes.string,
+      url: PropTypes.string,
+    }),
+  ),
+  linkText: PropTypes.string,
+  heading: PropTypes.string,
+  subheading: PropTypes.string,
+  description: PropTypes.string,
+  imageContainerCss: PropTypes.object,
+  imageCss: PropTypes.object,
+};
+
+ThreeColSimple.defaultProps = {
+  cards: [],
+  linkText: "Saiba Mais",
+  heading: "Diferenciais que Transformam",
+  subheading: "Nossa Expertise",
+  description: "Com mais de 25 anos de experiência, combinamos visão artística e conhecimento técnico para criar paisagens atemporais que valorizam seu investimento e elevam sua qualidade de vida.",
+  imageContainerCss: null,
+  imageCss: null,
 };
 
 export default ThreeColSimple;

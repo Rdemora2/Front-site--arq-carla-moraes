@@ -26,7 +26,7 @@ export const useIntersectionObserver = (options = {}) => {
       {
         threshold,
         rootMargin,
-      }
+      },
     );
 
     observer.observe(element);
@@ -137,7 +137,7 @@ export const useThrottle = (callback, delay) => {
         callback(...args);
       }
     },
-    [callback, delay]
+    [callback, delay],
   );
 };
 
@@ -185,7 +185,7 @@ export const useCache = (key, fetcher, ttl = 300000) => {
         setIsLoading(false);
       }
     },
-    [key, fetcher, ttl]
+    [key, fetcher, ttl],
   );
 
   const invalidateCache = useCallback(() => {
@@ -250,7 +250,7 @@ export const useResourceHints = () => {
     if (type) link.type = type;
 
     const existing = document.querySelector(
-      `link[rel="preload"][href="${href}"]`
+      `link[rel="preload"][href="${href}"]`,
     );
     if (!existing) {
       document.head.appendChild(link);
@@ -263,7 +263,7 @@ export const useResourceHints = () => {
     link.href = href;
 
     const existing = document.querySelector(
-      `link[rel="prefetch"][href="${href}"]`
+      `link[rel="prefetch"][href="${href}"]`,
     );
     if (!existing) {
       document.head.appendChild(link);
@@ -277,7 +277,7 @@ export const useResourceHints = () => {
     if (crossorigin) link.crossOrigin = "anonymous";
 
     const existing = document.querySelector(
-      `link[rel="preconnect"][href="${origin}"]`
+      `link[rel="preconnect"][href="${origin}"]`,
     );
     if (!existing) {
       document.head.appendChild(link);
@@ -290,7 +290,7 @@ export const useResourceHints = () => {
     link.href = origin;
 
     const existing = document.querySelector(
-      `link[rel="dns-prefetch"][href="${origin}"]`
+      `link[rel="dns-prefetch"][href="${origin}"]`,
     );
     if (!existing) {
       document.head.appendChild(link);
@@ -312,7 +312,7 @@ export const useVirtualList = (items, itemHeight, containerHeight) => {
   const startIndex = Math.floor(scrollTop / itemHeight);
   const endIndex = Math.min(
     startIndex + Math.ceil(containerHeight / itemHeight) + 1,
-    items.length - 1
+    items.length - 1,
   );
 
   const visibleItems = useMemo(() => {
@@ -416,7 +416,7 @@ export const useMemoryCache = (maxSize = 50) => {
         cache.current.delete(oldestKey);
       }
     },
-    [maxSize]
+    [maxSize],
   );
 
   const get = useCallback((key) => {
@@ -515,7 +515,7 @@ export const usePerformanceOptimizations = (options = {}) => {
             observer.disconnect();
           }
         },
-        { rootMargin, threshold }
+        { rootMargin, threshold },
       );
 
       const currentRef = ref.current;

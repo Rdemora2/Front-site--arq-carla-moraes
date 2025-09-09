@@ -1,4 +1,5 @@
 import React, { useState, useCallback, memo } from "react";
+import PropTypes from "prop-types";
 import { motion } from "framer-motion";
 import tw from "twin.macro";
 import styled from "styled-components";
@@ -37,7 +38,7 @@ const QuestionToggleIcon = styled.span`
   }
 `;
 const Answer = motion(
-  tw.dd`pointer-events-none text-sm sm:text-base leading-relaxed`
+  tw.dd`pointer-events-none text-sm sm:text-base leading-relaxed`,
 );
 
 const SimpleWithSideImage = ({
@@ -86,7 +87,7 @@ const SimpleWithSideImage = ({
 
   const toggleQuestion = useCallback((questionIndex) => {
     setActiveQuestionIndex((prevIndex) =>
-      prevIndex === questionIndex ? null : questionIndex
+      prevIndex === questionIndex ? null : questionIndex,
     );
   }, []);
 
@@ -163,6 +164,31 @@ const SimpleWithSideImage = ({
       </Content>
     </Container>
   );
+};
+
+SimpleWithSideImage.propTypes = {
+  subheading: PropTypes.string,
+  heading: PropTypes.string,
+  description: PropTypes.string,
+  imageSrc: PropTypes.string,
+  imageContain: PropTypes.bool,
+  imageShadow: PropTypes.bool,
+  faqs: PropTypes.arrayOf(
+    PropTypes.shape({
+      question: PropTypes.string.isRequired,
+      answer: PropTypes.string.isRequired,
+    }),
+  ),
+};
+
+SimpleWithSideImage.defaultProps = {
+  subheading: "Tire suas dúvidas",
+  heading: "Perguntas Frequentes",
+  description: "Entenda melhor sobre nosso processo de trabalho e como podemos ajudar a transformar seu espaço com um projeto paisagístico exclusivo.",
+  imageSrc: "https://images.unsplash.com/photo-1493246507139-91e8fad9978e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&q=80",
+  imageContain: false,
+  imageShadow: true,
+  faqs: [],
 };
 
 export default memo(SimpleWithSideImage);

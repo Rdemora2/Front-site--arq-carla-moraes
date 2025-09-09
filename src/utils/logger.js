@@ -64,13 +64,13 @@ class Logger {
           ) {
             this.error("Resource Error", {
               tagName: event.target.tagName,
-              source: source,
+              source,
               type: "resource_error",
             });
           }
         }
       },
-      true
+      true,
     );
   }
 

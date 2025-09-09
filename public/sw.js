@@ -1,5 +1,5 @@
 // Service Worker para PWA com cache inteligente e estratégias otimizadas
-const CACHE_NAME = 'carla-moraes-v1.0.0';
+const CACHE_NAME = "carla-moraes-v1.0.0";
 const STATIC_CACHE = `${CACHE_NAME}-static`;
 const IMAGE_CACHE = `${CACHE_NAME}-images`;
 const API_CACHE = `${CACHE_NAME}-api`;
@@ -7,20 +7,20 @@ const FONT_CACHE = `${CACHE_NAME}-fonts`;
 
 // Recursos para cache imediato
 const STATIC_RESOURCES = [
-  '/',
-  '/manifest.json',
-  '/images/logo/logo_full.webp',
-  '/images/logo/logo_reduced.webp',
-  '/images/favicon/favicon.ico',
+  "/",
+  "/manifest.json",
+  "/images/logo/logo_full.webp",
+  "/images/logo/logo_reduced.webp",
+  "/images/favicon/favicon.ico",
 ];
 
 // Estratégias de cache
 const CACHE_STRATEGIES = {
-  CACHE_FIRST: 'cacheFirst',
-  NETWORK_FIRST: 'networkFirst',
-  STALE_WHILE_REVALIDATE: 'staleWhileRevalidate',
-  NETWORK_ONLY: 'networkOnly',
-  CACHE_ONLY: 'cacheOnly',
+  CACHE_FIRST: "cacheFirst",
+  NETWORK_FIRST: "networkFirst",
+  STALE_WHILE_REVALIDATE: "staleWhileRevalidate",
+  NETWORK_ONLY: "networkOnly",
+  CACHE_ONLY: "cacheOnly",
 };
 
 // Configurações por tipo de recurso
@@ -60,33 +60,33 @@ const RESOURCE_CONFIG = {
 
 // Utility functions
 const isStaticResource = (url) => {
-  return url.pathname.includes('.js') || 
-         url.pathname.includes('.css') || 
-         url.pathname.includes('.woff') ||
-         url.pathname === '/' ||
-         url.pathname.includes('.html');
+  return url.pathname.includes(".js") || 
+         url.pathname.includes(".css") || 
+         url.pathname.includes(".woff") ||
+         url.pathname === "/" ||
+         url.pathname.includes(".html");
 };
 
 const isImageResource = (url) => {
-  return url.pathname.includes('.webp') ||
-         url.pathname.includes('.jpg') ||
-         url.pathname.includes('.png') ||
-         url.pathname.includes('.svg') ||
-         url.pathname.includes('.ico');
+  return url.pathname.includes(".webp") ||
+         url.pathname.includes(".jpg") ||
+         url.pathname.includes(".png") ||
+         url.pathname.includes(".svg") ||
+         url.pathname.includes(".ico");
 };
 
 const isApiResource = (url) => {
-  return url.pathname.includes('/api/') ||
-         url.hostname.includes('formspree.io') ||
-         url.hostname.includes('analytics');
+  return url.pathname.includes("/api/") ||
+         url.hostname.includes("formspree.io") ||
+         url.hostname.includes("analytics");
 };
 
 const isFontResource = (url) => {
-  return url.pathname.includes('.woff') ||
-         url.pathname.includes('.woff2') ||
-         url.pathname.includes('.ttf') ||
-         url.hostname.includes('fonts.googleapis.com') ||
-         url.hostname.includes('fonts.gstatic.com');
+  return url.pathname.includes(".woff") ||
+         url.pathname.includes(".woff2") ||
+         url.pathname.includes(".ttf") ||
+         url.hostname.includes("fonts.googleapis.com") ||
+         url.hostname.includes("fonts.gstatic.com");
 };
 
 // Cache management
@@ -99,7 +99,7 @@ const cleanCache = async (cacheName, maxEntries, maxAge) => {
   for (const request of keys) {
     const response = await cache.match(request);
     if (response) {
-      const dateHeader = response.headers.get('date');
+      const dateHeader = response.headers.get("date");
       const date = dateHeader ? new Date(dateHeader).getTime() : 0;
       if (now - date > maxAge) {
         await cache.delete(request);
@@ -136,8 +136,8 @@ const cacheFirst = async (request, config) => {
     // Return offline fallback if available
     if (isImageResource(new URL(request.url))) {
       return new Response(
-        '<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="200" fill="#f0f0f0"/><text x="50%" y="50%" text-anchor="middle" dy=".3em" fill="#999">Offline</text></svg>',
-        { headers: { 'Content-Type': 'image/svg+xml' } }
+        "<svg width=\"200\" height=\"200\" xmlns=\"http://www.w3.org/2000/svg\"><rect width=\"200\" height=\"200\" fill=\"#f0f0f0\"/><text x=\"50%\" y=\"50%\" text-anchor=\"middle\" dy=\".3em\" fill=\"#999\">Offline</text></svg>",
+        { headers: { "Content-Type": "image/svg+xml" } },
       );
     }
     throw error;
@@ -211,21 +211,21 @@ const handleRequest = async (request) => {
 };
 
 // Service Worker Events
-self.addEventListener('install', (event) => {
-  console.log('Service Worker installing...');
+self.addEventListener("install", (event) => {
+  console.log("Service Worker installing...");
   
   event.waitUntil(
     caches.open(STATIC_CACHE)
       .then(cache => {
-        console.log('Caching static resources');
+        console.log("Caching static resources");
         return cache.addAll(STATIC_RESOURCES);
       })
-      .then(() => self.skipWaiting())
+      .then(() => self.skipWaiting()),
   );
 });
 
-self.addEventListener('activate', (event) => {
-  console.log('Service Worker activating...');
+self.addEventListener("activate", (event) => {
+  console.log("Service Worker activating...");
   
   event.waitUntil(
     caches.keys().then(cacheNames => {
@@ -233,21 +233,21 @@ self.addEventListener('activate', (event) => {
         cacheNames.map(cacheName => {
           // Delete old caches
           if (!cacheName.startsWith(CACHE_NAME)) {
-            console.log('Deleting old cache:', cacheName);
+            console.log("Deleting old cache:", cacheName);
             return caches.delete(cacheName);
           }
-        })
+        }),
       );
     }).then(() => {
-      console.log('Service Worker activated');
+      console.log("Service Worker activated");
       return self.clients.claim();
-    })
+    }),
   );
 });
 
-self.addEventListener('fetch', (event) => {
+self.addEventListener("fetch", (event) => {
   // Only handle GET requests
-  if (event.request.method !== 'GET') {
+  if (event.request.method !== "GET") {
     return;
   }
   
@@ -261,11 +261,11 @@ self.addEventListener('fetch', (event) => {
 });
 
 // Background sync for form submissions
-self.addEventListener('sync', (event) => {
-  if (event.tag === 'contact-form-sync') {
+self.addEventListener("sync", (event) => {
+  if (event.tag === "contact-form-sync") {
     event.waitUntil(
       // Handle offline form submissions
-      syncContactForm()
+      syncContactForm(),
     );
   }
 });
@@ -273,58 +273,58 @@ self.addEventListener('sync', (event) => {
 const syncContactForm = async () => {
   // Implementation for offline form submission sync
   // This would retrieve stored form data and submit when online
-  console.log('Syncing contact form submissions...');
+  console.log("Syncing contact form submissions...");
 };
 
 // Push notifications (for future use)
-self.addEventListener('push', (event) => {
+self.addEventListener("push", (event) => {
   if (event.data) {
     const data = event.data.json();
     
     const options = {
       body: data.body,
-      icon: '/images/favicon/android-chrome-192x192.png',
-      badge: '/images/favicon/android-chrome-192x192.png',
+      icon: "/images/favicon/android-chrome-192x192.png",
+      badge: "/images/favicon/android-chrome-192x192.png",
       vibrate: [200, 100, 200],
       data: {
-        url: data.url || '/',
+        url: data.url || "/",
       },
       actions: [
         {
-          action: 'open',
-          title: 'Ver',
-          icon: '/images/favicon/favicon-32x32.png'
+          action: "open",
+          title: "Ver",
+          icon: "/images/favicon/favicon-32x32.png",
         },
         {
-          action: 'close',
-          title: 'Fechar'
-        }
-      ]
+          action: "close",
+          title: "Fechar",
+        },
+      ],
     };
     
     event.waitUntil(
-      self.registration.showNotification(data.title, options)
+      self.registration.showNotification(data.title, options),
     );
   }
 });
 
-self.addEventListener('notificationclick', (event) => {
+self.addEventListener("notificationclick", (event) => {
   event.notification.close();
   
-  if (event.action === 'open') {
+  if (event.action === "open") {
     event.waitUntil(
-      clients.openWindow(event.notification.data.url)
+      clients.openWindow(event.notification.data.url),
     );
   }
 });
 
 // Performance monitoring
-self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
+self.addEventListener("message", (event) => {
+  if (event.data && event.data.type === "SKIP_WAITING") {
     self.skipWaiting();
   }
   
-  if (event.data && event.data.type === 'GET_CACHE_STATUS') {
+  if (event.data && event.data.type === "GET_CACHE_STATUS") {
     getCacheStatus().then(status => {
       event.ports[0].postMessage(status);
     });

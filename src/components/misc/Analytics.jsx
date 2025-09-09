@@ -46,7 +46,9 @@ const Analytics = () => {
       script.async = true;
       script.src = `https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsId}`;
       script.onerror = () => {
-        console.error("Erro ao carregar Google Analytics");
+        if (process.env.NODE_ENV === "development") {
+          console.error("Erro ao carregar Google Analytics");
+        }
       };
       document.head.appendChild(script);
 
@@ -66,7 +68,9 @@ const Analytics = () => {
 
       log("Google Analytics carregado com sucesso");
     } catch (error) {
-      console.error("Erro ao configurar Google Analytics:", error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("Erro ao configurar Google Analytics:", error);
+      }
     }
   }, [googleAnalyticsId, log]);
 
@@ -95,7 +99,9 @@ const Analytics = () => {
         t.async = !0;
         t.src = v;
         t.onerror = () => {
-          console.error("Erro ao carregar Facebook Pixel");
+          if (process.env.NODE_ENV === "development") {
+            console.error("Erro ao carregar Facebook Pixel");
+          }
         };
         s = b.getElementsByTagName(e)[0];
         s.parentNode.insertBefore(t, s);
@@ -103,14 +109,16 @@ const Analytics = () => {
         window,
         document,
         "script",
-        "https://connect.facebook.net/en_US/fbevents.js"
+        "https://connect.facebook.net/en_US/fbevents.js",
       );
 
       window.fbq("init", facebookPixelId);
       window.fbq("track", "PageView");
       log("Facebook Pixel carregado com sucesso");
     } catch (error) {
-      console.error("Erro ao configurar Facebook Pixel:", error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("Erro ao configurar Facebook Pixel:", error);
+      }
     }
   }, [facebookPixelId, log]);
 
@@ -162,7 +170,9 @@ const Analytics = () => {
 
       log("Métricas de performance enviadas para Analytics");
     } catch (error) {
-      console.error("Erro ao enviar métricas de performance:", error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("Erro ao enviar métricas de performance:", error);
+      }
     }
   }, [
     performanceScore,
@@ -257,14 +267,14 @@ export const trackEvent = (
   action,
   category = "engagement",
   label = "",
-  value = 0
+  value = 0,
 ) => {
   try {
     if (window.gtag) {
       window.gtag("event", action, {
         event_category: category,
         event_label: label,
-        value: value,
+        value,
       });
     }
 
@@ -277,7 +287,9 @@ export const trackEvent = (
       });
     }
   } catch (error) {
-    console.error("Erro ao rastrear evento:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("Erro ao rastrear evento:", error);
+    }
   }
 };
 
@@ -294,7 +306,9 @@ export const trackPageView = (page_title, page_location) => {
       window.fbq("track", "PageView");
     }
   } catch (error) {
-    console.error("Erro ao rastrear page view:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("Erro ao rastrear page view:", error);
+    }
   }
 };
 
@@ -309,21 +323,23 @@ export const trackConversion = (conversionData = {}) => {
     if (window.gtag) {
       window.gtag("event", "purchase", {
         transaction_id: conversionData.transaction_id,
-        value: value,
-        currency: currency,
+        value,
+        currency,
         items: conversionData.items || [],
       });
     }
 
     if (window.fbq) {
       window.fbq("track", "Purchase", {
-        value: value,
-        currency: currency,
+        value,
+        currency,
         ...conversionData,
       });
     }
   } catch (error) {
-    console.error("Erro ao rastrear conversão:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("Erro ao rastrear conversão:", error);
+    }
   }
 };
 
@@ -351,7 +367,9 @@ export function exportLighthouseReport() {
 
     return data;
   } catch (error) {
-    console.error("Erro ao exportar relatório do Lighthouse:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("Erro ao exportar relatório do Lighthouse:", error);
+    }
     return null;
   }
 }
