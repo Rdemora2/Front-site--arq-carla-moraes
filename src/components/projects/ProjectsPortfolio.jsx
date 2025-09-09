@@ -6,7 +6,10 @@ import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
 import { SectionHeading } from "components/misc/Headings";
 import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons";
-import { getProjectsByFilter, getDynamicFilterOptions } from "../../data/projectsData";
+import {
+  getProjectsByFilter,
+  getDynamicFilterOptions,
+} from "../../data/projectsData";
 import {
   MapPin as LocationIcon,
   Calendar as CalendarIcon,
@@ -83,6 +86,11 @@ const ClientTypeBadge = styled.div.withConfig({
 const ProjectInfo = styled.div`
   ${tw`p-6 flex flex-col`}
   min-height: 280px; /* Altura mínima fixa para uniformizar os cards */
+
+  /* Remove hovers específicos dos textos internos */
+  * {
+    pointer-events: none;
+  }
 `;
 const ProjectTitle = styled.h3`
   ${tw`text-xl font-bold text-gray-800 mb-3 leading-tight`}
@@ -102,6 +110,7 @@ const DetailIcon = tw.div`mr-2 text-green-600`;
 const ViewProjectButton = styled(PrimaryButtonBase)`
   ${tw`w-full text-sm transition-colors duration-300 mt-auto flex items-center justify-center`}
   background-color: #6b7959;
+  pointer-events: auto; /* Re-habilita eventos para o botão */
 
   &:hover {
     background-color: #3e4d2c;

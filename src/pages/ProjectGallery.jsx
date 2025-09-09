@@ -58,19 +58,11 @@ const GalleryImageContainer = styled(motion.div)`
 
 const GalleryImage = styled.img`
   ${tw`w-full h-full object-cover transition-transform duration-300`}
-
-  .group:hover & {
-    transform: scale(1.05);
-  }
 `;
 
 const ImageOverlay = styled(motion.div)`
   ${tw`absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300`}
   background: rgba(0, 0, 0, 0.4);
-
-  .group:hover & {
-    opacity: 1;
-  }
 `;
 
 const ExpandButton = styled.div`
