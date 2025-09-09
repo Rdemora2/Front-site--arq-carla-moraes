@@ -38,8 +38,37 @@ const Image = styled.div((props) => [
 const ControlContainer = tw.div`absolute bottom-0 right-0 bg-gray-100 px-6 py-4 rounded-tl-3xl border`;
 const ControlButton = styled(PrimaryButton)`
   ${tw`mx-3 rounded-full text-gray-100 p-2`}
+  transition: transform 0.3s ease;
+
   svg {
     ${tw`w-5 h-5`}
+    transition: all 0.3s ease;
+    pointer-events: none;
+    background: transparent !important;
+  }
+
+  &:hover svg,
+  &:focus svg,
+  &:active svg {
+    transform: none;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &:focus {
+    transform: scale(1.05);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &:focus:not(:focus-visible) {
+    transform: none;
   }
 `;
 
@@ -99,13 +128,21 @@ const TwoColumnWithImageAndProfilePictureReview = ({
   const [imageSliderRef, setImageSliderRef] = useState(null);
   const [textSliderRef, setTextSliderRef] = useState(null);
 
-  const handlePrevClick = useCallback(() => {
-    if (imageSliderRef) imageSliderRef.slickPrev();
-  }, [imageSliderRef]);
+  const handlePrevClick = useCallback(
+    (e) => {
+      if (imageSliderRef) imageSliderRef.slickPrev();
+      e.target.blur();
+    },
+    [imageSliderRef]
+  );
 
-  const handleNextClick = useCallback(() => {
-    if (imageSliderRef) imageSliderRef.slickNext();
-  }, [imageSliderRef]);
+  const handleNextClick = useCallback(
+    (e) => {
+      if (imageSliderRef) imageSliderRef.slickNext();
+      e.target.blur();
+    },
+    [imageSliderRef]
+  );
 
   return (
     <Container>

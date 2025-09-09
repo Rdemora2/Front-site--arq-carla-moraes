@@ -72,7 +72,9 @@ const ProjectImage = styled.img`
   }
 `;
 
-const ClientTypeBadge = styled.div`
+const ClientTypeBadge = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "clientType",
+})`
   ${tw`absolute top-0 left-0 m-4 px-3 py-1 rounded-full text-xs font-bold text-white`}
   background-color: ${(props) =>
     props.clientType === "residencial" ? "#6b7959" : "#a99960"};
@@ -155,6 +157,7 @@ const ControlButton = styled.button`
   }
 `;
 
+/* eslint-disable react/prop-types */
 const ProjectsPortfolio = ({
   subheading = "Portfólio Exclusivo",
   heading = "Projetos Paisagísticos que Transformam Espaços",
@@ -190,7 +193,7 @@ const ProjectsPortfolio = ({
     (project) => {
       navigate(`/projetos/${project.id}/galeria`);
     },
-    [navigate]
+    [navigate],
   );
 
   return (
@@ -227,7 +230,7 @@ const ProjectsPortfolio = ({
           </FiltersRow>
 
           <ProjectsGrid>
-            <AnimatePresence mode="wait">
+            <AnimatePresence>
               {filteredProjects.map((project, index) => (
                 <ProjectCard
                   key={`project-${project.id}`}
@@ -275,12 +278,6 @@ const ProjectsPortfolio = ({
                         </DetailIcon>
                         {project.year}
                       </DetailItem>
-                      <DetailItem>
-                        <DetailIcon>
-                          <ClientTypeIcon size={14} />
-                        </DetailIcon>
-                        {project.area}
-                      </DetailItem>
                     </ProjectDetails>
 
                     <ViewProjectButton>
@@ -297,21 +294,4 @@ const ProjectsPortfolio = ({
     </Container>
   );
 };
-ProjectsPortfolio.propTypes = {
-  subheading: PropTypes.string,
-  heading: PropTypes.string,
-  description: PropTypes.string,
-  currentFilter: PropTypes.string,
-  onFilterChange: PropTypes.func,
-};
-
-ProjectsPortfolio.defaultProps = {
-  subheading: "Portfólio Exclusivo",
-  heading: "Projetos Paisagísticos que Transformam Espaços",
-  description:
-    "Mais de 25 anos criando jardins únicos que harmonizam arquitetura e natureza. Cada projeto reflete nossa expertise em paisagismo sustentável, desde residências de alto padrão até ambientes corporativos inovadores. Descubra como podemos transformar seu espaço.",
-  currentFilter: "todos",
-  onFilterChange: null,
-};
-
 export default memo(ProjectsPortfolio);

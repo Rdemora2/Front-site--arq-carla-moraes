@@ -172,9 +172,8 @@ const Actions = styled.div`
 const FullWidthWithImageComponent = ({
   navLinks = [
     <NavLinks key={1}>
-      <NavLink href="/sobre-nos">Sobre</NavLink>
+      <NavLink href="/sobre-nos">Sobre Nós</NavLink>
       <NavLink href="/projetos">Projetos</NavLink>
-      <NavLink href="#">Serviços</NavLink>
       <NavLink href="/contato">Contato</NavLink>
     </NavLinks>,
   ],
@@ -189,7 +188,7 @@ const FullWidthWithImageComponent = ({
   description = "Há mais de 25 anos criando projetos paisagísticos exclusivos que harmonizam arquitetura e natureza. Do conceito à execução, trazemos beleza e propósito para cada ambiente.",
   primaryActionUrl = "/contato",
   primaryActionText = "Solicite um Orçamento",
-  secondaryActionUrl = "#",
+  secondaryActionUrl = "/projetos",
   secondaryActionText = "Nossos Projetos",
 }) => {
   useEffect(() => {

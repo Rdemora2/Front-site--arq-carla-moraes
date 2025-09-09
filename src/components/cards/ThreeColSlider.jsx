@@ -8,9 +8,7 @@ import { SectionHeading } from "components/misc/Headings";
 import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons";
 import { getFeaturedProjects } from "../../data/projectsData";
 import {
-  DollarSign as PriceIcon,
   MapPin as LocationIcon,
-  Star as StarIcon,
   ChevronLeft as ChevronLeftIcon,
   ChevronRight as ChevronRightIcon,
 } from "react-feather";
@@ -23,8 +21,37 @@ const Heading = tw(SectionHeading)``;
 const Controls = tw.div`flex items-center`;
 const ControlButton = styled(PrimaryButtonBase)`
   ${tw`mt-4 sm:mt-0 first:ml-0 ml-6 rounded-full p-2`}
+  transition: transform 0.3s ease;
+
   svg {
     ${tw`w-6 h-6`}
+    transition: all 0.3s ease;
+    pointer-events: none;
+    background: transparent !important;
+  }
+
+  &:hover svg,
+  &:focus svg,
+  &:active svg {
+    transform: none;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &:focus {
+    transform: scale(1.05);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &:focus:not(:focus-visible) {
+    transform: none;
   }
 `;
 const PrevButton = tw(ControlButton)``;
@@ -47,17 +74,25 @@ const CardImage = styled.div((props) => [
 
 const TextInfo = tw.div`py-6 sm:px-10 sm:py-6`;
 const TitleReviewContainer = tw.div`flex flex-col sm:flex-row sm:justify-between sm:items-center`;
-const Title = tw.h5`text-2xl font-bold`;
-
-const RatingsInfo = styled.div`
-  ${tw`flex items-center sm:ml-4 mt-2 sm:mt-0`}
-  svg {
-    ${tw`w-6 h-6 text-yellow-500 fill-current`}
-  }
+const Title = styled.h5`
+  ${tw`text-2xl font-bold leading-tight`}
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  height: 3.6rem; /* Altura fixa para 2 linhas */
+  line-height: 1.8rem;
 `;
-const Rating = tw.span`ml-2 font-bold`;
 
-const Description = tw.p`text-sm leading-loose mt-2 sm:mt-4`;
+const Description = styled.p`
+  ${tw`text-sm leading-loose mt-2 sm:mt-4`}
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  height: 4.5rem; /* Altura fixa para 3 linhas */
+  line-height: 1.5rem;
+`;
 
 const SecondaryInfoContainer = tw.div`flex flex-col sm:flex-row mt-2 sm:mt-4`;
 const IconWithText = tw.div`flex items-center mr-6 my-2 sm:my-0`;
@@ -101,13 +136,21 @@ const ThreeColSlider = ({ heading = <span>Projetos em Destaque</span> }) => {
     []
   );
 
-  const handlePrevClick = useCallback(() => {
-    if (sliderRef) sliderRef.slickPrev();
-  }, [sliderRef]);
+  const handlePrevClick = useCallback(
+    (e) => {
+      if (sliderRef) sliderRef.slickPrev();
+      e.target.blur();
+    },
+    [sliderRef]
+  );
 
-  const handleNextClick = useCallback(() => {
-    if (sliderRef) sliderRef.slickNext();
-  }, [sliderRef]);
+  const handleNextClick = useCallback(
+    (e) => {
+      if (sliderRef) sliderRef.slickNext();
+      e.target.blur();
+    },
+    [sliderRef]
+  );
 
   const handleViewAllProjects = useCallback(() => {
     navigate("/projetos");
@@ -170,10 +213,6 @@ const ThreeColSlider = ({ heading = <span>Projetos em Destaque</span> }) => {
               <TextInfo>
                 <TitleReviewContainer>
                   <Title>{project.title}</Title>
-                  <RatingsInfo>
-                    <StarIcon aria-hidden="true" />
-                    <Rating>5.0</Rating>
-                  </RatingsInfo>
                 </TitleReviewContainer>
                 <SecondaryInfoContainer>
                   <IconWithText>
@@ -181,12 +220,6 @@ const ThreeColSlider = ({ heading = <span>Projetos em Destaque</span> }) => {
                       <LocationIcon />
                     </IconContainer>
                     <Text>{project.location}</Text>
-                  </IconWithText>
-                  <IconWithText>
-                    <IconContainer aria-hidden="true">
-                      <PriceIcon />
-                    </IconContainer>
-                    <Text>{project.area}</Text>
                   </IconWithText>
                 </SecondaryInfoContainer>
                 <Description>{project.description}</Description>

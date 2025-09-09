@@ -16,8 +16,8 @@ const Projects = () => {
   useEffect(() => {
     if (typeof preloadCriticalImages === "function") {
       preloadCriticalImages([
-        "/images/projects/Jardim-frances/frances-hero.webp",
-        "/images/projects/Jardim-tropical/tropical-hero.webp",
+        "/images/components/hero/Frances-hero.webp",
+        "/images/components/hero/Modern-hero.webp",
       ]);
     }
   }, [preloadCriticalImages]);
@@ -31,7 +31,7 @@ const Projects = () => {
       <MetaTags
         title="Projetos de Paisagismo | Portfólio Carla Moraes Arquitetura Paisagística"
         description="Conheça nosso portfólio premium de projetos paisagísticos em São Paulo. Jardins residenciais de alto padrão, ambientes corporativos sustentáveis e design biofílico. +25 anos de experiência em arquitetura paisagística."
-        imageUrl="/images/projects/Jardim-frances/frances-hero.webp"
+        imageUrl="/images/components/hero/Frances-hero.webp"
         keywords="projetos paisagísticos São Paulo, jardins residenciais alto padrão, paisagismo corporativo, arquitetura paisagística, design biofílico, jardins sustentáveis, Carla Moraes paisagista"
       />
       
