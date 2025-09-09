@@ -22,8 +22,8 @@ const Column = styled.div`
   ${tw`lg:w-1/3 max-w-xs`}
 `;
 
-const Card = styled.a`
-  ${tw`flex flex-col items-center text-center h-full mx-4 px-4 py-8 rounded transition-transform duration-300 hover:cursor-pointer transform hover:scale-105 `}
+const Card = styled.div`
+  ${tw`flex flex-col items-center text-center h-full mx-4 px-4 py-8 rounded`}
   .imageContainer {
     ${tw`text-center rounded-full p-4`}
     background-color: #3e4d2c;
@@ -107,7 +107,7 @@ const ThreeColSimple = ({
         <ThreeColumnContainer>
           {cards.map((card, i) => (
             <Column key={i}>
-              <Card href={card.url || `#card-${i}`}>
+              <Card>
                 <span className="imageContainer" css={imageContainerCss}>
                   <img
                     src={typeof card.imageSrc === "string" ? card.imageSrc : ""}

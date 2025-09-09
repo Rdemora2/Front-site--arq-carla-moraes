@@ -43,7 +43,7 @@ const Home = () => {
 
       {/* Componentes principais carregados diretamente */}
       <MainFeature />
-      <Features />
+      <Features linkText="" />
 
       {/* Componentes secundários com Suspense */}
       <Suspense fallback={<ComponentLoadingSpinner />}>
