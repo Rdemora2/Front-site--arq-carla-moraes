@@ -15,15 +15,43 @@ import {
   ChevronRight as ChevronRightIcon,
 } from "react-feather";
 
-const Container = tw.div`relative py-16 lg:py-24`;
+const Container = tw.div`relative py-8 lg:py-12`;
 const ContentWithPaddingXl = tw.div`max-w-screen-xl mx-auto px-4 lg:px-8`;
 
-const HeaderContainer = tw.div`text-center mb-16`;
-const SubheadingStyled = tw.div`text-center text-green-600 mb-4 text-sm uppercase tracking-widest font-bold`;
+const HeaderContainer = tw.div`text-center mb-12`;
+const SubheadingStyled = tw.div`text-center text-green-600 mb-3 text-sm uppercase tracking-widest font-bold`;
 const Heading = tw(SectionHeading)`text-center text-gray-800`;
-const Description = tw.p`text-center max-w-4xl mx-auto mt-6 text-gray-700 leading-relaxed text-lg`;
+const Description = tw.p`text-center max-w-4xl mx-auto mt-4 text-gray-700 leading-relaxed text-base lg:text-lg`;
 
-const ProjectsGrid = tw.div`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16`;
+const ContentSection = tw.div`mt-8`;
+const FiltersRow = tw.div`flex justify-end mb-6`;
+const FiltersContainer = tw.div`flex items-center gap-2`;
+const FilterButton = styled(motion.button)`
+  ${tw`px-3 py-1 rounded-full text-xs font-medium transition-all duration-300 border border-transparent relative`}
+
+  ${(props) =>
+    props.active
+      ? `
+        background-color: var(--color-primary);
+        color: white;
+        box-shadow: 0 2px 8px rgba(107, 121, 89, 0.2);
+      `
+      : `
+        background-color: rgba(145, 160, 130, 0.1);
+        color: var(--color-primary-text);
+        border-color: rgba(107, 121, 89, 0.2);
+        
+        &:hover {
+          background-color: rgba(107, 121, 89, 0.1);
+          border-color: var(--color-primary);
+          transform: translateY(-1px);
+          box-shadow: 0 2px 12px rgba(107, 121, 89, 0.15);
+        }
+      `}
+`;
+const FilterCount = tw.span`ml-1 text-xs opacity-75`;
+
+const ProjectsGrid = tw.div`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8`;
 
 const ProjectCard = styled(motion.div)`
   ${tw`bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer border border-gray-100`}
@@ -243,10 +271,17 @@ const ProjectsPortfolio = ({
   heading = "Projetos Paisagísticos que Transformam Espaços",
   description = "Mais de 25 anos criando jardins únicos que harmonizam arquitetura e natureza. Cada projeto reflete nossa expertise em paisagismo sustentável, desde residências de alto padrão até ambientes corporativos inovadores. Descubra como podemos transformar seu espaço.",
   currentFilter = "todos",
+  onFilterChange,
 }) => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [viewingImage, setViewingImage] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const filters = [
+    { key: "todos", label: "Todos", count: 6 },
+    { key: "residencial", label: "Residencial", count: 3 },
+    { key: "corporativo", label: "Corporativo", count: 3 },
+  ];
 
   const filteredProjects = useMemo(() => {
     return projectsData.filter(
@@ -254,6 +289,12 @@ const ProjectsPortfolio = ({
         currentFilter === "todos" || project.clientType === currentFilter
     );
   }, [currentFilter]);
+
+  const handleFilterChange = (filterKey) => {
+    if (onFilterChange) {
+      onFilterChange(filterKey);
+    }
+  };
 
   const openProjectModal = useCallback((project) => {
     setSelectedProject(project);
@@ -302,70 +343,97 @@ const ProjectsPortfolio = ({
           <Description>{description}</Description>
         </HeaderContainer>
 
-        <ProjectsGrid>
-          <AnimatePresence mode="wait">
-            {filteredProjects.map((project, index) => (
-              <ProjectCard
-                key={`project-${project.id}`}
-                layout
-                onClick={() => openProjectModal(project)}
-                initial={{ opacity: 0, y: 20, scale: 0.9 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -20, scale: 0.9 }}
-                transition={{
-                  duration: 0.3,
-                  delay: index * 0.05,
-                  ease: "easeOut",
-                }}
-                whileHover={{ y: -8, scale: 1.02 }}
-              >
-                <ProjectImageContainer>
-                  <ProjectImage
-                    src={project.featuredImage}
-                    alt={project.title}
-                    loading="lazy"
-                  />
-                  <ClientTypeBadge clientType={project.clientType}>
-                    {project.clientType === "residencial"
-                      ? "Residencial"
-                      : "Corporativo"}
-                  </ClientTypeBadge>
-                </ProjectImageContainer>
+        <ContentSection>
+          <FiltersRow>
+            <FiltersContainer>
+              {filters.map((filter) => (
+                <FilterButton
+                  key={`filter-${filter.key}`}
+                  active={currentFilter === filter.key}
+                  onClick={() => handleFilterChange(filter.key)}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    duration: 0.2,
+                    delay: filters.indexOf(filter) * 0.05,
+                  }}
+                >
+                  {filter.label}
+                  <FilterCount>({filter.count})</FilterCount>
+                </FilterButton>
+              ))}
+            </FiltersContainer>
+          </FiltersRow>
 
-                <ProjectInfo>
-                  <ProjectTitle>{project.title}</ProjectTitle>
-                  <ProjectDescription>{project.description}</ProjectDescription>
+          <ProjectsGrid>
+            <AnimatePresence mode="wait">
+              {filteredProjects.map((project, index) => (
+                <ProjectCard
+                  key={`project-${project.id}`}
+                  layout
+                  onClick={() => openProjectModal(project)}
+                  initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -20, scale: 0.9 }}
+                  transition={{
+                    duration: 0.3,
+                    delay: index * 0.05,
+                    ease: "easeOut",
+                  }}
+                  whileHover={{ y: -8, scale: 1.02 }}
+                >
+                  <ProjectImageContainer>
+                    <ProjectImage
+                      src={project.featuredImage}
+                      alt={project.title}
+                      loading="lazy"
+                    />
+                    <ClientTypeBadge clientType={project.clientType}>
+                      {project.clientType === "residencial"
+                        ? "Residencial"
+                        : "Corporativo"}
+                    </ClientTypeBadge>
+                  </ProjectImageContainer>
 
-                  <ProjectDetails>
-                    <DetailItem>
-                      <DetailIcon>
-                        <LocationIcon size={14} />
-                      </DetailIcon>
-                      {project.location}
-                    </DetailItem>
-                    <DetailItem>
-                      <DetailIcon>
-                        <CalendarIcon size={14} />
-                      </DetailIcon>
-                      {project.year}
-                    </DetailItem>
-                    <DetailItem>
-                      <DetailIcon>
-                        <ClientTypeIcon size={14} />
-                      </DetailIcon>
-                      {project.area}
-                    </DetailItem>
-                  </ProjectDetails>
+                  <ProjectInfo>
+                    <ProjectTitle>{project.title}</ProjectTitle>
+                    <ProjectDescription>
+                      {project.description}
+                    </ProjectDescription>
 
-                  <ViewProjectButton>
-                    <GalleryIcon size={16} style={{ marginRight: "8px" }} />
-                    Explorar Galeria Completa
-                  </ViewProjectButton>
-                </ProjectInfo>
-              </ProjectCard>
-            ))}
-          </AnimatePresence>
-        </ProjectsGrid>
+                    <ProjectDetails>
+                      <DetailItem>
+                        <DetailIcon>
+                          <LocationIcon size={14} />
+                        </DetailIcon>
+                        {project.location}
+                      </DetailItem>
+                      <DetailItem>
+                        <DetailIcon>
+                          <CalendarIcon size={14} />
+                        </DetailIcon>
+                        {project.year}
+                      </DetailItem>
+                      <DetailItem>
+                        <DetailIcon>
+                          <ClientTypeIcon size={14} />
+                        </DetailIcon>
+                        {project.area}
+                      </DetailItem>
+                    </ProjectDetails>
+
+                    <ViewProjectButton>
+                      <GalleryIcon size={16} style={{ marginRight: "8px" }} />
+                      Explorar Galeria Completa
+                    </ViewProjectButton>
+                  </ProjectInfo>
+                </ProjectCard>
+              ))}
+            </AnimatePresence>
+          </ProjectsGrid>
+        </ContentSection>
 
         {/* Modal do Projeto */}
         <AnimatePresence>
@@ -479,6 +547,7 @@ ProjectsPortfolio.propTypes = {
   heading: PropTypes.string,
   description: PropTypes.string,
   currentFilter: PropTypes.string,
+  onFilterChange: PropTypes.func,
 };
 
 ProjectsPortfolio.defaultProps = {
@@ -487,6 +556,7 @@ ProjectsPortfolio.defaultProps = {
   description:
     "Mais de 25 anos criando jardins únicos que harmonizam arquitetura e natureza. Cada projeto reflete nossa expertise em paisagismo sustentável, desde residências de alto padrão até ambientes corporativos inovadores. Descubra como podemos transformar seu espaço.",
   currentFilter: "todos",
+  onFilterChange: null,
 };
 
 export default memo(ProjectsPortfolio);

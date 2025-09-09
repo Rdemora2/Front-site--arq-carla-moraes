@@ -3,32 +3,60 @@ import PropTypes from "prop-types";
 import tw from "twin.macro";
 import styled from "styled-components";
 import { motion } from "framer-motion";
-import { SectionHeading } from "components/misc/Headings";
 
-const Container = tw.div`relative py-12 bg-gray-100`;
+const Container = tw.div`relative py-6 bg-transparent`;
 const ContentWithPaddingXl = tw.div`max-w-screen-xl mx-auto px-4 lg:px-8`;
 
-const HeaderContainer = tw.div`text-center mb-12`;
-const Heading = tw(SectionHeading)`text-center text-2xl mb-6 text-gray-800`;
+const FilterRow = tw.div`flex items-center justify-center gap-6 mb-8`;
+const FilterLabel = tw.span`text-sm font-medium text-gray-600 hidden sm:block`;
 
-const FiltersContainer = tw.div`flex flex-wrap justify-center gap-4`;
+const FiltersContainer = tw.div`flex flex-wrap justify-center gap-2 sm:gap-3`;
 
 const FilterButton = styled(motion.button)`
-  ${tw`px-8 py-4 rounded-full font-semibold text-sm transition-all duration-300 border-2 shadow-md`}
+  ${tw`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 border border-transparent relative overflow-hidden`}
 
   ${(props) =>
     props.active
-      ? `${tw`text-white shadow-lg`} background-color: var(--color-primary); border-color: var(--color-primary);`
-      : `${tw`bg-white text-gray-700 hover:text-white hover:shadow-lg`} border-color: var(--color-primary); &:hover { background-color: var(--color-primary); }`}
+      ? `
+        background-color: var(--color-primary);
+        color: white;
+        box-shadow: 0 2px 8px rgba(107, 121, 89, 0.2);
+      `
+      : `
+        background-color: rgba(145, 160, 130, 0.1);
+        color: var(--color-primary-text);
+        border-color: rgba(107, 121, 89, 0.2);
+        
+        &:hover {
+          background-color: rgba(107, 121, 89, 0.1);
+          border-color: var(--color-primary);
+          transform: translateY(-1px);
+          box-shadow: 0 2px 12px rgba(107, 121, 89, 0.15);
+        }
+      `}
+  
+  &:active {
+    transform: translateY(0);
+  }
 `;
 
-const FilterCount = tw.span`ml-2 text-xs opacity-75`;
+const FilterCount = styled.span`
+  ${tw`ml-2 text-xs opacity-75`}
+  ${(props) => (props.active ? `opacity: 0.9;` : `opacity: 0.6;`)}
+`;
 
-const ProjectsFilter = ({
-  heading = "Explore Nossos Projetos por Categoria",
-  onFilterChange,
-  activeFilter = "todos",
-}) => {
+const ActiveIndicator = styled(motion.div)`
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  width: 20px;
+  height: 2px;
+  background-color: var(--color-primary);
+  border-radius: 1px;
+  transform: translateX(-50%);
+`;
+
+const ProjectsFilter = ({ onFilterChange, activeFilter = "todos" }) => {
   const [selectedFilter, setSelectedFilter] = useState(activeFilter);
 
   useEffect(() => {
@@ -38,9 +66,9 @@ const ProjectsFilter = ({
   }, [activeFilter, selectedFilter]);
 
   const filters = [
-    { key: "todos", label: "Todos os Projetos", count: 6 },
-    { key: "residencial", label: "Paisagismo Residencial", count: 3 },
-    { key: "corporativo", label: "Projetos Corporativos", count: 3 },
+    { key: "todos", label: "Todos", count: 6 },
+    { key: "residencial", label: "Residencial", count: 3 },
+    { key: "corporativo", label: "Corporativo", count: 3 },
   ];
 
   const handleFilterClick = (filterKey) => {
@@ -55,40 +83,48 @@ const ProjectsFilter = ({
   return (
     <Container>
       <ContentWithPaddingXl>
-        <HeaderContainer>
-          <Heading>{heading}</Heading>
-        </HeaderContainer>
-
-        <FiltersContainer>
-          {filters.map((filter) => (
-            <FilterButton
-              key={filter.key}
-              active={selectedFilter === filter.key}
-              onClick={() => handleFilterClick(filter.key)}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              {filter.label}
-              <FilterCount>({filter.count})</FilterCount>
-            </FilterButton>
-          ))}
-        </FiltersContainer>
+        <FilterRow>
+          <FilterLabel>Filtrar por:</FilterLabel>
+          <FiltersContainer>
+            {filters.map((filter) => (
+              <FilterButton
+                key={`filter-${filter.key}`}
+                active={selectedFilter === filter.key}
+                onClick={() => handleFilterClick(filter.key)}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.2,
+                  delay: filters.indexOf(filter) * 0.05,
+                }}
+              >
+                {filter.label}
+                <FilterCount active={selectedFilter === filter.key}>
+                  ({filter.count})
+                </FilterCount>
+                {selectedFilter === filter.key && (
+                  <ActiveIndicator
+                    layoutId="activeIndicator"
+                    transition={{ type: "spring", damping: 20, stiffness: 300 }}
+                  />
+                )}
+              </FilterButton>
+            ))}
+          </FiltersContainer>
+        </FilterRow>
       </ContentWithPaddingXl>
     </Container>
   );
 };
 
 ProjectsFilter.propTypes = {
-  heading: PropTypes.string,
   onFilterChange: PropTypes.func,
   activeFilter: PropTypes.string,
 };
 
 ProjectsFilter.defaultProps = {
-  heading: "Explore Nossos Projetos por Categoria",
   onFilterChange: null,
   activeFilter: "todos",
 };

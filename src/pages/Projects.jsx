@@ -8,7 +8,6 @@ import Header from "components/navbar/navbar.jsx";
 import Footer from "components/footers/FiveColumnWithInputForm.jsx";
 
 const ProjectsPortfolio = lazy(() => import("components/projects/ProjectsPortfolio.jsx"));
-const ProjectsFilter = lazy(() => import("components/projects/ProjectsFilter.jsx"));
 
 const Projects = () => {
   const { preloadCriticalImages } = usePerformanceOptimizations();
@@ -38,18 +37,11 @@ const Projects = () => {
       
       <Header />
 
-      {/* Filtros de projetos com Suspense */}
-      <Suspense fallback={<ComponentLoadingSpinner />}>
-        <ProjectsFilter 
-          activeFilter={activeFilter}
-          onFilterChange={handleFilterChange}
-        />
-      </Suspense>
-
-      {/* Portfolio principal com Suspense */}
+      {/* Portfolio principal com filtros integrados */}
       <Suspense fallback={<ComponentLoadingSpinner />}>
         <ProjectsPortfolio 
           currentFilter={activeFilter}
+          onFilterChange={handleFilterChange}
         />
       </Suspense>
 
