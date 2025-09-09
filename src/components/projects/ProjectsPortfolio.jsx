@@ -99,7 +99,7 @@ const DetailItem = tw.div`flex items-center`;
 const DetailIcon = tw.div`mr-2 text-green-600`;
 
 const ViewProjectButton = styled(PrimaryButtonBase)`
-  ${tw`w-full text-sm transition-colors duration-300 mt-auto`}
+  ${tw`w-full text-sm transition-colors duration-300 mt-auto flex items-center justify-center`}
   background-color: #6b7959;
 
   &:hover {
@@ -297,7 +297,7 @@ const ProjectsPortfolio = ({
   const filteredProjects = useMemo(() => {
     return projectsData.filter(
       (project) =>
-        currentFilter === "todos" || project.clientType === currentFilter
+        currentFilter === "todos" || project.clientType === currentFilter,
     );
   }, [currentFilter]);
 
