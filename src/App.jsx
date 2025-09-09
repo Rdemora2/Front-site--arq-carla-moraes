@@ -19,6 +19,9 @@ const AboutUs = () => (
 const Projects = () => (
   <LazyComponentWrapper importFn={() => import("./pages/Projects")} />
 );
+const ProjectGallery = () => (
+  <LazyComponentWrapper importFn={() => import("./pages/ProjectGallery")} />
+);
 const ContactUs = () => (
   <LazyComponentWrapper importFn={() => import("./pages/ContactUs")} />
 );
@@ -88,6 +91,11 @@ const router = createBrowserRouter(
     {
       path: "/projetos",
       element: createRouteElement(Projects),
+      errorElement: <ErrorBoundary />,
+    },
+    {
+      path: "/projetos/:projectId/galeria",
+      element: createRouteElement(ProjectGallery),
       errorElement: <ErrorBoundary />,
     },
     {

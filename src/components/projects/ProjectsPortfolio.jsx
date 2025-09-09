@@ -1,4 +1,5 @@
-import React, { useState, useCallback, memo, useMemo } from "react";
+import React, { useCallback, memo, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import tw from "twin.macro";
 import styled from "styled-components";
@@ -10,9 +11,6 @@ import {
   Calendar as CalendarIcon,
   User as ClientTypeIcon,
   Image as GalleryIcon,
-  X as CloseIcon,
-  ChevronLeft as ChevronLeftIcon,
-  ChevronRight as ChevronRightIcon,
 } from "react-feather";
 
 const Container = tw.div`relative py-8 lg:py-12`;
@@ -284,9 +282,7 @@ const ProjectsPortfolio = ({
   currentFilter = "todos",
   onFilterChange,
 }) => {
-  const [selectedProject, setSelectedProject] = useState(null);
-  const [viewingImage, setViewingImage] = useState(null);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const navigate = useNavigate();
 
   const filters = [
     { key: "todos", label: "Todos", count: 6 },
@@ -307,43 +303,9 @@ const ProjectsPortfolio = ({
     }
   };
 
-  const openProjectModal = useCallback((project) => {
-    setSelectedProject(project);
-  }, []);
-
-  const closeProjectModal = useCallback(() => {
-    setSelectedProject(null);
-    setViewingImage(null);
-  }, []);
-
-  const openImageViewer = useCallback((imageSrc, index) => {
-    setViewingImage(imageSrc);
-    setCurrentImageIndex(index);
-  }, []);
-
-  const closeImageViewer = useCallback(() => {
-    setViewingImage(null);
-  }, []);
-
-  const nextImage = useCallback(() => {
-    if (selectedProject && selectedProject.gallery) {
-      const nextIndex =
-        (currentImageIndex + 1) % selectedProject.gallery.length;
-      setCurrentImageIndex(nextIndex);
-      setViewingImage(selectedProject.gallery[nextIndex]);
-    }
-  }, [selectedProject, currentImageIndex]);
-
-  const prevImage = useCallback(() => {
-    if (selectedProject && selectedProject.gallery) {
-      const prevIndex =
-        currentImageIndex === 0
-          ? selectedProject.gallery.length - 1
-          : currentImageIndex - 1;
-      setCurrentImageIndex(prevIndex);
-      setViewingImage(selectedProject.gallery[prevIndex]);
-    }
-  }, [selectedProject, currentImageIndex]);
+  const viewProjectGallery = useCallback((project) => {
+    navigate(`/projetos/${project.id}/galeria`);
+  }, [navigate]);
 
   return (
     <Container>
@@ -384,7 +346,7 @@ const ProjectsPortfolio = ({
                 <ProjectCard
                   key={`project-${project.id}`}
                   layout
-                  onClick={() => openProjectModal(project)}
+                  onClick={() => viewProjectGallery(project)}
                   initial={{ opacity: 0, y: 20, scale: 0.9 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: -20, scale: 0.9 }}
@@ -442,118 +404,13 @@ const ProjectsPortfolio = ({
                   </ProjectInfo>
                 </ProjectCard>
               ))}
-            </AnimatePresence>
-          </ProjectsGrid>
+          </AnimatePresence>
+        </ProjectsGrid>
         </ContentSection>
-
-        {/* Modal do Projeto */}
-        <AnimatePresence>
-          {selectedProject && (
-            <ModalOverlay
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={closeProjectModal}
-            >
-              <ModalContent
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.8, opacity: 0 }}
-                onClick={(e) => e.stopPropagation()}
-              >
-                <ModalHeader>
-                  <ModalTitle>{selectedProject.title}</ModalTitle>
-                  <CloseButton onClick={closeProjectModal}>
-                    <CloseIcon size={24} />
-                  </CloseButton>
-                </ModalHeader>
-
-                <ModalBody>
-                  <ProjectDetailsFull>
-                    <ProjectDescriptionFull>
-                      {selectedProject.fullDescription}
-                    </ProjectDescriptionFull>
-
-                    <ProjectMetadata>
-                      <MetadataItem>
-                        <MetadataIcon>
-                          <LocationIcon size={18} />
-                        </MetadataIcon>
-                        <span>
-                          <strong>Local:</strong> {selectedProject.location}
-                        </span>
-                      </MetadataItem>
-                      <MetadataItem>
-                        <MetadataIcon>
-                          <CalendarIcon size={18} />
-                        </MetadataIcon>
-                        <span>
-                          <strong>Ano:</strong> {selectedProject.year}
-                        </span>
-                      </MetadataItem>
-                      <MetadataItem>
-                        <MetadataIcon>
-                          <ClientTypeIcon size={18} />
-                        </MetadataIcon>
-                        <span>
-                          <strong>Área:</strong> {selectedProject.area}
-                        </span>
-                      </MetadataItem>
-                    </ProjectMetadata>
-                  </ProjectDetailsFull>
-
-                  <GalleryContainer>
-                    <GalleryTitle>Galeria de Imagens</GalleryTitle>
-                    <GalleryGrid>
-                      {selectedProject.gallery.map((image, index) => (
-                        <GalleryImage
-                          key={image}
-                          src={image}
-                          alt={`${selectedProject.title} - Imagem ${index + 1}`}
-                          onClick={() => openImageViewer(image, index)}
-                          loading="lazy"
-                        />
-                      ))}
-                    </GalleryGrid>
-                  </GalleryContainer>
-                </ModalBody>
-              </ModalContent>
-            </ModalOverlay>
-          )}
-        </AnimatePresence>
-
-        {/* Visualizador de Imagem em Tela Cheia */}
-        <AnimatePresence>
-          {viewingImage && (
-            <ImageViewer
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={closeImageViewer}
-            >
-              <ImageViewerContent onClick={(e) => e.stopPropagation()}>
-                <ImageViewerImage src={viewingImage} alt="Imagem ampliada" />
-                <ImageViewerControls>
-                  <ControlButton onClick={prevImage}>
-                    <ChevronLeftIcon size={20} />
-                  </ControlButton>
-                  <ControlButton onClick={nextImage}>
-                    <ChevronRightIcon size={20} />
-                  </ControlButton>
-                  <ControlButton onClick={closeImageViewer}>
-                    <CloseIcon size={20} />
-                  </ControlButton>
-                </ImageViewerControls>
-              </ImageViewerContent>
-            </ImageViewer>
-          )}
-        </AnimatePresence>
       </ContentWithPaddingXl>
     </Container>
   );
-};
-
-ProjectsPortfolio.propTypes = {
+};ProjectsPortfolio.propTypes = {
   subheading: PropTypes.string,
   heading: PropTypes.string,
   description: PropTypes.string,
