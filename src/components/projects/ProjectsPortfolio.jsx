@@ -79,8 +79,19 @@ const ClientTypeBadge = styled.div`
     props.clientType === "residencial" ? "#6b7959" : "#a99960"};
 `;
 
-const ProjectInfo = tw.div`p-6`;
-const ProjectTitle = tw.h3`text-xl font-bold text-gray-800 mb-3`;
+const ProjectInfo = styled.div`
+  ${tw`p-6 flex flex-col`}
+  min-height: 280px; /* Altura mínima fixa para uniformizar os cards */
+`;
+const ProjectTitle = styled.h3`
+  ${tw`text-xl font-bold text-gray-800 mb-3 leading-tight`}
+  height: 3.5rem; /* Altura fixa para comportar 2 linhas de texto */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.4;
+`;
 const ProjectDescription = tw.p`text-gray-600 text-sm leading-relaxed mb-6 line-clamp-3`;
 
 const ProjectDetails = tw.div`flex flex-wrap gap-4 text-xs text-gray-500 mb-4`;
@@ -88,7 +99,7 @@ const DetailItem = tw.div`flex items-center`;
 const DetailIcon = tw.div`mr-2 text-green-600`;
 
 const ViewProjectButton = styled(PrimaryButtonBase)`
-  ${tw`w-full mt-4 text-sm transition-colors duration-300`}
+  ${tw`w-full text-sm transition-colors duration-300 mt-auto`}
   background-color: #6b7959;
 
   &:hover {
