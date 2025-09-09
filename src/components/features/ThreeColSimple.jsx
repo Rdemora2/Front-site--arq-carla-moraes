@@ -118,7 +118,7 @@ const ThreeColSimple = ({
                 </span>
                 <span className="title">{card.title}</span>
                 <p className="description">{card.description}</p>
-                {linkText && (
+                {linkText && linkText.trim() !== "" && (
                   <span className="link">
                     <span>{linkText}</span>
                     <svg
@@ -158,7 +158,29 @@ ThreeColSimple.propTypes = {
 };
 
 ThreeColSimple.defaultProps = {
-  cards: [],
+  cards: [
+    {
+      imageSrc: SupportIconImage,
+      title: "Projetos Sob Medida",
+      description:
+        "Desenvolvemos projetos únicos e personalizados que refletem a essência de cada cliente. Cada elemento é cuidadosamente pensado para harmonizar com a arquitetura existente e valorizar o espaço disponível.",
+      url: "/",
+    },
+    {
+      imageSrc: ShieldIconImage,
+      title: "Sustentabilidade Comprovada",
+      description:
+        "Priorizamos o uso de espécies nativas, sistemas de irrigação eficientes e materiais sustentáveis. Nossos projetos respeitam o meio ambiente e garantem baixa manutenção a longo prazo.",
+      url: "/",
+    },
+    {
+      imageSrc: CustomizeIconImage,
+      title: "Execução de Excelência",
+      description:
+        "Da concepção à entrega final, nossa equipe técnica especializada acompanha cada etapa do projeto. Garantimos fidelidade ao design original e acabamento impecável em todos os detalhes.",
+      url: "/",
+    },
+  ],
   linkText: "Saiba Mais",
   heading: "Diferenciais que Transformam",
   subheading: "Nossa Expertise",
