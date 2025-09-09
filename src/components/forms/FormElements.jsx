@@ -175,11 +175,11 @@ export const FormInput = forwardRef(
       className,
       ...props
     },
-    ref,
+    ref
   ) => {
     const [isFocused, setIsFocused] = React.useState(false);
     const [value, setValue] = React.useState(
-      props.value || props.defaultValue || "",
+      props.value || props.defaultValue || ""
     );
 
     const hasError = Boolean(error);
@@ -267,7 +267,7 @@ export const FormInput = forwardRef(
         )}
       </InputContainer>
     );
-  },
+  }
 );
 
 FormInput.displayName = "FormInput";
@@ -289,11 +289,11 @@ export const FormTextArea = forwardRef(
       className,
       ...props
     },
-    ref,
+    ref
   ) => {
     const [isFocused, setIsFocused] = React.useState(false);
     const [value, setValue] = React.useState(
-      props.value || props.defaultValue || "",
+      props.value || props.defaultValue || ""
     );
 
     const hasError = Boolean(error);
@@ -382,7 +382,7 @@ export const FormTextArea = forwardRef(
         )}
       </InputContainer>
     );
-  },
+  }
 );
 
 FormTextArea.displayName = "FormTextArea";
@@ -401,6 +401,8 @@ const HiddenCheckbox = styled.input.attrs({ type: "checkbox" })`
 
 const StyledCheckbox = styled.div`
   ${tw`w-5 h-5 border-2 rounded-md flex items-center justify-center transition-all duration-300 cursor-pointer mr-3 mt-1 flex-shrink-0`}
+  position: relative;
+  z-index: 1;
   border-color: ${(props) => {
     if (props.hasError) return "#ef4444";
     if (props.checked) return "var(--color-primary)";
@@ -413,6 +415,11 @@ const StyledCheckbox = styled.div`
     border-color: ${(props) =>
       props.hasError ? "#ef4444" : "var(--color-secondary)"};
     transform: scale(1.05);
+  }
+
+  &:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
   }
 
   svg {
@@ -454,14 +461,24 @@ export const FormCheckbox = ({
 }) => {
   const hasError = Boolean(error);
 
-  const handleClick = () => {
-    onChange?.({ target: { name, checked: !checked } });
+  const handleClick = (e) => {
+    e.preventDefault();
+    const newChecked = !checked;
+    const syntheticEvent = {
+      target: {
+        name,
+        type: "checkbox",
+        checked: newChecked,
+        value: newChecked,
+      },
+    };
+    onChange?.(syntheticEvent);
   };
 
   const handleKeyDown = (e) => {
     if (e.key === " " || e.key === "Enter") {
       e.preventDefault();
-      handleClick();
+      handleClick(e);
     }
   };
 

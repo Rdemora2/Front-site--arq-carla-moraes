@@ -19,7 +19,6 @@ export const validationRules = {
 
   phone: (value) => {
     if (!value) return null;
-    // Aceita formatos: (11) 99999-9999, 11999999999, +5511999999999
     const phoneRegex =
       /^(\+55\s?)?(\(?[0-9]{2}\)?\s?)?[0-9]{4,5}[\s-]?[0-9]{4}$/;
     if (!phoneRegex.test(value.replace(/\s/g, ""))) {
@@ -57,7 +56,6 @@ export const validationRules = {
   },
 };
 
-// Configurações de validação por campo comum
 export const fieldConfigs = {
   name: {
     rules: [
@@ -66,7 +64,7 @@ export const fieldConfigs = {
       validationRules.maxLength(100),
       validationRules.pattern(
         /^[a-zA-ZÀ-ÿ\s]+$/,
-        "Nome deve conter apenas letras e espaços",
+        "Nome deve conter apenas letras e espaços"
       ),
     ],
     sanitize: (value) => value?.trim().replace(/\s+/g, " "),
@@ -76,14 +74,14 @@ export const fieldConfigs = {
     rules: [
       validationRules.required,
       validationRules.email,
-      validationRules.maxLength(320), // RFC 5321 limit
+      validationRules.maxLength(320),
     ],
     sanitize: (value) => value?.trim().toLowerCase(),
   },
 
   phone: {
     rules: [validationRules.phone],
-    sanitize: (value) => value?.replace(/\D/g, ""), // Remove non-digits for storage
+    sanitize: (value) => value?.replace(/\D/g, ""),
     format: (value) => {
       if (!value) return "";
       const digits = value.replace(/\D/g, "");
@@ -115,12 +113,9 @@ export const fieldConfigs = {
   },
 };
 
-/**
- * Hook principal para validação de formulários
- */
 export const useFormValidation = (
   initialValues = {},
-  fieldConfigOverrides = {},
+  fieldConfigOverrides = {}
 ) => {
   const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState({});
@@ -128,25 +123,20 @@ export const useFormValidation = (
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitAttempted, setSubmitAttempted] = useState(false);
 
-  // Mesclar configurações padrão com overrides
   const finalConfigs = useMemo(
     () => ({
-      ...fieldConfigs,
       ...fieldConfigOverrides,
     }),
-    [fieldConfigOverrides],
+    [fieldConfigOverrides]
   );
 
-  // Validar um campo específico
   const validateField = useCallback(
     (fieldName, value, allValues = values) => {
       const config = finalConfigs[fieldName];
       if (!config || !config.rules) return null;
 
-      // Aplicar sanitização se definida
       const sanitizedValue = config.sanitize ? config.sanitize(value) : value;
 
-      // Executar todas as regras de validação
       for (const rule of config.rules) {
         const error = rule(sanitizedValue, allValues);
         if (error) {
@@ -156,10 +146,9 @@ export const useFormValidation = (
 
       return null;
     },
-    [finalConfigs, values],
+    [finalConfigs, values]
   );
 
-  // Validar todos os campos
   const validateForm = useCallback(
     (valuesToValidate = values) => {
       const newErrors = {};
@@ -169,26 +158,24 @@ export const useFormValidation = (
         const error = validateField(
           fieldName,
           valuesToValidate[fieldName],
-          valuesToValidate,
+          valuesToValidate
         );
+        newErrors[fieldName] = error;
         if (error) {
-          newErrors[fieldName] = error;
           isValid = false;
         }
       });
 
       return { isValid, errors: newErrors };
     },
-    [finalConfigs, validateField, values],
+    [finalConfigs, validateField, values]
   );
 
-  // Atualizar valor de um campo
   const setValue = useCallback(
     (fieldName, value) => {
       setValues((prev) => {
         const newValues = { ...prev, [fieldName]: value };
 
-        // Validação em tempo real se o campo já foi tocado ou após tentativa de submit
         if (touched[fieldName] || submitAttempted) {
           const error = validateField(fieldName, value, newValues);
           setErrors((prev) => ({
@@ -200,10 +187,9 @@ export const useFormValidation = (
         return newValues;
       });
     },
-    [touched, submitAttempted, validateField],
+    [touched, submitAttempted, validateField]
   );
 
-  // Marcar campo como tocado
   const setFieldTouched = useCallback(
     (fieldName, isTouched = true) => {
       setTouched((prev) => ({
@@ -211,7 +197,6 @@ export const useFormValidation = (
         [fieldName]: isTouched,
       }));
 
-      // Validar campo quando tocado
       if (isTouched) {
         const error = validateField(fieldName, values[fieldName]);
         setErrors((prev) => ({
@@ -220,17 +205,16 @@ export const useFormValidation = (
         }));
       }
     },
-    [validateField, values],
+    [validateField, values]
   );
 
-  // Handler para mudança de input
   const handleChange = useCallback(
     (e) => {
       const { name, value, type, checked } = e.target;
       const finalValue = type === "checkbox" ? checked : value;
       setValue(name, finalValue);
     },
-    [setValue],
+    [setValue]
   );
 
   // Handler para blur (perda de foco)
@@ -239,10 +223,9 @@ export const useFormValidation = (
       const { name } = e.target;
       setFieldTouched(name, true);
     },
-    [setFieldTouched],
+    [setFieldTouched]
   );
 
-  // Formatar valor para exibição
   const getFormattedValue = useCallback(
     (fieldName) => {
       const config = finalConfigs[fieldName];
@@ -254,10 +237,9 @@ export const useFormValidation = (
 
       return value || "";
     },
-    [finalConfigs, values],
+    [finalConfigs, values]
   );
 
-  // Obter valor sanitizado para envio
   const getSanitizedValues = useCallback(() => {
     const sanitized = {};
 
@@ -275,7 +257,6 @@ export const useFormValidation = (
     return sanitized;
   }, [values, finalConfigs]);
 
-  // Handler para submit
   const handleSubmit = useCallback(
     async (onSubmit) => {
       setSubmitAttempted(true);
@@ -286,11 +267,10 @@ export const useFormValidation = (
         setErrors(validationErrors);
 
         if (!isValid) {
-          // Focar no primeiro campo com erro
           const firstErrorField = Object.keys(validationErrors)[0];
           if (firstErrorField) {
             const element = document.querySelector(
-              `[name="${firstErrorField}"]`,
+              `[name="${firstErrorField}"]`
             );
             if (element) {
               element.focus();
@@ -299,7 +279,6 @@ export const useFormValidation = (
           return false;
         }
 
-        // Executar função de submit se fornecida
         if (onSubmit) {
           const sanitizedValues = getSanitizedValues();
           await onSubmit(sanitizedValues);
@@ -313,10 +292,9 @@ export const useFormValidation = (
         setIsSubmitting(false);
       }
     },
-    [validateForm, getSanitizedValues],
+    [validateForm, getSanitizedValues]
   );
 
-  // Reset do formulário
   const resetForm = useCallback(() => {
     setValues(initialValues);
     setErrors({});
@@ -331,13 +309,11 @@ export const useFormValidation = (
     return isValid;
   }, [validateForm]);
 
-  // Verificar se há mudanças não salvas
   const isDirty = useMemo(() => {
     return JSON.stringify(values) !== JSON.stringify(initialValues);
   }, [values, initialValues]);
 
   return {
-    // Estado
     values,
     errors,
     touched,
@@ -346,7 +322,6 @@ export const useFormValidation = (
     isFormValid,
     isDirty,
 
-    // Funções
     setValue,
     setFieldTouched,
     handleChange,
