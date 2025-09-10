@@ -69,9 +69,9 @@ const Container = styled.div`
   ${tw`relative -mx-8 -mt-8 min-h-screen`}
 
   @media (max-width: 1024px) {
-    min-height: 100vh;
-    height: 100vh;
-    max-height: 100vh;
+    min-height: 100dvh;
+    height: 100dvh;
+    max-height: 100dvh;
     overflow: hidden;
   }
 `;
@@ -97,7 +97,7 @@ const LeftColumn = styled.div`
     padding-top: 0;
     padding-bottom: 0;
     position: relative;
-    min-height: 100vh;
+    min-height: 100dvh;
     height: 100vh;
     max-height: 100vh;
     display: flex;
@@ -186,7 +186,7 @@ const Heading = styled.h1`
   }
 `;
 const Paragraph = styled.p`
-  ${tw`max-w-md my-8 lg:my-5 lg:my-8 sm:text-lg lg:text-base xl:text-lg leading-loose`}
+  ${tw`max-w-lg my-8 lg:my-5 lg:my-8 text-lg lg:text-base xl:text-lg leading-normal`}
   @media (max-width: 1024px) {
     color: white;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);

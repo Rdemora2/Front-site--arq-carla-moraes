@@ -75,9 +75,7 @@ const TwoColSingleFeatureWithStats = ({
         </ImageColumn>
         <TextColumn $textOnLeft={textOnLeft}>
           <TextContent>
-            <Heading>
-              {heading || "Tradição e Inovação em Cada Projeto"}
-            </Heading>
+            <Heading>{heading || "Excelência Reconhecida"}</Heading>
             <Description>
               {description ||
                 "Desde 1996, a Carla Moraes Arquitetura Paisagística é referência em projetos que transformam espaços em experiências sensoriais únicas. Nossa expertise combina técnica apurada, visão estética refinada e compromisso com a sustentabilidade, criando paisagens que resistem ao tempo e valorizam significativamente seu patrimônio."}

@@ -17,7 +17,7 @@ const Container = tw.div`relative`;
 const Content = tw.div`max-w-screen-xl mx-auto py-16 lg:py-20`;
 
 const HeadingWithControl = tw.div`flex flex-col items-center sm:items-stretch sm:flex-row justify-between`;
-const Heading = tw(SectionHeading)``;
+const Heading = tw(SectionHeading)`text-2xl sm:text-3xl lg:text-4xl`;
 const Controls = tw.div`flex items-center`;
 const ControlButton = styled(PrimaryButtonBase)`
   ${tw`mt-4 sm:mt-0 first:ml-0 ml-6 rounded-full p-2`}
@@ -75,7 +75,7 @@ const CardImage = styled.div((props) => [
 const TextInfo = tw.div`py-6 sm:px-10 sm:py-6`;
 const TitleReviewContainer = tw.div`flex flex-col sm:flex-row sm:justify-between sm:items-center`;
 const Title = styled.h5`
-  ${tw`text-2xl font-bold leading-tight`}
+  ${tw`text-lg font-bold leading-tight`}
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -118,17 +118,23 @@ const ThreeColSlider = ({ heading = <span>Projetos em Destaque</span> }) => {
     () => ({
       arrows: false,
       slidesToShow: 3,
+      centerMode: true,
+      centerPadding: "0px",
       responsive: [
         {
           breakpoint: 1280,
           settings: {
             slidesToShow: 2,
+            centerMode: true,
+            centerPadding: "0px",
           },
         },
         {
           breakpoint: 900,
           settings: {
             slidesToShow: 1,
+            centerMode: true,
+            centerPadding: "0px",
           },
         },
       ],

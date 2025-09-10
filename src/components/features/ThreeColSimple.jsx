@@ -13,9 +13,13 @@ import ShieldIconImage from "../../assets/icons/svg/shield-icon.svg?url";
 import CustomizeIconImage from "../../assets/icons/svg/customize-icon.svg?url";
 import SvgDecoratorBlob3 from "../../assets/icons/svg/svg-decorator-blob-3.svg?url";
 
-const Heading = tw(SectionHeading)``;
-const Subheading = tw(SubheadingBase)`text-center mb-3`;
-const Description = tw(SectionDescription)`text-center mx-auto`;
+const Heading = tw(SectionHeading)`text-2xl sm:text-3xl lg:text-4xl`;
+const Subheading = tw(
+  SubheadingBase
+)`text-center mb-3 text-sm md:text-sm lg:text-base`;
+const Description = tw(
+  SectionDescription
+)`text-center mx-auto text-sm md:text-sm lg:text-base`;
 const ThreeColumnContainer = styled.div`
   ${tw`mt-10 flex flex-col items-center lg:items-stretch lg:flex-row flex-wrap lg:justify-center max-w-screen-lg mx-auto`}
 `;
@@ -35,7 +39,7 @@ const Card = styled.div`
   }
 
   .title {
-    ${tw`mt-4 font-bold text-xl leading-none`}
+    ${tw`mt-4 font-bold text-lg leading-none text-primary-500`}
   }
 
   .description {
@@ -85,8 +89,12 @@ const ThreeColSimple = ({
       url: "/",
     },
   ],
-  linkText = "Saiba Mais",
-  heading = "Diferenciais que Transformam",
+  linkText = "",
+  heading = (
+    <>
+      <span>Diferenciais que Transformam</span>
+    </>
+  ),
   subheading = "Nossa Expertise",
   description = "Com mais de 25 anos de experiência, combinamos visão artística e conhecimento técnico para criar paisagens atemporais que valorizam seu investimento e elevam sua qualidade de vida.",
   imageContainerCss = null,
@@ -147,7 +155,7 @@ ThreeColSimple.propTypes = {
       title: PropTypes.string,
       description: PropTypes.string,
       url: PropTypes.string,
-    }),
+    })
   ),
   linkText: PropTypes.string,
   heading: PropTypes.string,
@@ -181,10 +189,15 @@ ThreeColSimple.defaultProps = {
       url: "/",
     },
   ],
-  linkText: "Saiba Mais",
-  heading: "Diferenciais que Transformam",
+  linkText: "",
+  heading: (
+    <>
+      <span>Diferenciais que Transformam</span>
+    </>
+  ),
   subheading: "Nossa Expertise",
-  description: "Com mais de 25 anos de experiência, combinamos visão artística e conhecimento técnico para criar paisagens atemporais que valorizam seu investimento e elevam sua qualidade de vida.",
+  description:
+    "Com mais de 25 anos de experiência, combinamos visão artística e conhecimento técnico para criar paisagens atemporais que valorizam seu investimento e elevam sua qualidade de vida.",
   imageContainerCss: null,
   imageCss: null,
 };

@@ -23,14 +23,14 @@ const Image = styled.div(({ $imageSrc, $imageContain, $imageShadow }) => [
 ]);
 
 const FAQContent = tw.div`lg:ml-12`;
-const Subheading = tw(SubheadingBase)`mb-4 text-center lg:text-left`;
-const Heading = tw(SectionHeading)`lg:text-left`;
-const Description = tw.p`max-w-xl text-center mx-auto lg:mx-0 lg:text-left lg:max-w-none leading-relaxed text-sm sm:text-base lg:text-lg font-medium mt-4 text-secondary-100`;
+const Subheading = tw(SubheadingBase)`mb-4 text-center lg:text-left text-sm md:text-sm lg:text-base`;
+const Heading = tw(SectionHeading)`lg:text-left text-2xl sm:text-3xl lg:text-4xl`;
+const Description = tw.p`max-w-xl text-center mx-auto lg:mx-0 lg:text-left lg:max-w-none leading-relaxed text-sm md:text-sm lg:text-base font-medium mt-4 text-secondary-100`;
 
 const FAQSContainer = tw.dl`mt-12`;
 const FAQItem = tw.div`cursor-pointer mt-8 select-none border lg:border-0 px-8 py-4 lg:p-0 rounded-lg lg:rounded-none`;
 const Question = tw.dt`flex justify-between items-center`;
-const QuestionText = tw.span`text-lg lg:text-xl font-semibold`;
+const QuestionText = tw.span`text-base lg:text-lg font-semibold`;
 const QuestionToggleIcon = styled.span`
   ${tw`ml-2 bg-primary-500 text-gray-100 p-1 rounded-full group-hover:bg-primary-700 group-hover:text-gray-200 transition duration-300`}
   svg {

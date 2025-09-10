@@ -107,6 +107,10 @@ const ProjectGallery = () => {
     }
   }, [projectId, navigate]);
 
+  const getPreviousIndex = useCallback((currentIndex, arrayLength) => {
+    return currentIndex === 0 ? arrayLength - 1 : currentIndex - 1;
+  }, []);
+
   const openImageModal = useCallback((index) => {
     setSelectedImageIndex(index);
   }, []);
@@ -124,13 +128,13 @@ const ProjectGallery = () => {
 
   const prevImage = useCallback(() => {
     if (project && selectedImageIndex !== null) {
-      const prevIndex =
-        selectedImageIndex === 0
-          ? project.gallery.length - 1
-          : selectedImageIndex - 1;
+      const prevIndex = getPreviousIndex(
+        selectedImageIndex,
+        project.gallery.length
+      );
       setSelectedImageIndex(prevIndex);
     }
-  }, [project, selectedImageIndex]);
+  }, [project, selectedImageIndex, getPreviousIndex]);
 
   const handleKeyPress = useCallback(
     (e) => {
@@ -140,7 +144,7 @@ const ProjectGallery = () => {
         if (e.key === "ArrowLeft") prevImage();
       }
     },
-    [selectedImageIndex, closeImageModal, nextImage, prevImage],
+    [selectedImageIndex, closeImageModal, nextImage, prevImage]
   );
 
   useEffect(() => {

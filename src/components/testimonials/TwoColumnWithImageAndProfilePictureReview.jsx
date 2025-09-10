@@ -23,7 +23,7 @@ const Container = tw.div`relative`;
 const Content = tw.div`max-w-screen-xl mx-auto py-20 lg:py-24`;
 const TestimonialsContainer = tw.div`mt-16 lg:mt-0`;
 const Testimonials = styled.div``;
-const Testimonial = tw.div`max-w-md lg:max-w-none mx-auto lg:mx-0 flex flex-col items-center lg:items-stretch lg:flex-row`;
+const Testimonial = tw.div`max-w-md lg:max-w-none mx-auto lg:mx-0 flex flex-col items-center lg:items-center lg:flex-row`;
 
 const TestimonialImageSlider = tw(Slider)`w-full lg:w-5/12 flex-shrink-0 `;
 const TestimonialTextSlider = tw(Slider)``;
@@ -32,7 +32,7 @@ const TestimonialText = tw.div`outline-none`;
 const ImageAndControlContainer = tw.div`relative outline-none`;
 const Image = styled.div((props) => [
   `background-image: url("${props.imageSrc}");`,
-  tw`rounded bg-cover bg-center h-80 sm:h-96 lg:h-144`,
+  tw`rounded bg-cover bg-center h-64 sm:h-80 lg:h-96`,
 ]);
 
 const ControlContainer = tw.div`absolute bottom-0 right-0 bg-gray-100 px-6 py-4 rounded-tl-3xl border`;
@@ -77,16 +77,16 @@ const TextContainer = styled.div((props) => [
   props.textOnLeft ? tw`lg:pr-12 lg:order-first` : tw`lg:pl-12 lg:order-last`,
 ]);
 
-const Subheading = tw(SubheadingBase)`mb-4`;
-const HeadingTitle = tw(SectionHeading)`lg:text-left leading-tight`;
-const Description = tw.p`max-w-md text-center mx-auto lg:mx-0 lg:text-left lg:max-w-none leading-relaxed text-sm sm:text-base lg:text-lg font-medium mt-4 text-secondary-100`;
+const Subheading = tw(SubheadingBase)`mb-4 text-sm md:text-sm lg:text-base`;
+const HeadingTitle = tw(SectionHeading)`lg:text-left leading-tight text-2xl sm:text-3xl lg:text-4xl`;
+const Description = tw.p`max-w-md text-center mx-auto lg:mx-0 lg:text-left lg:max-w-none leading-relaxed text-sm md:text-sm lg:text-base font-medium mt-4 text-secondary-100`;
 
-const QuoteContainer = tw.div`relative mt-10 lg:mt-20`;
-const Quote = tw.blockquote`text-center lg:text-left text-sm sm:text-lg lg:text-xl xl:text-2xl`;
+const QuoteContainer = tw.div`relative mt-6 lg:mt-8`;
+const Quote = tw.blockquote`text-center lg:text-left text-sm sm:text-base lg:text-lg`;
 const CustomerInfo = tw.div`mt-6 flex flex-col sm:flex-row items-center justify-center lg:justify-start`;
 const CustomerProfilePicture = tw.img`rounded-full w-20 h-20`;
 const CustomerTextInfo = tw.div`text-center lg:text-left sm:ml-6 mt-2 sm:mt-0`;
-const CustomerName = tw.h5`font-semibold text-xl lg:text-2xl xl:text-3xl text-primary-500`;
+const CustomerName = tw.h5`font-semibold text-lg lg:text-xl text-primary-500`;
 const CustomerTitle = tw.p`font-medium text-secondary-100`;
 
 const QuotesLeft = tw(

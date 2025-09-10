@@ -209,7 +209,7 @@ const Footer = () => {
           </LogoContainer>
           <CopyrightContainer>
             <CopyrightNotice>
-              &copy; 2025, Carla Moraes Arquitetura Paisagística. Todos os
+              &copy; 2025 - Carla Moraes Arquitetura Paisagística. Todos os
               Direitos Reservados.
             </CopyrightNotice>
             <DeveloperNotice>
