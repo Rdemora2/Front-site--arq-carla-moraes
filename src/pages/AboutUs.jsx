@@ -88,7 +88,7 @@ export default () => {
               imageSrc: SupportIconImage,
               title: "Atendimento próximo",
               description:
-                "Conversamos de verdade com você para entender o que quer e precisa. Cada projeto é único porque cada pessoa é única.",
+                "Analisamos sua necessidade e desenvolvemos um projeto exclusivo para cada cliente. Cada projeto é único porque cada pessoa é única.",
             },
             {
               imageSrc: ShieldIconImage,

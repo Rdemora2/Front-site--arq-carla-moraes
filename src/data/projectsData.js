@@ -27,7 +27,7 @@ export const projectsData = [
     clientType: "residencial",
     location: "São Paulo, SP",
     year: "2023",
-    featuredImage: "/images/components/hero/Modern-hero.webp",
+    featuredImage: "/images/projects/Jardim-tropical/tropical-2.webp",
     gallery: [
       "/images/projects/Jardim-tropical/tropical-1.webp",
       "/images/projects/Jardim-tropical/tropical-2.webp",
@@ -37,7 +37,7 @@ export const projectsData = [
       "/images/projects/Jardim-tropical/tropical-6.webp",
     ],
     fullDescription:
-      "Este jardim tropical apresenta um design moderno e elegante, criando um caminho paisagístico que conduz a um belo espelho d'água. O projeto incorpora folhagem diversificada, pedras roladas naturais, bromélias coloridas e orquídeas exóticas, criando um ambiente tropical sofisticado. A composição harmoniosa entre os elementos naturais e o espelho d'água proporciona uma experiência sensorial única, conectando os moradores com a natureza de forma contemporânea e refinada.",
+      "Este jardim tropical apresenta um design moderno e elegante, criando um caminho através do jardim de entrada que conduz desde a rampa de acesso até o espelho d'água. O projeto incorpora folhagem diversificada, pedras roladas naturais, bromélias coloridas e orquídeas exóticas, criando um ambiente tropical sofisticado. A composição harmoniosa entre os elementos naturais e o espelho d'água proporciona uma experiência sensorial única, conectando os moradores com a natureza de forma contemporânea e refinada.",
     featured: true,
   },
   {
@@ -61,7 +61,7 @@ export const projectsData = [
       "/images/projects/Hotel-jardins/jardins-09.jpg",
     ],
     fullDescription:
-      "Este projeto de paisagismo para um hotel no bairro dos Jardins representa uma renovação completa dos espaços verdes. Mantivemos estrategicamente apenas as palmeiras Phoenix existentes, que serviram como elementos estruturais do novo design. Criamos formas e volumes dinâmicos nos canteiros para gerar movimento visual e interesse estético. As espécies selecionadas incluem Strelitzia para altura e cor, buxus para estrutura e forma, murta para textura, dianella para contraste foliar e moreia para pontos focais. Esta combinação resulta em um paisagismo comercial sofisticado e de baixa manutenção.",
+      "Este projeto de paisagismo para um hotel no bairro dos Jardins representa uma inovação em sua área verde externa. Mantivemos estrategicamente apenas as palmeiras Phoenix existentes, que serviram como elementos estruturais do novo design. Criamos formas e volumes dinâmicos nos canteiros para gerar movimento visual e interesse estético. As espécies selecionadas incluem Strelitzia para altura e cor, buxus para estrutura e forma, murta para cobrir alvenaria na base da fonte, dianella para contraste foliar e moreia para pontos focais. Esta combinação resulta em um paisagismo comercial sofisticado e de baixa manutenção.",
     featured: true,
   },
   {
@@ -90,10 +90,9 @@ export const projectsData = [
       "/images/projects/Sicoob-liberdade/sicoob-14.jpg",
       "/images/projects/Sicoob-liberdade/sicoob-15.jpg",
       "/images/projects/Sicoob-liberdade/sicoob-16.jpg",
-      "/images/projects/Sicoob-liberdade/sicoob-17.jpg",
     ],
     fullDescription:
-      "Projeto paisagístico desenvolvido para a sede corporativa da SICOOB Metalcred no bairro da Liberdade, São Paulo, em 2020. O conceito do projeto combina funcionalidade empresarial com elementos naturais, utilizando uma abordagem diferenciada para ambientes internos e externos. Nas áreas internas, optamos por peças em fibra na cor branca, criando um visual clean e moderno que complementa o ambiente corporativo. Para as áreas externas, escolhemos vasos em cimento natural que conferem robustez e durabilidade. O destaque do projeto é a composição com vasos em cimento plantados com bambu mosso torto, criando um elemento visual marcante e trazendo movimento natural ao espaço corporativo.",
+      "Projeto paisagístico desenvolvido para a sede corporativa da SICOOB Metalcred no bairro da Liberdade, São Paulo, em 2020. O conceito do projeto combina funcionalidade empresarial com elementos naturais, utilizando uma abordagem diferenciada para ambientes internos e externos. Nas áreas internas, optamos por peças em fibra na cor branca, criando um visual clean e moderno que complementa o ambiente corporativo. Para as áreas externas, escolhemos vasos em cimento natural que conferem robustez e durabilidade. O destaque do projeto é a composição com vasos em cimento plantados com bambu mosso torto, criando um elemento visual marcante e trazendo movimento natural à área de eventos externa.",
     featured: true,
   },
 ];
