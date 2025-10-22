@@ -114,11 +114,4 @@ SocialShare.propTypes = {
   showText: PropTypes.bool,
 };
 
-SocialShare.defaultProps = {
-  title: "Confira este projeto paisagístico incrível!",
-  description: "",
-  path: "",
-  showText: true,
-};
-
 export default SocialShare;

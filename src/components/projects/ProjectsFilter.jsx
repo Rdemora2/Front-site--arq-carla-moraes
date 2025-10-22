@@ -124,9 +124,4 @@ ProjectsFilter.propTypes = {
   activeFilter: PropTypes.string,
 };
 
-ProjectsFilter.defaultProps = {
-  onFilterChange: null,
-  activeFilter: "todos",
-};
-
 export default memo(ProjectsFilter);

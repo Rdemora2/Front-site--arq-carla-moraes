@@ -32,24 +32,24 @@ const InputContainer = styled.div`
 const baseInputStyles = css`
   ${tw`w-full px-4 py-3 border-2 rounded-lg font-medium transition-all duration-300 bg-white`}
   border-color: ${(props) => {
-    if (props.hasError) return "#ef4444";
-    if (props.isValid) return "#10b981";
+    if (props.$hasError) return "#ef4444";
+    if (props.$isValid) return "#10b981";
     return "#d1d5db";
   }};
 
   &:focus {
     outline: none;
     border-color: ${(props) =>
-      props.hasError ? "#ef4444" : "var(--color-primary)"};
+      props.$hasError ? "#ef4444" : "var(--color-primary)"};
     box-shadow: 0 0 0 3px
       ${(props) =>
-        props.hasError ? "rgba(239, 68, 68, 0.1)" : "rgba(62, 77, 44, 0.1)"};
+        props.$hasError ? "rgba(239, 68, 68, 0.1)" : "rgba(62, 77, 44, 0.1)"};
     transform: translateY(-1px);
   }
 
   &:hover:not(:focus) {
     border-color: ${(props) =>
-      props.hasError ? "#ef4444" : "var(--color-secondary)"};
+      props.$hasError ? "#ef4444" : "var(--color-secondary)"};
   }
 
   &::placeholder {
@@ -61,7 +61,7 @@ const baseInputStyles = css`
   }
 
   ${(props) =>
-    props.hasError &&
+    props.$hasError &&
     css`
       animation: ${shake} 0.4s ease-in-out;
     `}
@@ -87,16 +87,16 @@ const StyledTextArea = styled.textarea`
 const FloatingLabel = styled.label`
   ${tw`absolute transition-all duration-300 pointer-events-none select-none`}
   left: 1rem;
-  font-size: ${(props) => (props.isFloating ? "0.875rem" : "1rem")};
-  top: ${(props) => (props.isFloating ? "-0.5rem" : "0.75rem")};
-  background-color: ${(props) => (props.isFloating ? "white" : "transparent")};
-  padding: ${(props) => (props.isFloating ? "0 0.25rem" : "0")};
+  font-size: ${(props) => (props.$isFloating ? "0.875rem" : "1rem")};
+  top: ${(props) => (props.$isFloating ? "-0.5rem" : "0.75rem")};
+  background-color: ${(props) => (props.$isFloating ? "white" : "transparent")};
+  padding: ${(props) => (props.$isFloating ? "0 0.25rem" : "0")};
   color: ${(props) => {
-    if (props.hasError) return "#ef4444";
-    if (props.isFocused) return "var(--color-primary)";
+    if (props.$hasError) return "#ef4444";
+    if (props.$isFocused) return "var(--color-primary)";
     return "#6b7280";
   }};
-  font-weight: ${(props) => (props.isFloating ? "500" : "400")};
+  font-weight: ${(props) => (props.$isFloating ? "500" : "400")};
 `;
 
 // Mensagem de erro
@@ -132,8 +132,8 @@ const CharacterCount = styled.div`
   bottom: 0.5rem;
   right: 0.75rem;
   color: ${(props) => {
-    if (props.isOverLimit) return "#ef4444";
-    if (props.isNearLimit) return "#f59e0b";
+    if (props.$isOverLimit) return "#ef4444";
+    if (props.$isNearLimit) return "#f59e0b";
     return "#9ca3af";
   }};
 `;
@@ -213,8 +213,8 @@ export const FormInput = forwardRef(
             ref={ref}
             name={name}
             id={name}
-            hasError={hasError}
-            isValid={isValid}
+            $hasError={hasError}
+            $isValid={isValid}
             onFocus={handleFocus}
             onBlur={handleBlur}
             onChange={handleChange}
@@ -233,16 +233,19 @@ export const FormInput = forwardRef(
           {label && (
             <FloatingLabel
               htmlFor={name}
-              isFloating={isFloating}
-              isFocused={isFocused}
-              hasError={hasError}
+              $isFloating={isFloating}
+              $isFocused={isFocused}
+              $hasError={hasError}
             >
               {label}
             </FloatingLabel>
           )}
 
           {showCharCount && maxLength && (
-            <CharacterCount isNearLimit={isNearLimit} isOverLimit={isOverLimit}>
+            <CharacterCount
+              $isNearLimit={isNearLimit}
+              $isOverLimit={isOverLimit}
+            >
               {charCount}/{maxLength}
             </CharacterCount>
           )}
@@ -328,8 +331,8 @@ export const FormTextArea = forwardRef(
             name={name}
             id={name}
             rows={rows}
-            hasError={hasError}
-            isValid={isValid}
+            $hasError={hasError}
+            $isValid={isValid}
             onFocus={handleFocus}
             onBlur={handleBlur}
             onChange={handleChange}
@@ -348,16 +351,19 @@ export const FormTextArea = forwardRef(
           {label && (
             <FloatingLabel
               htmlFor={name}
-              isFloating={isFloating}
-              isFocused={isFocused}
-              hasError={hasError}
+              $isFloating={isFloating}
+              $isFocused={isFocused}
+              $hasError={hasError}
             >
               {label}
             </FloatingLabel>
           )}
 
           {showCharCount && maxLength && (
-            <CharacterCount isNearLimit={isNearLimit} isOverLimit={isOverLimit}>
+            <CharacterCount
+              $isNearLimit={isNearLimit}
+              $isOverLimit={isOverLimit}
+            >
               {charCount}/{maxLength}
             </CharacterCount>
           )}
@@ -404,16 +410,16 @@ const StyledCheckbox = styled.div`
   position: relative;
   z-index: 1;
   border-color: ${(props) => {
-    if (props.hasError) return "#ef4444";
-    if (props.checked) return "var(--color-primary)";
+    if (props.$hasError) return "#ef4444";
+    if (props.$checked) return "var(--color-primary)";
     return "#d1d5db";
   }};
   background-color: ${(props) =>
-    props.checked ? "var(--color-primary)" : "white"};
+    props.$checked ? "var(--color-primary)" : "white"};
 
   &:hover {
     border-color: ${(props) =>
-      props.hasError ? "#ef4444" : "var(--color-secondary)"};
+      props.$hasError ? "#ef4444" : "var(--color-secondary)"};
     transform: scale(1.05);
   }
 
@@ -424,14 +430,14 @@ const StyledCheckbox = styled.div`
 
   svg {
     ${tw`w-3 h-3 text-white`}
-    opacity: ${(props) => (props.checked ? 1 : 0)};
+    opacity: ${(props) => (props.$checked ? 1 : 0)};
     transition: opacity 0.2s ease;
   }
 `;
 
 const CheckboxLabel = styled.label`
   ${tw`text-sm cursor-pointer select-none leading-relaxed`}
-  color: ${(props) => (props.hasError ? "#ef4444" : "#374151")};
+  color: ${(props) => (props.$hasError ? "#ef4444" : "#374151")};
 
   a {
     color: var(--color-primary);
@@ -453,7 +459,7 @@ export const FormCheckbox = ({
   name,
   label,
   error,
-  checked,
+  checked = false,
   onChange,
   delay = "0s",
   className,
@@ -493,8 +499,8 @@ export const FormCheckbox = ({
           {...props}
         />
         <StyledCheckbox
-          hasError={hasError}
-          checked={checked}
+          $hasError={hasError}
+          $checked={checked}
           onClick={handleClick}
           onKeyDown={handleKeyDown}
           tabIndex={0}
@@ -505,7 +511,7 @@ export const FormCheckbox = ({
           <CheckIcon />
         </StyledCheckbox>
         <CheckboxLabel
-          hasError={hasError}
+          $hasError={hasError}
           onClick={handleClick}
           dangerouslySetInnerHTML={{ __html: label }}
         />
@@ -540,13 +546,6 @@ FormInput.propTypes = {
   onBlur: PropTypes.func,
 };
 
-FormInput.defaultProps = {
-  showSuccess: false,
-  successMessage: "Válido",
-  showCharCount: false,
-  delay: "0s",
-};
-
 // PropTypes para FormTextArea
 FormTextArea.propTypes = {
   name: PropTypes.string.isRequired,
@@ -567,14 +566,6 @@ FormTextArea.propTypes = {
   onBlur: PropTypes.func,
 };
 
-FormTextArea.defaultProps = {
-  showSuccess: false,
-  successMessage: "Válido",
-  showCharCount: true,
-  delay: "0s",
-  rows: 4,
-};
-
 // PropTypes para FormCheckbox
 FormCheckbox.propTypes = {
   name: PropTypes.string.isRequired,
@@ -584,11 +575,6 @@ FormCheckbox.propTypes = {
   onChange: PropTypes.func,
   delay: PropTypes.string,
   className: PropTypes.string,
-};
-
-FormCheckbox.defaultProps = {
-  checked: false,
-  delay: "0s",
 };
 
 export default {

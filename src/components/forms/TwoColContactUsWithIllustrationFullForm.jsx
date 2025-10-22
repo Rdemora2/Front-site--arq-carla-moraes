@@ -714,13 +714,4 @@ ContactForm.propTypes = {
   emailAddress: PropTypes.string,
 };
 
-ContactForm.defaultProps = {
-  heading: "Pronto Para Transformar Seu Espaço?",
-  description:
-    "Agende uma consultoria exclusiva e descubra como podemos criar um ambiente único que reflete sua essência e estilo de vida.",
-  submitButtonText: "Quero Minha Consultoria",
-  phoneNumber: "(11) 99985-4345",
-  emailAddress: "arq.carlamoraes@gmail.com",
-};
-
 export default ContactForm;
