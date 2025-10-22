@@ -15,19 +15,18 @@ const Testimonial = lazy(
   () =>
     import(
       "components/testimonials/TwoColumnWithImageAndProfilePictureReview.jsx"
-    ),
+    )
 );
-const FaqSection = lazy(() => import("components/faqs/SimpleWithSideImage.jsx"));
+const FaqSection = lazy(
+  () => import("components/faqs/SimpleWithSideImage.jsx")
+);
 
 const Home = () => {
   const { preloadCriticalImages } = usePerformanceOptimizations();
 
   useEffect(() => {
     if (typeof preloadCriticalImages === "function") {
-      preloadCriticalImages([
-        "/images/components/hero/Frances-hero.webp",
-        "/images/logo/logo_reduced.webp",
-      ]);
+      preloadCriticalImages(["/images/components/hero/Frances-hero.webp"]);
     }
   }, [preloadCriticalImages]);
 
@@ -37,7 +36,7 @@ const Home = () => {
         <MetaTags
           title="Carla Moraes - Arquitetura paisagística"
           description="Há mais de 25 anos criando projetos paisagísticos exclusivos que harmonizam arquitetura e natureza. Do conceito à execução, trazemos beleza e propósito para cada ambiente."
-          imageUrl="/images/components/hero/Frances-hero.webp"
+          image="/images/components/hero/Frances-hero.webp"
           keywords="arquitetura paisagística, paisagismo, projetos de jardim, design exterior, São Paulo"
         />
         <Hero />

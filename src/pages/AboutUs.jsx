@@ -2,7 +2,6 @@ import React from "react";
 import AnimationRevealPage from "helpers/AnimationRevealPage.jsx";
 import MetaTags from "components/misc/MetaTags.jsx";
 
-import tw from "twin.macro";
 import styled from "styled-components";
 
 import Header from "components/navbar/navbar.jsx";
@@ -13,11 +12,6 @@ import Features from "components/features/ThreeColSimple.jsx";
 import SupportIconImage from "../assets/icons/svg/support-icon.svg?url";
 import ShieldIconImage from "../assets/icons/svg/shield-icon.svg?url";
 import CustomerLoveIconImage from "../assets/icons/svg/simple-icon.svg?url";
-
-const Subheading = styled.span`
-  ${tw`uppercase tracking-wider text-sm`}
-  color: #3e4d2c;
-`;
 
 const StyledMainFeature = styled(MainFeature1).withConfig({
   shouldForwardProp: (prop) => !["bgColor"].includes(prop),
@@ -59,28 +53,26 @@ export default () => {
         />
         <Header />
         <StyledMainFeature
-          subheading={
-            <Subheading>Sobre Carla Moraes Arquitetura Paisagística</Subheading>
-          }
+          subheading="Sobre Carla Moraes Arquitetura Paisagística"
           heading="Criamos jardins únicos há mais de 25 anos."
           description="Começamos em 1996 com a missão de conectar pessoas à natureza através do paisagismo. Desenvolvemos projetos personalizados que respeitam seu estilo de vida e as características do seu espaço. Nossa equipe trabalha junto com você desde a primeira conversa até a entrega final, garantindo que cada detalhe reflita seus sonhos e necessidades."
           buttonRounded={false}
           primaryButtonText="Conheça nosso Portfólio"
           primaryButtonUrl="/projetos"
-          imageSrc="/images/projects/Jardim-frances/Frances-3.webp"
+          imageSrc="/images/projects/Jardim-frances/Frances-3"
         />
         <StyledMainFeature
-          subheading={<Subheading>Nossa Filosofia</Subheading>}
+          subheading="Nossa Filosofia"
           heading="Jardins que combinam com você."
           description="Acreditamos que cada jardim deve refletir a personalidade do cliente. Por isso, escutamos suas ideias, entendemos seu estilo e criamos um espaço que funciona de verdade para sua rotina. Cuidamos de todos os detalhes técnicos para que você só precise se preocupar em desfrutar de seu novo jardim."
           buttonRounded={false}
           primaryButtonText="Vamos conversar?"
           primaryButtonUrl="/contato"
-          imageSrc="/images/projects/Jardim-frances/Frances-4.webp"
+          imageSrc="/images/projects/Jardim-frances/Frances-4"
           textOnLeft={false}
         />
         <StyledFeatures
-          subheading={<Subheading>Nossos Diferenciais</Subheading>}
+          subheading="Nossos Diferenciais"
           heading="Por que escolher nosso time"
           description="Ao longo de 25 anos, desenvolvemos uma forma de trabalhar que prioriza você e seu projeto. Confira o que nos diferencia:"
           cards={[

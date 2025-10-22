@@ -8,6 +8,7 @@ import {
   Subheading as SubheadingBase,
 } from "../misc/Headings.jsx";
 import { PrimaryButton } from "../misc/Buttons.jsx";
+import OptimizedImage from "components/misc/OptimizedImage.jsx";
 import QuotesLeftIcon from "../../assets/icons/svg/quotes-l.svg";
 import QuotesRightIcon from "../../assets/icons/svg/quotes-r.svg";
 import {
@@ -30,10 +31,10 @@ const TestimonialTextSlider = tw(Slider)``;
 const TestimonialText = tw.div`outline-none`;
 
 const ImageAndControlContainer = tw.div`relative outline-none`;
-const Image = styled.div((props) => [
-  `background-image: url("${props.imageSrc}");`,
-  tw`rounded bg-cover bg-center h-64 sm:h-80 lg:h-96`,
-]);
+const ImageContainer = tw.div`rounded h-64 sm:h-80 lg:h-96 overflow-hidden`;
+const StyledOptimizedImage = styled(OptimizedImage)`
+  ${tw`w-full h-full`}
+`;
 
 const ControlContainer = tw.div`absolute bottom-0 right-0 bg-gray-100 px-6 py-4 rounded-tl-3xl border`;
 const ControlButton = styled(PrimaryButton)`
@@ -78,7 +79,9 @@ const TextContainer = styled.div((props) => [
 ]);
 
 const Subheading = tw(SubheadingBase)`mb-4 text-sm md:text-sm lg:text-base`;
-const HeadingTitle = tw(SectionHeading)`lg:text-left leading-tight text-2xl sm:text-3xl lg:text-4xl`;
+const HeadingTitle = tw(
+  SectionHeading
+)`lg:text-left leading-tight text-2xl sm:text-3xl lg:text-4xl`;
 const Description = tw.p`max-w-md text-center mx-auto lg:mx-0 lg:text-left lg:max-w-none leading-relaxed text-sm md:text-sm lg:text-base font-medium mt-4 text-secondary-100`;
 
 const QuoteContainer = tw.div`relative mt-6 lg:mt-8`;
@@ -90,17 +93,17 @@ const CustomerName = tw.h5`font-semibold text-lg lg:text-xl text-primary-500`;
 const CustomerTitle = tw.p`font-medium text-secondary-100`;
 
 const QuotesLeft = tw(
-  QuotesLeftIcon,
+  QuotesLeftIcon
 )`w-6 h-6 opacity-75 text-primary-500 inline-block mr-1 -mt-3`;
 const QuotesRight = tw(
-  QuotesRightIcon,
+  QuotesRightIcon
 )`w-6 h-6 opacity-75 text-primary-500 inline-block ml-1 -mt-3`;
 
 const DecoratorBlob1 = tw(
-  SvgDecoratorBlob1,
+  SvgDecoratorBlob1
 )`absolute w-32 top-0 left-0 -z-10 text-primary-500 opacity-25 transform -translate-x-full`;
 const DecoratorBlob2 = tw(
-  SvgDecoratorBlob2,
+  SvgDecoratorBlob2
 )`absolute w-32 bottom-0 right-0 -z-10 text-pink-500 opacity-15 transform translate-x-2/3 translate-y-8`;
 
 const TwoColumnWithImageAndProfilePictureReview = ({
@@ -133,7 +136,7 @@ const TwoColumnWithImageAndProfilePictureReview = ({
       if (imageSliderRef) imageSliderRef.slickPrev();
       e.target.blur();
     },
-    [imageSliderRef],
+    [imageSliderRef]
   );
 
   const handleNextClick = useCallback(
@@ -141,7 +144,7 @@ const TwoColumnWithImageAndProfilePictureReview = ({
       if (imageSliderRef) imageSliderRef.slickNext();
       e.target.blur();
     },
-    [imageSliderRef],
+    [imageSliderRef]
   );
 
   return (
@@ -164,11 +167,13 @@ const TwoColumnWithImageAndProfilePictureReview = ({
               >
                 {testimonials.map((testimonial, index) => (
                   <ImageAndControlContainer key={index}>
-                    <Image
-                      imageSrc={testimonial.imageSrc || imageSrc}
-                      role="img"
-                      aria-label="Imagem ilustrativa do depoimento"
-                    />
+                    <ImageContainer>
+                      <StyledOptimizedImage
+                        src={testimonial.imageSrc || imageSrc}
+                        alt="Imagem ilustrativa do depoimento"
+                        sizes="(max-width: 1024px) 100vw, 40vw"
+                      />
+                    </ImageContainer>
                     <ControlContainer>
                       <ControlButton
                         onClick={handlePrevClick}

@@ -8,6 +8,7 @@ import Header, {
   NavLinks,
   NavLink as NavLinkBase,
 } from "../navbar/navbar.jsx";
+import OptimizedImage from "components/misc/OptimizedImage.jsx";
 
 const StyledHeader = styled(Header)`
   ${tw`justify-between py-4`}
@@ -110,7 +111,7 @@ const LeftColumn = styled.div`
       left: 0;
       right: 0;
       bottom: 0;
-      background-image: url("/images/components/hero/Modern-hero.webp");
+      background-image: url("/images/components/hero/Modern-hero-640w.webp");
       background-size: cover;
       background-position: center center;
       background-repeat: no-repeat;
@@ -212,6 +213,38 @@ const Actions = styled.div`
   }
 `;
 
+const TrustBar = styled.div`
+  ${tw`mt-8 flex flex-wrap items-center justify-center lg:justify-start gap-4 lg:gap-6 text-sm`}
+
+  @media (max-width: 1024px) {
+    position: relative;
+    z-index: 1;
+    color: white;
+  }
+`;
+
+const TrustItem = styled.div`
+  ${tw`flex items-center gap-2`}
+
+  @media (min-width: 1024px) {
+    ${tw`text-gray-700`}
+  }
+
+  @media (max-width: 1024px) {
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  }
+
+  svg {
+    ${tw`w-5 h-5 flex-shrink-0`}
+    color: #2D5A27;
+
+    @media (max-width: 1024px) {
+      filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.8));
+    }
+  }
+`;
+
 const HighlightText = styled.span`
   ${tw`text-primary-500`}
 `;
@@ -234,9 +267,9 @@ const FullWidthWithImageComponent = ({
   ),
   description = "Há mais de 25 anos criando projetos paisagísticos exclusivos que harmonizam arquitetura e natureza. Do conceito à execução, trazemos beleza e propósito para cada ambiente.",
   primaryActionUrl = "/contato",
-  primaryActionText = "Fale conosco",
+  primaryActionText = "Fale Conosco",
   secondaryActionUrl = "/projetos",
-  secondaryActionText = "Nossos Projetos",
+  secondaryActionText = "Explorar Projetos",
 }) => {
   useEffect(() => {
     const setVH = () => {
@@ -270,15 +303,63 @@ const FullWidthWithImageComponent = ({
                 {secondaryActionText}
               </a>
             </Actions>
+            <TrustBar>
+              <TrustItem>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                  <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+                <span>25+ Anos de Experiência</span>
+              </TrustItem>
+              <TrustItem>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                  <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+                <span>500+ Projetos Realizados</span>
+              </TrustItem>
+              <TrustItem>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                  <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+                <span>Atendimento Personalizado</span>
+              </TrustItem>
+            </TrustBar>
           </Content>
         </LeftColumn>
         <RightColumn>
-          <img
+          <OptimizedImage
             src="/images/components/hero/Frances-hero.webp"
-            alt="Projeto arquitetônico paisagístico de um jardim francês"
-            fetchPriority="high"
-            width="1200"
-            height="800"
+            alt="Jardim residencial de alto padrão com paisagismo francês projetado por Carla Moraes em São Paulo"
+            priority={true}
+            sizes="(max-width: 768px) 100vw, 50vw"
+            width={1200}
+            height={800}
             className="hero-image"
           />
         </RightColumn>
@@ -295,30 +376,6 @@ FullWidthWithImageComponent.propTypes = {
   primaryActionText: PropTypes.string,
   secondaryActionUrl: PropTypes.string,
   secondaryActionText: PropTypes.string,
-};
-
-FullWidthWithImageComponent.defaultProps = {
-  navLinks: [
-    <NavLinks key={1}>
-      <NavLink href="/sobre-nos">Sobre Nós</NavLink>
-      <NavLink href="/projetos">Projetos</NavLink>
-      <NavLink href="/contato">Contato</NavLink>
-    </NavLinks>,
-  ],
-  heading: (
-    <>
-      Transformamos Espaços
-      <wbr />
-      <br />
-      <HighlightText>em Experiências Naturais.</HighlightText>
-    </>
-  ),
-  description:
-    "Há mais de 25 anos criando projetos paisagísticos exclusivos que harmonizam arquitetura e natureza. Do conceito à execução, trazemos beleza e propósito para cada ambiente.",
-  primaryActionUrl: "/contato",
-  primaryActionText: "Fale conosco",
-  secondaryActionUrl: "/projetos",
-  secondaryActionText: "Nossos Projetos",
 };
 
 export default FullWidthWithImageComponent;

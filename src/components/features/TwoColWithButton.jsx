@@ -7,6 +7,7 @@ import {
   Subheading as SubheadingBase,
 } from "components/misc/Headings.jsx";
 import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons.jsx";
+import OptimizedImage from "components/misc/OptimizedImage.jsx";
 import SvgDotPattern from "../../assets/icons/svg/dot-pattern.svg?url";
 
 const Container = tw.div`relative`;
@@ -20,8 +21,9 @@ const TextColumn = styled(Column)((props) => [
     : tw`md:ml-12 lg:ml-16 md:order-last`,
 ]);
 
-const Image = styled.img.withConfig({
-  shouldForwardProp: (prop) => !["imageRounded", "imageBorder", "imageShadow"].includes(prop),
+const Image = styled(OptimizedImage).withConfig({
+  shouldForwardProp: (prop) =>
+    !["imageRounded", "imageBorder", "imageShadow"].includes(prop),
 })((props) => [
   props.imageRounded && tw`rounded`,
   props.imageBorder && tw`border`,
@@ -40,7 +42,7 @@ const TextContent = tw.div`lg:py-8 text-center md:text-left`;
 
 const Subheading = tw(SubheadingBase)`text-center md:text-left`;
 const Heading = tw(
-  SectionHeading,
+  SectionHeading
 )`mt-4 font-black text-left text-3xl sm:text-4xl lg:text-5xl text-center md:text-left leading-tight`;
 const Description = tw.p`mt-4 text-center md:text-left text-sm md:text-base lg:text-lg font-medium leading-relaxed text-secondary-100`;
 

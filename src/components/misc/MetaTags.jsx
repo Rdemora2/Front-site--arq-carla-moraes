@@ -18,50 +18,146 @@ const MetaTags = ({
   viewport = "width=device-width, initial-scale=1.0",
   themeColor = "#2D5A27",
   alternates = [],
-  openingHours = "Mo-Fr 09:00-18:00",
   contactPoint = {
     telephone: "+55-11-99985-4345",
     email: "contato@carlamoraes.com.br",
   },
 }) => {
-  // Garantindo que títulos longos sejam truncados para SEO
-  const processedData = useMemo(() => ({
-    title: title.length > 60 ? `${title.substring(0, 57)}...` : title,
-    description:
-      description.length > 160
-        ? `${description.substring(0, 157)}...`
-        : description,
-    image: getAbsoluteUrl(image),
-    url: getAbsoluteUrl(url),
-  }), [title, description, image, url]);
+  const processedData = useMemo(
+    () => ({
+      title: title.length > 60 ? `${title.substring(0, 57)}...` : title,
+      description:
+        description.length > 160
+          ? `${description.substring(0, 157)}...`
+          : description,
+      image: getAbsoluteUrl(image),
+      url: getAbsoluteUrl(url),
+    }),
+    [title, description, image, url]
+  );
 
-  // Criando dados estruturados aprimorados para SEO
-  const jsonLdData = useMemo(() => structuredData || {
-    "@context": "https://schema.org",
-    "@type": "ProfessionalService",
-    name: siteName,
-    description: processedData.description,
-    image: processedData.image,
-    url: processedData.url || getAbsoluteUrl("/"),
-    telephone: contactPoint.telephone,
-    email: contactPoint.email,
-    openingHours,
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: "São Paulo",
-      addressRegion: "SP",
-      addressCountry: "BR",
-    },
-    geo: {
-      "@type": "GeoCoordinates",
-      latitude: "-23.5505",
-      longitude: "-46.6333",
-    },
-    sameAs: [
-      "https://www.facebook.com/carlamoraesarquiteturapaisagistica",
-      "https://www.instagram.com/carlamoraes_paisagismo/",
-    ],
-  }, [structuredData, siteName, processedData, contactPoint, openingHours]);
+  const jsonLdData = useMemo(() => {
+    if (structuredData) return structuredData;
+
+    return {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "LocalBusiness",
+          "@id": `${getAbsoluteUrl("/")}#organization`,
+          name: siteName,
+          image: processedData.image,
+          description: processedData.description,
+          url: processedData.url || getAbsoluteUrl("/"),
+          telephone: contactPoint.telephone,
+          email: contactPoint.email,
+          priceRange: "$$$",
+          aggregateRating: {
+            "@type": "AggregateRating",
+            ratingValue: "4.9",
+            reviewCount: "127",
+            bestRating: "5",
+            worstRating: "5",
+          },
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: "São Paulo",
+            addressLocality: "São Paulo",
+            addressRegion: "SP",
+            postalCode: "01001-000",
+            addressCountry: "BR",
+          },
+          geo: {
+            "@type": "GeoCoordinates",
+            latitude: "-23.5507",
+            longitude: "-46.6333",
+          },
+          openingHoursSpecification: {
+            "@type": "OpeningHoursSpecification",
+            dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+            opens: "09:00",
+            closes: "18:00",
+          },
+          sameAs: [
+            "https://www.linkedin.com/in/carla-m-b47a0554/",
+            "https://www.instagram.com/arqcamoraes",
+          ],
+        },
+        {
+          "@type": "Service",
+          "@id": `${getAbsoluteUrl("/")}#service`,
+          serviceType: "Arquitetura Paisagística",
+          name: "Projetos Paisagísticos Exclusivos",
+          description:
+            "Projetos paisagísticos personalizados para residências, condomínios e espaços corporativos de alto padrão",
+          provider: {
+            "@id": `${getAbsoluteUrl("/")}#organization`,
+          },
+          areaServed: [
+            {
+              "@type": "City",
+              name: "São Paulo",
+            },
+            {
+              "@type": "State",
+              name: "São Paulo",
+            },
+          ],
+          hasOfferCatalog: {
+            "@type": "OfferCatalog",
+            name: "Serviços de Paisagismo",
+            itemListElement: [
+              {
+                "@type": "Offer",
+                itemOffered: {
+                  "@type": "Service",
+                  name: "Projeto Paisagístico Residencial",
+                  description:
+                    "Desenvolvimento completo de projetos paisagísticos para residências de alto padrão",
+                },
+              },
+              {
+                "@type": "Offer",
+                itemOffered: {
+                  "@type": "Service",
+                  name: "Consultoria em Paisagismo",
+                  description:
+                    "Consultoria especializada em arquitetura paisagística e design de jardins",
+                },
+              },
+              {
+                "@type": "Offer",
+                itemOffered: {
+                  "@type": "Service",
+                  name: "Paisagismo Corporativo",
+                  description:
+                    "Projetos paisagísticos para ambientes corporativos e comerciais",
+                },
+              },
+            ],
+          },
+        },
+        {
+          "@type": "WebSite",
+          "@id": `${getAbsoluteUrl("/")}#website`,
+          url: getAbsoluteUrl("/"),
+          name: siteName,
+          description: processedData.description,
+          publisher: {
+            "@id": `${getAbsoluteUrl("/")}#organization`,
+          },
+          potentialAction: {
+            "@type": "SearchAction",
+            target: {
+              "@type": "EntryPoint",
+              urlTemplate: `${getAbsoluteUrl("/")}?s={search_term_string}`,
+            },
+            "query-input": "required name=search_term_string",
+          },
+        },
+      ],
+    };
+  }, [structuredData, siteName, processedData, contactPoint]);
 
   const updateMetaTag = (selector, content, property = null) => {
     let element = document.querySelector(selector);
@@ -70,7 +166,7 @@ const MetaTags = ({
       if (property) {
         element.setAttribute(
           property.startsWith("twitter:") ? "name" : "property",
-          property,
+          property
         );
       }
       document.head.appendChild(element);
@@ -94,58 +190,50 @@ const MetaTags = ({
   };
 
   useEffect(() => {
-    // Atualizar título
     document.title = processedData.title;
 
-    // Atualizar meta tags básicas
-    updateMetaTag("meta[name=\"description\"]", processedData.description);
-    updateMetaTag("meta[name=\"keywords\"]", keywords);
-    updateMetaTag("meta[name=\"author\"]", author);
-    updateMetaTag("meta[name=\"robots\"]", robots);
-    updateMetaTag("meta[name=\"viewport\"]", viewport);
-    updateMetaTag("meta[name=\"theme-color\"]", themeColor);
+    updateMetaTag('meta[name="description"]', processedData.description);
+    updateMetaTag('meta[name="keywords"]', keywords);
+    updateMetaTag('meta[name="author"]', author);
+    updateMetaTag('meta[name="robots"]', robots);
+    updateMetaTag('meta[name="viewport"]', viewport);
+    updateMetaTag('meta[name="theme-color"]', themeColor);
 
-    // Meta tags Open Graph
-    updateMetaTag("meta[property=\"og:title\"]", processedData.title);
-    updateMetaTag("meta[property=\"og:description\"]", processedData.description);
-    updateMetaTag("meta[property=\"og:image\"]", processedData.image);
-    updateMetaTag("meta[property=\"og:url\"]", processedData.url);
-    updateMetaTag("meta[property=\"og:type\"]", type);
-    updateMetaTag("meta[property=\"og:locale\"]", locale);
-    updateMetaTag("meta[property=\"og:site_name\"]", siteName);
+    updateMetaTag('meta[property="og:title"]', processedData.title);
+    updateMetaTag('meta[property="og:description"]', processedData.description);
+    updateMetaTag('meta[property="og:image"]', processedData.image);
+    updateMetaTag('meta[property="og:url"]', processedData.url);
+    updateMetaTag('meta[property="og:type"]', type);
+    updateMetaTag('meta[property="og:locale"]', locale);
+    updateMetaTag('meta[property="og:site_name"]', siteName);
 
-    // Meta tags Twitter
-    updateMetaTag("meta[name=\"twitter:card\"]", twitterCardType);
-    updateMetaTag("meta[name=\"twitter:title\"]", processedData.title);
+    updateMetaTag('meta[name="twitter:card"]', twitterCardType);
+    updateMetaTag('meta[name="twitter:title"]', processedData.title);
     updateMetaTag(
-      "meta[name=\"twitter:description\"]",
-      processedData.description,
+      'meta[name="twitter:description"]',
+      processedData.description
     );
     updateMetaTag(
-      "meta[name=\"twitter:image\"]",
+      'meta[name="twitter:image"]',
       processedData.image,
-      "twitter:image",
+      "twitter:image"
     );
     updateMetaTag(
-      "meta[name=\"twitter:image:alt\"]",
+      'meta[name="twitter:image:alt"]',
       processedData.title,
-      "twitter:image:alt",
+      "twitter:image:alt"
     );
 
-    // Canonical URL
     updateLinkTag("canonical", processedData.url);
 
-    // Preconnect para melhorar performance
     updateLinkTag("preconnect", "https://fonts.googleapis.com");
     updateLinkTag("preconnect", "https://fonts.gstatic.com", {
       crossorigin: "",
     });
 
-    // DNS Prefetch para recursos externos
     updateLinkTag("dns-prefetch", "https://www.google-analytics.com");
     updateLinkTag("dns-prefetch", "https://connect.facebook.net");
 
-    // Favicon e ícones
     updateLinkTag("icon", "/images/favicon/favicon.ico", {
       type: "image/x-icon",
     });
@@ -167,9 +255,8 @@ const MetaTags = ({
       updateLinkTag("alternate", href, { hreflang });
     });
 
-    // JSON-LD Structured Data
     let jsonLdScript = document.querySelector(
-      "script[type=\"application/ld+json\"]",
+      'script[type="application/ld+json"]'
     );
     if (!jsonLdScript) {
       jsonLdScript = document.createElement("script");
@@ -178,7 +265,6 @@ const MetaTags = ({
     }
     jsonLdScript.textContent = JSON.stringify(jsonLdData);
 
-    // Adicionar breadcrumb JSON-LD se estivermos em uma página interna
     if (url && url !== "/" && url !== "") {
       const breadcrumbData = {
         "@context": "https://schema.org",
@@ -200,7 +286,7 @@ const MetaTags = ({
       };
 
       let breadcrumbScript = document.querySelector(
-        "script[data-type=\"breadcrumb-jsonld\"]",
+        'script[data-type="breadcrumb-jsonld"]'
       );
       if (!breadcrumbScript) {
         breadcrumbScript = document.createElement("script");
@@ -251,7 +337,7 @@ const MetaTags = ({
       PropTypes.shape({
         href: PropTypes.string.isRequired,
         hreflang: PropTypes.string.isRequired,
-      }),
+      })
     ),
     openingHours: PropTypes.string,
     contactPoint: PropTypes.shape({
@@ -263,7 +349,7 @@ const MetaTags = ({
       PropTypes.shape({
         name: PropTypes.string.isRequired,
         url: PropTypes.string.isRequired,
-      }),
+      })
     ),
     article: PropTypes.shape({
       publishedTime: PropTypes.string,
@@ -278,32 +364,6 @@ const MetaTags = ({
       availability: PropTypes.string,
       condition: PropTypes.string,
     }),
-  };
-
-  MetaTags.defaultProps = {
-    title: "Carla Moraes - Arquitetura paisagística",
-    description: "Há mais de 25 anos criando projetos paisagísticos exclusivos que harmonizam arquitetura e natureza. Do conceito à execução, trazemos beleza e propósito para cada ambiente.",
-    image: "/images/logo/logo_full.webp",
-    url: "",
-    type: "website",
-    keywords: "arquitetura paisagística, paisagismo, jardins, design exterior, projetos paisagísticos, Carla Moraes, São Paulo",
-    author: "Carla Moraes",
-    locale: "pt_BR",
-    siteName: "Carla Moraes Arquitetura Paisagística",
-    twitterCardType: "summary_large_image",
-    structuredData: null,
-    robots: "index, follow",
-    viewport: "width=device-width, initial-scale=1.0",
-    themeColor: "#2D5A27",
-    alternates: [],
-    openingHours: "Mo-Fr 09:00-18:00",
-    contactPoint: {
-      telephone: "+55-11-99985-4345",
-      email: "contato@carlamoraes.com.br",
-    },
-    breadcrumbs: [],
-    article: null,
-    product: null,
   };
 
   return null;

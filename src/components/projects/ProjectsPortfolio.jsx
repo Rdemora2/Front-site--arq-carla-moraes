@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
 import { SectionHeading } from "components/misc/Headings";
 import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons";
+import OptimizedImage from "components/misc/OptimizedImage.jsx";
 import {
   getProjectsByFilter,
   getDynamicFilterOptions,
@@ -67,8 +68,8 @@ const ProjectImageContainer = styled.div`
   ${tw`relative overflow-hidden`}
   height: 16rem;
 `;
-const ProjectImage = styled.img`
-  ${tw`w-full h-full object-cover transition-transform duration-300`}
+const ProjectImage = styled(OptimizedImage)`
+  ${tw`w-full h-full transition-transform duration-300`}
 
   ${ProjectCard}:hover & {
     transform: scale(1.05);
@@ -142,9 +143,12 @@ const MetadataIcon = tw.div`mr-2 text-green-600`;
 const GalleryContainer = tw.div`mt-6`;
 const GalleryTitle = tw.h3`text-lg font-bold text-gray-800 mb-4`;
 const GalleryGrid = tw.div`grid grid-cols-2 md:grid-cols-3 gap-4`;
-const GalleryImage = styled.img`
-  ${tw`w-full object-cover rounded-lg cursor-pointer hover:opacity-75 transition-opacity`}
+const GalleryImageContainer = styled.div`
+  ${tw`w-full rounded-lg overflow-hidden cursor-pointer hover:opacity-75 transition-opacity`}
   height: 8rem;
+`;
+const GalleryImage = styled(OptimizedImage)`
+  ${tw`w-full h-full`}
 `;
 
 // Componente de visualização de imagem em tela cheia
@@ -195,7 +199,7 @@ const ProjectsPortfolio = ({
     (project) => {
       navigate(`/projetos/${project.id}/galeria`);
     },
-    [navigate],
+    [navigate]
   );
 
   return (

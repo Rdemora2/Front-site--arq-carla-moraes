@@ -4,6 +4,7 @@ import AnimationRevealPage from "helpers/AnimationRevealPage.jsx";
 import MetaTags from "components/misc/MetaTags.jsx";
 import Header from "components/navbar/navbar.jsx";
 import Footer from "components/footers/FiveColumnWithInputForm.jsx";
+import OptimizedImage from "components/misc/OptimizedImage.jsx";
 import { getProjectById } from "../data/projectsData";
 import tw from "twin.macro";
 import styled from "styled-components";
@@ -56,8 +57,8 @@ const GalleryImageContainer = styled(motion.div)`
   }
 `;
 
-const GalleryImage = styled.img`
-  ${tw`w-full h-full object-cover transition-transform duration-300`}
+const GalleryImage = styled(OptimizedImage)`
+  ${tw`w-full h-full transition-transform duration-300`}
 `;
 
 const ImageOverlay = styled(motion.div)`
@@ -78,8 +79,14 @@ const ImageModal = styled(motion.div)`
   z-index: 10000;
 `;
 
-const ModalContent = tw.div`relative max-w-full max-h-full`;
-const ModalImage = tw.img`max-w-full max-h-full object-contain`;
+const ModalContent = tw.div`relative max-w-full max-h-full flex items-center justify-center`;
+const ModalImageWrapper = styled.div`
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 const ModalControls = tw.div`absolute top-0 right-0 m-4 flex gap-2`;
 const ControlButton = styled.button`
   ${tw`p-2 bg-white rounded-full text-gray-800 transition-all hover:bg-gray-200`}
@@ -235,10 +242,16 @@ const ProjectGallery = () => {
                   onClick={closeImageModal}
                 >
                   <ModalContent onClick={(e) => e.stopPropagation()}>
-                    <ModalImage
-                      src={project.gallery[selectedImageIndex]}
-                      alt={`${project.title} - Imagem ${selectedImageIndex + 1}`}
-                    />
+                    <ModalImageWrapper>
+                      <OptimizedImage
+                        src={project.gallery[selectedImageIndex]}
+                        alt={`${project.title} - Imagem ${selectedImageIndex + 1}`}
+                        priority={true}
+                        sizes="90vw"
+                        objectFit="contain"
+                        className="max-w-full max-h-screen"
+                      />
+                    </ModalImageWrapper>
 
                     <ModalControls>
                       <ControlButton onClick={closeImageModal}>

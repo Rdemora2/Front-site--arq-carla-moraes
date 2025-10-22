@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import tw from "twin.macro";
 import styled from "styled-components";
 import { SectionHeading } from "components/misc/Headings.jsx";
+import OptimizedImage from "components/misc/OptimizedImage.jsx";
 
 const Container = tw.div`relative py-16 md:py-20 lg:py-24`;
 const TwoColumn = tw.div`flex flex-col md:flex-row justify-between max-w-screen-xl mx-auto py-12 md:py-16`;
@@ -10,6 +11,10 @@ const Column = tw.div`w-full max-w-md mx-auto md:max-w-none md:mx-0`;
 const ImageColumn = tw(
   Column
 )`md:w-6/12 lg:w-5/12 flex-shrink-0 h-64 md:h-auto`;
+const ImageContainer = tw.div`rounded h-full overflow-hidden`;
+const StyledOptimizedImage = styled(OptimizedImage)`
+  ${tw`w-full h-full`}
+`;
 const TextColumn = styled(Column)(({ $textOnLeft }) => [
   tw`md:w-6/12 mt-8 md:mt-0`,
   $textOnLeft
@@ -17,10 +22,6 @@ const TextColumn = styled(Column)(({ $textOnLeft }) => [
     : tw`md:ml-8 lg:ml-16 md:order-last`,
 ]);
 
-const Image = styled.div(({ $imageSrc }) => [
-  `background-image: url("${$imageSrc}");`,
-  tw`rounded bg-cover bg-center h-full`,
-]);
 const TextContent = tw.div`lg:py-8`;
 
 const Heading = tw(
@@ -67,11 +68,13 @@ const TwoColSingleFeatureWithStats = ({
     <Container>
       <TwoColumn>
         <ImageColumn>
-          <Image
-            $imageSrc={
-              imageSrc || "/images/projects/Jardim-tropical/tropical-4.webp"
-            }
-          />
+          <ImageContainer>
+            <StyledOptimizedImage
+              src={imageSrc || "/images/projects/Jardim-tropical/tropical-4"}
+              alt="Projeto de paisagismo Carla Moraes"
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
+          </ImageContainer>
         </ImageColumn>
         <TextColumn $textOnLeft={textOnLeft}>
           <TextContent>
@@ -115,24 +118,6 @@ TwoColSingleFeatureWithStats.propTypes = {
   ),
   testimonial: PropTypes.object,
   imageContain: PropTypes.bool,
-};
-
-TwoColSingleFeatureWithStats.defaultProps = {
-  heading: null,
-  description:
-    "Desde 1996, a Carla Moraes Arquitetura Paisagística é referência em projetos que transformam espaços em experiências sensoriais únicas. Nossa expertise combina técnica apurada, visão estética refinada e compromisso com a sustentabilidade, criando paisagens que resistem ao tempo e valorizam significativamente seu patrimônio.",
-  primaryButtonText: "Learn More",
-  primaryButtonUrl: "https://timerse.com",
-  imageSrc: null,
-  buttonRounded: true,
-  imageRounded: true,
-  imageBorder: false,
-  imageShadow: false,
-  showDecoratorBlob: false,
-  textOnLeft: true,
-  statistics: null,
-  testimonial: null,
-  imageContain: false,
 };
 
 export default TwoColSingleFeatureWithStats;

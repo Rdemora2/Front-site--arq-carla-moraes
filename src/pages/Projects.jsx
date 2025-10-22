@@ -7,7 +7,9 @@ import { usePerformanceOptimizations } from "../hooks/usePerformanceOptimization
 import Header from "components/navbar/navbar.jsx";
 import Footer from "components/footers/FiveColumnWithInputForm.jsx";
 
-const ProjectsPortfolio = lazy(() => import("components/projects/ProjectsPortfolio.jsx"));
+const ProjectsPortfolio = lazy(
+  () => import("components/projects/ProjectsPortfolio.jsx")
+);
 
 const Projects = () => {
   const { preloadCriticalImages } = usePerformanceOptimizations();
@@ -35,12 +37,12 @@ const Projects = () => {
           imageUrl="/images/components/hero/Frances-hero.webp"
           keywords="projetos paisagísticos São Paulo, jardins residenciais alto padrão, paisagismo corporativo, arquitetura paisagística, design biofílico, jardins sustentáveis, Carla Moraes paisagista"
         />
-        
+
         <Header />
 
         {/* Portfolio principal com filtros integrados */}
         <Suspense fallback={<ComponentLoadingSpinner />}>
-          <ProjectsPortfolio 
+          <ProjectsPortfolio
             currentFilter={activeFilter}
             onFilterChange={handleFilterChange}
           />

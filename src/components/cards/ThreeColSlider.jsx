@@ -7,6 +7,7 @@ import styled from "styled-components";
 import { SectionHeading } from "components/misc/Headings";
 import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons";
 import { getFeaturedProjects } from "../../data/projectsData";
+import OptimizedImage from "components/misc/OptimizedImage.jsx";
 import {
   MapPin as LocationIcon,
   ChevronLeft as ChevronLeftIcon,
@@ -67,10 +68,10 @@ const CardSlider = styled(Slider)`
   }
 `;
 const Card = tw.div`h-full flex! flex-col sm:border max-w-sm sm:rounded-tl-4xl sm:rounded-br-5xl relative focus:outline-none`;
-const CardImage = styled.div((props) => [
-  `background-image: url("${props.imageSrc}");`,
-  tw`w-full h-56 sm:h-64 bg-cover bg-center rounded sm:rounded-none sm:rounded-tl-4xl`,
-]);
+const CardImageContainer = tw.div`w-full h-56 sm:h-64 rounded sm:rounded-none sm:rounded-tl-4xl overflow-hidden`;
+const StyledOptimizedImage = styled(OptimizedImage)`
+  ${tw`w-full h-full`}
+`;
 
 const TextInfo = tw.div`py-6 sm:px-10 sm:py-6`;
 const TitleReviewContainer = tw.div`flex flex-col sm:flex-row sm:justify-between sm:items-center`;
@@ -105,7 +106,7 @@ const IconContainer = styled.div`
 const Text = tw.div`ml-2 text-sm font-semibold text-gray-800`;
 
 const PrimaryButton = tw(
-  PrimaryButtonBase,
+  PrimaryButtonBase
 )`mt-auto sm:text-lg rounded-none w-full rounded sm:rounded-none sm:rounded-br-4xl py-3 sm:py-6`;
 
 const ThreeColSlider = ({ heading = <span>Projetos em Destaque</span> }) => {
@@ -139,7 +140,7 @@ const ThreeColSlider = ({ heading = <span>Projetos em Destaque</span> }) => {
         },
       ],
     }),
-    [],
+    []
   );
 
   const handlePrevClick = useCallback(
@@ -147,7 +148,7 @@ const ThreeColSlider = ({ heading = <span>Projetos em Destaque</span> }) => {
       if (sliderRef) sliderRef.slickPrev();
       e.target.blur();
     },
-    [sliderRef],
+    [sliderRef]
   );
 
   const handleNextClick = useCallback(
@@ -155,7 +156,7 @@ const ThreeColSlider = ({ heading = <span>Projetos em Destaque</span> }) => {
       if (sliderRef) sliderRef.slickNext();
       e.target.blur();
     },
-    [sliderRef],
+    [sliderRef]
   );
 
   const handleViewAllProjects = useCallback(() => {
@@ -164,7 +165,7 @@ const ThreeColSlider = ({ heading = <span>Projetos em Destaque</span> }) => {
 
   const updateTabIndex = useCallback(() => {
     const hiddenSlides = document.querySelectorAll(
-      ".slick-slide[aria-hidden=\"true\"]",
+      ".slick-slide[aria-hidden='true']"
     );
     hiddenSlides.forEach((slide) => {
       const focusableElements = slide.querySelectorAll("a, button, [tabindex]");
@@ -210,12 +211,14 @@ const ThreeColSlider = ({ heading = <span>Projetos em Destaque</span> }) => {
         >
           {featuredProjects.map((project, index) => (
             <Card key={`project-${project.id}`}>
-              <CardImage
-                imageSrc={project.featuredImage}
-                role="img"
-                aria-label={`Imagem do projeto ${project.title}`}
-                loading={index > 2 ? "lazy" : "eager"}
-              />
+              <CardImageContainer>
+                <StyledOptimizedImage
+                  src={project.featuredImage}
+                  alt={`Imagem do projeto ${project.title}`}
+                  priority={index <= 2}
+                  sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                />
+              </CardImageContainer>
               <TextInfo>
                 <TitleReviewContainer>
                   <Title>{project.title}</Title>
@@ -246,10 +249,6 @@ const ThreeColSlider = ({ heading = <span>Projetos em Destaque</span> }) => {
 
 ThreeColSlider.propTypes = {
   heading: PropTypes.node,
-};
-
-ThreeColSlider.defaultProps = {
-  heading: <span>Projetos em Destaque</span>,
 };
 
 export default memo(ThreeColSlider);

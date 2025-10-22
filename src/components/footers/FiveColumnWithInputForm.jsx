@@ -1,8 +1,9 @@
 import tw from "twin.macro";
 import styled from "styled-components";
 import { Instagram, Linkedin } from "react-feather";
+import OptimizedImage from "components/misc/OptimizedImage.jsx";
 
-const LogoImage = "/images/logo/logo_reduced.webp";
+const LogoImage = "/images/logo/logo_reduced";
 
 const Container = styled.div`
   ${tw`relative py-20 lg:py-24`}
@@ -47,7 +48,7 @@ const Divider = styled.div`
 const ThreeColRow = tw.div`flex flex-col md:flex-row items-center justify-between`;
 
 const LogoContainer = tw.div`flex items-center justify-center md:justify-start`;
-const LogoImg = styled.img`
+const LogoImg = styled(OptimizedImage)`
   ${tw`mr-2`}
   width: 25px;
   height: auto;
@@ -121,7 +122,7 @@ const WhatsAppIcon = () => (
   </svg>
 );
 
-const SafeBrowsingImage = styled.img`
+const SafeBrowsingImage = styled(OptimizedImage)`
   ${tw`mt-6 mx-auto sm:mx-0`}
   max-width: 170px;
   height: auto;
@@ -191,9 +192,10 @@ const Footer = () => {
             <ColumnHeading>Segurança</ColumnHeading>
             <SafeBrowsingContainer>
               <SafeBrowsingImage
-                src="/images/selo_safe_browsing.webp"
+                src="/images/selo_safe_browsing"
                 alt="Selo Google Safe Browsing - Site seguro e protegido"
                 title="Site protegido e verificado"
+                sizes="170px"
               />
             </SafeBrowsingContainer>
           </Column>
@@ -204,6 +206,7 @@ const Footer = () => {
             <LogoImg
               src={LogoImage}
               alt="Logo Carla Moraes Arquitetura Paisagística"
+              sizes="25px"
             />
             <LogoText>Carla Moraes Arquitetura Paisagística</LogoText>
           </LogoContainer>

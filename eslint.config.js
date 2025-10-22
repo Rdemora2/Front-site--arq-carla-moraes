@@ -40,7 +40,7 @@ module.exports = [
 
       // PropTypes
       "react/prop-types": "error",
-      "react/require-default-props": "warn",
+      "react/require-default-props": "off",
 
       // React Rules
       "react/react-in-jsx-scope": "off",
@@ -72,13 +72,13 @@ module.exports = [
       "no-console": "off", // Permitido para utilitários de logging
       "no-debugger": process.env.NODE_ENV === "production" ? "error" : "warn",
       "no-unused-vars": [
-        "error", 
-        { 
+        "error",
+        {
           argsIgnorePattern: "^_",
           varsIgnorePattern: "^(React|[A-Z])",
           ignoreRestSiblings: true,
           caughtErrorsIgnorePattern: "^_",
-        }
+        },
       ],
       "no-var": "error",
       "prefer-const": "error",

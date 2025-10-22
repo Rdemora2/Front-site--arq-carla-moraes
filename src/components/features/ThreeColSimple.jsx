@@ -90,11 +90,7 @@ const ThreeColSimple = ({
     },
   ],
   linkText = "",
-  heading = (
-    <>
-      <span>Diferenciais que Transformam</span>
-    </>
-  ),
+  heading = "Diferenciais que Transformam",
   subheading = "Nossa Expertise",
   description = "Com mais de 25 anos de experiência, combinamos visão artística e conhecimento técnico para criar paisagens atemporais que valorizam seu investimento e elevam sua qualidade de vida.",
   imageContainerCss = null,
@@ -158,48 +154,11 @@ ThreeColSimple.propTypes = {
     })
   ),
   linkText: PropTypes.string,
-  heading: PropTypes.string,
+  heading: PropTypes.node,
   subheading: PropTypes.string,
   description: PropTypes.string,
   imageContainerCss: PropTypes.object,
   imageCss: PropTypes.object,
-};
-
-ThreeColSimple.defaultProps = {
-  cards: [
-    {
-      imageSrc: SupportIconImage,
-      title: "Projetos Sob Medida",
-      description:
-        "Desenvolvemos projetos únicos e personalizados que refletem a essência de cada cliente. Cada elemento é cuidadosamente pensado para harmonizar com a arquitetura existente e valorizar o espaço disponível.",
-      url: "/",
-    },
-    {
-      imageSrc: ShieldIconImage,
-      title: "Sustentabilidade Comprovada",
-      description:
-        "Priorizamos o uso de espécies nativas, sistemas de irrigação eficientes e materiais sustentáveis. Nossos projetos respeitam o meio ambiente e garantem baixa manutenção a longo prazo.",
-      url: "/",
-    },
-    {
-      imageSrc: CustomizeIconImage,
-      title: "Execução de Excelência",
-      description:
-        "Da concepção à entrega final, nossa equipe técnica especializada acompanha cada etapa do projeto. Garantimos fidelidade ao design original e acabamento impecável em todos os detalhes.",
-      url: "/",
-    },
-  ],
-  linkText: "",
-  heading: (
-    <>
-      <span>Diferenciais que Transformam</span>
-    </>
-  ),
-  subheading: "Nossa Expertise",
-  description:
-    "Com mais de 25 anos de experiência, combinamos visão artística e conhecimento técnico para criar paisagens atemporais que valorizam seu investimento e elevam sua qualidade de vida.",
-  imageContainerCss: null,
-  imageCss: null,
 };
 
 export default ThreeColSimple;

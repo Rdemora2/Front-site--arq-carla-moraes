@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import tw from "twin.macro";
@@ -96,6 +94,15 @@ const InfoTitle = tw.h6`text-lg font-semibold`;
 const InfoValue = tw.p`text-gray-600`;
 
 const Form = tw.form`mt-4 md:mt-6 text-sm flex flex-col`;
+
+const UrgencyMessage = styled.p`
+  ${tw`text-sm italic mt-2 mb-4 flex items-center gap-2`}
+  color: #d69e2e;
+
+  svg {
+    ${tw`w-4 h-4 flex-shrink-0`}
+  }
+`;
 
 const SubmitButton = styled.button`
   ${tw`inline-block px-10 py-3 font-bold rounded transition duration-300 w-full`}
@@ -318,9 +325,9 @@ const InfoIcon = () => (
 );
 
 const ContactForm = ({
-  heading = "Entre em contato conosco",
-  description = "Estamos aqui para transformar seus sonhos em realidade através de projetos paisagísticos únicos e personalizados.",
-  submitButtonText = "Enviar Mensagem",
+  heading = "Pronto Para Transformar Seu Espaço?",
+  description = "Agende uma consultoria exclusiva e descubra como podemos criar um ambiente único que reflete sua essência e estilo de vida.",
+  submitButtonText = "Quero Minha Consultoria",
   phoneNumber = "(11) 99985-4345",
   emailAddress = "arq.carlamoraes@gmail.com",
 }) => {
@@ -602,6 +609,21 @@ const ContactForm = ({
                 )}
               </div>
 
+              <UrgencyMessage>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                </svg>
+                Vagas limitadas para novos projetos em 2025
+              </UrgencyMessage>
+
               <SubmitButton type="submit" disabled={!form.isFormValid}>
                 {submitButtonText}
               </SubmitButton>
@@ -693,10 +715,10 @@ ContactForm.propTypes = {
 };
 
 ContactForm.defaultProps = {
-  heading: "Entre em contato conosco",
+  heading: "Pronto Para Transformar Seu Espaço?",
   description:
-    "Estamos aqui para transformar seus sonhos em realidade através de projetos paisagísticos únicos e personalizados.",
-  submitButtonText: "Enviar Mensagem",
+    "Agende uma consultoria exclusiva e descubra como podemos criar um ambiente único que reflete sua essência e estilo de vida.",
+  submitButtonText: "Quero Minha Consultoria",
   phoneNumber: "(11) 99985-4345",
   emailAddress: "arq.carlamoraes@gmail.com",
 };
