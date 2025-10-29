@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import tw from "twin.macro";
-//eslint-disable-next-line
+ 
 
 import Header from "../navbar/navbar.jsx";
 

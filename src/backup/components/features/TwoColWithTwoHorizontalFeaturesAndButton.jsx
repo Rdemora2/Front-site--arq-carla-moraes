@@ -31,14 +31,14 @@ const Image = styled.img((props) => [
 ]);
 
 const DecoratorBlob = tw(
-  SvgDotPattern
+  SvgDotPattern,
 )`w-20 h-20 absolute right-0 bottom-0 transform translate-x-1/2 translate-y-1/2 fill-current text-primary-500 -z-10`;
 
 const TextContent = tw.div`lg:py-8 text-center md:text-left`;
 
 const Subheading = tw(SubheadingBase)`text-center md:text-left`;
 const Heading = tw(
-  SectionHeading
+  SectionHeading,
 )`mt-4 font-black text-left text-3xl sm:text-4xl lg:text-5xl text-center md:text-left leading-tight`;
 const Description = tw.p`mt-8 text-center md:text-left text-sm md:text-base lg:text-lg font-medium leading-relaxed text-secondary-100`;
 

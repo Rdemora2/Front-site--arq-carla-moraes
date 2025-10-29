@@ -87,17 +87,18 @@ export default ({
     setVisible((v) => v + 6);
   };
   return (
-    <AnimationRevealPage>
-      <Header />
-      <Container>
-        <ContentWithPaddingXl>
-          <HeadingRow>
-            <Heading>{headingText}</Heading>
-          </HeadingRow>
-          <Posts>
-            {posts.slice(0, visible).map((post, index) => (
-              <PostContainer key={index} featured={post.featured}>
-                <Post className="group" as="a" href={post.url}>
+    <>
+      <AnimationRevealPage>
+        <Header />
+        <Container>
+          <ContentWithPaddingXl>
+            <HeadingRow>
+              <Heading>{headingText}</Heading>
+            </HeadingRow>
+            <Posts>
+              {posts.slice(0, visible).map((post, index) => (
+                <PostContainer key={index} featured={post.featured}>
+                  <Post className="group" as="a" href={post.url}>
                   <Image imageSrc={post.imageSrc} />
                   <Info>
                     <Category>{post.category}</Category>
@@ -120,8 +121,11 @@ export default ({
           )}
         </ContentWithPaddingXl>
       </Container>
+      </AnimationRevealPage>
+      
+      {/* Footer fora do AnimationRevealPage para remover a animação */}
       <Footer />
-    </AnimationRevealPage>
+    </>
   );
 };
 

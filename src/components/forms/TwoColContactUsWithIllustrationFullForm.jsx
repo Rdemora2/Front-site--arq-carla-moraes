@@ -1,12 +1,11 @@
-"use client";
-
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import tw from "twin.macro";
 import styled, { css, keyframes } from "styled-components";
 import { useFormValidation } from "../../hooks/useFormValidation";
-import { FormInput, FormTextArea, FormCheckbox } from "./FormElements";
+import { FormInput, FormTextArea } from "./FormElements";
 import { trackEvent } from "../misc/Analytics";
+import ReactModalAdapter from "../../helpers/ReactModalAdapter";
 
 const fadeIn = keyframes`
   from { opacity: 0; }
@@ -18,11 +17,9 @@ const slideInUp = keyframes`
   to { transform: translateY(0); opacity: 0.99; }
 `;
 
-const pulse = keyframes`
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
-`;
+// Removido 'pulse' pois não estava sendo usado
+
+// Container principal do formulário
 
 const shake = keyframes`
   0%, 100% { transform: translateX(0); }
@@ -97,6 +94,15 @@ const InfoTitle = tw.h6`text-lg font-semibold`;
 const InfoValue = tw.p`text-gray-600`;
 
 const Form = tw.form`mt-4 md:mt-6 text-sm flex flex-col`;
+
+const UrgencyMessage = styled.p`
+  ${tw`text-sm italic mt-2 mb-4 flex items-center gap-2`}
+  color: #d69e2e;
+
+  svg {
+    ${tw`w-4 h-4 flex-shrink-0`}
+  }
+`;
 
 const SubmitButton = styled.button`
   ${tw`inline-block px-10 py-3 font-bold rounded transition duration-300 w-full`}
@@ -223,18 +229,125 @@ const ErrorIcon = () => (
   </svg>
 );
 
+const DevelopmentModal = styled(ReactModalAdapter)`
+  .ReactModal__Overlay {
+    ${tw`fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4`}
+    z-index: 9999 !important;
+    animation: ${fadeIn} 0.3s ease-out;
+  }
+
+  .ReactModal__Content {
+    ${tw`bg-white rounded-2xl p-8 max-w-md w-full mx-4 relative border-none outline-none`}
+    animation: ${slideInUp} 0.4s ease-out;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    margin: 0 !important;
+  }
+`;
+
+const ModalHeader = styled.div`
+  ${tw`text-center mb-6`}
+`;
+
+const ModalIcon = styled.div`
+  ${tw`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center`}
+  background-color: #fef3cd;
+  color: #d69e2e;
+`;
+
+const ModalTitle = styled.h3`
+  ${tw`text-xl font-bold mb-2`}
+  color: var(--color-primary-text);
+`;
+
+const ModalText = styled.p`
+  ${tw`text-gray-600 text-sm leading-relaxed mb-6`}
+`;
+
+const ModalButtons = styled.div`
+  ${tw`flex flex-col gap-3`}
+`;
+
+const WhatsAppButton = styled.button`
+  ${tw`w-full py-3 px-6 rounded-lg font-semibold text-white transition-all duration-300 flex items-center justify-center gap-2`}
+  background-color: #25d366;
+
+  &:hover {
+    background-color: #128c7e;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(37, 211, 102, 0.3);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+`;
+
+const CloseButton = styled.button`
+  ${tw`w-full py-3 px-6 rounded-lg font-semibold border-2 transition-all duration-300`}
+  color: var(--color-primary-text);
+  border-color: var(--color-primary-text);
+
+  &:hover {
+    background-color: var(--color-primary-text);
+    color: white;
+  }
+`;
+
+const CloseIconButton = styled.button`
+  ${tw`absolute w-8 h-8 flex items-center justify-center rounded-full transition-all duration-200`}
+  top: 1rem;
+  right: 1rem;
+  color: #6b7280;
+
+  &:hover {
+    background-color: #f3f4f6;
+    color: #374151;
+  }
+`;
+
+const WhatsAppIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488" />
+  </svg>
+);
+
+const InfoIcon = () => (
+  <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+  </svg>
+);
+
 const ContactForm = ({
-  heading = "Entre em contato conosco",
-  description = "Estamos disponíveis para responder suas dúvidas e transformar seu projeto em realidade.",
-  submitButtonText = "Enviar mensagem",
-  formAction = "#",
-  formMethod = "POST",
+  heading = "Pronto Para Transformar Seu Espaço?",
+  description = "Agende uma consultoria exclusiva e descubra como podemos criar um ambiente único que reflete sua essência e estilo de vida.",
+  submitButtonText = "Quero Minha Consultoria",
   phoneNumber = "(11) 99985-4345",
   emailAddress = "arq.carlamoraes@gmail.com",
 }) => {
-  const [submitStatus, setSubmitStatus] = useState(null); // 'success', 'error', null
+  const [showDevelopmentModal, setShowDevelopmentModal] = useState(false);
 
-  // Configuração do formulário com validação
+  const openWhatsApp = () => {
+    const userMessage =
+      form.values.mensagem?.trim() ||
+      "solicitar informações sobre os serviços de arquitetura paisagística";
+    const fullMessage = `Olá! Vim por meio do formulário do website e gostaria de falar do seguinte tema: ${userMessage}`;
+    const message = encodeURIComponent(fullMessage);
+    const whatsappUrl = `https://wa.me/5511999854345?text=${message}`;
+    window.open(whatsappUrl, "_blank");
+    setShowDevelopmentModal(false);
+  };
+
+  const closeDevelopmentModal = () => {
+    setShowDevelopmentModal(false);
+  };
+
   const form = useFormValidation(
     {
       nome: "",
@@ -244,7 +357,6 @@ const ContactForm = ({
       privacy: false,
     },
     {
-      // Configurações específicas do formulário
       nome: {
         rules: [
           (value) => (!value?.trim() ? "Nome é obrigatório" : null),
@@ -269,7 +381,7 @@ const ContactForm = ({
       telefone: {
         rules: [
           (value) => {
-            if (!value) return null;
+            if (!value || !value.trim()) return null;
             const phoneRegex =
               /^(\+55\s?)?(\(?[0-9]{2}\)?\s?)?[0-9]{4,5}[\s-]?[0-9]{4}$/;
             return !phoneRegex.test(value.replace(/\s/g, ""))
@@ -309,42 +421,25 @@ const ContactForm = ({
     }
   );
 
-  // Simular envio do formulário
-  const handleFormSubmit = async (formData) => {
-    try {
-      setSubmitStatus(null);
-
-      // Track evento de tentativa de envio
-      trackEvent("form_submit_attempt", "contact", "contact_form");
-
-      // Simular delay de envio
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
-      // Aqui você integraria com sua API
-      console.log("Dados do formulário:", formData);
-
-      // Simular sucesso (90% das vezes)
-      if (Math.random() > 0.1) {
-        setSubmitStatus("success");
-        form.resetForm();
-
-        // Track evento de sucesso
-        trackEvent("form_submit_success", "contact", "contact_form");
-      } else {
-        throw new Error("Erro simulado");
-      }
-    } catch (error) {
-      console.error("Erro ao enviar formulário:", error);
-      setSubmitStatus("error");
-
-      // Track evento de erro
-      trackEvent("form_submit_error", "contact", "contact_form");
-    }
-  };
-
   const onSubmit = async (e) => {
     e.preventDefault();
-    await form.handleSubmit(handleFormSubmit);
+
+    if (!form.isFormValid) {
+      const firstError = Object.keys(form.errors).find(
+        (key) => form.errors[key]
+      );
+      if (firstError) {
+        const element = document.querySelector(`[name="${firstError}"]`);
+        if (element) element.focus();
+      }
+      return;
+    }
+
+    // Abre o modal de desenvolvimento
+    setShowDevelopmentModal(true);
+
+    // Track evento de tentativa de envio
+    trackEvent("form_submit_attempt", "contact", "contact_form_dev_modal");
   };
 
   return (
@@ -443,83 +538,180 @@ const ContactForm = ({
                 helperText="Conte-nos sobre seu projeto paisagístico"
               />
 
-              <FormCheckbox
-                name="privacy"
-                checked={form.values.privacy}
-                onChange={form.handleChange}
-                error={form.errors.privacy}
-                delay="0.5s"
-                label='Ao enviar, você concorda com nossa <a href="/privacy-policy" target="_blank">política de privacidade</a> e <a href="/terms" target="_blank">termos de serviço</a>.'
-              />
-
-              {submitStatus === "success" && (
-                <SuccessMessage>
-                  <SuccessIcon />
-                  <div>
-                    <strong>Mensagem enviada com sucesso!</strong>
-                    <p>Entraremos em contato em breve.</p>
+              <div style={{ marginBottom: "1rem" }}>
+                <label
+                  style={{
+                    display: "flex",
+                    alignItems: "flex-start",
+                    gap: "0.75rem",
+                    cursor: "pointer",
+                    fontSize: "0.9rem",
+                    lineHeight: "1.5",
+                  }}
+                >
+                  <input
+                    type="checkbox"
+                    name="privacy"
+                    checked={form.values.privacy}
+                    onChange={form.handleChange}
+                    style={{
+                      width: "18px",
+                      height: "18px",
+                      marginTop: "2px",
+                      flexShrink: 0,
+                      cursor: "pointer",
+                      accentColor: "var(--color-primary)",
+                    }}
+                  />
+                  <span
+                    style={{
+                      color: form.errors.privacy ? "#ef4444" : "#374151",
+                    }}
+                  >
+                    Ao enviar, você concorda com nossa{" "}
+                    <a
+                      href="/privacy-policy"
+                      target="_blank"
+                      style={{
+                        color: "var(--color-primary)",
+                        fontWeight: "500",
+                        textDecoration: "underline",
+                      }}
+                    >
+                      política de privacidade
+                    </a>{" "}
+                    e{" "}
+                    <a
+                      href="/terms"
+                      target="_blank"
+                      style={{
+                        color: "var(--color-primary)",
+                        fontWeight: "500",
+                        textDecoration: "underline",
+                      }}
+                    >
+                      termos de serviço
+                    </a>
+                    .
+                  </span>
+                </label>
+                {form.errors.privacy && (
+                  <div
+                    style={{
+                      color: "#ef4444",
+                      fontSize: "0.875rem",
+                      marginTop: "0.5rem",
+                      marginLeft: "2.25rem",
+                    }}
+                  >
+                    {form.errors.privacy}
                   </div>
-                </SuccessMessage>
-              )}
-
-              {submitStatus === "error" && (
-                <ErrorMessage>
-                  <ErrorIcon />
-                  <div>
-                    <strong>Erro ao enviar mensagem</strong>
-                    <p>Tente novamente ou entre em contato por telefone.</p>
-                  </div>
-                </ErrorMessage>
-              )}
-
-              <SubmitButton
-                type="submit"
-                disabled={!form.isFormValid || form.isSubmitting}
-                isLoading={form.isSubmitting}
-              >
-                {form.isSubmitting ? (
-                  <>
-                    <LoadingSpinner />
-                    Enviando...
-                  </>
-                ) : (
-                  submitButtonText
                 )}
+              </div>
+
+              <UrgencyMessage>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                </svg>
+                Vagas limitadas para novos projetos em 2025
+              </UrgencyMessage>
+
+              <SubmitButton type="submit" disabled={!form.isFormValid}>
+                {submitButtonText}
               </SubmitButton>
             </Form>
           </RightColumn>
         </TwoColumn>
       </Content>
+
+      {/* Modal de desenvolvimento */}
+      <DevelopmentModal
+        isOpen={showDevelopmentModal}
+        onRequestClose={closeDevelopmentModal}
+        className="development-modal"
+        overlayClassName="development-modal-overlay"
+        closeTimeoutMS={300}
+        ariaHideApp={false}
+        style={{
+          overlay: {
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            zIndex: 9999,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "16px",
+          },
+          content: {
+            position: "relative",
+            top: "auto",
+            left: "auto",
+            right: "auto",
+            bottom: "auto",
+            border: "none",
+            background: "#fff",
+            overflow: "auto",
+            WebkitOverflowScrolling: "touch",
+            borderRadius: "16px",
+            outline: "none",
+            padding: "32px",
+            maxWidth: "448px",
+            width: "100%",
+            maxHeight: "90vh",
+            margin: "0",
+            boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+          },
+        }}
+      >
+        <CloseIconButton onClick={closeDevelopmentModal} aria-label="Fechar">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" />
+          </svg>
+        </CloseIconButton>
+
+        <ModalHeader>
+          <ModalIcon>
+            <InfoIcon />
+          </ModalIcon>
+          <ModalTitle>Formulário em Desenvolvimento</ModalTitle>
+        </ModalHeader>
+
+        <ModalText>
+          Nosso formulário de contato ainda está em desenvolvimento. Por
+          enquanto, você pode entrar em contato conosco diretamente pelo
+          WhatsApp para discutir seu projeto ou tirar suas dúvidas.
+        </ModalText>
+
+        <ModalButtons>
+          <WhatsAppButton onClick={openWhatsApp}>
+            <WhatsAppIcon />
+            Falar no WhatsApp
+          </WhatsAppButton>
+          <CloseButton onClick={closeDevelopmentModal}>Entendi</CloseButton>
+        </ModalButtons>
+      </DevelopmentModal>
     </Container>
   );
 };
 
-// PropTypes para o componente
 ContactForm.propTypes = {
   heading: PropTypes.string,
   description: PropTypes.string,
   submitButtonText: PropTypes.string,
-  formAction: PropTypes.string,
-  formMethod: PropTypes.string,
-  illustrationImageSrc: PropTypes.string,
-  className: PropTypes.string,
-  onSubmitSuccess: PropTypes.func,
-  onSubmitError: PropTypes.func,
-  showIllustration: PropTypes.bool,
-  customValidation: PropTypes.object,
-  trackingEnabled: PropTypes.bool,
-};
-
-ContactForm.defaultProps = {
-  heading: "Entre em contato conosco",
-  description:
-    "Estamos aqui para transformar seus sonhos em realidade através de projetos paisagísticos únicos e personalizados.",
-  submitButtonText: "Enviar Mensagem",
-  formAction: "https://formspree.io/f/mzzbowjl",
-  formMethod: "POST",
-  illustrationImageSrc: "/images/components/forms/email-illustration.svg",
-  showIllustration: true,
-  trackingEnabled: true,
+  phoneNumber: PropTypes.string,
+  emailAddress: PropTypes.string,
 };
 
 export default ContactForm;

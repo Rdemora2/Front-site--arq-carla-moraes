@@ -1,3 +1,48 @@
-# https://www.robotstxt.org/robotstxt.html
+# Robots.txt - Carla Moraes Arquitetura Paisagística
+# Otimizado para SEO e indexação
+
 User-agent: *
-Disallow:
+Allow: /
+
+# Páginas principais
+Allow: /sobre-nos
+Allow: /projetos
+Allow: /contato
+Allow: /projetos/*/galeria
+
+# Assets e recursos
+Allow: /images/
+Allow: /manifest.json
+Allow: /sw.js
+
+# Bloquear páginas desnecessárias
+Disallow: /admin/
+Disallow: /private/
+Disallow: /_next/
+Disallow: /api/
+Disallow: /dev/
+Disallow: /test/
+
+# Arquivos específicos
+Allow: /favicon.ico
+Allow: /sitemap.xml
+
+# Sitemap
+Sitemap: https://arqcarlamoraes.com.br/sitemap.xml
+
+# Configurações específicas para diferentes bots
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot  
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+# Crawl delay para evitar sobrecarga
+Crawl-delay: 1
+
+# Informações adicionais
+# Site: https://arqcarlamoraes.com.br
+# Atualizado: 2025-09-09

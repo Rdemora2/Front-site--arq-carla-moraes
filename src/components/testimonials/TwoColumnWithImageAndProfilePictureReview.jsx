@@ -8,6 +8,7 @@ import {
   Subheading as SubheadingBase,
 } from "../misc/Headings.jsx";
 import { PrimaryButton } from "../misc/Buttons.jsx";
+import OptimizedImage from "components/misc/OptimizedImage.jsx";
 import QuotesLeftIcon from "../../assets/icons/svg/quotes-l.svg";
 import QuotesRightIcon from "../../assets/icons/svg/quotes-r.svg";
 import {
@@ -23,23 +24,52 @@ const Container = tw.div`relative`;
 const Content = tw.div`max-w-screen-xl mx-auto py-20 lg:py-24`;
 const TestimonialsContainer = tw.div`mt-16 lg:mt-0`;
 const Testimonials = styled.div``;
-const Testimonial = tw.div`max-w-md lg:max-w-none mx-auto lg:mx-0 flex flex-col items-center lg:items-stretch lg:flex-row`;
+const Testimonial = tw.div`max-w-md lg:max-w-none mx-auto lg:mx-0 flex flex-col items-center lg:items-center lg:flex-row`;
 
 const TestimonialImageSlider = tw(Slider)`w-full lg:w-5/12 flex-shrink-0 `;
 const TestimonialTextSlider = tw(Slider)``;
 const TestimonialText = tw.div`outline-none`;
 
 const ImageAndControlContainer = tw.div`relative outline-none`;
-const Image = styled.div((props) => [
-  `background-image: url("${props.imageSrc}");`,
-  tw`rounded bg-cover bg-center h-80 sm:h-96 lg:h-144`,
-]);
+const ImageContainer = tw.div`rounded h-64 sm:h-80 lg:h-96 overflow-hidden`;
+const StyledOptimizedImage = styled(OptimizedImage)`
+  ${tw`w-full h-full`}
+`;
 
 const ControlContainer = tw.div`absolute bottom-0 right-0 bg-gray-100 px-6 py-4 rounded-tl-3xl border`;
 const ControlButton = styled(PrimaryButton)`
   ${tw`mx-3 rounded-full text-gray-100 p-2`}
+  transition: transform 0.3s ease;
+
   svg {
     ${tw`w-5 h-5`}
+    transition: all 0.3s ease;
+    pointer-events: none;
+    background: transparent !important;
+  }
+
+  &:hover svg,
+  &:focus svg,
+  &:active svg {
+    transform: none;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &:focus {
+    transform: scale(1.05);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &:focus:not(:focus-visible) {
+    transform: none;
   }
 `;
 
@@ -48,16 +78,18 @@ const TextContainer = styled.div((props) => [
   props.textOnLeft ? tw`lg:pr-12 lg:order-first` : tw`lg:pl-12 lg:order-last`,
 ]);
 
-const Subheading = tw(SubheadingBase)`mb-4`;
-const HeadingTitle = tw(SectionHeading)`lg:text-left leading-tight`;
-const Description = tw.p`max-w-md text-center mx-auto lg:mx-0 lg:text-left lg:max-w-none leading-relaxed text-sm sm:text-base lg:text-lg font-medium mt-4 text-secondary-100`;
+const Subheading = tw(SubheadingBase)`mb-4 text-sm md:text-sm lg:text-base`;
+const HeadingTitle = tw(
+  SectionHeading
+)`lg:text-left leading-tight text-2xl sm:text-3xl lg:text-4xl`;
+const Description = tw.p`max-w-md text-center mx-auto lg:mx-0 lg:text-left lg:max-w-none leading-relaxed text-sm md:text-sm lg:text-base font-medium mt-4 text-secondary-100`;
 
-const QuoteContainer = tw.div`relative mt-10 lg:mt-20`;
-const Quote = tw.blockquote`text-center lg:text-left text-sm sm:text-lg lg:text-xl xl:text-2xl`;
+const QuoteContainer = tw.div`relative mt-6 lg:mt-8`;
+const Quote = tw.blockquote`text-center lg:text-left text-sm sm:text-base lg:text-lg`;
 const CustomerInfo = tw.div`mt-6 flex flex-col sm:flex-row items-center justify-center lg:justify-start`;
 const CustomerProfilePicture = tw.img`rounded-full w-20 h-20`;
 const CustomerTextInfo = tw.div`text-center lg:text-left sm:ml-6 mt-2 sm:mt-0`;
-const CustomerName = tw.h5`font-semibold text-xl lg:text-2xl xl:text-3xl text-primary-500`;
+const CustomerName = tw.h5`font-semibold text-lg lg:text-xl text-primary-500`;
 const CustomerTitle = tw.p`font-medium text-secondary-100`;
 
 const QuotesLeft = tw(
@@ -99,13 +131,21 @@ const TwoColumnWithImageAndProfilePictureReview = ({
   const [imageSliderRef, setImageSliderRef] = useState(null);
   const [textSliderRef, setTextSliderRef] = useState(null);
 
-  const handlePrevClick = useCallback(() => {
-    if (imageSliderRef) imageSliderRef.slickPrev();
-  }, [imageSliderRef]);
+  const handlePrevClick = useCallback(
+    (e) => {
+      if (imageSliderRef) imageSliderRef.slickPrev();
+      e.target.blur();
+    },
+    [imageSliderRef]
+  );
 
-  const handleNextClick = useCallback(() => {
-    if (imageSliderRef) imageSliderRef.slickNext();
-  }, [imageSliderRef]);
+  const handleNextClick = useCallback(
+    (e) => {
+      if (imageSliderRef) imageSliderRef.slickNext();
+      e.target.blur();
+    },
+    [imageSliderRef]
+  );
 
   return (
     <Container>
@@ -127,11 +167,13 @@ const TwoColumnWithImageAndProfilePictureReview = ({
               >
                 {testimonials.map((testimonial, index) => (
                   <ImageAndControlContainer key={index}>
-                    <Image
-                      imageSrc={testimonial.imageSrc || imageSrc}
-                      role="img"
-                      aria-label="Imagem ilustrativa do depoimento"
-                    />
+                    <ImageContainer>
+                      <StyledOptimizedImage
+                        src={testimonial.imageSrc || imageSrc}
+                        alt="Imagem ilustrativa do depoimento"
+                        sizes="(max-width: 1024px) 100vw, 40vw"
+                      />
+                    </ImageContainer>
                     <ControlContainer>
                       <ControlButton
                         onClick={handlePrevClick}

@@ -1,4 +1,5 @@
-import React, { useState, useCallback, memo } from "react";
+import React, { useState, useCallback, memo, useEffect } from "react";
+import PropTypes from "prop-types";
 import { motion } from "framer-motion";
 import tw from "twin.macro";
 import styled from "styled-components";
@@ -14,22 +15,19 @@ const Content = tw.div`max-w-screen-xl mx-auto py-16 lg:py-20`;
 const TwoColumn = tw.div`flex`;
 const Column = tw.div``;
 
-const Image = styled.div(({ $imageSrc, $imageContain, $imageShadow }) => [
-  `background-image: url("${$imageSrc}");`,
-  $imageContain ? tw`bg-contain bg-no-repeat` : tw`bg-cover`,
-  $imageShadow ? tw`shadow` : tw`shadow-none`,
-  tw`hidden lg:block rounded h-144 bg-center`,
-]);
-
 const FAQContent = tw.div`lg:ml-12`;
-const Subheading = tw(SubheadingBase)`mb-4 text-center lg:text-left`;
-const Heading = tw(SectionHeading)`lg:text-left`;
-const Description = tw.p`max-w-xl text-center mx-auto lg:mx-0 lg:text-left lg:max-w-none leading-relaxed text-sm sm:text-base lg:text-lg font-medium mt-4 text-secondary-100`;
+const Subheading = tw(
+  SubheadingBase
+)`mb-4 text-center lg:text-left text-sm md:text-sm lg:text-base`;
+const Heading = tw(
+  SectionHeading
+)`lg:text-left text-2xl sm:text-3xl lg:text-4xl`;
+const Description = tw.p`max-w-xl text-center mx-auto lg:mx-0 lg:text-left lg:max-w-none leading-relaxed text-sm md:text-sm lg:text-base font-medium mt-4 text-secondary-100`;
 
 const FAQSContainer = tw.dl`mt-12`;
-const FAQ = tw.div`cursor-pointer mt-8 select-none border lg:border-0 px-8 py-4 lg:p-0 rounded-lg lg:rounded-none`;
+const FAQItem = tw.div`cursor-pointer mt-8 select-none border lg:border-0 px-8 py-4 lg:p-0 rounded-lg lg:rounded-none`;
 const Question = tw.dt`flex justify-between items-center`;
-const QuestionText = tw.span`text-lg lg:text-xl font-semibold`;
+const QuestionText = tw.span`text-base lg:text-lg font-semibold`;
 const QuestionToggleIcon = styled.span`
   ${tw`ml-2 bg-primary-500 text-gray-100 p-1 rounded-full group-hover:bg-primary-700 group-hover:text-gray-200 transition duration-300`}
   svg {
@@ -44,9 +42,6 @@ const SimpleWithSideImage = ({
   subheading = "Tire suas dúvidas",
   heading = "Perguntas Frequentes",
   description = "Entenda melhor sobre nosso processo de trabalho e como podemos ajudar a transformar seu espaço com um projeto paisagístico exclusivo.",
-  imageSrc = "https://images.unsplash.com/photo-1493246507139-91e8fad9978e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&q=80",
-  imageContain = false,
-  imageShadow = true,
   faqs = [
     {
       question:
@@ -90,79 +85,119 @@ const SimpleWithSideImage = ({
     );
   }, []);
 
+  useEffect(() => {
+    if (!faqs || faqs.length === 0) return;
+
+    const faqSchema = {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: faqs.map((faq) => ({
+        "@type": "Question",
+        name: faq.question,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: faq.answer,
+        },
+      })),
+    };
+
+    const scriptTag = document.createElement("script");
+    scriptTag.type = "application/ld+json";
+    scriptTag.id = "faq-schema";
+    scriptTag.text = JSON.stringify(faqSchema);
+
+    const existingScript = document.getElementById("faq-schema");
+    if (existingScript) {
+      existingScript.remove();
+    }
+
+    document.head.appendChild(scriptTag);
+
+    return () => {
+      const script = document.getElementById("faq-schema");
+      if (script) {
+        script.remove();
+      }
+    };
+  }, [faqs]);
+
   return (
     <Container>
       <Content>
-        <TwoColumn>
-          <Column>
-            <FAQContent>
-              {subheading ? <Subheading>{subheading}</Subheading> : null}
-              <Heading>{heading}</Heading>
-              <Description>{description}</Description>
-              <FAQSContainer>
-                {faqs &&
-                  faqs.map((faq, index) => (
-                    <FAQ
-                      key={index}
-                      onClick={() => toggleQuestion(index)}
-                      className="group"
-                      role="button"
-                      aria-expanded={activeQuestionIndex === index}
-                      aria-controls={`faq-answer-${index}`}
+        <Column>
+          <FAQContent>
+            {subheading ? <Subheading>{subheading}</Subheading> : null}
+            <Heading>{heading}</Heading>
+            <Description>{description}</Description>
+            <FAQSContainer>
+              {faqs &&
+                faqs.map((faq, index) => (
+                  <FAQItem
+                    key={`faq-${faq.question.slice(0, 20).replace(/\s+/g, "-").toLowerCase()}`}
+                    onClick={() => toggleQuestion(index)}
+                    className="group"
+                    role="button"
+                    aria-expanded={activeQuestionIndex === index}
+                    aria-controls={`faq-answer-${index}`}
+                  >
+                    <Question>
+                      <QuestionText>{faq.question}</QuestionText>
+                      <QuestionToggleIcon aria-hidden="true">
+                        {activeQuestionIndex === index ? (
+                          <MinusIcon />
+                        ) : (
+                          <PlusIcon />
+                        )}
+                      </QuestionToggleIcon>
+                    </Question>
+                    <Answer
+                      id={`faq-answer-${index}`}
+                      variants={{
+                        open: {
+                          opacity: 1,
+                          height: "auto",
+                          marginTop: "16px",
+                        },
+                        collapsed: {
+                          opacity: 0,
+                          height: 0,
+                          marginTop: "0px",
+                        },
+                      }}
+                      initial="collapsed"
+                      animate={
+                        activeQuestionIndex === index ? "open" : "collapsed"
+                      }
+                      transition={{
+                        duration: 0.3,
+                        ease: [0.04, 0.62, 0.23, 0.98],
+                      }}
                     >
-                      <Question>
-                        <QuestionText>{faq.question}</QuestionText>
-                        <QuestionToggleIcon aria-hidden="true">
-                          {activeQuestionIndex === index ? (
-                            <MinusIcon />
-                          ) : (
-                            <PlusIcon />
-                          )}
-                        </QuestionToggleIcon>
-                      </Question>
-                      <Answer
-                        id={`faq-answer-${index}`}
-                        variants={{
-                          open: {
-                            opacity: 1,
-                            height: "auto",
-                            marginTop: "16px",
-                          },
-                          collapsed: {
-                            opacity: 0,
-                            height: 0,
-                            marginTop: "0px",
-                          },
-                        }}
-                        initial="collapsed"
-                        animate={
-                          activeQuestionIndex === index ? "open" : "collapsed"
-                        }
-                        transition={{
-                          duration: 0.3,
-                          ease: [0.04, 0.62, 0.23, 0.98],
-                        }}
-                      >
-                        {faq.answer}
-                      </Answer>
-                    </FAQ>
-                  ))}
-              </FAQSContainer>
-            </FAQContent>
-          </Column>
-          <Column>
-            <Image
-              $imageSrc={imageSrc}
-              $imageContain={imageContain}
-              $imageShadow={imageShadow}
-              role="img"
-              aria-label="Ilustração para seção de perguntas frequentes"
-            />
-          </Column>
-        </TwoColumn>
+                      {faq.answer}
+                    </Answer>
+                  </FAQItem>
+                ))}
+            </FAQSContainer>
+          </FAQContent>
+        </Column>
       </Content>
     </Container>
   );
+};
+
+SimpleWithSideImage.propTypes = {
+  subheading: PropTypes.string,
+  heading: PropTypes.string,
+  description: PropTypes.string,
+  imageSrc: PropTypes.string,
+  imageContain: PropTypes.bool,
+  imageShadow: PropTypes.bool,
+  faqs: PropTypes.arrayOf(
+    PropTypes.shape({
+      question: PropTypes.string.isRequired,
+      answer: PropTypes.string.isRequired,
+    })
+  ),
 };
 
 export default memo(SimpleWithSideImage);

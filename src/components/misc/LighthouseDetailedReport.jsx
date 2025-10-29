@@ -137,16 +137,16 @@ const LighthouseDetailedReport = ({ isOpen, onClose }) => {
   // Agrupar métricas por categorias
   const metricsByCategory = {
     "Core Web Vitals": metrics.filter((m) =>
-      ["LCP", "FID", "CLS"].includes(m.name)
+      ["LCP", "FID", "CLS"].includes(m.name),
     ),
     "Outras Métricas de Performance": metrics.filter((m) =>
-      ["FCP", "TTFB", "TTI", "TBT", "SI"].includes(m.name)
+      ["FCP", "TTFB", "TTI", "TBT", "SI"].includes(m.name),
     ),
     "Métricas de Recursos": metrics.filter((m) =>
-      m.name.startsWith("Resource_")
+      m.name.startsWith("Resource_"),
     ),
     "Métricas de Componentes": metrics.filter((m) =>
-      m.name.startsWith("Component_")
+      m.name.startsWith("Component_"),
     ),
     Eventos: metrics.filter((m) => m.name.startsWith("Event_")),
   };
@@ -301,7 +301,7 @@ const LighthouseDetailedReport = ({ isOpen, onClose }) => {
                 </MetricTable>
               </MetricsSection>
             );
-          }
+          },
         )}
       </ReportContent>
     </ReportContainer>

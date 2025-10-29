@@ -16,7 +16,7 @@ export const useEnvironment = () => {
       if (!validation.isValid) {
         console.warn(
           "⚠️ Problemas de configuração encontrados:",
-          validation.errors?.join(", ") || "Erros não especificados"
+          validation.errors?.join(", ") || "Erros não especificados",
         );
       }
       logEnvironmentStatus();
@@ -67,16 +67,16 @@ export const useEnvironment = () => {
       },
       getShareUrls: (path = "", title = "", description = "") => ({
         facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-          getAbsoluteUrl(path)
+          getAbsoluteUrl(path),
         )}`,
         twitter: `https://twitter.com/intent/tweet?url=${encodeURIComponent(
-          getAbsoluteUrl(path)
+          getAbsoluteUrl(path),
         )}&text=${encodeURIComponent(title)}`,
         linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
-          getAbsoluteUrl(path)
+          getAbsoluteUrl(path),
         )}`,
         whatsapp: `https://wa.me/?text=${encodeURIComponent(
-          `${title} - ${getAbsoluteUrl(path)}`
+          `${title} - ${getAbsoluteUrl(path)}`,
         )}`,
       }),
 
@@ -158,11 +158,11 @@ export const useEnvironment = () => {
           pwa: config.enablePwa,
           serviceWorker: config.enableServiceWorker,
         }).filter(
-          (key) => config[`enable${key.charAt(0).toUpperCase() + key.slice(1)}`]
+          (key) => config[`enable${key.charAt(0).toUpperCase() + key.slice(1)}`],
         ),
       }),
     }),
-    []
+    [],
   );
 };
 

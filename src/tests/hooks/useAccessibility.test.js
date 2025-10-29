@@ -16,7 +16,7 @@ describe("useAccessibility", () => {
   describe("useFocusManagement", () => {
     it("deve gerenciar foco corretamente", () => {
       const { result } = renderHook(() =>
-        useAccessibility().useFocusManagement()
+        useAccessibility().useFocusManagement(),
       );
 
       const element = document.createElement("button");
@@ -31,7 +31,7 @@ describe("useAccessibility", () => {
 
     it("deve restaurar foco anterior", () => {
       const { result } = renderHook(() =>
-        useAccessibility().useFocusManagement()
+        useAccessibility().useFocusManagement(),
       );
 
       const button1 = document.createElement("button");
@@ -50,7 +50,7 @@ describe("useAccessibility", () => {
 
     it("deve capturar foco em container", () => {
       const { result } = renderHook(() =>
-        useAccessibility().useFocusManagement()
+        useAccessibility().useFocusManagement(),
       );
 
       const container = document.createElement("div");
@@ -67,7 +67,7 @@ describe("useAccessibility", () => {
 
     it("deve liberar captura de foco", () => {
       const { result } = renderHook(() =>
-        useAccessibility().useFocusManagement()
+        useAccessibility().useFocusManagement(),
       );
 
       const container = document.createElement("div");
@@ -85,7 +85,7 @@ describe("useAccessibility", () => {
   describe("useKeyboardNavigation", () => {
     it("deve navegar com teclado", () => {
       const { result } = renderHook(() =>
-        useAccessibility().useKeyboardNavigation()
+        useAccessibility().useKeyboardNavigation(),
       );
 
       const button1 = document.createElement("button");
@@ -105,7 +105,7 @@ describe("useAccessibility", () => {
 
     it("deve navegar para elemento anterior", () => {
       const { result } = renderHook(() =>
-        useAccessibility().useKeyboardNavigation()
+        useAccessibility().useKeyboardNavigation(),
       );
 
       const elements = [
@@ -129,7 +129,7 @@ describe("useAccessibility", () => {
 
     it("deve lidar com navegação circular", () => {
       const { result } = renderHook(() =>
-        useAccessibility().useKeyboardNavigation({ circular: true })
+        useAccessibility().useKeyboardNavigation({ circular: true }),
       );
 
       const elements = [
@@ -160,7 +160,7 @@ describe("useAccessibility", () => {
         result.current.announce("Mensagem de teste");
       });
 
-      const announcer = document.querySelector('[aria-live="polite"]');
+      const announcer = document.querySelector("[aria-live=\"polite\"]");
       expect(announcer).toBeTruthy();
       expect(announcer.textContent).toBe("Mensagem de teste");
     });
@@ -172,7 +172,7 @@ describe("useAccessibility", () => {
         result.current.announceUrgent("Erro crítico");
       });
 
-      const announcer = document.querySelector('[aria-live="assertive"]');
+      const announcer = document.querySelector("[aria-live=\"assertive\"]");
       expect(announcer).toBeTruthy();
       expect(announcer.textContent).toBe("Erro crítico");
     });
@@ -185,7 +185,7 @@ describe("useAccessibility", () => {
         result.current.clearAnnouncement();
       });
 
-      const announcer = document.querySelector('[aria-live="polite"]');
+      const announcer = document.querySelector("[aria-live=\"polite\"]");
       expect(announcer.textContent).toBe("");
     });
   });
@@ -195,7 +195,7 @@ describe("useAccessibility", () => {
       const callback = jest.fn();
 
       const { result } = renderHook(() =>
-        useAccessibility().useKeyboardShortcuts()
+        useAccessibility().useKeyboardShortcuts(),
       );
 
       act(() => {
@@ -219,7 +219,7 @@ describe("useAccessibility", () => {
       const callback = jest.fn();
 
       const { result } = renderHook(() =>
-        useAccessibility().useKeyboardShortcuts()
+        useAccessibility().useKeyboardShortcuts(),
       );
 
       act(() => {
@@ -243,7 +243,7 @@ describe("useAccessibility", () => {
   describe("useNavigationMode", () => {
     it("deve detectar navegação por teclado", () => {
       const { result } = renderHook(() =>
-        useAccessibility().useNavigationMode()
+        useAccessibility().useNavigationMode(),
       );
 
       expect(result.current.isKeyboardNavigation).toBe(false);
@@ -259,7 +259,7 @@ describe("useAccessibility", () => {
 
     it("deve voltar para navegação por mouse", () => {
       const { result } = renderHook(() =>
-        useAccessibility().useNavigationMode()
+        useAccessibility().useNavigationMode(),
       );
 
       // Ativa navegação por teclado
@@ -295,7 +295,7 @@ describe("useAccessibility", () => {
       });
 
       const { result } = renderHook(() =>
-        useAccessibility().useReducedMotion()
+        useAccessibility().useReducedMotion(),
       );
 
       expect(result.current.prefersReducedMotion).toBe(true);
@@ -325,7 +325,7 @@ describe("useAccessibility", () => {
   describe("useAriaAttributes", () => {
     it("deve gerar atributos ARIA corretos", () => {
       const { result } = renderHook(() =>
-        useAccessibility().useAriaAttributes()
+        useAccessibility().useAriaAttributes(),
       );
 
       const attributes = result.current.getComboboxAttributes("search", true, [
@@ -340,7 +340,7 @@ describe("useAccessibility", () => {
 
     it("deve gerar atributos para modal", () => {
       const { result } = renderHook(() =>
-        useAccessibility().useAriaAttributes()
+        useAccessibility().useAriaAttributes(),
       );
 
       const attributes = result.current.getModalAttributes("Modal Title");
@@ -352,7 +352,7 @@ describe("useAccessibility", () => {
 
     it("deve gerar atributos para toast", () => {
       const { result } = renderHook(() =>
-        useAccessibility().useAriaAttributes()
+        useAccessibility().useAriaAttributes(),
       );
 
       const attributes = result.current.getToastAttributes("error");

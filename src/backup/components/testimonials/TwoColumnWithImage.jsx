@@ -35,10 +35,10 @@ const CustomerName = tw.h5`font-bold text-lg lg:text-xl xl:text-2xl text-primary
 const CustomerTitle = tw.p`font-medium text-sm`;
 
 const QuotesLeft = tw(
-  QuotesLeftIcon
+  QuotesLeftIcon,
 )`w-8 h-8 lg:w-10 lg:h-10 text-primary-500 absolute top-0 left-0`;
 const QuotesRight = tw(
-  QuotesRightIcon
+  QuotesRightIcon,
 )`w-8 h-8 lg:w-10 lg:h-10 text-primary-500 absolute bottom-0 right-0`;
 
 const SliderControlButtonContainer = styled.div`
@@ -67,10 +67,10 @@ const PreviousArrow = ({ currentSlide, slideCount, ...props }) => (
 );
 
 const DecoratorBlob1 = tw(
-  SvgDecoratorBlob1
+  SvgDecoratorBlob1,
 )`absolute w-32 top-0 left-0 -z-10 text-primary-500 opacity-25 transform -translate-x-full`;
 const DecoratorBlob2 = tw(
-  SvgDecoratorBlob2
+  SvgDecoratorBlob2,
 )`absolute w-32 bottom-0 right-0 -z-10 text-pink-500 opacity-15 transform translate-x-2/3 translate-y-8`;
 
 export default () => {
@@ -109,7 +109,7 @@ export default () => {
       <Content>
         <HeadingInfoContainer>
           <HeadingTitle>Our Awesome Customers</HeadingTitle>
-          <HeadingDescription></HeadingDescription>
+          <HeadingDescription />
         </HeadingInfoContainer>
         <TestimonialSliderContainer>
           <TestimonialSlider

@@ -35,9 +35,12 @@ module.exports = [
       // ESLint recommended rules
       ...js.configs.recommended.rules,
 
+      // Console rules - configurado baseado no ambiente
+      "no-debugger": process.env.NODE_ENV === "production" ? "error" : "warn",
+
       // PropTypes
       "react/prop-types": "error",
-      "react/require-default-props": "warn",
+      "react/require-default-props": "off",
 
       // React Rules
       "react/react-in-jsx-scope": "off",
@@ -66,16 +69,16 @@ module.exports = [
       "react-hooks/exhaustive-deps": "warn",
 
       // JavaScript Rules
-      "no-console": process.env.NODE_ENV === "production" ? "error" : "warn",
+      "no-console": "off", // Permitido para utilitários de logging
       "no-debugger": process.env.NODE_ENV === "production" ? "error" : "warn",
       "no-unused-vars": [
-        "error", 
-        { 
+        "error",
+        {
           argsIgnorePattern: "^_",
           varsIgnorePattern: "^(React|[A-Z])",
           ignoreRestSiblings: true,
           caughtErrorsIgnorePattern: "^_",
-        }
+        },
       ],
       "no-var": "error",
       "prefer-const": "error",

@@ -1,6 +1,7 @@
 import React from "react";
 import AnimationRevealPage from "helpers/AnimationRevealPage.jsx";
 import { Container, Content2Xl } from "components/misc/Layouts";
+import OptimizedImage from "components/misc/OptimizedImage.jsx";
 import tw from "twin.macro";
 import { useEnvironment } from "hooks/useEnvironment";
 import MetaTags from "components/misc/MetaTags.jsx";
@@ -9,7 +10,7 @@ import { LogoLink } from "components/navbar/navbar.jsx";
 import { SectionHeading as HeadingBase } from "components/misc/Headings";
 import { SectionDescription as DescriptionBase } from "components/misc/Typography";
 
-const logo = "/images/logo/logo_full.webp";
+const logo = "/images/logo/logo_full";
 
 const Row = tw.div`flex`;
 const NavRow = tw(Row)`flex flex-col lg:flex-row items-center justify-between`;
@@ -35,7 +36,13 @@ export default () => {
         <Content2Xl>
           <NavRow>
             <LogoLink href="/">
-              <img src={logo} alt="" />
+              <OptimizedImage
+                src={logo}
+                alt="Logo Carla Moraes"
+                sizes="128px"
+                width={128}
+                height={75}
+              />
               Carla Moraes Arquitetura paisagística
             </LogoLink>
           </NavRow>

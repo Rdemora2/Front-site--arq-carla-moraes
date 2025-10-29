@@ -157,7 +157,7 @@ export const usePWA = () => {
     return () => {
       window.removeEventListener(
         "beforeinstallprompt",
-        handleBeforeInstallPrompt
+        handleBeforeInstallPrompt,
       );
       window.removeEventListener("appinstalled", handleAppInstalled);
     };
@@ -247,7 +247,7 @@ export const usePushNotifications = () => {
         return null;
       }
     },
-    [isSupported, permission]
+    [isSupported, permission],
   );
 
   return {

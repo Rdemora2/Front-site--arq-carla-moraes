@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import PropTypes from "prop-types";
 import tw from "twin.macro";
 import styled from "styled-components";
 
@@ -7,30 +8,38 @@ import Header, {
   NavLinks,
   NavLink as NavLinkBase,
 } from "../navbar/navbar.jsx";
+import OptimizedImage from "components/misc/OptimizedImage.jsx";
 
 const StyledHeader = styled(Header)`
   ${tw`justify-between py-4`}
+
+  /* Alinhamento à esquerda no desktop */
+  @media (min-width: 1024px) {
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
   ${LogoLink} {
     ${tw`mr-8 pb-0`}
   }
   @media (max-width: 1024px) {
-    background-color: rgba(249, 245, 239, 0.6);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    background-color: #e2e8f0;
     position: relative;
-    z-index: 20;
+    z-index: 30;
     padding: 0.625rem 1.875rem;
     width: calc(100% + 4rem);
     margin-left: -2rem;
     margin-right: -2rem;
-    height: 4.5rem;
+    height: 5.5rem;
     display: flex;
     align-items: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   }
   nav:first-child {
     @media (min-width: 1024px) {
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-start;
       align-items: center;
       width: 100%;
     }
@@ -61,13 +70,27 @@ const Container = styled.div`
   ${tw`relative -mx-8 -mt-8 min-h-screen`}
 
   @media (max-width: 1024px) {
-    min-height: 100vh;
-    height: calc(var(--vh, 1vh) * 100);
+    min-height: 100dvh;
+    height: 100dvh;
+    max-height: 100dvh;
+    overflow: hidden;
   }
 `;
 const TwoColumn = tw.div`flex flex-col lg:flex-row min-h-screen`;
 const LeftColumn = styled.div`
-  ${tw`ml-8 mr-8 xl:pl-10 flex flex-col justify-center relative z-10`} @media (max-width: 1024px) {
+  ${tw`flex flex-col justify-center relative z-10`}
+
+  /* Desktop: exatamente 50% da largura */
+  @media (min-width: 1024px) {
+    width: 50%;
+    flex: none;
+    padding-left: 3rem;
+    padding-top: 1rem;
+    padding-right: 2rem;
+    margin-left: 1rem;
+  }
+
+  @media (max-width: 1024px) {
     margin-left: 0;
     margin-right: 0;
     padding-left: 2rem;
@@ -75,42 +98,62 @@ const LeftColumn = styled.div`
     padding-top: 0;
     padding-bottom: 0;
     position: relative;
-    min-height: calc(100vh - 4.5rem);
-    height: calc(var(--vh, 1vh) * 100 - 4.5rem);
+    min-height: 100dvh;
+    height: 100vh;
+    max-height: 100vh;
     display: flex;
     flex-direction: column;
 
     &::before {
       content: "";
       position: absolute;
-      top: -4.5rem;
-      left: -2rem;
-      right: -2rem;
+      top: 0;
+      left: 0;
+      right: 0;
       bottom: 0;
-      background-image: url("/images/components/hero/Modern-hero.webp");
+      background-image: url("/images/components/hero/Modern-hero-640w.webp");
       background-size: cover;
-      background-position: center;
+      background-position: center center;
       background-repeat: no-repeat;
+      background-attachment: local;
       filter: blur(1px);
       z-index: -10;
-      min-height: 100vh;
-      height: calc(var(--vh, 1vh) * 100);
+      width: 100%;
+      height: 100%;
     }
   }
 `;
 const RightColumn = styled.div`
-  ${tw`bg-cover bg-center xl:ml-20 lg:w-1/2 lg:flex-1 min-h-screen lg:min-h-full`}
+  ${tw`bg-cover bg-center min-h-screen lg:min-h-full`}
+
+  /* Desktop: exatamente 50% da largura */
+  @media (min-width: 1024px) {
+    width: 50%;
+    flex: none;
+  }
+
   @media (max-width: 1024px) {
     display: none;
   }
 
   .hero-image {
-    ${tw`w-full h-full min-h-screen lg:min-h-full`}
+    ${tw`w-full h-full min-h-screen lg:min-h-full object-cover`}
   }
 `;
 
 const Content = styled.div`
-  ${tw`mt-8 lg:mt-24 lg:mb-24 flex flex-col sm:items-center lg:items-stretch`} @media (max-width: 1024px) {
+  ${tw`flex flex-col sm:items-center lg:items-stretch`}
+
+  /* Desktop: centralizar conteúdo verticalmente na coluna de 50% */
+  @media (min-width: 1024px) {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2rem 0;
+  }
+
+  @media (max-width: 1024px) {
     position: relative;
     padding: 2rem;
     margin: 0 -2rem;
@@ -119,7 +162,8 @@ const Content = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    height: 100%;
+    height: calc(100vh - 5.5rem);
+    max-height: calc(100vh - 5.5rem);
 
     &::before {
       content: "";
@@ -143,7 +187,7 @@ const Heading = styled.h1`
   }
 `;
 const Paragraph = styled.p`
-  ${tw`max-w-md my-8 lg:my-5 lg:my-8 sm:text-lg lg:text-base xl:text-lg leading-loose`}
+  ${tw`max-w-lg my-8 lg:my-5 lg:my-8 text-lg lg:text-base xl:text-lg leading-normal`}
   @media (max-width: 1024px) {
     color: white;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
@@ -169,12 +213,47 @@ const Actions = styled.div`
   }
 `;
 
+const TrustBar = styled.div`
+  ${tw`mt-8 flex flex-wrap items-center justify-center lg:justify-start gap-4 lg:gap-6 text-sm`}
+
+  @media (max-width: 1024px) {
+    position: relative;
+    z-index: 1;
+    color: white;
+  }
+`;
+
+const TrustItem = styled.div`
+  ${tw`flex items-center gap-2`}
+
+  @media (min-width: 1024px) {
+    ${tw`text-gray-700`}
+  }
+
+  @media (max-width: 1024px) {
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  }
+
+  svg {
+    ${tw`w-5 h-5 flex-shrink-0`}
+    color: #2D5A27;
+
+    @media (max-width: 1024px) {
+      filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.8));
+    }
+  }
+`;
+
+const HighlightText = styled.span`
+  ${tw`text-primary-500`}
+`;
+
 const FullWidthWithImageComponent = ({
   navLinks = [
     <NavLinks key={1}>
-      <NavLink href="/sobre-nos">Sobre</NavLink>
-      <NavLink href="#">Projetos</NavLink>
-      <NavLink href="#">Serviços</NavLink>
+      <NavLink href="/sobre-nos">Sobre Nós</NavLink>
+      <NavLink href="/projetos">Projetos</NavLink>
       <NavLink href="/contato">Contato</NavLink>
     </NavLinks>,
   ],
@@ -183,14 +262,14 @@ const FullWidthWithImageComponent = ({
       Transformamos Espaços
       <wbr />
       <br />
-      <span tw="text-primary-500">em Experiências Naturais.</span>
+      <HighlightText>em Experiências Naturais.</HighlightText>
     </>
   ),
   description = "Há mais de 25 anos criando projetos paisagísticos exclusivos que harmonizam arquitetura e natureza. Do conceito à execução, trazemos beleza e propósito para cada ambiente.",
   primaryActionUrl = "/contato",
-  primaryActionText = "Solicite um Orçamento",
-  secondaryActionUrl = "#",
-  secondaryActionText = "Nossos Projetos",
+  primaryActionText = "Fale Conosco",
+  secondaryActionUrl = "/projetos",
+  secondaryActionText = "Explorar Projetos",
 }) => {
   useEffect(() => {
     const setVH = () => {
@@ -224,21 +303,79 @@ const FullWidthWithImageComponent = ({
                 {secondaryActionText}
               </a>
             </Actions>
+            <TrustBar>
+              <TrustItem>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                  <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+                <span>25+ Anos de Experiência</span>
+              </TrustItem>
+              <TrustItem>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                  <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+                <span>500+ Projetos Realizados</span>
+              </TrustItem>
+              <TrustItem>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                  <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+                <span>Atendimento Personalizado</span>
+              </TrustItem>
+            </TrustBar>
           </Content>
         </LeftColumn>
         <RightColumn>
-          <img
+          <OptimizedImage
             src="/images/components/hero/Frances-hero.webp"
-            alt="Projeto arquitetônico paisagístico de um jardim francês"
-            fetchpriority="high"
-            width="1200"
-            height="800"
+            alt="Jardim residencial de alto padrão com paisagismo francês projetado por Carla Moraes em São Paulo"
+            priority={true}
+            sizes="(max-width: 768px) 100vw, 50vw"
+            width={1200}
+            height={800}
             className="hero-image"
           />
         </RightColumn>
       </TwoColumn>
     </Container>
   );
+};
+
+FullWidthWithImageComponent.propTypes = {
+  navLinks: PropTypes.node,
+  heading: PropTypes.node,
+  description: PropTypes.string,
+  primaryActionUrl: PropTypes.string,
+  primaryActionText: PropTypes.string,
+  secondaryActionUrl: PropTypes.string,
+  secondaryActionText: PropTypes.string,
 };
 
 export default FullWidthWithImageComponent;

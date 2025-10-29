@@ -9,7 +9,7 @@ import googleIconImageSrc from "../assets/icons/webp/google-icon.webp";
 import twitterIconImageSrc from "../assets/icons/webp/twitter-icon.webp";
 import { LogIn as LoginIcon } from "react-feather";
 
-const logo = "/images/logo/logo_full.webp";
+const logo = "/images/logo/logo_full";
 
 const Container = tw(
   ContainerBase

@@ -246,37 +246,12 @@ src/
 └── config/              # Configurações
 ```
 
-## 📖 Documentação
-
-Para documentação técnica completa, consulte:
-
-- [Documentação Técnica](./docs/TECHNICAL_DOCUMENTATION.md)
-- [Guia de Contribuição](./docs/CONTRIBUTING.md)
-- [Changelog](./docs/CHANGELOG.md)
-
-## 🤝 Contribuindo
-
-1. Fork o projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
-3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
-4. Push para a branch (`git push origin feature/AmazingFeature`)
-5. Abra um Pull Request
-
 ## 📝 Licença
 
 Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
 
-## 📞 Contato
-
-**Carla Moraes Arquitetura Paisagística**
-
-- Website: [arqcarlamoraes.com.br](https://arqcarlamoraes.com.br/)
-- Instagram: [@arq.carlamoraes](https://instagram.com/arq.carlamoraes)
-- WhatsApp: [Contato Direto](https://wa.me/5511999999999)
-
 ---
 
 <div align="center">
-  <p>Desenvolvido com ❤️ e atenção aos detalhes</p>
-  <p>© 2024 Carla Moraes Arquitetura Paisagística</p>
+  <p>© 2025 Carla Moraes Arquitetura Paisagística</p>
 </div>

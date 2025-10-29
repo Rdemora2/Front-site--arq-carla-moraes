@@ -64,7 +64,7 @@ const usePerformanceMonitoring = () => {
       } catch (error) {
         console.warn(
           "Erro ao configurar PerformanceObserver para longtasks:",
-          error
+          error,
         );
       }
     }
@@ -103,7 +103,7 @@ const usePerformanceMonitoring = () => {
     try {
       const fcpEntries = performance.getEntriesByType("paint");
       const fcpEntry = fcpEntries.find(
-        (entry) => entry.name === "first-contentful-paint"
+        (entry) => entry.name === "first-contentful-paint",
       );
       return fcpEntry ? Math.round(fcpEntry.startTime) : null;
     } catch (error) {
@@ -144,7 +144,7 @@ const usePerformanceMonitoring = () => {
       if (!navigationEntry) return null;
 
       return Math.round(
-        navigationEntry.responseStart - navigationEntry.requestStart
+        navigationEntry.responseStart - navigationEntry.requestStart,
       );
     } catch (error) {
       console.warn("Erro ao calcular TTFB:", error);
@@ -161,7 +161,7 @@ const usePerformanceMonitoring = () => {
 
       // Basicamente, uma média ponderada de eventos de renderização
       const fcp = paintEntries.find(
-        (entry) => entry.name === "first-contentful-paint"
+        (entry) => entry.name === "first-contentful-paint",
       );
 
       if (!fcp) return null;
@@ -170,7 +170,7 @@ const usePerformanceMonitoring = () => {
       const loadEventEnd = navigationEntry.loadEventEnd;
 
       return Math.round(
-        fcp.startTime * 0.25 + domComplete * 0.5 + loadEventEnd * 0.25
+        fcp.startTime * 0.25 + domComplete * 0.5 + loadEventEnd * 0.25,
       );
     } catch (error) {
       console.warn("Erro ao calcular Speed Index:", error);
@@ -192,7 +192,7 @@ const usePerformanceMonitoring = () => {
       const fcp = fcpEntry.startTime;
 
       // Usar apenas as longtasks coletadas pelo PerformanceObserver
-      let longTasks = longTasksRef.current || [];
+      const longTasks = longTasksRef.current || [];
 
       const totalBlockingTime = longTasks.reduce((total, task) => {
         if (task.startTime > fcp) {
@@ -292,7 +292,7 @@ const usePerformanceMonitoring = () => {
     try {
       const images = document.querySelectorAll("img");
       const imagesWithoutAlt = Array.from(images).filter(
-        (img) => !img.hasAttribute("alt")
+        (img) => !img.hasAttribute("alt"),
       );
       if (imagesWithoutAlt.length > 0) {
         score -= Math.min(15, imagesWithoutAlt.length * 2);
@@ -357,7 +357,7 @@ const usePerformanceMonitoring = () => {
       }
 
       const metaDescription = document.querySelector(
-        'meta[name="description"]'
+        "meta[name=\"description\"]",
       );
       if (!metaDescription) {
         score -= 10;

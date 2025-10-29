@@ -11,7 +11,7 @@ const Heading = tw(SectionHeading)`text-left lg:text-4xl xl:text-5xl`;
 const PopularPostsContainer = tw.div`lg:w-2/3`;
 const PostsContainer = tw.div`mt-12 flex flex-col sm:flex-row sm:justify-between lg:justify-start`;
 const Post = tw(
-  motion.a
+  motion.a,
 )`block sm:max-w-sm cursor-pointer mb-16 last:mb-0 sm:mb-0 sm:odd:mr-8 lg:mr-8 xl:mr-16`;
 const Image = styled(motion.div)((props) => [
   `background-image: url("${props.$imageSrc}");`,

@@ -1,9 +1,11 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { motion } from "framer-motion";
 import tw from "twin.macro";
 import styled from "styled-components";
 import useAnimatedNavToggler from "../../helpers/useAnimatedNavToggler.jsx";
 import { Menu as MenuIcon, X as CloseIcon } from "react-feather";
+import OptimizedImage from "components/misc/OptimizedImage.jsx";
 
 const HeaderContainer = tw.header`
   flex justify-between items-center
@@ -150,6 +152,7 @@ const Header = ({
     <NavLinks key={1}>
       <NavLink href="/">Início</NavLink>
       <NavLink href="/sobre-nos">Sobre Nós</NavLink>
+      <NavLink href="/projetos">Projetos</NavLink>
       <NavLink href="/contato">Contato</NavLink>
       <PrimaryLink
         css={roundedHeaderButton && tw`rounded-full`}
@@ -166,16 +169,14 @@ const Header = ({
 
   const defaultLogoLink = (
     <LogoLink href="/">
-      <picture>
-        <source srcSet="/images/logo/logo_full.webp" type="image/webp" />
-        <img
-          src="/images/logo/logo_full.webp"
-          alt="logo"
-          width="128"
-          height="75"
-          fetchpriority="high"
-        />
-      </picture>
+      <OptimizedImage
+        src="/images/logo/logo_full.webp"
+        alt="logo"
+        priority={true}
+        sizes="128px"
+        width={128}
+        height={75}
+      />
     </LogoLink>
   );
 
@@ -215,6 +216,14 @@ const Header = ({
       </MobileNavLinksContainer>
     </HeaderContainer>
   );
+};
+
+Header.propTypes = {
+  roundedHeaderButton: PropTypes.bool,
+  logoLink: PropTypes.node,
+  links: PropTypes.node,
+  className: PropTypes.string,
+  collapseBreakpointClass: PropTypes.string,
 };
 
 export default Header;

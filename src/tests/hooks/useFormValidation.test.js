@@ -11,10 +11,10 @@ describe("useFormValidation", () => {
         expect(validationRules.required("")).toBe("Este campo é obrigatório");
         expect(validationRules.required(null)).toBe("Este campo é obrigatório");
         expect(validationRules.required(undefined)).toBe(
-          "Este campo é obrigatório"
+          "Este campo é obrigatório",
         );
         expect(validationRules.required("   ")).toBe(
-          "Este campo é obrigatório"
+          "Este campo é obrigatório",
         );
       });
 
@@ -33,16 +33,16 @@ describe("useFormValidation", () => {
 
       it("deve rejeitar emails inválidos", () => {
         expect(validationRules.email("invalid-email")).toBe(
-          "Por favor, insira um email válido"
+          "Por favor, insira um email válido",
         );
         expect(validationRules.email("test@")).toBe(
-          "Por favor, insira um email válido"
+          "Por favor, insira um email válido",
         );
         expect(validationRules.email("@domain.com")).toBe(
-          "Por favor, insira um email válido"
+          "Por favor, insira um email válido",
         );
         expect(validationRules.email("test.domain.com")).toBe(
-          "Por favor, insira um email válido"
+          "Por favor, insira um email válido",
         );
       });
 
@@ -62,13 +62,13 @@ describe("useFormValidation", () => {
 
       it("deve rejeitar telefones inválidos", () => {
         expect(validationRules.phone("123")).toBe(
-          "Por favor, insira um telefone válido"
+          "Por favor, insira um telefone válido",
         );
         expect(validationRules.phone("11999999")).toBe(
-          "Por favor, insira um telefone válido"
+          "Por favor, insira um telefone válido",
         );
         expect(validationRules.phone("abc123456789")).toBe(
-          "Por favor, insira um telefone válido"
+          "Por favor, insira um telefone válido",
         );
       });
     });
@@ -79,7 +79,7 @@ describe("useFormValidation", () => {
         expect(minLength5("12345")).toBeNull();
         expect(minLength5("123456")).toBeNull();
         expect(minLength5("1234")).toBe(
-          "Este campo deve ter pelo menos 5 caracteres"
+          "Este campo deve ter pelo menos 5 caracteres",
         );
       });
     });
@@ -90,7 +90,7 @@ describe("useFormValidation", () => {
         expect(maxLength10("1234567890")).toBeNull();
         expect(maxLength10("123456789")).toBeNull();
         expect(maxLength10("12345678901")).toBe(
-          "Este campo deve ter no máximo 10 caracteres"
+          "Este campo deve ter no máximo 10 caracteres",
         );
       });
     });
@@ -139,7 +139,7 @@ describe("useFormValidation", () => {
       });
 
       expect(result.current.errors.email).toBe(
-        "Por favor, insira um email válido"
+        "Por favor, insira um email válido",
       );
     });
 

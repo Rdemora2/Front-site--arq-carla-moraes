@@ -36,15 +36,16 @@ const Text = styled.div`
 `;
 export default ({ headingText = "Privacy Policy" }) => {
   return (
-    <AnimationRevealPage>
-      <Header />
-      <Container>
-        <ContentWithPaddingXl>
-          <HeadingRow>
-            <Heading>{headingText}</Heading>
-          </HeadingRow>
-          <Text>
-            <p>Last updated: April 21, 2048</p>
+    <>
+      <AnimationRevealPage>
+        <Header />
+        <Container>
+          <ContentWithPaddingXl>
+            <HeadingRow>
+              <Heading>{headingText}</Heading>
+            </HeadingRow>
+            <Text>
+              <p>Last updated: April 21, 2048</p>
 
             <p>
               This Privacy Policy describes Our policies and procedures on the
@@ -478,7 +479,10 @@ export default ({ headingText = "Privacy Policy" }) => {
           </Text>
         </ContentWithPaddingXl>
       </Container>
+      </AnimationRevealPage>
+      
+      {/* Footer fora do AnimationRevealPage para remover a animação */}
       <Footer />
-    </AnimationRevealPage>
+    </>
   );
 };

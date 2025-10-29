@@ -10,13 +10,13 @@ import { useEffect, useRef, useCallback, useState } from "react";
  */
 export const useFocusManagement = () => {
   const focusableElementsSelector =
-    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+    "button, [href], input, select, textarea, [tabindex]:not([tabindex=\"-1\"])";
 
   const trapFocus = useCallback((container) => {
     if (!container) return;
 
     const focusableElements = container.querySelectorAll(
-      focusableElementsSelector
+      focusableElementsSelector,
     );
     const firstElement = focusableElements[0];
     const lastElement = focusableElements[focusableElements.length - 1];
@@ -180,7 +180,7 @@ export const useKeyboardNavigation = (items, options = {}) => {
       onSelect,
       items,
       currentIndex,
-    ]
+    ],
   );
 
   // Focus no item atual
@@ -456,15 +456,15 @@ export const useAccessibility = (options = {}) => {
   useEffect(() => {
     document.documentElement.classList.toggle(
       "keyboard-navigation",
-      isKeyboardNavigation
+      isKeyboardNavigation,
     );
     document.documentElement.classList.toggle(
       "reduced-motion",
-      prefersReducedMotion
+      prefersReducedMotion,
     );
     document.documentElement.classList.toggle(
       "high-contrast",
-      prefersHighContrast
+      prefersHighContrast,
     );
   }, [isKeyboardNavigation, prefersReducedMotion, prefersHighContrast]);
 

@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import styled from "styled-components";
 import tw from "twin.macro";
 import {
@@ -12,9 +13,13 @@ import ShieldIconImage from "../../assets/icons/svg/shield-icon.svg?url";
 import CustomizeIconImage from "../../assets/icons/svg/customize-icon.svg?url";
 import SvgDecoratorBlob3 from "../../assets/icons/svg/svg-decorator-blob-3.svg?url";
 
-const Heading = tw(SectionHeading)``;
-const Subheading = tw(SubheadingBase)`text-center mb-3`;
-const Description = tw(SectionDescription)`text-center mx-auto`;
+const Heading = tw(SectionHeading)`text-2xl sm:text-3xl lg:text-4xl`;
+const Subheading = tw(
+  SubheadingBase
+)`text-center mb-3 text-sm md:text-sm lg:text-base`;
+const Description = tw(
+  SectionDescription
+)`text-center mx-auto text-sm md:text-sm lg:text-base`;
 const ThreeColumnContainer = styled.div`
   ${tw`mt-10 flex flex-col items-center lg:items-stretch lg:flex-row flex-wrap lg:justify-center max-w-screen-lg mx-auto`}
 `;
@@ -22,8 +27,8 @@ const Column = styled.div`
   ${tw`lg:w-1/3 max-w-xs`}
 `;
 
-const Card = styled.a`
-  ${tw`flex flex-col items-center text-center h-full mx-4 px-4 py-8 rounded transition-transform duration-300 hover:cursor-pointer transform hover:scale-105 `}
+const Card = styled.div`
+  ${tw`flex flex-col items-center text-center h-full mx-4 px-4 py-8 rounded`}
   .imageContainer {
     ${tw`text-center rounded-full p-4`}
     background-color: #3e4d2c;
@@ -34,7 +39,7 @@ const Card = styled.a`
   }
 
   .title {
-    ${tw`mt-4 font-bold text-xl leading-none`}
+    ${tw`mt-4 font-bold text-lg leading-none text-primary-500`}
   }
 
   .description {
@@ -84,7 +89,7 @@ const ThreeColSimple = ({
       url: "/",
     },
   ],
-  linkText = "Saiba Mais",
+  linkText = "",
   heading = "Diferenciais que Transformam",
   subheading = "Nossa Expertise",
   description = "Com mais de 25 anos de experiência, combinamos visão artística e conhecimento técnico para criar paisagens atemporais que valorizam seu investimento e elevam sua qualidade de vida.",
@@ -107,7 +112,7 @@ const ThreeColSimple = ({
         <ThreeColumnContainer>
           {cards.map((card, i) => (
             <Column key={i}>
-              <Card href={card.url || `#card-${i}`}>
+              <Card>
                 <span className="imageContainer" css={imageContainerCss}>
                   <img
                     src={typeof card.imageSrc === "string" ? card.imageSrc : ""}
@@ -117,7 +122,7 @@ const ThreeColSimple = ({
                 </span>
                 <span className="title">{card.title}</span>
                 <p className="description">{card.description}</p>
-                {linkText && (
+                {linkText && linkText.trim() !== "" && (
                   <span className="link">
                     <span>{linkText}</span>
                     <svg
@@ -137,6 +142,23 @@ const ThreeColSimple = ({
       <DecoratorBlob />
     </Container>
   );
+};
+
+ThreeColSimple.propTypes = {
+  cards: PropTypes.arrayOf(
+    PropTypes.shape({
+      imageSrc: PropTypes.string,
+      title: PropTypes.string,
+      description: PropTypes.string,
+      url: PropTypes.string,
+    })
+  ),
+  linkText: PropTypes.string,
+  heading: PropTypes.node,
+  subheading: PropTypes.string,
+  description: PropTypes.string,
+  imageContainerCss: PropTypes.object,
+  imageCss: PropTypes.object,
 };
 
 export default ThreeColSimple;

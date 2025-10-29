@@ -17,7 +17,7 @@ import CheckboxIcon from "../assets/icons/svg/checkbox-circle.svg";
 
 const Container = tw(ContainerBase)`bg-primary-900 text-gray-100 -mx-8 px-8`;
 const ContentWithPaddingXl = tw(
-  ContentBase
+  ContentBase,
 )`relative z-10 mx-auto px-0 py-10 sm:px-6 md:px-8 lg:px-12 xl:px-24 sm:py-20 flex flex-col max-w-screen-xl`;
 const HeaderContainer = tw.div`mt-10 w-full flex flex-col items-center`;
 const Subheading = tw(SubheadingBase)`mb-4 text-gray-100`;

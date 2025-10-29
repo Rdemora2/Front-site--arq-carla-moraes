@@ -80,15 +80,25 @@ export default defineConfig(({ command, mode }) => {
         output: {
           manualChunks:
             env.VITE_ENABLE_CODE_SPLITTING === "true"
-              ? {
-                  "react-vendor": ["react", "react-dom", "react-router-dom"],
-                  styled: ["styled-components"],
-                  tw: ["tailwindcss", "twin.macro"],
-                  "ui-components": [
-                    "styled-components",
-                    "twin.macro",
-                    "framer-motion",
-                  ],
+              ? (id) => {
+                  if (id.includes("node_modules")) {
+                    if (
+                      id.includes("react") ||
+                      id.includes("react-dom") ||
+                      id.includes("scheduler")
+                    ) {
+                      return "react-core";
+                    }
+                    if (id.includes("react-router")) return "router";
+                    if (id.includes("styled-components")) return "styled";
+                    if (id.includes("framer-motion")) return "animations";
+                    if (id.includes("slick")) return "carousel";
+                    return "vendor";
+                  }
+                  if (id.includes("/pages/")) {
+                    const page = id.split("/pages/")[1].split(".")[0];
+                    return `page-${page}`;
+                  }
                 }
               : undefined,
           sourcemapExcludeSources: env.VITE_ENABLE_SOURCEMAP === "true",

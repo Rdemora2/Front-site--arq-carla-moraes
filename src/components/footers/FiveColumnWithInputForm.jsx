@@ -1,16 +1,17 @@
 import tw from "twin.macro";
 import styled from "styled-components";
 import { Instagram, Linkedin } from "react-feather";
+import OptimizedImage from "components/misc/OptimizedImage.jsx";
 
-const LogoImage = "/images/logo/logo_reduced.webp";
+const LogoImage = "/images/logo/logo_reduced";
 
 const Container = styled.div`
-  ${tw`relative -mb-8 -mx-8 px-8 py-20 lg:py-24`}
+  ${tw`relative py-20 lg:py-24`}
   background-color: var(--color-primary-text);
   color: var(--color-background);
 `;
 
-const Content = tw.div`max-w-screen-xl mx-auto relative z-10`;
+const Content = tw.div`max-w-screen-xl mx-auto relative z-10 px-8`;
 const FourColumns = tw.div`flex flex-wrap text-center sm:text-left justify-center sm:justify-start md:justify-between -mt-12`;
 
 const Column = tw.div`px-4 sm:px-0 sm:w-1/4 md:w-auto mt-12`;
@@ -31,6 +32,13 @@ const Link = styled.a`
   }
 `;
 
+const DisabledLink = styled.span`
+  ${tw`border-b-2 border-transparent pb-1 cursor-not-allowed`}
+  color: var(--color-background);
+  user-select: none;
+  pointer-events: none;
+`;
+
 const Divider = styled.div`
   ${tw`my-16 border-b-2 w-full`}
   border-color: var(--color-background);
@@ -40,7 +48,7 @@ const Divider = styled.div`
 const ThreeColRow = tw.div`flex flex-col md:flex-row items-center justify-between`;
 
 const LogoContainer = tw.div`flex items-center justify-center md:justify-start`;
-const LogoImg = styled.img`
+const LogoImg = styled(OptimizedImage)`
   ${tw`mr-2`}
   width: 25px;
   height: auto;
@@ -114,7 +122,7 @@ const WhatsAppIcon = () => (
   </svg>
 );
 
-const SafeBrowsingImage = styled.img`
+const SafeBrowsingImage = styled(OptimizedImage)`
   ${tw`mt-6 mx-auto sm:mx-0`}
   max-width: 170px;
   height: auto;
@@ -132,20 +140,21 @@ const Footer = () => {
             <ColumnHeading>Principal</ColumnHeading>
             <LinkList>
               <LinkListItem>
-                <Link href="#">Início</Link>
+                <Link href="/">Início</Link>
               </LinkListItem>
               <LinkListItem>
                 <Link href="/sobre-nos">Sobre Nós</Link>
               </LinkListItem>
               <LinkListItem>
-                <Link href="/portfolio">Portfólio</Link>
+                <Link href="/projetos">Projetos</Link>
               </LinkListItem>
               <LinkListItem>
                 <Link href="/contato">Contato</Link>
               </LinkListItem>
             </LinkList>
           </Column>
-          <Column>
+          {/* Seção "Nossos Serviços" temporariamente oculta */}
+          {/* <Column>
             <ColumnHeading>Nossos Serviços</ColumnHeading>
             <LinkList>
               <LinkListItem>
@@ -161,21 +170,21 @@ const Footer = () => {
                 <Link href="#">Acompanhamento de Obra</Link>
               </LinkListItem>
             </LinkList>
-          </Column>
+          </Column> */}
           <Column>
             <ColumnHeading>Legal</ColumnHeading>
             <LinkList>
               <LinkListItem>
-                <Link href="#">LGPD</Link>
+                <DisabledLink>LGPD</DisabledLink>
               </LinkListItem>
               <LinkListItem>
-                <Link href="#">Política de Privacidade</Link>
+                <DisabledLink>Política de Privacidade</DisabledLink>
               </LinkListItem>
               <LinkListItem>
-                <Link href="#">Termos de Serviço</Link>
+                <DisabledLink>Termos de Serviço</DisabledLink>
               </LinkListItem>
               <LinkListItem>
-                <Link href="#">Isenção de Responsabilidade</Link>
+                <DisabledLink>Isenção de Responsabilidade</DisabledLink>
               </LinkListItem>
             </LinkList>
           </Column>
@@ -183,9 +192,10 @@ const Footer = () => {
             <ColumnHeading>Segurança</ColumnHeading>
             <SafeBrowsingContainer>
               <SafeBrowsingImage
-                src="/images/selo_safe_browsing.webp"
+                src="/images/selo_safe_browsing"
                 alt="Selo Google Safe Browsing - Site seguro e protegido"
                 title="Site protegido e verificado"
+                sizes="170px"
               />
             </SafeBrowsingContainer>
           </Column>
@@ -196,12 +206,13 @@ const Footer = () => {
             <LogoImg
               src={LogoImage}
               alt="Logo Carla Moraes Arquitetura Paisagística"
+              sizes="25px"
             />
             <LogoText>Carla Moraes Arquitetura Paisagística</LogoText>
           </LogoContainer>
           <CopyrightContainer>
             <CopyrightNotice>
-              &copy; 2025, Carla Moraes Arquitetura Paisagística. Todos os
+              &copy; 2025 - Carla Moraes Arquitetura Paisagística. Todos os
               Direitos Reservados.
             </CopyrightNotice>
             <DeveloperNotice>

@@ -10,7 +10,7 @@ import {
 import { SectionDescription } from "components/misc/Typography.jsx";
 import { ChevronDown as ChevronDownIcon } from "react-feather";
 const PrimaryBackgroundContainer = tw(
-  Container
+  Container,
 )`-mx-8 px-8 bg-primary-900 text-gray-100`;
 
 const HeadingContainer = tw.div``;

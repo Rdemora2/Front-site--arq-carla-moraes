@@ -8,12 +8,16 @@ import FAQ from "backup/components/faqs/SingleCol.jsx";
 
 export default () => {
   return (
-    <AnimationRevealPage>
-      <Header />
-      <Pricing />
-      <Testimonial heading="Our Paying Customers" />
-      <FAQ />
+    <>
+      <AnimationRevealPage>
+        <Header />
+        <Pricing />
+        <Testimonial heading="Our Paying Customers" />
+        <FAQ />
+      </AnimationRevealPage>
+      
+      {/* Footer fora do AnimationRevealPage para remover a animação */}
       <Footer />
-    </AnimationRevealPage>
+    </>
   );
 };

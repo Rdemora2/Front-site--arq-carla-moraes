@@ -7,9 +7,9 @@ import styled from "styled-components";
 import illustration from "../assets/icons/svg/signup-illustration.svg";
 import googleIconImageSrc from "../assets/icons/webp/google-icon.webp";
 import twitterIconImageSrc from "../assets/icons/webp/twitter-icon.webp";
-import { UserPlus as SignUpIcon } from "react-feather";
+import { User as SignupIcon } from "react-feather";
 
-const logo = "/images/logo/logo_full.webp";
+const logo = "/images/logo/logo_full";
 
 const Container = tw(
   ContainerBase

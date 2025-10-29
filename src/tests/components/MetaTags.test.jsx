@@ -32,9 +32,9 @@ describe("MetaTags", () => {
     render(<MetaTags />);
 
     expect(document.title).toBe("Carla Moraes - Arquitetura paisagística");
-    expect(document.querySelector('meta[name="description"]')).toHaveAttribute(
+    expect(document.querySelector("meta[name=\"description\"]")).toHaveAttribute(
       "content",
-      "Há mais de 25 anos criando projetos paisagísticos exclusivos que harmonizam arquitetura e natureza"
+      "Há mais de 25 anos criando projetos paisagísticos exclusivos que harmonizam arquitetura e natureza",
     );
   });
 
@@ -44,17 +44,17 @@ describe("MetaTags", () => {
         title="Título Customizado"
         description="Descrição customizada para teste"
         keywords="teste, custom, seo"
-      />
+      />,
     );
 
     expect(document.title).toBe("Título Customizado");
-    expect(document.querySelector('meta[name="description"]')).toHaveAttribute(
+    expect(document.querySelector("meta[name=\"description\"]")).toHaveAttribute(
       "content",
-      "Descrição customizada para teste"
+      "Descrição customizada para teste",
     );
-    expect(document.querySelector('meta[name="keywords"]')).toHaveAttribute(
+    expect(document.querySelector("meta[name=\"keywords\"]")).toHaveAttribute(
       "content",
-      "teste, custom, seo"
+      "teste, custom, seo",
     );
   });
 
@@ -76,7 +76,7 @@ describe("MetaTags", () => {
     render(<MetaTags description={longDescription} />);
 
     const description = document.querySelector(
-      'meta[name="description"]'
+      "meta[name=\"description\"]",
     ).content;
     expect(description.length).toBeLessThanOrEqual(160);
     expect(description).toMatch(/\.\.\.$/);
@@ -90,23 +90,23 @@ describe("MetaTags", () => {
         image="/images/og-image.jpg"
         url="/sobre"
         type="article"
-      />
+      />,
     );
 
-    expect(document.querySelector('meta[property="og:title"]')).toHaveAttribute(
+    expect(document.querySelector("meta[property=\"og:title\"]")).toHaveAttribute(
       "content",
-      "Título OG"
+      "Título OG",
     );
     expect(
-      document.querySelector('meta[property="og:description"]')
+      document.querySelector("meta[property=\"og:description\"]"),
     ).toHaveAttribute("content", "Descrição OG");
-    expect(document.querySelector('meta[property="og:type"]')).toHaveAttribute(
+    expect(document.querySelector("meta[property=\"og:type\"]")).toHaveAttribute(
       "content",
-      "article"
+      "article",
     );
-    expect(document.querySelector('meta[property="og:url"]')).toHaveAttribute(
+    expect(document.querySelector("meta[property=\"og:url\"]")).toHaveAttribute(
       "content",
-      "https://arqcarlamoraes.com.br/sobre"
+      "https://arqcarlamoraes.com.br/sobre",
     );
   });
 
@@ -116,18 +116,18 @@ describe("MetaTags", () => {
         title="Título Twitter"
         description="Descrição Twitter"
         twitterCardType="summary_large_image"
-      />
+      />,
     );
 
-    expect(document.querySelector('meta[name="twitter:card"]')).toHaveAttribute(
+    expect(document.querySelector("meta[name=\"twitter:card\"]")).toHaveAttribute(
       "content",
-      "summary_large_image"
+      "summary_large_image",
     );
     expect(
-      document.querySelector('meta[name="twitter:title"]')
+      document.querySelector("meta[name=\"twitter:title\"]"),
     ).toHaveAttribute("content", "Título Twitter");
     expect(
-      document.querySelector('meta[name="twitter:description"]')
+      document.querySelector("meta[name=\"twitter:description\"]"),
     ).toHaveAttribute("content", "Descrição Twitter");
   });
 
@@ -141,7 +141,7 @@ describe("MetaTags", () => {
     render(<MetaTags structuredData={structuredData} />);
 
     const jsonLdScript = document.querySelector(
-      'script[type="application/ld+json"]'
+      "script[type=\"application/ld+json\"]",
     );
     expect(jsonLdScript).toBeTruthy();
     expect(JSON.parse(jsonLdScript.textContent)).toEqual(structuredData);
@@ -151,7 +151,7 @@ describe("MetaTags", () => {
     render(<MetaTags />);
 
     const jsonLdScript = document.querySelector(
-      'script[type="application/ld+json"]'
+      "script[type=\"application/ld+json\"]",
     );
     expect(jsonLdScript).toBeTruthy();
 
@@ -163,41 +163,41 @@ describe("MetaTags", () => {
   it("deve configurar robots corretamente", () => {
     render(<MetaTags robots="noindex, nofollow" />);
 
-    expect(document.querySelector('meta[name="robots"]')).toHaveAttribute(
+    expect(document.querySelector("meta[name=\"robots\"]")).toHaveAttribute(
       "content",
-      "noindex, nofollow"
+      "noindex, nofollow",
     );
   });
 
   it("deve configurar viewport", () => {
     render(
-      <MetaTags viewport="width=device-width, initial-scale=1.0, user-scalable=no" />
+      <MetaTags viewport="width=device-width, initial-scale=1.0, user-scalable=no" />,
     );
 
-    expect(document.querySelector('meta[name="viewport"]')).toHaveAttribute(
+    expect(document.querySelector("meta[name=\"viewport\"]")).toHaveAttribute(
       "content",
-      "width=device-width, initial-scale=1.0, user-scalable=no"
+      "width=device-width, initial-scale=1.0, user-scalable=no",
     );
   });
 
   it("deve configurar theme-color", () => {
     render(<MetaTags themeColor="#ff0000" />);
 
-    expect(document.querySelector('meta[name="theme-color"]')).toHaveAttribute(
+    expect(document.querySelector("meta[name=\"theme-color\"]")).toHaveAttribute(
       "content",
-      "#ff0000"
+      "#ff0000",
     );
   });
 
   it("deve gerar links de preconnect", () => {
     render(<MetaTags />);
 
-    const preconnects = document.querySelectorAll('link[rel="preconnect"]');
+    const preconnects = document.querySelectorAll("link[rel=\"preconnect\"]");
     expect(preconnects.length).toBeGreaterThan(0);
 
     // Verifica se tem preconnect para Google Fonts
     const googleFontsPreconnect = Array.from(preconnects).find(
-      (link) => link.href === "https://fonts.googleapis.com"
+      (link) => link.href === "https://fonts.googleapis.com",
     );
     expect(googleFontsPreconnect).toBeTruthy();
   });
@@ -205,7 +205,7 @@ describe("MetaTags", () => {
   it("deve gerar links de dns-prefetch", () => {
     render(<MetaTags />);
 
-    const dnsPrefetch = document.querySelectorAll('link[rel="dns-prefetch"]');
+    const dnsPrefetch = document.querySelectorAll("link[rel=\"dns-prefetch\"]");
     expect(dnsPrefetch.length).toBeGreaterThan(0);
   });
 
@@ -213,13 +213,13 @@ describe("MetaTags", () => {
     render(<MetaTags />);
 
     expect(
-      document.querySelector('link[rel="icon"][sizes="32x32"]')
+      document.querySelector("link[rel=\"icon\"][sizes=\"32x32\"]"),
     ).toBeTruthy();
     expect(
-      document.querySelector('link[rel="icon"][sizes="16x16"]')
+      document.querySelector("link[rel=\"icon\"][sizes=\"16x16\"]"),
     ).toBeTruthy();
-    expect(document.querySelector('link[rel="apple-touch-icon"]')).toBeTruthy();
-    expect(document.querySelector('link[rel="manifest"]')).toBeTruthy();
+    expect(document.querySelector("link[rel=\"apple-touch-icon\"]")).toBeTruthy();
+    expect(document.querySelector("link[rel=\"manifest\"]")).toBeTruthy();
   });
 
   it("deve gerar breadcrumbs structured data", () => {
@@ -232,7 +232,7 @@ describe("MetaTags", () => {
     render(<MetaTags breadcrumbs={breadcrumbs} />);
 
     const scripts = document.querySelectorAll(
-      'script[type="application/ld+json"]'
+      "script[type=\"application/ld+json\"]",
     );
     const breadcrumbScript = Array.from(scripts).find((script) => {
       const data = JSON.parse(script.textContent);
@@ -250,14 +250,14 @@ describe("MetaTags", () => {
       <MetaTags
         title="<script>alert('xss')</script>Título Seguro"
         description="<img src=x onerror=alert('xss')>Descrição segura"
-      />
+      />,
     );
 
     expect(document.title).not.toContain("<script>");
     expect(document.title).toContain("Título Seguro");
 
     const description = document.querySelector(
-      'meta[name="description"]'
+      "meta[name=\"description\"]",
     ).content;
     expect(description).not.toContain("<img");
     expect(description).toContain("Descrição segura");
@@ -271,7 +271,7 @@ describe("MetaTags", () => {
 
     render(<MetaTags alternates={alternates} />);
 
-    const alternateLinks = document.querySelectorAll('link[rel="alternate"]');
+    const alternateLinks = document.querySelectorAll("link[rel=\"alternate\"]");
     expect(alternateLinks).toHaveLength(2);
 
     expect(alternateLinks[0]).toHaveAttribute("hreflang", "en");
@@ -287,7 +287,7 @@ describe("MetaTags", () => {
     render(<MetaTags contactPoint={contactPoint} />);
 
     const scripts = document.querySelectorAll(
-      'script[type="application/ld+json"]'
+      "script[type=\"application/ld+json\"]",
     );
     const orgScript = Array.from(scripts).find((script) => {
       const data = JSON.parse(script.textContent);
@@ -310,8 +310,8 @@ describe("MetaTags", () => {
 
     expect(document.title).toBe("Título 2");
     // Não deve ter tags duplicadas
-    expect(document.querySelectorAll('meta[name="description"]')).toHaveLength(
-      1
+    expect(document.querySelectorAll("meta[name=\"description\"]")).toHaveLength(
+      1,
     );
   });
 
@@ -324,7 +324,7 @@ describe("MetaTags", () => {
         title={123} // Deve ser string
         description={true} // Deve ser string
         alternates="invalid" // Deve ser array
-      />
+      />,
     );
 
     expect(console.error).toHaveBeenCalled();

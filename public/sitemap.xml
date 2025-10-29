@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+
+  <!-- Página principal -->
+  <url>
+    <loc>https://arqcarlamoraes.com.br/</loc>
+    <lastmod>2025-01-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://arqcarlamoraes.com.br/images/logo/logo_full.webp</image:loc>
+      <image:title>Carla Moraes Arquitetura Paisagística</image:title>
+      <image:caption>Há mais de 25 anos criando projetos paisagísticos exclusivos</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://arqcarlamoraes.com.br/images/components/hero/Frances-hero.webp</image:loc>
+      <image:title>Jardim Francês - Projeto Residencial</image:title>
+      <image:caption>Projeto paisagístico residencial no estilo francês clássico</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Sobre nós -->
+  <url>
+    <loc>https://arqcarlamoraes.com.br/sobre-nos</loc>
+    <lastmod>2025-01-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://arqcarlamoraes.com.br/images/components/about/carla-moraes-profile.webp</image:loc>
+      <image:title>Carla Moraes - Arquiteta Paisagista</image:title>
+      <image:caption>Especialista em arquitetura paisagística com mais de 25 anos de experiência</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Projetos -->
+  <url>
+    <loc>https://arqcarlamoraes.com.br/projetos</loc>
+    <lastmod>2025-01-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Projeto: Hotel Jardins -->
+  <url>
+    <loc>https://arqcarlamoraes.com.br/projetos/hotel-jardins/galeria</loc>
+    <lastmod>2025-01-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://arqcarlamoraes.com.br/images/projects/Hotel-jardins/hotel-jardins-01.webp</image:loc>
+      <image:title>Hotel Jardins - Vista Externa</image:title>
+      <image:caption>Projeto paisagístico corporativo para Hotel Jardins</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://arqcarlamoraes.com.br/images/projects/Hotel-jardins/hotel-jardins-02.webp</image:loc>
+      <image:title>Hotel Jardins - Área de Lazer</image:title>
+      <image:caption>Paisagismo integrado com área de lazer do hotel</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Projeto: Jardim Francês -->
+  <url>
+    <loc>https://arqcarlamoraes.com.br/projetos/jardim-frances/galeria</loc>
+    <lastmod>2025-01-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://arqcarlamoraes.com.br/images/projects/Jardim-frances/jardim-frances-01.webp</image:loc>
+      <image:title>Jardim Francês Clássico</image:title>
+      <image:caption>Jardim residencial no estilo francês com simetria perfeita</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://arqcarlamoraes.com.br/images/projects/Jardim-frances/jardim-frances-02.webp</image:loc>
+      <image:title>Jardim Francês - Topiarias</image:title>
+      <image:caption>Detalhe das topiarias geométricas do jardim francês</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Projeto: Jardim Tropical -->
+  <url>
+    <loc>https://arqcarlamoraes.com.br/projetos/jardim-tropical/galeria</loc>
+    <lastmod>2025-01-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://arqcarlamoraes.com.br/images/projects/Jardim-tropical/jardim-tropical-01.webp</image:loc>
+      <image:title>Jardim Tropical Exuberante</image:title>
+      <image:caption>Paisagismo tropical com plantas nativas e exóticas</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://arqcarlamoraes.com.br/images/projects/Jardim-tropical/jardim-tropical-02.webp</image:loc>
+      <image:title>Jardim Tropical - Área de Convivência</image:title>
+      <image:caption>Espaço de convivência integrado ao jardim tropical</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Projeto: Sicoob Liberdade -->
+  <url>
+    <loc>https://arqcarlamoraes.com.br/projetos/sicoob-liberdade/galeria</loc>
+    <lastmod>2025-01-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://arqcarlamoraes.com.br/images/projects/Sicoob-liberdade/sicoob-01.webp</image:loc>
+      <image:title>Sicoob Liberdade - Entrada Principal</image:title>
+      <image:caption>Paisagismo corporativo para agência Sicoob Liberdade</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://arqcarlamoraes.com.br/images/projects/Sicoob-liberdade/sicoob-02.webp</image:loc>
+      <image:title>Sicoob Liberdade - Área Externa</image:title>
+      <image:caption>Projeto paisagístico para área externa da agência</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Contato -->
+  <url>
+    <loc>https://arqcarlamoraes.com.br/contato</loc>
+    <lastmod>2025-01-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Política de Privacidade -->
+  <url>
+    <loc>https://arqcarlamoraes.com.br/politica-privacidade</loc>
+    <lastmod>2025-01-09</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+  <!-- Termos de Serviço -->
+  <url>
+    <loc>https://arqcarlamoraes.com.br/termos-servico</loc>
+    <lastmod>2025-01-09</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+</urlset>

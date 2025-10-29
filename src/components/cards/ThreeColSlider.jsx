@@ -1,28 +1,58 @@
 import React, { useState, useEffect, useCallback, memo, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
 import Slider from "react-slick";
 import tw from "twin.macro";
 import styled from "styled-components";
 import { SectionHeading } from "components/misc/Headings";
 import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons";
+import { getFeaturedProjects } from "../../data/projectsData";
+import OptimizedImage from "components/misc/OptimizedImage.jsx";
 import {
-  DollarSign as PriceIcon,
   MapPin as LocationIcon,
-  Star as StarIcon,
   ChevronLeft as ChevronLeftIcon,
   ChevronRight as ChevronRightIcon,
 } from "react-feather";
-import { useInView } from "react-intersection-observer";
 
 const Container = tw.div`relative`;
 const Content = tw.div`max-w-screen-xl mx-auto py-16 lg:py-20`;
 
 const HeadingWithControl = tw.div`flex flex-col items-center sm:items-stretch sm:flex-row justify-between`;
-const Heading = tw(SectionHeading)``;
+const Heading = tw(SectionHeading)`text-2xl sm:text-3xl lg:text-4xl`;
 const Controls = tw.div`flex items-center`;
 const ControlButton = styled(PrimaryButtonBase)`
   ${tw`mt-4 sm:mt-0 first:ml-0 ml-6 rounded-full p-2`}
+  transition: transform 0.3s ease;
+
   svg {
     ${tw`w-6 h-6`}
+    transition: all 0.3s ease;
+    pointer-events: none;
+    background: transparent !important;
+  }
+
+  &:hover svg,
+  &:focus svg,
+  &:active svg {
+    transform: none;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &:focus {
+    transform: scale(1.05);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &:focus:not(:focus-visible) {
+    transform: none;
   }
 `;
 const PrevButton = tw(ControlButton)``;
@@ -38,24 +68,32 @@ const CardSlider = styled(Slider)`
   }
 `;
 const Card = tw.div`h-full flex! flex-col sm:border max-w-sm sm:rounded-tl-4xl sm:rounded-br-5xl relative focus:outline-none`;
-const CardImage = styled.div((props) => [
-  `background-image: url("${props.imageSrc}");`,
-  tw`w-full h-56 sm:h-64 bg-cover bg-center rounded sm:rounded-none sm:rounded-tl-4xl`,
-]);
+const CardImageContainer = tw.div`w-full h-56 sm:h-64 rounded sm:rounded-none sm:rounded-tl-4xl overflow-hidden`;
+const StyledOptimizedImage = styled(OptimizedImage)`
+  ${tw`w-full h-full`}
+`;
 
 const TextInfo = tw.div`py-6 sm:px-10 sm:py-6`;
 const TitleReviewContainer = tw.div`flex flex-col sm:flex-row sm:justify-between sm:items-center`;
-const Title = tw.h5`text-2xl font-bold`;
-
-const RatingsInfo = styled.div`
-  ${tw`flex items-center sm:ml-4 mt-2 sm:mt-0`}
-  svg {
-    ${tw`w-6 h-6 text-yellow-500 fill-current`}
-  }
+const Title = styled.h5`
+  ${tw`text-lg font-bold leading-tight`}
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  height: 3.6rem; /* Altura fixa para 2 linhas */
+  line-height: 1.8rem;
 `;
-const Rating = tw.span`ml-2 font-bold`;
 
-const Description = tw.p`text-sm leading-loose mt-2 sm:mt-4`;
+const Description = styled.p`
+  ${tw`text-sm leading-loose mt-2 sm:mt-4`}
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  height: 4.5rem; /* Altura fixa para 3 linhas */
+  line-height: 1.5rem;
+`;
 
 const SecondaryInfoContainer = tw.div`flex flex-col sm:flex-row mt-2 sm:mt-4`;
 const IconWithText = tw.div`flex items-center mr-6 my-2 sm:my-0`;
@@ -71,99 +109,33 @@ const PrimaryButton = tw(
   PrimaryButtonBase
 )`mt-auto sm:text-lg rounded-none w-full rounded sm:rounded-none sm:rounded-br-4xl py-3 sm:py-6`;
 
-const SliderCard = memo(({ heading, description, imageSrc }) => {
-  const { ref, inView } = useInView({
-    triggerOnce: true,
-    rootMargin: "200px 0px",
-  });
-
-  return (
-    <div ref={ref} className="slider-card">
-      {inView && (
-        <>
-          <img src={imageSrc} alt={heading} loading="lazy" />
-          <h3>{heading}</h3>
-          <p>{description}</p>
-        </>
-      )}
-    </div>
-  );
-});
-
-const ThreeColSlider = ({
-  heading = <span>Projetos em Destaque</span>,
-  subheading = "Nosso Portfólio",
-  description = "Conheça alguns dos projetos executados pela Carla Moraes Arquitetura Paisagística em diferentes contextos e necessidades.",
-  cards = [
-    {
-      imageSrc:
-        "https://images.unsplash.com/photo-1588557132645-ff567110cafd?ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&q=80",
-      title: "Residencial Ipê Amarelo",
-      description:
-        "Jardim tropical contemporâneo com áreas de convivência integradas e iluminação cênica para esta residência de alto padrão.",
-      locationText: "São Paulo, SP",
-      pricingText: "480 m²",
-      url: "#",
-    },
-    {
-      imageSrc:
-        "https://images.unsplash.com/photo-1588557132645-ff567110cafd?ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&q=80",
-      title: "Condomínio Villa Verde",
-      description:
-        "Áreas comuns e paisagismo do entorno, criando ambientes de lazer que valorizam a interação social e o contato com a natureza.",
-      locationText: "Campinas, SP",
-      pricingText: "1.200 m²",
-      url: "#",
-    },
-    {
-      imageSrc:
-        "https://images.unsplash.com/photo-1588557132645-ff567110cafd?ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&q=80",
-      title: "Corporativo Jardins",
-      description:
-        "Projeto biofílico para sede empresarial que integra elementos naturais ao ambiente de trabalho, promovendo bem-estar e produtividade.",
-      locationText: "Rio de Janeiro, RJ",
-      pricingText: "650 m²",
-      url: "#",
-    },
-    {
-      imageSrc:
-        "https://images.unsplash.com/photo-1587502537104-aac10f5fb6f7?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-      title: "Casa de Campo Arvoredo",
-      description:
-        "Paisagismo rural que harmoniza a vegetação existente com novas espécies, criando áreas de contemplação e vivência com a natureza.",
-      locationText: "Itatiba, SP",
-      pricingText: "2.500 m²",
-      url: "#",
-    },
-    {
-      imageSrc:
-        "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-      title: "Terraço Vila Nova",
-      description:
-        "Transformação de cobertura em oásis urbano com jardins de cobertura, deck e área gourmet integrada à vegetação.",
-      locationText: "Belo Horizonte, MG",
-      pricingText: "120 m²",
-      url: "#",
-    },
-  ],
-}) => {
+const ThreeColSlider = ({ heading = <span>Projetos em Destaque</span> }) => {
+  const navigate = useNavigate();
   const [sliderRef, setSliderRef] = useState(null);
+
+  const featuredProjects = useMemo(() => getFeaturedProjects(5), []);
 
   const sliderSettings = useMemo(
     () => ({
       arrows: false,
       slidesToShow: 3,
+      centerMode: true,
+      centerPadding: "0px",
       responsive: [
         {
           breakpoint: 1280,
           settings: {
             slidesToShow: 2,
+            centerMode: true,
+            centerPadding: "0px",
           },
         },
         {
           breakpoint: 900,
           settings: {
             slidesToShow: 1,
+            centerMode: true,
+            centerPadding: "0px",
           },
         },
       ],
@@ -171,17 +143,29 @@ const ThreeColSlider = ({
     []
   );
 
-  const handlePrevClick = useCallback(() => {
-    if (sliderRef) sliderRef.slickPrev();
-  }, [sliderRef]);
+  const handlePrevClick = useCallback(
+    (e) => {
+      if (sliderRef) sliderRef.slickPrev();
+      e.target.blur();
+    },
+    [sliderRef]
+  );
 
-  const handleNextClick = useCallback(() => {
-    if (sliderRef) sliderRef.slickNext();
-  }, [sliderRef]);
+  const handleNextClick = useCallback(
+    (e) => {
+      if (sliderRef) sliderRef.slickNext();
+      e.target.blur();
+    },
+    [sliderRef]
+  );
+
+  const handleViewAllProjects = useCallback(() => {
+    navigate("/projetos");
+  }, [navigate]);
 
   const updateTabIndex = useCallback(() => {
     const hiddenSlides = document.querySelectorAll(
-      '.slick-slide[aria-hidden="true"]'
+      ".slick-slide[aria-hidden='true']"
     );
     hiddenSlides.forEach((slide) => {
       const focusableElements = slide.querySelectorAll("a, button, [tabindex]");
@@ -225,44 +209,35 @@ const ThreeColSlider = ({
           {...sliderSettings}
           afterChange={updateTabIndex}
         >
-          {cards.map((card, index) => (
-            <Card key={index}>
-              <CardImage
-                imageSrc={card.imageSrc}
-                role="img"
-                aria-label={`Imagem do projeto ${card.title}`}
-                loading={index > 2 ? "lazy" : "eager"}
-              />
+          {featuredProjects.map((project, index) => (
+            <Card key={`project-${project.id}`}>
+              <CardImageContainer>
+                <StyledOptimizedImage
+                  src={project.featuredImage}
+                  alt={`Imagem do projeto ${project.title}`}
+                  priority={index <= 2}
+                  sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                />
+              </CardImageContainer>
               <TextInfo>
                 <TitleReviewContainer>
-                  <Title>{card.title}</Title>
-                  <RatingsInfo>
-                    <StarIcon aria-hidden="true" />
-                    <Rating>{card.rating}</Rating>
-                  </RatingsInfo>
+                  <Title>{project.title}</Title>
                 </TitleReviewContainer>
                 <SecondaryInfoContainer>
                   <IconWithText>
                     <IconContainer aria-hidden="true">
                       <LocationIcon />
                     </IconContainer>
-                    <Text>{card.locationText}</Text>
-                  </IconWithText>
-                  <IconWithText>
-                    <IconContainer aria-hidden="true">
-                      <PriceIcon />
-                    </IconContainer>
-                    <Text>{card.pricingText}</Text>
+                    <Text>{project.location}</Text>
                   </IconWithText>
                 </SecondaryInfoContainer>
-                <Description>{card.description}</Description>
+                <Description>{project.description}</Description>
               </TextInfo>
               <PrimaryButton
-                as="a"
-                href={card.url}
-                aria-label={`Ver mais detalhes sobre o projeto ${card.title}`}
+                onClick={handleViewAllProjects}
+                aria-label={`Ver todos os projetos - ${project.title}`}
               >
-                Ver Mais
+                Ver Todos os Projetos
               </PrimaryButton>
             </Card>
           ))}
@@ -270,6 +245,10 @@ const ThreeColSlider = ({
       </Content>
     </Container>
   );
+};
+
+ThreeColSlider.propTypes = {
+  heading: PropTypes.node,
 };
 
 export default memo(ThreeColSlider);
