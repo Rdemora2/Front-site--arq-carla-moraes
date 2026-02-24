@@ -94,8 +94,9 @@ export const LogoLink = styled(NavLink)`
     transition: transform 0.3s ease;
 
     @media (max-width: 1024px) {
-      width: 6.5rem;
-      margin-right: 0;
+      width: auto;
+      height: 2.25rem;
+      margin: 0;
     }
   }
 
@@ -105,8 +106,8 @@ export const LogoLink = styled(NavLink)`
     margin: 0 !important;
     padding: 0 !important;
     border: none !important;
+    height: auto;
     line-height: 1;
-    height: 100%;
   }
 
   &:hover {
@@ -117,13 +118,8 @@ export const LogoLink = styled(NavLink)`
   }
 `;
 
-export const MobileNavLinksContainer = styled.nav`
-  ${tw`flex flex-1 items-center justify-between`}
-
-  @media (max-width: 1024px) {
-    height: 100%;
-    align-items: center;
-  }
+export const MobileNavLinksContainer = tw.nav`
+  flex flex-1 items-center justify-between
 `;
 
 export const NavToggle = styled.button`
@@ -132,12 +128,11 @@ export const NavToggle = styled.button`
   `}
 
   @media (max-width: 1024px) {
-    width: 2.75rem;
-    height: 2.75rem;
+    width: 2.5rem;
+    height: 2.5rem;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    align-self: center;
     margin: 0 !important;
     padding: 0 !important;
     border-radius: 50%;

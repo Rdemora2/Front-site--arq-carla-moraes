@@ -29,36 +29,17 @@ const StyledHeader = styled(Header)`
     position: sticky;
     top: 0;
     z-index: 30;
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
+    padding: 0.75rem 1.5rem !important;
     margin: 0;
     width: calc(100% + 3rem);
     margin-left: -1.5rem;
     margin-right: -1.5rem;
-    height: 5rem;
+    height: auto;
     max-width: none;
     display: flex;
     align-items: center;
     box-shadow: none;
     border-bottom: 1px solid rgba(107, 121, 89, 0.06);
-
-    ${LogoLink} {
-      margin: 0;
-      padding: 0;
-      border: none;
-      display: flex;
-      align-items: center;
-      height: 100%;
-
-      img {
-        width: 6.5rem;
-        margin: 0;
-        padding: 0;
-        display: block;
-      }
-    }
   }
   nav:first-child {
     @media (min-width: 1024px) {
