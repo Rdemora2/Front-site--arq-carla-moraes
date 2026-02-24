@@ -7,9 +7,15 @@ import useAnimatedNavToggler from "../../helpers/useAnimatedNavToggler.jsx";
 import { Menu as MenuIcon, X as CloseIcon } from "react-feather";
 import OptimizedImage from "components/misc/OptimizedImage.jsx";
 
-const HeaderContainer = tw.header`
-  flex justify-between items-center
-  max-w-screen-xl mx-auto
+const HeaderContainer = styled.header`
+  ${tw`flex justify-between items-center max-w-screen-xl mx-auto`}
+
+  @media (max-width: 1024px) {
+    max-width: none;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+  }
 `;
 
 export const NavLinks = tw.div`inline-block`;
@@ -94,21 +100,19 @@ export const LogoLink = styled(NavLink)`
   }
 
   @media (max-width: 1024px) {
-    display: flex;
-    align-items: center;
-    margin-top: 0;
-    margin-bottom: 0;
-    padding-top: 0;
-    padding-bottom: 0;
+    display: flex !important;
+    align-items: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
     line-height: 1;
-    border-bottom-color: transparent;
-    transform: none;
+    height: 100%;
   }
 
   &:hover {
     @media (max-width: 1024px) {
-      border-bottom-color: transparent;
-      transform: none;
+      border-bottom-color: transparent !important;
+      transform: none !important;
     }
   }
 `;
@@ -130,14 +134,18 @@ export const NavToggle = styled.button`
   @media (max-width: 1024px) {
     width: 2.75rem;
     height: 2.75rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    align-self: center;
+    margin: 0 !important;
+    padding: 0 !important;
     border-radius: 50%;
     color: var(--color-primary-text);
     background: rgba(107, 121, 89, 0.06);
     border: 1px solid rgba(107, 121, 89, 0.1);
     transition: all 0.25s ease;
+    flex-shrink: 0;
 
     svg {
       width: 1.125rem;

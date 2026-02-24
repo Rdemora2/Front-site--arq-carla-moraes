@@ -107,15 +107,18 @@ const MobileHeroImage = styled.div`
     width: calc(100% + 3rem);
     margin-left: -1.5rem;
     margin-right: -1.5rem;
+    margin-bottom: 0;
     height: 52vh;
     min-height: 280px;
     max-height: 420px;
     overflow: hidden;
+    line-height: 0;
+    font-size: 0;
 
     &::after {
       content: "";
       position: absolute;
-      bottom: 0;
+      bottom: -1px;
       left: 0;
       right: 0;
       height: 80px;
@@ -129,6 +132,8 @@ const MobileHeroImage = styled.div`
       object-fit: cover;
       object-position: center 30%;
       display: block;
+      margin: 0;
+      padding: 0;
     }
   }
 `;
