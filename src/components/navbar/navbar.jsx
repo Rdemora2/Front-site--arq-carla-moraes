@@ -93,6 +93,18 @@ export const LogoLink = styled(NavLink)`
     }
   }
 
+  @media (max-width: 1024px) {
+    display: flex;
+    align-items: center;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    line-height: 1;
+    border-bottom-color: transparent;
+    transform: none;
+  }
+
   &:hover {
     @media (max-width: 1024px) {
       border-bottom-color: transparent;
