@@ -29,7 +29,7 @@ const StyledHeader = styled(Header)`
     position: sticky;
     top: 0;
     z-index: 30;
-    padding: 0.75rem 1.5rem;
+    padding: 0 1.5rem;
     width: calc(100% + 3rem);
     margin-left: -1.5rem;
     margin-right: -1.5rem;
@@ -38,6 +38,22 @@ const StyledHeader = styled(Header)`
     align-items: center;
     box-shadow: none;
     border-bottom: 1px solid rgba(107, 121, 89, 0.06);
+
+    ${LogoLink} {
+      margin: 0;
+      padding: 0;
+      border: none;
+      display: flex;
+      align-items: center;
+      height: 100%;
+
+      img {
+        width: 6.5rem;
+        margin: 0;
+        padding: 0;
+        display: block;
+      }
+    }
   }
   nav:first-child {
     @media (min-width: 1024px) {
@@ -50,17 +66,12 @@ const StyledHeader = styled(Header)`
   & > div:last-child {
     @media (max-width: 1024px) {
       width: 100%;
+      height: 100%;
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin: 0;
       padding: 0;
-    }
-    ${LogoLink} {
-      @media (max-width: 1024px) {
-        margin-right: 0;
-        flex-shrink: 0;
-      }
     }
   }
 `;
