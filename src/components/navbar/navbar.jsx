@@ -88,7 +88,7 @@ export const LogoLink = styled(NavLink)`
     transition: transform 0.3s ease;
 
     @media (max-width: 1024px) {
-      width: 5.5rem;
+      width: 6.5rem;
       margin-right: 0;
     }
   }
@@ -111,19 +111,21 @@ export const NavToggle = styled.button`
   `}
 
   @media (max-width: 1024px) {
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 2.75rem;
+    height: 2.75rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 0.5rem;
+    border-radius: 50%;
     color: var(--color-primary-text);
-    background: transparent;
+    background: rgba(107, 121, 89, 0.06);
+    border: 1px solid rgba(107, 121, 89, 0.1);
+    transition: all 0.25s ease;
 
     svg {
-      width: 1.25rem;
-      height: 1.25rem;
-      stroke-width: 2.5;
+      width: 1.125rem;
+      height: 1.125rem;
+      stroke-width: 2;
     }
   }
 
@@ -131,7 +133,8 @@ export const NavToggle = styled.button`
     color: var(--color-primary);
 
     @media (max-width: 1024px) {
-      background: rgba(107, 121, 89, 0.06);
+      background: rgba(107, 121, 89, 0.1);
+      border-color: rgba(107, 121, 89, 0.15);
       transform: none;
     }
 
@@ -141,7 +144,13 @@ export const NavToggle = styled.button`
   }
 
   &:active {
-    transform: scale(0.95);
+    @media (max-width: 1024px) {
+      transform: scale(0.94);
+      background: rgba(107, 121, 89, 0.14);
+    }
+    @media (min-width: 1025px) {
+      transform: scale(0.95);
+    }
   }
 
   &:focus-visible {
@@ -153,57 +162,84 @@ export const NavToggle = styled.button`
 export const MobileNavLinks = motion(styled.div`
   ${tw`
     lg:hidden z-10 fixed top-0 inset-x-0 
-    text-center text-gray-900
+    text-left text-gray-900
   `}
-  background-color: var(--color-background);
+  background-color: rgba(252, 250, 247, 0.97);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   margin: 0;
-  padding: 5.5rem 2rem 2.5rem;
+  padding: 6rem 2rem 3rem;
   border: none;
   border-radius: 0;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  box-shadow: none;
   min-height: 100dvh;
 
   ${NavLinks} {
-    ${tw`flex flex-col items-center`}
-    gap: 0.25rem;
+    ${tw`flex flex-col`}
+    align-items: flex-start;
+    gap: 0;
+    padding-top: 1rem;
   }
 
   ${NavLink} {
     display: block;
     width: 100%;
-    padding: 1rem 0;
-    font-size: 1.125rem;
-    font-weight: 500;
-    letter-spacing: 0.01em;
+    padding: 1.125rem 0;
+    font-size: 1rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
     color: var(--color-primary-text);
-    border-bottom: 1px solid rgba(107, 121, 89, 0.08);
-    transition: color 0.2s ease;
+    border-bottom: none;
+    position: relative;
+    transition: color 0.2s ease, padding-left 0.2s ease;
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(107, 121, 89, 0.1), transparent);
+    }
 
     &:hover, &:active {
       color: var(--color-primary);
       transform: none;
-      border-bottom-color: var(--color-primary);
+      padding-left: 0.5rem;
+      border-bottom-color: transparent;
+    }
+
+    &:last-of-type::after {
+      display: none;
     }
   }
 
   ${PrimaryLink} {
-    margin-top: 1.5rem;
-    display: inline-block;
-    width: auto;
-    padding: 0.875rem 2rem;
-    font-size: 0.875rem;
+    margin-top: 2rem;
+    display: block;
+    width: 100%;
+    padding: 1rem 2rem;
+    font-size: 0.813rem;
     font-weight: 600;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    border-radius: 0.5rem;
+    text-align: center;
+    border-radius: 0.375rem;
     background-color: var(--color-primary-text);
     color: var(--color-background);
     border: none;
     border-bottom: none;
+    box-shadow: 0 1px 3px rgba(62, 77, 44, 0.12);
+
+    &::after {
+      display: none;
+    }
 
     &:hover {
       background-color: var(--color-primary);
       border-bottom-color: transparent;
+      padding-left: 2rem;
     }
   }
 `);

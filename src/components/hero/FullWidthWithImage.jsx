@@ -23,18 +23,21 @@ const StyledHeader = styled(Header)`
     ${tw`mr-8 pb-0`}
   }
   @media (max-width: 1024px) {
-    background-color: var(--color-background);
-    position: relative;
+    background-color: rgba(252, 250, 247, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    position: sticky;
+    top: 0;
     z-index: 30;
-    padding: 0.5rem 1.5rem;
+    padding: 0.75rem 1.5rem;
     width: calc(100% + 3rem);
     margin-left: -1.5rem;
     margin-right: -1.5rem;
-    height: 4rem;
+    height: 5rem;
     display: flex;
     align-items: center;
     box-shadow: none;
-    border-bottom: none;
+    border-bottom: 1px solid rgba(107, 121, 89, 0.06);
   }
   nav:first-child {
     @media (min-width: 1024px) {
@@ -352,8 +355,8 @@ const FullWidthWithImageComponent = ({
           <StyledHeader links={navLinks} collapseBreakpointClass="sm" />
           <MobileHeroImage>
             <img
-              src="/images/components/hero/Modern-hero-640w.webp"
-              alt="Paisagismo moderno projetado por Carla Moraes"
+              src="/images/components/hero/Frances-hero-640w.webp"
+              alt="Jardim residencial de alto padrão com paisagismo francês projetado por Carla Moraes"
               loading="eager"
               fetchpriority="high"
               decoding="async"
@@ -423,8 +426,8 @@ const FullWidthWithImageComponent = ({
         </LeftColumn>
         <RightColumn>
           <OptimizedImage
-            src="/images/components/hero/Modern-hero.webp"
-            alt="Paisagismo moderno projetado por Carla Moraes"
+            src="/images/components/hero/Frances-hero.webp"
+            alt="Jardim residencial de alto padrão com paisagismo francês projetado por Carla Moraes em São Paulo"
             priority={true}
             sizes="(max-width: 768px) 100vw, 50vw"
             width={1200}
