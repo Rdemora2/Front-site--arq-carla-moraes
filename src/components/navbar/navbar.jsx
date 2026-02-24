@@ -113,8 +113,13 @@ export const LogoLink = styled(NavLink)`
   }
 `;
 
-export const MobileNavLinksContainer = tw.nav`
-  flex flex-1 items-center justify-between
+export const MobileNavLinksContainer = styled.nav`
+  ${tw`flex flex-1 items-center justify-between`}
+
+  @media (max-width: 1024px) {
+    height: 100%;
+    align-items: center;
+  }
 `;
 
 export const NavToggle = styled.button`

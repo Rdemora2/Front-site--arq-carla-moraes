@@ -29,11 +29,16 @@ const StyledHeader = styled(Header)`
     position: sticky;
     top: 0;
     z-index: 30;
-    padding: 0 1.5rem;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    margin: 0;
     width: calc(100% + 3rem);
     margin-left: -1.5rem;
     margin-right: -1.5rem;
     height: 5rem;
+    max-width: none;
     display: flex;
     align-items: center;
     box-shadow: none;
