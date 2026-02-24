@@ -30,11 +30,11 @@ const StyledHeader = styled(Header)`
     width: calc(100% + 3rem);
     margin-left: -1.5rem;
     margin-right: -1.5rem;
-    height: 4.5rem;
+    height: 4rem;
     display: flex;
     align-items: center;
     box-shadow: none;
-    border-bottom: 1px solid rgba(107, 121, 89, 0.08);
+    border-bottom: none;
   }
   nav:first-child {
     @media (min-width: 1024px) {
@@ -423,8 +423,8 @@ const FullWidthWithImageComponent = ({
         </LeftColumn>
         <RightColumn>
           <OptimizedImage
-            src="/images/components/hero/Frances-hero.webp"
-            alt="Jardim residencial de alto padrão com paisagismo francês projetado por Carla Moraes em São Paulo"
+            src="/images/components/hero/Modern-hero.webp"
+            alt="Paisagismo moderno projetado por Carla Moraes"
             priority={true}
             sizes="(max-width: 768px) 100vw, 50vw"
             width={1200}

@@ -86,6 +86,18 @@ export const LogoLink = styled(NavLink)`
   img {
     ${tw`w-24 mr-3 lg:w-32`}
     transition: transform 0.3s ease;
+
+    @media (max-width: 1024px) {
+      width: 5.5rem;
+      margin-right: 0;
+    }
+  }
+
+  &:hover {
+    @media (max-width: 1024px) {
+      border-bottom-color: transparent;
+      transform: none;
+    }
   }
 `;
 
@@ -98,9 +110,34 @@ export const NavToggle = styled.button`
     lg:hidden z-20 focus:outline-none transition duration-300
   `}
 
+  @media (max-width: 1024px) {
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    color: var(--color-primary-text);
+    background: transparent;
+
+    svg {
+      width: 1.25rem;
+      height: 1.25rem;
+      stroke-width: 2.5;
+    }
+  }
+
   &:hover {
     color: var(--color-primary);
-    transform: rotate(5deg) scale(1.1);
+
+    @media (max-width: 1024px) {
+      background: rgba(107, 121, 89, 0.06);
+      transform: none;
+    }
+
+    @media (min-width: 1025px) {
+      transform: rotate(5deg) scale(1.1);
+    }
   }
 
   &:active {
@@ -116,23 +153,57 @@ export const NavToggle = styled.button`
 export const MobileNavLinks = motion(styled.div`
   ${tw`
     lg:hidden z-10 fixed top-0 inset-x-0 
-    mx-4 my-6 p-8 border text-center 
-    rounded-lg text-gray-900 bg-white
+    text-center text-gray-900
   `}
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-  backdrop-filter: blur(10px);
+  background-color: var(--color-background);
+  margin: 0;
+  padding: 5.5rem 2rem 2.5rem;
+  border: none;
+  border-radius: 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  min-height: 100dvh;
 
   ${NavLinks} {
     ${tw`flex flex-col items-center`}
+    gap: 0.25rem;
   }
 
   ${NavLink} {
-    transition:
-      transform 0.3s ease,
-      color 0.3s ease;
+    display: block;
+    width: 100%;
+    padding: 1rem 0;
+    font-size: 1.125rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    color: var(--color-primary-text);
+    border-bottom: 1px solid rgba(107, 121, 89, 0.08);
+    transition: color 0.2s ease;
+
+    &:hover, &:active {
+      color: var(--color-primary);
+      transform: none;
+      border-bottom-color: var(--color-primary);
+    }
+  }
+
+  ${PrimaryLink} {
+    margin-top: 1.5rem;
+    display: inline-block;
+    width: auto;
+    padding: 0.875rem 2rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border-radius: 0.5rem;
+    background-color: var(--color-primary-text);
+    color: var(--color-background);
+    border: none;
+    border-bottom: none;
 
     &:hover {
-      transform: scale(1.05) translateY(-2px);
+      background-color: var(--color-primary);
+      border-bottom-color: transparent;
     }
   }
 `);
