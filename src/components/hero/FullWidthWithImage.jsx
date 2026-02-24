@@ -13,7 +13,6 @@ import OptimizedImage from "components/misc/OptimizedImage.jsx";
 const StyledHeader = styled(Header)`
   ${tw`justify-between py-4`}
 
-  /* Alinhamento à esquerda no desktop */
   @media (min-width: 1024px) {
     max-width: none;
     margin-left: 0;
@@ -24,17 +23,18 @@ const StyledHeader = styled(Header)`
     ${tw`mr-8 pb-0`}
   }
   @media (max-width: 1024px) {
-    background-color: #e2e8f0;
+    background-color: var(--color-background);
     position: relative;
     z-index: 30;
-    padding: 0.625rem 1.875rem;
-    width: calc(100% + 4rem);
-    margin-left: -2rem;
-    margin-right: -2rem;
-    height: 5.5rem;
+    padding: 0.5rem 1.5rem;
+    width: calc(100% + 3rem);
+    margin-left: -1.5rem;
+    margin-right: -1.5rem;
+    height: 4.5rem;
     display: flex;
     align-items: center;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: none;
+    border-bottom: 1px solid rgba(107, 121, 89, 0.08);
   }
   nav:first-child {
     @media (min-width: 1024px) {
@@ -70,17 +70,53 @@ const Container = styled.div`
   ${tw`relative -mx-8 -mt-8 min-h-screen`}
 
   @media (max-width: 1024px) {
-    min-height: 100dvh;
-    height: 100dvh;
-    max-height: 100dvh;
-    overflow: hidden;
+    min-height: auto;
+    height: auto;
+    max-height: none;
+    overflow: visible;
   }
 `;
 const TwoColumn = tw.div`flex flex-col lg:flex-row min-h-screen`;
+
+/* Imagem mobile exibida no topo */
+const MobileHeroImage = styled.div`
+  display: none;
+
+  @media (max-width: 1024px) {
+    display: block;
+    position: relative;
+    width: calc(100% + 3rem);
+    margin-left: -1.5rem;
+    margin-right: -1.5rem;
+    height: 52vh;
+    min-height: 280px;
+    max-height: 420px;
+    overflow: hidden;
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 80px;
+      background: linear-gradient(to top, var(--color-background), transparent);
+      pointer-events: none;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 30%;
+      display: block;
+    }
+  }
+`;
+
 const LeftColumn = styled.div`
   ${tw`flex flex-col justify-center relative z-10`}
 
-  /* Desktop: exatamente 50% da largura */
   @media (min-width: 1024px) {
     width: 50%;
     flex: none;
@@ -93,40 +129,22 @@ const LeftColumn = styled.div`
   @media (max-width: 1024px) {
     margin-left: 0;
     margin-right: 0;
-    padding-left: 2rem;
-    padding-right: 2rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
     padding-top: 0;
     padding-bottom: 0;
     position: relative;
-    min-height: 100dvh;
-    height: 100vh;
-    max-height: 100vh;
+    min-height: auto;
+    height: auto;
+    max-height: none;
     display: flex;
     flex-direction: column;
-
-    &::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-image: url("/images/components/hero/Modern-hero-640w.webp");
-      background-size: cover;
-      background-position: center center;
-      background-repeat: no-repeat;
-      background-attachment: local;
-      filter: blur(1px);
-      z-index: -10;
-      width: 100%;
-      height: 100%;
-    }
+    background-color: var(--color-background);
   }
 `;
 const RightColumn = styled.div`
   ${tw`bg-cover bg-center min-h-screen lg:min-h-full`}
 
-  /* Desktop: exatamente 50% da largura */
   @media (min-width: 1024px) {
     width: 50%;
     flex: none;
@@ -144,7 +162,6 @@ const RightColumn = styled.div`
 const Content = styled.div`
   ${tw`flex flex-col sm:items-center lg:items-stretch`}
 
-  /* Desktop: centralizar conteúdo verticalmente na coluna de 50% */
   @media (min-width: 1024px) {
     flex: 1;
     display: flex;
@@ -155,33 +172,27 @@ const Content = styled.div`
 
   @media (max-width: 1024px) {
     position: relative;
-    padding: 2rem;
-    margin: 0 -2rem;
-    margin-top: 0;
-    flex: 1;
+    padding: 0;
+    margin: 0;
+    margin-top: -2rem;
+    flex: none;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    height: calc(100vh - 5.5rem);
-    max-height: calc(100vh - 5.5rem);
-
-    &::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.3);
-      z-index: -1;
-    }
+    justify-content: flex-start;
+    height: auto;
+    max-height: none;
+    padding-bottom: 2.5rem;
   }
 `;
+
 const Heading = styled.h1`
   ${tw`text-3xl sm:text-5xl md:text-6xl lg:text-5xl font-black leading-none`}
   @media (max-width: 1024px) {
-    color: white;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    color: var(--color-primary-text);
+    font-size: 1.75rem;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    text-shadow: none;
     position: relative;
     z-index: 1;
   }
@@ -189,8 +200,12 @@ const Heading = styled.h1`
 const Paragraph = styled.p`
   ${tw`max-w-lg my-8 lg:my-5 lg:my-8 text-lg lg:text-base xl:text-lg leading-normal`}
   @media (max-width: 1024px) {
-    color: white;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    color: #555;
+    font-size: 0.938rem;
+    line-height: 1.6;
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+    text-shadow: none;
     position: relative;
     z-index: 1;
   }
@@ -210,6 +225,35 @@ const Actions = styled.div`
   @media (max-width: 1024px) {
     position: relative;
     z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+
+    .action {
+      width: 100%;
+      padding: 0.875rem 1.5rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      border-radius: 0.5rem;
+    }
+
+    .primaryAction {
+      background-color: var(--color-primary-text);
+      color: var(--color-background);
+      box-shadow: 0 2px 8px rgba(62, 77, 44, 0.18);
+    }
+
+    .secondaryAction {
+      margin-top: 0;
+      margin-left: 0;
+      background-color: transparent;
+      color: var(--color-primary-text);
+      border: 1.5px solid var(--color-primary);
+      box-shadow: none;
+    }
   }
 `;
 
@@ -219,7 +263,11 @@ const TrustBar = styled.div`
   @media (max-width: 1024px) {
     position: relative;
     z-index: 1;
-    color: white;
+    margin-top: 0;
+    justify-content: flex-start;
+    gap: 0;
+    flex-direction: column;
+    align-items: flex-start;
   }
 `;
 
@@ -231,8 +279,11 @@ const TrustItem = styled.div`
   }
 
   @media (max-width: 1024px) {
-    color: white;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    color: #666;
+    text-shadow: none;
+    font-size: 0.813rem;
+    padding: 0.375rem 0;
+    letter-spacing: 0.01em;
   }
 
   svg {
@@ -240,13 +291,20 @@ const TrustItem = styled.div`
     color: #2D5A27;
 
     @media (max-width: 1024px) {
-      filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.8));
+      width: 1rem;
+      height: 1rem;
+      color: var(--color-primary);
+      filter: none;
     }
   }
 `;
 
 const HighlightText = styled.span`
   ${tw`text-primary-500`}
+
+  @media (max-width: 1024px) {
+    color: var(--color-primary);
+  }
 `;
 
 const FullWidthWithImageComponent = ({
@@ -292,6 +350,16 @@ const FullWidthWithImageComponent = ({
       <TwoColumn>
         <LeftColumn>
           <StyledHeader links={navLinks} collapseBreakpointClass="sm" />
+          <MobileHeroImage>
+            <OptimizedImage
+              src="/images/components/hero/Modern-hero-640w.webp"
+              alt="Paisagismo moderno projetado por Carla Moraes"
+              priority={true}
+              sizes="100vw"
+              width={640}
+              height={480}
+            />
+          </MobileHeroImage>
           <Content>
             <Heading>{heading}</Heading>
             <Paragraph>{description}</Paragraph>
