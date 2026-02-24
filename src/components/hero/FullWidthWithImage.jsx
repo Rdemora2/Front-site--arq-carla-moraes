@@ -351,11 +351,12 @@ const FullWidthWithImageComponent = ({
         <LeftColumn>
           <StyledHeader links={navLinks} collapseBreakpointClass="sm" />
           <MobileHeroImage>
-            <OptimizedImage
+            <img
               src="/images/components/hero/Modern-hero-640w.webp"
               alt="Paisagismo moderno projetado por Carla Moraes"
-              priority={true}
-              sizes="100vw"
+              loading="eager"
+              fetchpriority="high"
+              decoding="async"
               width={640}
               height={480}
             />
