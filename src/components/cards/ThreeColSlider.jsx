@@ -15,13 +15,49 @@ import {
 } from "react-feather";
 
 const Container = tw.div`relative`;
-const Content = tw.div`max-w-screen-xl mx-auto py-16 lg:py-20`;
+const Content = styled.div`
+  ${tw`max-w-screen-xl mx-auto py-16 lg:py-20`}
 
-const HeadingWithControl = tw.div`flex flex-col items-center sm:items-stretch sm:flex-row justify-between`;
-const Heading = tw(SectionHeading)`text-2xl sm:text-3xl lg:text-4xl`;
-const Controls = tw.div`flex items-center`;
+  @media (max-width: 1023px) {
+    padding: 2.5rem 1rem;
+  }
+`;
+
+const HeadingWithControl = styled.div`
+  ${tw`flex flex-col items-center sm:items-stretch sm:flex-row justify-between`}
+
+  @media (max-width: 639px) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+`;
+const Heading = styled(SectionHeading)`
+  ${tw`text-2xl sm:text-3xl lg:text-4xl`}
+
+  @media (max-width: 639px) {
+    font-size: 1.375rem;
+    text-align: left;
+  }
+`;
+const Controls = styled.div`
+  ${tw`flex items-center`}
+
+  @media (max-width: 639px) {
+    margin-top: 0;
+    gap: 0.5rem;
+  }
+`;
 const ControlButton = styled(PrimaryButtonBase)`
   ${tw`mt-4 sm:mt-0 first:ml-0 ml-6 rounded-full p-2`}
+
+  @media (max-width: 639px) {
+    margin: 0;
+    margin-left: 0 !important;
+    width: 40px;
+    height: 40px;
+    padding: 0.375rem;
+  }
   transition: transform 0.3s ease;
 
   svg {
@@ -66,14 +102,41 @@ const CardSlider = styled(Slider)`
   .slick-slide {
     ${tw`h-auto flex justify-center mb-1`}
   }
+
+  @media (max-width: 1023px) {
+    margin-top: 1.5rem;
+  }
 `;
-const Card = tw.div`h-full flex! flex-col sm:border max-w-sm sm:rounded-tl-4xl sm:rounded-br-5xl relative focus:outline-none`;
-const CardImageContainer = tw.div`w-full h-56 sm:h-64 rounded sm:rounded-none sm:rounded-tl-4xl overflow-hidden`;
+const Card = styled.div`
+  ${tw`h-full flex! flex-col sm:border max-w-sm sm:rounded-tl-4xl sm:rounded-br-5xl relative focus:outline-none`}
+
+  @media (max-width: 639px) {
+    max-width: 100%;
+    margin: 0 0.25rem;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+`;
+const CardImageContainer = styled.div`
+  ${tw`w-full h-56 sm:h-64 rounded sm:rounded-none sm:rounded-tl-4xl overflow-hidden`}
+
+  @media (max-width: 639px) {
+    height: 12rem;
+    border-radius: 12px 12px 0 0;
+  }
+`;
 const StyledOptimizedImage = styled(OptimizedImage)`
   ${tw`w-full h-full`}
 `;
 
-const TextInfo = tw.div`py-6 sm:px-10 sm:py-6`;
+const TextInfo = styled.div`
+  ${tw`py-6 sm:px-10 sm:py-6`}
+
+  @media (max-width: 639px) {
+    padding: 1rem 1rem 0.75rem;
+  }
+`;
 const TitleReviewContainer = tw.div`flex flex-col sm:flex-row sm:justify-between sm:items-center`;
 const Title = styled.h5`
   ${tw`text-lg font-bold leading-tight`}

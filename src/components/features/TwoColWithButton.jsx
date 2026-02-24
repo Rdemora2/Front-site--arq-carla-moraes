@@ -11,7 +11,13 @@ import OptimizedImage from "components/misc/OptimizedImage.jsx";
 import SvgDotPattern from "../../assets/icons/svg/dot-pattern.svg?url";
 
 const Container = tw.div`relative`;
-const TwoColumn = tw.div`flex flex-col md:flex-row justify-between max-w-screen-xl mx-auto py-20 md:py-24 items-center`;
+const TwoColumn = styled.div`
+  ${tw`flex flex-col md:flex-row justify-between max-w-screen-xl mx-auto py-20 md:py-24 items-center`}
+
+  @media (max-width: 767px) {
+    padding: 2.5rem 1rem;
+  }
+`;
 const Column = tw.div`w-full max-w-md mx-auto md:max-w-none md:mx-0`;
 const ImageColumn = tw(Column)`md:w-6/12 flex-shrink-0 relative`;
 const TextColumn = styled(Column)((props) => [
@@ -41,16 +47,36 @@ const DecoratorBlob = styled(SvgDotPattern)(() => [
 const TextContent = tw.div`lg:py-8 text-center md:text-left`;
 
 const Subheading = tw(SubheadingBase)`text-center md:text-left`;
-const Heading = tw(
-  SectionHeading
-)`mt-4 font-black text-left text-3xl sm:text-4xl lg:text-5xl text-center md:text-left leading-tight`;
-const Description = tw.p`mt-4 text-center md:text-left text-sm md:text-base lg:text-lg font-medium leading-relaxed text-secondary-100`;
+const Heading = styled(SectionHeading)`
+  ${tw`mt-4 font-black text-left text-3xl sm:text-4xl lg:text-5xl text-center md:text-left leading-tight`}
+
+  @media (max-width: 767px) {
+    font-size: 1.5rem;
+    margin-top: 0.5rem;
+  }
+`;
+
+const Description = styled.p`
+  ${tw`mt-4 text-center md:text-left text-sm md:text-base lg:text-lg font-medium leading-relaxed text-secondary-100`}
+
+  @media (max-width: 767px) {
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+`;
 
 const PrimaryButton = styled(PrimaryButtonBase).withConfig({
   shouldForwardProp: (prop) => !["buttonRounded"].includes(prop),
 })((props) => [
   tw`mt-8 md:mt-8 text-sm inline-block mx-auto md:mx-0`,
   props.buttonRounded && tw`rounded-full`,
+  `
+    @media (max-width: 767px) {
+      width: 100%;
+      text-align: center;
+      padding: 0.875rem 1.5rem;
+    }
+  `,
 ]);
 
 export default ({

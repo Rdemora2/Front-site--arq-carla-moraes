@@ -21,8 +21,20 @@ import SvgDecoratorBlob2 from "../../assets/icons/svg/svg-decorator-blob-5.svg";
 import "slick-carousel/slick/slick.css";
 
 const Container = tw.div`relative`;
-const Content = tw.div`max-w-screen-xl mx-auto py-20 lg:py-24`;
-const TestimonialsContainer = tw.div`mt-16 lg:mt-0`;
+const Content = styled.div`
+  ${tw`max-w-screen-xl mx-auto py-20 lg:py-24`}
+
+  @media (max-width: 1023px) {
+    padding: 2.5rem 1rem;
+  }
+`;
+const TestimonialsContainer = styled.div`
+  ${tw`mt-16 lg:mt-0`}
+
+  @media (max-width: 1023px) {
+    margin-top: 1.5rem;
+  }
+`;
 const Testimonials = styled.div``;
 const Testimonial = tw.div`max-w-md lg:max-w-none mx-auto lg:mx-0 flex flex-col items-center lg:items-center lg:flex-row`;
 
@@ -31,12 +43,26 @@ const TestimonialTextSlider = tw(Slider)``;
 const TestimonialText = tw.div`outline-none`;
 
 const ImageAndControlContainer = tw.div`relative outline-none`;
-const ImageContainer = tw.div`rounded h-64 sm:h-80 lg:h-96 overflow-hidden`;
+const ImageContainer = styled.div`
+  ${tw`rounded h-64 sm:h-80 lg:h-96 overflow-hidden`}
+
+  @media (max-width: 639px) {
+    height: 14rem;
+    border-radius: 12px;
+  }
+`;
 const StyledOptimizedImage = styled(OptimizedImage)`
   ${tw`w-full h-full`}
 `;
 
-const ControlContainer = tw.div`absolute bottom-0 right-0 bg-gray-100 px-6 py-4 rounded-tl-3xl border`;
+const ControlContainer = styled.div`
+  ${tw`absolute bottom-0 right-0 bg-gray-100 px-6 py-4 rounded-tl-3xl border`}
+
+  @media (max-width: 639px) {
+    padding: 0.5rem 0.75rem;
+    border-radius: 12px 0 0 0;
+  }
+`;
 const ControlButton = styled(PrimaryButton)`
   ${tw`mx-3 rounded-full text-gray-100 p-2`}
   transition: transform 0.3s ease;
@@ -84,13 +110,62 @@ const HeadingTitle = tw(
 )`lg:text-left leading-tight text-2xl sm:text-3xl lg:text-4xl`;
 const Description = tw.p`max-w-md text-center mx-auto lg:mx-0 lg:text-left lg:max-w-none leading-relaxed text-sm md:text-sm lg:text-base font-medium mt-4 text-secondary-100`;
 
-const QuoteContainer = tw.div`relative mt-6 lg:mt-8`;
-const Quote = tw.blockquote`text-center lg:text-left text-sm sm:text-base lg:text-lg`;
-const CustomerInfo = tw.div`mt-6 flex flex-col sm:flex-row items-center justify-center lg:justify-start`;
-const CustomerProfilePicture = tw.img`rounded-full w-20 h-20`;
-const CustomerTextInfo = tw.div`text-center lg:text-left sm:ml-6 mt-2 sm:mt-0`;
-const CustomerName = tw.h5`font-semibold text-lg lg:text-xl text-primary-500`;
-const CustomerTitle = tw.p`font-medium text-secondary-100`;
+const QuoteContainer = styled.div`
+  ${tw`relative mt-6 lg:mt-8`}
+
+  @media (max-width: 1023px) {
+    margin-top: 1.25rem;
+  }
+`;
+const Quote = styled.blockquote`
+  ${tw`text-center lg:text-left text-sm sm:text-base lg:text-lg`}
+
+  @media (max-width: 639px) {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    font-style: italic;
+  }
+`;
+const CustomerInfo = styled.div`
+  ${tw`mt-6 flex flex-col sm:flex-row items-center justify-center lg:justify-start`}
+
+  @media (max-width: 639px) {
+    margin-top: 1.25rem;
+    flex-direction: row;
+    gap: 0.75rem;
+  }
+`;
+const CustomerProfilePicture = styled.img`
+  ${tw`rounded-full w-20 h-20`}
+
+  @media (max-width: 639px) {
+    width: 3rem;
+    height: 3rem;
+  }
+`;
+const CustomerTextInfo = styled.div`
+  ${tw`text-center lg:text-left sm:ml-6 mt-2 sm:mt-0`}
+
+  @media (max-width: 639px) {
+    text-align: left;
+    margin-left: 0;
+    margin-top: 0;
+  }
+`;
+const CustomerName = styled.h5`
+  ${tw`font-semibold text-lg lg:text-xl text-primary-500`}
+
+  @media (max-width: 639px) {
+    font-size: 0.9375rem;
+  }
+`;
+const CustomerTitle = styled.p`
+  ${tw`font-medium text-secondary-100`}
+
+  @media (max-width: 639px) {
+    font-size: 0.8125rem;
+  }
+`;
 
 const QuotesLeft = tw(
   QuotesLeftIcon

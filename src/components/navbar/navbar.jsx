@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import tw from "twin.macro";
 import styled from "styled-components";
 import useAnimatedNavToggler from "../../helpers/useAnimatedNavToggler.jsx";
@@ -95,12 +95,18 @@ export const MobileNavLinksContainer = tw.nav`
 
 export const NavToggle = styled.button`
   ${tw`
-    lg:hidden z-20 focus:outline-none transition duration-300
+    lg:hidden focus:outline-none transition duration-300
   `}
+  z-index: 60;
+  position: relative;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &:hover {
     color: var(--color-primary);
-    transform: rotate(5deg) scale(1.1);
   }
 
   &:active {
@@ -113,33 +119,113 @@ export const NavToggle = styled.button`
   }
 `;
 
-export const MobileNavLinks = motion(styled.div`
-  ${tw`
-    lg:hidden z-10 fixed top-0 inset-x-0 
-    mx-4 my-6 p-8 border text-center 
-    rounded-lg text-gray-900 bg-white
-  `}
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-  backdrop-filter: blur(10px);
+/* Fullscreen mobile overlay */
+const MobileNavOverlay = styled(motion.div)`
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(252, 250, 247, 0.97);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 
   ${NavLinks} {
-    ${tw`flex flex-col items-center`}
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
   }
 
   ${NavLink} {
-    transition:
-      transform 0.3s ease,
-      color 0.3s ease;
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    padding: 1rem 0;
+    margin: 0;
+    color: var(--color-primary-text);
+    border-bottom: none;
+    position: relative;
 
-    &:hover {
-      transform: scale(1.05) translateY(-2px);
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 24px;
+      height: 1px;
+      background: var(--color-secondary);
+      opacity: 0.4;
+    }
+
+    &:last-child::after {
+      display: none;
     }
   }
-`);
+
+  ${PrimaryLink} {
+    margin-top: 1.5rem;
+    padding: 0.875rem 2.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    border-radius: 6px;
+    width: auto;
+    min-width: 220px;
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    &::after {
+      display: none;
+    }
+  }
+`;
+
+const MobileNavCloseButton = styled(motion.button)`
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  z-index: 60;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-primary-text);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--color-primary);
+  }
+`;
 
 export const DesktopNavLinks = tw.nav`
   hidden lg:flex flex-1 justify-between items-center
 `;
+
+/* Animation variants */
+const overlayVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.3, ease: "easeOut" } },
+  exit: { opacity: 0, transition: { duration: 0.25, ease: "easeIn" } },
+};
+
+const navItemVariants = {
+  hidden: { opacity: 0, y: 16 },
+  visible: (i) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: 0.1 + i * 0.06, duration: 0.35, ease: "easeOut" },
+  }),
+  exit: { opacity: 0, y: -8, transition: { duration: 0.15 } },
+};
 
 const Header = ({
   roundedHeaderButton = false,
@@ -150,20 +236,20 @@ const Header = ({
 }) => {
   const defaultLinks = [
     <NavLinks key={1}>
-      <NavLink href="/">Início</NavLink>
-      <NavLink href="/sobre-nos">Sobre Nós</NavLink>
+      <NavLink href="/">Inicio</NavLink>
+      <NavLink href="/sobre-nos">Sobre Nos</NavLink>
       <NavLink href="/projetos">Projetos</NavLink>
       <NavLink href="/contato">Contato</NavLink>
       <PrimaryLink
         css={roundedHeaderButton && tw`rounded-full`}
         href="/contato"
       >
-        Solicitar Orçamento
+        Solicitar Orcamento
       </PrimaryLink>
     </NavLinks>,
   ];
 
-  const { showNavLinks, animation, toggleNavbar } = useAnimatedNavToggler();
+  const { showNavLinks, toggleNavbar, closeNavbar } = useAnimatedNavToggler();
   const collapseBreakpointCss =
     collapseBreakPointCssMap[collapseBreakpointClass];
 
@@ -183,6 +269,22 @@ const Header = ({
   logoLink = logoLink || defaultLogoLink;
   links = links || defaultLinks;
 
+  // Extract individual NavLink items for stagger animation
+  const extractNavItems = (linksNode) => {
+    if (!linksNode) return [];
+    const items = [];
+    React.Children.forEach(linksNode, (child) => {
+      if (child?.props?.children) {
+        React.Children.forEach(child.props.children, (navChild) => {
+          items.push(navChild);
+        });
+      }
+    });
+    return items;
+  };
+
+  const navItems = extractNavItems(links);
+
   return (
     <HeaderContainer className={className || "header-light"}>
       <DesktopNavLinks css={collapseBreakpointCss.desktopNavLinks}>
@@ -194,13 +296,44 @@ const Header = ({
         css={collapseBreakpointCss.mobileNavLinksContainer}
       >
         {logoLink}
-        <MobileNavLinks
-          initial={{ x: "150%", display: "none" }}
-          animate={animation}
-          css={collapseBreakpointCss.mobileNavLinks}
-        >
-          {links}
-        </MobileNavLinks>
+
+        <AnimatePresence>
+          {showNavLinks && (
+            <MobileNavOverlay
+              variants={overlayVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+            >
+              <MobileNavCloseButton
+                onClick={closeNavbar}
+                aria-label="Fechar menu"
+                whileTap={{ scale: 0.9 }}
+              >
+                <CloseIcon size={24} />
+              </MobileNavCloseButton>
+
+              <nav>
+                <NavLinks>
+                  {navItems.map((item, i) => (
+                    <motion.div
+                      key={i}
+                      custom={i}
+                      variants={navItemVariants}
+                      initial="hidden"
+                      animate="visible"
+                      exit="exit"
+                      onClick={closeNavbar}
+                    >
+                      {item}
+                    </motion.div>
+                  ))}
+                </NavLinks>
+              </nav>
+            </MobileNavOverlay>
+          )}
+        </AnimatePresence>
+
         <NavToggle
           onClick={toggleNavbar}
           className={showNavLinks ? "open" : "closed"}
@@ -208,9 +341,9 @@ const Header = ({
           aria-expanded={showNavLinks}
         >
           {showNavLinks ? (
-            <CloseIcon tw="w-6 h-6" />
+            <CloseIcon size={24} />
           ) : (
-            <MenuIcon tw="w-6 h-6" />
+            <MenuIcon size={24} />
           )}
         </NavToggle>
       </MobileNavLinksContainer>

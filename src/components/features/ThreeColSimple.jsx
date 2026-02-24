@@ -22,9 +22,19 @@ const Description = tw(
 )`text-center mx-auto text-sm md:text-sm lg:text-base`;
 const ThreeColumnContainer = styled.div`
   ${tw`mt-10 flex flex-col items-center lg:items-stretch lg:flex-row flex-wrap lg:justify-center max-w-screen-lg mx-auto`}
+
+  @media (max-width: 1023px) {
+    margin-top: 1.5rem;
+    gap: 0.5rem;
+  }
 `;
 const Column = styled.div`
   ${tw`lg:w-1/3 max-w-xs`}
+
+  @media (max-width: 1023px) {
+    max-width: 100%;
+    width: 100%;
+  }
 `;
 
 const Card = styled.div`
@@ -50,6 +60,36 @@ const Card = styled.div`
     ${tw`mt-auto inline-flex items-center pt-5 text-sm font-bold text-primary-300 leading-none hocus:text-primary-900 transition duration-300`}
     .icon {
       ${tw`ml-2 w-4`}
+    }
+  }
+
+  @media (max-width: 1023px) {
+    flex-direction: row;
+    text-align: left;
+    align-items: flex-start;
+    padding: 1.25rem 1rem;
+    margin: 0;
+    gap: 1rem;
+
+    .imageContainer {
+      flex-shrink: 0;
+      padding: 0.75rem;
+
+      img {
+        width: 1.25rem;
+        height: 1.25rem;
+      }
+    }
+
+    .title {
+      margin-top: 0;
+      font-size: 1rem;
+    }
+
+    .description {
+      margin-top: 0.5rem;
+      font-size: 0.8125rem;
+      line-height: 1.5;
     }
   }
 `;

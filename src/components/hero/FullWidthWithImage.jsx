@@ -24,17 +24,16 @@ const StyledHeader = styled(Header)`
     ${tw`mr-8 pb-0`}
   }
   @media (max-width: 1024px) {
-    background-color: #e2e8f0;
+    background-color: transparent;
     position: relative;
     z-index: 30;
-    padding: 0.625rem 1.875rem;
+    padding: 0.75rem 1.25rem;
     width: calc(100% + 4rem);
     margin-left: -2rem;
     margin-right: -2rem;
-    height: 5.5rem;
+    height: auto;
     display: flex;
     align-items: center;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   }
   nav:first-child {
     @media (min-width: 1024px) {
@@ -93,8 +92,8 @@ const LeftColumn = styled.div`
   @media (max-width: 1024px) {
     margin-left: 0;
     margin-right: 0;
-    padding-left: 2rem;
-    padding-right: 2rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
     padding-top: 0;
     padding-bottom: 0;
     position: relative;
@@ -116,7 +115,6 @@ const LeftColumn = styled.div`
       background-position: center center;
       background-repeat: no-repeat;
       background-attachment: local;
-      filter: blur(1px);
       z-index: -10;
       width: 100%;
       height: 100%;
@@ -155,15 +153,17 @@ const Content = styled.div`
 
   @media (max-width: 1024px) {
     position: relative;
-    padding: 2rem;
-    margin: 0 -2rem;
+    padding: 1.5rem;
+    margin: 0 -1.5rem;
     margin-top: 0;
     flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    height: calc(100vh - 5.5rem);
-    max-height: calc(100vh - 5.5rem);
+    justify-content: flex-end;
+    padding-bottom: env(safe-area-inset-bottom, 2rem);
+    padding-bottom: max(env(safe-area-inset-bottom), 2.5rem);
+    height: calc(100vh - 4rem);
+    max-height: calc(100vh - 4rem);
 
     &::before {
       content: "";
@@ -172,7 +172,13 @@ const Content = styled.div`
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(0, 0, 0, 0.3);
+      background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.7) 0%,
+        rgba(0, 0, 0, 0.45) 40%,
+        rgba(0, 0, 0, 0.15) 70%,
+        rgba(0, 0, 0, 0.05) 100%
+      );
       z-index: -1;
     }
   }
@@ -181,16 +187,25 @@ const Heading = styled.h1`
   ${tw`text-3xl sm:text-5xl md:text-6xl lg:text-5xl font-black leading-none`}
   @media (max-width: 1024px) {
     color: white;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    font-size: 1.875rem;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
     position: relative;
     z-index: 1;
+  }
+
+  @media (max-width: 374px) {
+    font-size: 1.625rem;
   }
 `;
 const Paragraph = styled.p`
   ${tw`max-w-lg my-8 lg:my-5 lg:my-8 text-lg lg:text-base xl:text-lg leading-normal`}
   @media (max-width: 1024px) {
-    color: white;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
     position: relative;
     z-index: 1;
   }
@@ -210,6 +225,33 @@ const Actions = styled.div`
   @media (max-width: 1024px) {
     position: relative;
     z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    .action {
+      display: block;
+      width: 100%;
+      padding: 0.875rem 1.5rem;
+      font-size: 0.9375rem;
+      border-radius: 8px;
+    }
+
+    .primaryAction {
+      background-color: var(--color-primary);
+      color: white;
+      font-weight: 600;
+    }
+
+    .secondaryAction {
+      margin-left: 0;
+      margin-top: 0;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
   }
 `;
 
@@ -219,7 +261,10 @@ const TrustBar = styled.div`
   @media (max-width: 1024px) {
     position: relative;
     z-index: 1;
-    color: white;
+    color: rgba(255, 255, 255, 0.85);
+    margin-top: 1.25rem;
+    gap: 0.5rem 1rem;
+    font-size: 0.8125rem;
   }
 `;
 
@@ -231,8 +276,8 @@ const TrustItem = styled.div`
   }
 
   @media (max-width: 1024px) {
-    color: white;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    color: rgba(255, 255, 255, 0.85);
+    gap: 0.375rem;
   }
 
   svg {
@@ -240,7 +285,9 @@ const TrustItem = styled.div`
     color: #2D5A27;
 
     @media (max-width: 1024px) {
-      filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.8));
+      width: 16px;
+      height: 16px;
+      color: rgba(255, 255, 255, 0.7);
     }
   }
 `;

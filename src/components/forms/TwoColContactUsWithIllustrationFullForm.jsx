@@ -32,8 +32,20 @@ const Container = styled.div`
   animation: ${fadeIn} 0.6s ease-out;
 `;
 
-const Content = tw.div`max-w-screen-xl mx-auto py-4 lg:py-8`;
-const TwoColumn = tw.div`flex flex-col md:flex-row justify-between max-w-screen-xl mx-auto`;
+const Content = styled.div`
+  ${tw`max-w-screen-xl mx-auto py-4 lg:py-8`}
+
+  @media (max-width: 767px) {
+    padding: 1rem;
+  }
+`;
+const TwoColumn = styled.div`
+  ${tw`flex flex-col md:flex-row justify-between max-w-screen-xl mx-auto`}
+
+  @media (max-width: 767px) {
+    gap: 1.5rem;
+  }
+`;
 const Column = tw.div`w-full max-w-md mx-auto md:max-w-none md:mx-0`;
 
 const LeftColumn = styled(Column)`
@@ -54,9 +66,20 @@ const Heading = styled.h2`
     text-shadow: 0 0 15px rgba(107, 121, 89, 0.3);
     transition: text-shadow 0.3s ease;
   }
+
+  @media (max-width: 767px) {
+    font-size: 1.5rem;
+  }
 `;
 
-const Description = tw.p`mt-3 text-base text-gray-600 max-w-md`;
+const Description = styled.p`
+  ${tw`mt-3 text-base text-gray-600 max-w-md`}
+
+  @media (max-width: 767px) {
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+`;
 
 const InfoBlock = styled.div`
   ${tw`flex items-center mt-5`}

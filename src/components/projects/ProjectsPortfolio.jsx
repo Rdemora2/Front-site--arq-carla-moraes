@@ -18,17 +18,77 @@ import {
   Image as GalleryIcon,
 } from "react-feather";
 
-const Container = tw.div`relative py-8 lg:py-12`;
-const ContentWithPaddingXl = tw.div`max-w-screen-xl mx-auto px-4 lg:px-8`;
+const Container = styled.div`
+  ${tw`relative py-8 lg:py-12`}
 
-const HeaderContainer = tw.div`text-center mb-12`;
+  @media (max-width: 1023px) {
+    padding: 1.5rem 0;
+  }
+`;
+const ContentWithPaddingXl = styled.div`
+  ${tw`max-w-screen-xl mx-auto px-4 lg:px-8`}
+
+  @media (max-width: 639px) {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+`;
+
+const HeaderContainer = styled.div`
+  ${tw`text-center mb-12`}
+
+  @media (max-width: 1023px) {
+    margin-bottom: 1.5rem;
+  }
+`;
 const SubheadingStyled = tw.div`text-center text-green-600 mb-3 text-sm uppercase tracking-widest font-bold`;
-const Heading = tw(SectionHeading)`text-center text-gray-800`;
-const Description = tw.p`text-center max-w-4xl mx-auto mt-4 text-gray-700 leading-relaxed text-base lg:text-lg`;
+const Heading = styled(SectionHeading)`
+  ${tw`text-center text-gray-800`}
 
-const ContentSection = tw.div`mt-8`;
-const FiltersRow = tw.div`flex justify-end mb-6`;
-const FiltersContainer = tw.div`flex items-center gap-2`;
+  @media (max-width: 639px) {
+    font-size: 1.5rem;
+  }
+`;
+const Description = styled.p`
+  ${tw`text-center max-w-4xl mx-auto mt-4 text-gray-700 leading-relaxed text-base lg:text-lg`}
+
+  @media (max-width: 639px) {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    margin-top: 0.75rem;
+  }
+`;
+
+const ContentSection = styled.div`
+  ${tw`mt-8`}
+
+  @media (max-width: 1023px) {
+    margin-top: 1rem;
+  }
+`;
+const FiltersRow = styled.div`
+  ${tw`flex justify-end mb-6`}
+
+  @media (max-width: 639px) {
+    justify-content: flex-start;
+    margin-bottom: 1rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding-bottom: 0.5rem;
+    &::-webkit-scrollbar { display: none; }
+  }
+`;
+const FiltersContainer = styled.div`
+  ${tw`flex items-center gap-2`}
+
+  @media (max-width: 639px) {
+    flex-wrap: nowrap;
+    min-width: max-content;
+    gap: 0.5rem;
+  }
+`;
 const FilterButton = styled(motion.button)`
   ${tw`px-3 py-1 rounded-full text-xs font-medium transition-all duration-300 border border-transparent relative`}
 
@@ -86,11 +146,15 @@ const ClientTypeBadge = styled.div.withConfig({
 
 const ProjectInfo = styled.div`
   ${tw`p-6 flex flex-col`}
-  min-height: 280px; /* Altura mínima fixa para uniformizar os cards */
+  min-height: 280px;
 
-  /* Remove hovers específicos dos textos internos */
   * {
     pointer-events: none;
+  }
+
+  @media (max-width: 639px) {
+    padding: 1rem 1.25rem;
+    min-height: 200px;
   }
 `;
 const ProjectTitle = styled.h3`

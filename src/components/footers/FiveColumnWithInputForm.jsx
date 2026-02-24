@@ -9,12 +9,43 @@ const Container = styled.div`
   ${tw`relative py-20 lg:py-24`}
   background-color: var(--color-primary-text);
   color: var(--color-background);
+
+  @media (max-width: 1023px) {
+    padding-top: 3rem;
+    padding-bottom: 2rem;
+  }
 `;
 
-const Content = tw.div`max-w-screen-xl mx-auto relative z-10 px-8`;
-const FourColumns = tw.div`flex flex-wrap text-center sm:text-left justify-center sm:justify-start md:justify-between -mt-12`;
+const Content = styled.div`
+  ${tw`max-w-screen-xl mx-auto relative z-10 px-8`}
 
-const Column = tw.div`px-4 sm:px-0 sm:w-1/4 md:w-auto mt-12`;
+  @media (max-width: 639px) {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+`;
+
+const FourColumns = styled.div`
+  ${tw`flex flex-wrap text-center sm:text-left justify-center sm:justify-start md:justify-between -mt-12`}
+
+  @media (max-width: 639px) {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0;
+    margin-top: 0;
+  }
+`;
+
+const Column = styled.div`
+  ${tw`px-4 sm:px-0 sm:w-1/4 md:w-auto mt-12`}
+
+  @media (max-width: 639px) {
+    margin-top: 2rem;
+    width: 100%;
+    padding: 0;
+  }
+`;
 
 const ColumnHeading = styled.h5`
   ${tw`uppercase font-bold`}
@@ -43,9 +74,21 @@ const Divider = styled.div`
   ${tw`my-16 border-b-2 w-full`}
   border-color: var(--color-background);
   opacity: 0.2;
+
+  @media (max-width: 639px) {
+    margin-top: 2rem;
+    margin-bottom: 1.5rem;
+  }
 `;
 
-const ThreeColRow = tw.div`flex flex-col md:flex-row items-center justify-between`;
+const ThreeColRow = styled.div`
+  ${tw`flex flex-col md:flex-row items-center justify-between`}
+
+  @media (max-width: 639px) {
+    gap: 1.5rem;
+    text-align: center;
+  }
+`;
 
 const LogoContainer = tw.div`flex items-center justify-center md:justify-start`;
 const LogoImg = styled(OptimizedImage)`
@@ -59,10 +102,20 @@ const LogoText = styled.h5`
   color: var(--color-gold);
 `;
 
-const CopyrightContainer = tw.div`flex flex-col items-center md:items-start mt-8 md:mt-0`;
+const CopyrightContainer = styled.div`
+  ${tw`flex flex-col items-center md:items-start mt-8 md:mt-0`}
+
+  @media (max-width: 639px) {
+    margin-top: 0;
+  }
+`;
 const CopyrightNotice = styled.p`
   ${tw`text-center text-sm sm:text-base font-medium`}
   color: var(--color-background);
+
+  @media (max-width: 639px) {
+    font-size: 0.8125rem;
+  }
 `;
 
 const DeveloperNotice = styled.p`
@@ -91,7 +144,15 @@ const DeveloperLink = styled.a`
   }
 `;
 
-const SocialLinksContainer = tw.div`mt-8 md:mt-0 flex`;
+const SocialLinksContainer = styled.div`
+  ${tw`mt-8 md:mt-0 flex`}
+
+  @media (max-width: 639px) {
+    margin-top: 0;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+`;
 const SocialLink = styled.a`
   ${tw`cursor-pointer p-2 rounded-full mr-4 last:mr-0 transition duration-300`}
   background-color: white;
@@ -103,6 +164,16 @@ const SocialLink = styled.a`
   }
   svg {
     ${tw`w-5 h-5`}
+  }
+
+  @media (max-width: 639px) {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0;
+    padding: 0.625rem;
   }
 `;
 

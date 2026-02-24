@@ -27,12 +27,41 @@ const CustomStyles = createGlobalStyle([
     --color-secondary: #91a082;
   }
 
+  html {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    -webkit-text-size-adjust: 100%;
+  }
+
   body {
     -webkit-tap-highlight-color: transparent;
     `,
   tw`antialiased`,
   `
     background-color: var(--color-background);
+    overflow-x: hidden;
+  }
+
+  body.nav-open {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+  }
+
+  @media (max-width: 1023px) {
+    * {
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    button, a, input, textarea, select {
+      min-height: 44px;
+      min-width: 44px;
+    }
+    
+    input, textarea, select {
+      font-size: 16px !important; /* Prevents iOS zoom on focus */
+    }
   }
   
   h1, h2, h3, h4, h5, h6 {

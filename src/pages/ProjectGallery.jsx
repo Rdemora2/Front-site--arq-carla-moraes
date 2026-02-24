@@ -20,8 +20,21 @@ import {
   Maximize2 as ExpandIcon,
 } from "react-feather";
 
-const Container = tw.div`relative py-8 lg:py-12`;
-const ContentWithPaddingXl = tw.div`max-w-screen-xl mx-auto px-4 lg:px-8`;
+const Container = styled.div`
+  ${tw`relative py-8 lg:py-12`}
+
+  @media (max-width: 1023px) {
+    padding: 1.5rem 0;
+  }
+`;
+const ContentWithPaddingXl = styled.div`
+  ${tw`max-w-screen-xl mx-auto px-4 lg:px-8`}
+
+  @media (max-width: 639px) {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+`;
 
 // Header da galeria
 const GalleryHeader = tw.div`mb-8`;
@@ -38,15 +51,37 @@ const BackButton = styled(motion.button)`
   }
 `;
 
-const ProjectTitle = tw.h1`text-3xl lg:text-4xl font-bold text-gray-800 mb-4`;
-const ProjectDescription = tw.p`text-gray-600 leading-relaxed mb-6 max-w-3xl`;
+const ProjectTitle = styled.h1`
+  ${tw`text-3xl lg:text-4xl font-bold text-gray-800 mb-4`}
+
+  @media (max-width: 639px) {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+`;
+const ProjectDescription = styled.p`
+  ${tw`text-gray-600 leading-relaxed mb-6 max-w-3xl`}
+
+  @media (max-width: 639px) {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+`;
 
 const ProjectMetadata = tw.div`flex flex-wrap gap-6 mb-8`;
 const MetadataItem = tw.div`flex items-center text-sm text-gray-600`;
 const MetadataIcon = tw.div`mr-2 text-green-600`;
 
 // Grid da galeria
-const GalleryGrid = tw.div`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6`;
+const GalleryGrid = styled.div`
+  ${tw`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6`}
+
+  @media (max-width: 639px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+`;
 const GalleryImageContainer = styled(motion.div)`
   ${tw`relative overflow-hidden rounded-lg cursor-pointer`}
   aspect-ratio: 4/3;
@@ -97,6 +132,14 @@ const NavigationButtons = tw.div`absolute top-1/2 transform -translate-y-1/2 lef
 const NavButton = styled.button`
   ${tw`p-3 bg-white rounded-full text-gray-800 transition-all hover:bg-gray-200 pointer-events-auto`}
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+
+  @media (max-width: 639px) {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 `;
 
 const ProjectGallery = () => {

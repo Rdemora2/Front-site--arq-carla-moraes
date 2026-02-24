@@ -10,7 +10,13 @@ import {
 import { Plus as PlusIcon, Minus as MinusIcon } from "react-feather";
 
 const Container = tw.div`relative`;
-const Content = tw.div`max-w-screen-xl mx-auto py-16 lg:py-20`;
+const Content = styled.div`
+  ${tw`max-w-screen-xl mx-auto py-16 lg:py-20`}
+
+  @media (max-width: 1023px) {
+    padding: 2.5rem 1rem;
+  }
+`;
 
 const TwoColumn = tw.div`flex`;
 const Column = tw.div``;
@@ -22,21 +28,67 @@ const Subheading = tw(
 const Heading = tw(
   SectionHeading
 )`lg:text-left text-2xl sm:text-3xl lg:text-4xl`;
-const Description = tw.p`max-w-xl text-center mx-auto lg:mx-0 lg:text-left lg:max-w-none leading-relaxed text-sm md:text-sm lg:text-base font-medium mt-4 text-secondary-100`;
+const Description = styled.p`
+  ${tw`max-w-xl text-center mx-auto lg:mx-0 lg:text-left lg:max-w-none leading-relaxed text-sm md:text-sm lg:text-base font-medium mt-4 text-secondary-100`}
 
-const FAQSContainer = tw.dl`mt-12`;
-const FAQItem = tw.div`cursor-pointer mt-8 select-none border lg:border-0 px-8 py-4 lg:p-0 rounded-lg lg:rounded-none`;
+  @media (max-width: 639px) {
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+`;
+
+const FAQSContainer = styled.dl`
+  ${tw`mt-12`}
+
+  @media (max-width: 1023px) {
+    margin-top: 1.5rem;
+  }
+`;
+const FAQItem = styled.div`
+  ${tw`cursor-pointer mt-8 select-none border lg:border-0 px-8 py-4 lg:p-0 rounded-lg lg:rounded-none`}
+
+  @media (max-width: 1023px) {
+    margin-top: 0;
+    padding: 1rem 0;
+    border: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 0;
+  }
+`;
 const Question = tw.dt`flex justify-between items-center`;
-const QuestionText = tw.span`text-base lg:text-lg font-semibold`;
+const QuestionText = styled.span`
+  ${tw`text-base lg:text-lg font-semibold`}
+
+  @media (max-width: 639px) {
+    font-size: 0.9375rem;
+    line-height: 1.4;
+    padding-right: 0.5rem;
+  }
+`;
 const QuestionToggleIcon = styled.span`
   ${tw`ml-2 bg-primary-500 text-gray-100 p-1 rounded-full group-hover:bg-primary-700 group-hover:text-gray-200 transition duration-300`}
+  flex-shrink: 0;
   svg {
     ${tw`w-4 h-4`}
   }
+
+  @media (max-width: 1023px) {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 `;
-const Answer = motion(
-  tw.dd`pointer-events-none text-sm sm:text-base leading-relaxed`
-);
+const AnswerBase = styled.dd`
+  ${tw`pointer-events-none text-sm sm:text-base leading-relaxed`}
+
+  @media (max-width: 639px) {
+    font-size: 0.8125rem;
+    line-height: 1.65;
+  }
+`;
+const Answer = motion(AnswerBase);
 
 const SimpleWithSideImage = ({
   subheading = "Tire suas dúvidas",

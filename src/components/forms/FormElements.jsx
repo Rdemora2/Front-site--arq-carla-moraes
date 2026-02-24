@@ -31,6 +31,14 @@ const InputContainer = styled.div`
 // Estilos base para inputs
 const baseInputStyles = css`
   ${tw`w-full px-4 py-3 border-2 rounded-lg font-medium transition-all duration-300 bg-white`}
+  
+  @media (max-width: 767px) {
+    padding: 0.875rem 1rem;
+    font-size: 16px;
+    min-height: 48px;
+    border-radius: 10px;
+  }
+
   border-color: ${(props) => {
     if (props.$hasError) return "#ef4444";
     if (props.$isValid) return "#10b981";

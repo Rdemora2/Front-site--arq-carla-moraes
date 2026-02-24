@@ -5,12 +5,40 @@ import styled from "styled-components";
 import { SectionHeading } from "components/misc/Headings.jsx";
 import OptimizedImage from "components/misc/OptimizedImage.jsx";
 
-const Container = tw.div`relative py-16 md:py-20 lg:py-24`;
-const TwoColumn = tw.div`flex flex-col md:flex-row justify-between max-w-screen-xl mx-auto py-12 md:py-16`;
+const Container = styled.div`
+  ${tw`relative py-16 md:py-20 lg:py-24`}
+
+  @media (max-width: 1023px) {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+`;
+
+const TwoColumn = styled.div`
+  ${tw`flex flex-col md:flex-row justify-between max-w-screen-xl mx-auto py-12 md:py-16`}
+
+  @media (max-width: 1023px) {
+    padding: 0 1rem;
+  }
+`;
+
 const Column = tw.div`w-full max-w-md mx-auto md:max-w-none md:mx-0`;
-const ImageColumn = tw(
-  Column
-)`md:w-6/12 lg:w-5/12 flex-shrink-0 h-64 md:h-auto`;
+
+const ImageColumn = styled(Column)`
+  ${tw`md:w-6/12 lg:w-5/12 flex-shrink-0`}
+  height: 16rem;
+
+  @media (min-width: 768px) {
+    height: auto;
+  }
+
+  @media (max-width: 767px) {
+    height: 14rem;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+`;
+
 const ImageContainer = tw.div`rounded h-full overflow-hidden`;
 const StyledOptimizedImage = styled(OptimizedImage)`
   ${tw`w-full h-full`}
@@ -24,15 +52,57 @@ const TextColumn = styled(Column)(({ $textOnLeft }) => [
 
 const TextContent = tw.div`lg:py-8`;
 
-const Heading = tw(
-  SectionHeading
-)`text-left text-2xl sm:text-3xl lg:text-4xl text-center md:text-left leading-tight`;
-const Description = tw.p`text-center md:text-left text-sm md:text-sm lg:text-base font-medium leading-relaxed text-secondary-100 mt-4`;
+const Heading = styled(SectionHeading)`
+  ${tw`text-left text-2xl sm:text-3xl lg:text-4xl text-center md:text-left leading-tight`}
 
-const Statistics = tw.div`mt-6 lg:mt-8 xl:mt-12 flex flex-wrap`;
-const Statistic = tw.div`text-base sm:text-lg lg:text-xl w-1/2 mt-4 lg:mt-6 text-center md:text-left`;
-const Value = tw.div`font-bold text-primary-500`;
-const Key = tw.div`font-bold text-gray-700`;
+  @media (max-width: 767px) {
+    font-size: 1.5rem;
+    margin-top: 0.5rem;
+  }
+`;
+
+const Description = styled.p`
+  ${tw`text-center md:text-left text-sm md:text-sm lg:text-base font-medium leading-relaxed text-secondary-100 mt-4`}
+
+  @media (max-width: 767px) {
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+`;
+
+const Statistics = styled.div`
+  ${tw`mt-6 lg:mt-8 xl:mt-12 flex flex-wrap`}
+
+  @media (max-width: 767px) {
+    margin-top: 1.5rem;
+    gap: 0.5rem 0;
+  }
+`;
+
+const Statistic = styled.div`
+  ${tw`text-base sm:text-lg lg:text-xl w-1/2 mt-4 lg:mt-6 text-center md:text-left`}
+
+  @media (max-width: 767px) {
+    margin-top: 0.75rem;
+  }
+`;
+
+const Value = styled.div`
+  ${tw`font-bold text-primary-500`}
+
+  @media (max-width: 767px) {
+    font-size: 1.5rem;
+  }
+`;
+
+const Key = styled.div`
+  ${tw`font-bold text-gray-700`}
+
+  @media (max-width: 767px) {
+    font-size: 0.8125rem;
+    font-weight: 500;
+  }
+`;
 
 const TwoColSingleFeatureWithStats = ({
   heading = (

@@ -17,10 +17,33 @@ const generateStableKey = (child, index) => {
 };
 
 const StyledDiv = styled.div`
-  ${tw`font-display min-h-screen p-8 overflow-hidden`}
+  ${tw`font-display min-h-screen overflow-hidden`}
+  padding: 2rem;
   color: var(--color-primary-text);
+
+  @media (max-width: 1023px) {
+    padding: 1rem;
+  }
+
+  @media (max-width: 639px) {
+    padding: 0.75rem;
+  }
 `;
+
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 1024);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+  return isMobile;
+}
+
 function AnimationReveal({ disabled = false, children = null }) {
+  const isMobile = useIsMobile();
+
   if (disabled) {
     return <>{children}</>;
   }
@@ -35,6 +58,7 @@ function AnimationReveal({ disabled = false, children = null }) {
       <AnimatedSlideInComponent
         key={generateStableKey(child, index)}
         direction={direction}
+        isMobile={isMobile}
       >
         {child}
       </AnimatedSlideInComponent>
@@ -47,17 +71,13 @@ function AnimatedSlideInComponent({
   direction = "left",
   offset = 30,
   children = null,
+  isMobile = false,
 }) {
   const [ref, inView] = useInView({
     margin: `-${offset}px 0px 0px 0px`,
     once: true,
   });
   const [hasAnimated, setHasAnimated] = useState(false);
-
-  const x = { target: "0%" };
-
-  if (direction === "left") x.initial = "-150%";
-  else x.initial = "150%";
 
   const isVisible = Boolean(inView);
 
@@ -68,6 +88,29 @@ function AnimatedSlideInComponent({
   }, [isVisible, hasAnimated]);
 
   const shouldAnimate = isVisible || hasAnimated;
+
+  // Mobile: fade-up animation (no horizontal slide to avoid overflow)
+  // Desktop: original slide-in from left/right
+  if (isMobile) {
+    return (
+      <div ref={ref}>
+        <motion.section
+          initial={{ y: 40, opacity: 0 }}
+          animate={{
+            y: shouldAnimate ? 0 : 40,
+            opacity: shouldAnimate ? 1 : 0,
+          }}
+          transition={{ type: "spring", damping: 20, stiffness: 100 }}
+        >
+          {children}
+        </motion.section>
+      </div>
+    );
+  }
+
+  const x = { target: "0%" };
+  if (direction === "left") x.initial = "-150%";
+  else x.initial = "150%";
 
   return (
     <div ref={ref}>
